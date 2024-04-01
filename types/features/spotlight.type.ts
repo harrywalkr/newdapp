@@ -1,4 +1,4 @@
-export interface Spotlight {
+export interface SpotlightSearchType {
   network: Network;
   subject: Subject;
 }

@@ -15,14 +15,14 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { spotlightSearch } from "@/http/features/spotlight.http";
 import { searchToken } from "@/http/token.http";
 import { useEffect, useState } from "react";
-import { Spotlight } from "@/types/features/spotlight.type";
+import { SpotlightSearchType } from "@/types/features/spotlight.type";
 import { Token } from "@/types/token.type";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Spotlight | Token>();
+  const [data, setData] = useState<SpotlightSearchType | Token>();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
