@@ -17,7 +17,12 @@ export default function MobileMenu() {
       </SheetTrigger>
       <SheetContent side={"left"}>
         <SheetHeader>
-          <SheetTitle>menu</SheetTitle>
+          <SheetTitle>
+            <ul className="mt-3 flex flex-col items-start justify-center gap-3 text-base font-normal">
+              <li>About us</li>
+              <li>Academy</li>
+            </ul>
+          </SheetTitle>
         </SheetHeader>
       </SheetContent>
     </Sheet>

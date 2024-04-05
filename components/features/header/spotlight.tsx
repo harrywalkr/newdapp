@@ -69,7 +69,7 @@ export function Spotlight() {
     (value) => {
       setSearchTerm(value);
     },
-    600,
+    200,
     { maxWait: 2000 }
   );
 
@@ -77,7 +77,6 @@ export function Spotlight() {
     if (!searchTerm || searchTerm == "" || !isMounted) return;
     setToken(undefined);
     setWallet(undefined);
-    setLoading(true);
     const controller = new AbortController();
     spotlightSearch({
       params: { address: searchTerm },
@@ -136,14 +135,17 @@ export function Spotlight() {
           <Input
             placeholder="Search for Wallets, Tokens, NFTs ..."
             className="focus-visible:ring-0 h-12 rounded-b-none"
-            onChange={(e) => onInputChange(e.target.value)}
+            onChange={(e) => {
+              setLoading(true);
+              onInputChange(e.target.value);
+            }}
           />
 
           {token || wallet ? (
             <>
               {wallet && (
                 <div
-                  className="cursor-pointer px-3 flex items-center gap-3 mb-4"
+                  className="cursor-pointer px-3 flex items-center gap-3 pb-4"
                   onClick={() => {
                     // addToLocalStorage(data);
                     // (document.getElementById("search-modal")! as any).close();
@@ -163,7 +165,7 @@ export function Spotlight() {
                 </div>
               )}
               {token && (
-                <ScrollArea className="max-h-80 md:max-h-96 w-full px-3 mb-4">
+                <ScrollArea className="max-h-80 md:max-h-96 w-full px-3 pb-4">
                   <ScrollBar orientation="horizontal" />
                   <Table>
                     <TableHeader>
@@ -270,7 +272,7 @@ export function Spotlight() {
               )}
             </>
           ) : (
-            <div className="mb-4">
+            <div className="pb-4">
               {loading ? (
                 <div className="flex items-center justify-center ">
                   <Loading width={50} height={50} />
