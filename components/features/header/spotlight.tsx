@@ -37,6 +37,8 @@ import PriceFormatter from "@/utils/PriceFormatter";
 import { FaEthereum } from "react-icons/fa";
 import formatDate, { convertIsoToDate } from "@/utils/date";
 import Loading from "@/components/common/Loading";
+import { IoWalletOutline } from "react-icons/io5";
+import { useDebouncedCallback } from "use-debounce";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -63,9 +65,18 @@ export function Spotlight() {
     getImages({}).then(({ data }) => setImages(data.imageUrls));
   }, []);
 
+  const onInputChange = useDebouncedCallback(
+    (value) => {
+      setSearchTerm(value);
+    },
+    600,
+    { maxWait: 2000 }
+  );
+
   useEffect(() => {
     if (!searchTerm || searchTerm == "" || !isMounted) return;
     setToken(undefined);
+    setWallet(undefined);
     setLoading(true);
     const controller = new AbortController();
     spotlightSearch({
@@ -80,6 +91,7 @@ export function Spotlight() {
         params: {
           currencyAddress: searchTerm,
         },
+        signal: controller.signal,
       })
         .then(({ data }) => {
           setToken(data);
@@ -119,115 +131,144 @@ export function Spotlight() {
           <span className="text-xs">⌘</span>J
         </kbd>
       </div>
-
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 rounded-md w-[99%] top-[30%] md:top-[40%]">
+        <DialogContent className="p-0 max-w-3xl rounded-md w-[99%] top-[30%] md:top-[40%]">
           <Input
             placeholder="Search for Wallets, Tokens, NFTs ..."
             className="focus-visible:ring-0 h-12 rounded-b-none"
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
+            onChange={(e) => onInputChange(e.target.value)}
           />
-          {token ? (
-            <ScrollArea className="max-h-80 md:max-h-96 w-full px-3">
-              <ScrollBar orientation="horizontal" />
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Token</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Change</TableHead>
-                    <TableHead>Liquidity</TableHead>
-                    <TableHead>Volume</TableHead>
-                    <TableHead>Dex</TableHead>
-                    <TableHead>Age</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {token.data.map((item) => (
-                    <TableRow
-                      key={item.id}
-                      onClick={() => {
-                        addToLocalStorage(item);
-                        // (
-                        //   document.getElementById("search-modal")! as any
-                        // ).close();
-                        // router.push(
-                        //   `/token/${
-                        //     item.relationships.base_token.data.id.split(
-                        //       "_"
-                        //     )[0]
-                        //   }/${
-                        //     item.relationships.base_token.data.id.split(
-                        //       "_"
-                        //     )[1]
-                        //   }`
-                        // );
-                        // setForm({ ...form, address: "" });
-                      }}
-                    >
-                      <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
-                        <div className="w-10 h-10">
-                          {imageUrl(
-                            item.relationships.base_token.data.id.split("_")[1]
-                          ) &&
-                            images && (
-                              <Image
-                                width={40}
-                                height={40}
-                                src={
-                                  imageUrl(
-                                    item.relationships.base_token.data.id.split(
-                                      "_"
-                                    )[1]
-                                  )!
-                                }
-                                alt=""
-                              />
+
+          {token || wallet ? (
+            <>
+              {wallet && (
+                <div
+                  className="cursor-pointer px-3 flex items-center gap-3 mb-4"
+                  onClick={() => {
+                    // addToLocalStorage(data);
+                    // (document.getElementById("search-modal")! as any).close();
+                    // router.push(`/wallet/${data.subject.address}`);
+                    // setForm({ ...form, address: "" });
+                  }}
+                >
+                  <IoWalletOutline className="text-xl" />
+                  <div className="flex items-center gap-2">
+                    <div className="hidden md:block">
+                      {wallet.subject.address}
+                    </div>
+                    <div className="block md:hidden">
+                      {minifyContract(wallet.subject.address)}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {token && (
+                <ScrollArea className="max-h-80 md:max-h-96 w-full px-3 mb-4">
+                  <ScrollBar orientation="horizontal" />
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Token</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Change</TableHead>
+                        <TableHead>Liquidity</TableHead>
+                        <TableHead>Volume</TableHead>
+                        <TableHead>Dex</TableHead>
+                        <TableHead>Age</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {token.data.map((item) => (
+                        <TableRow
+                          key={item.id}
+                          onClick={() => {
+                            addToLocalStorage(item);
+                            // (
+                            //   document.getElementById("search-modal")! as any
+                            // ).close();
+                            // router.push(
+                            //   `/token/${
+                            //     item.relationships.base_token.data.id.split(
+                            //       "_"
+                            //     )[0]
+                            //   }/${
+                            //     item.relationships.base_token.data.id.split(
+                            //       "_"
+                            //     )[1]
+                            //   }`
+                            // );
+                            // setForm({ ...form, address: "" });
+                          }}
+                        >
+                          <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
+                            <div className="w-10 h-10">
+                              {imageUrl(
+                                item.relationships.base_token.data.id.split(
+                                  "_"
+                                )[1]
+                              ) &&
+                                images && (
+                                  <Image
+                                    width={40}
+                                    height={40}
+                                    src={
+                                      imageUrl(
+                                        item.relationships.base_token.data.id.split(
+                                          "_"
+                                        )[1]
+                                      )!
+                                    }
+                                    alt=""
+                                  />
+                                )}
+                            </div>
+                            <div className="flex flex-col items-start justify-center gap-1">
+                              <div className="whitespace-nowrap">
+                                {truncate(item.attributes.name, 15)}
+                              </div>
+                              <div>
+                                {minifyContract(item.attributes.address)}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {PriceFormatter({
+                              value: +item.attributes.base_token_price_usd,
+                            })}
+                          </TableCell>
+                          <TableCell>
+                            {item.attributes.price_change_percentage.h24}%
+                          </TableCell>
+                          <TableCell>
+                            {PriceFormatter({
+                              value: parseInt(
+                                item.attributes.reserve_in_usd
+                              ).toFixed(2),
+                            })}
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            {PriceFormatter({
+                              value: parseInt(
+                                item.attributes.volume_usd.h24
+                              ).toFixed(2),
+                              dollarSign: true,
+                            })}
+                          </TableCell>
+                          <TableCell>
+                            {item.relationships.dex.data.type}
+                          </TableCell>
+                          <TableCell>
+                            {formatDate(
+                              convertIsoToDate(item.attributes.pool_created_at)
                             )}
-                        </div>
-                        <div className="flex flex-col items-start justify-center gap-1">
-                          <div className="whitespace-nowrap">
-                            {truncate(item.attributes.name, 15)}
-                          </div>
-                          <div>{minifyContract(item.attributes.address)}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {PriceFormatter({
-                          value: +item.attributes.base_token_price_usd,
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        {item.attributes.price_change_percentage.h24}%
-                      </TableCell>
-                      <TableCell>
-                        {PriceFormatter({
-                          value: parseInt(
-                            item.attributes.reserve_in_usd
-                          ).toFixed(2),
-                        })}
-                      </TableCell>
-                      <TableCell className="whitespace-nowrap">
-                        {PriceFormatter({
-                          value: parseInt(
-                            item.attributes.volume_usd.h24
-                          ).toFixed(2),
-                          dollarSign: true,
-                        })}
-                      </TableCell>
-                      <TableCell>{item.relationships.dex.data.type}</TableCell>
-                      <TableCell>
-                        {formatDate(
-                          convertIsoToDate(item.attributes.pool_created_at)
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              )}
+            </>
           ) : (
             <div className="mb-4">
               {loading ? (
