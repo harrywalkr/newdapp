@@ -35,6 +35,10 @@ axios.interceptors.response.use(
   (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    if (error.code != "ERR_CANCELED") {
+      // Do something with the error
+      console.log(error);
+    }
     return Promise.reject(error);
   }
 );

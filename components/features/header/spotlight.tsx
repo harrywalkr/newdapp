@@ -10,6 +10,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { spotlightSearch } from "@/http/features/spotlight.http";
@@ -17,12 +27,25 @@ import { searchToken } from "@/http/token.http";
 import { useEffect, useState } from "react";
 import { SpotlightSearchType } from "@/types/features/spotlight.type";
 import { Token } from "@/types/token.type";
+import { get, set } from "local-storage";
+import { ImageType } from "@/types/Image.type";
+import { getImages } from "@/http/image.http";
+import { useMounted } from "@/utils/useMounted";
+import Image from "next/image";
+import { minifyContract, truncate } from "@/utils/truncate";
+import PriceFormatter from "@/utils/PriceFormatter";
+import { FaEthereum } from "react-icons/fa";
+import formatDate, { convertIsoToDate } from "@/utils/date";
+import Loading from "@/components/common/Loading";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<SpotlightSearchType | Token>();
+  const [wallet, setWallet] = useState<SpotlightSearchType>();
+  const [token, setToken] = useState<Token>();
+  const [images, setImages] = useState<ImageType[]>([]);
+  const isMounted = useMounted();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -37,26 +60,49 @@ export function Spotlight() {
   }, []);
 
   useEffect(() => {
+    getImages({}).then(({ data }) => setImages(data.imageUrls));
+  }, []);
+
+  useEffect(() => {
+    if (!searchTerm || searchTerm == "" || !isMounted) return;
+    setToken(undefined);
     setLoading(true);
     const controller = new AbortController();
-    spotlightSearch({ params: { address: searchTerm } })
-      .then(({ data }) => {
-        if (data.subject.label.includes("Wallet")) return setData(data);
-        searchToken({
-          params: {
-            currencyAddress: searchTerm,
-          },
-        })
-          .then(({ data }) => {
-            setData(data);
-          })
-          .finally(() => setLoading(false));
+    spotlightSearch({
+      params: { address: searchTerm },
+      signal: controller.signal,
+    }).then(({ data }) => {
+      if (data?.subject?.label?.includes("Wallet")) {
+        setLoading(false);
+        return setWallet(data);
+      }
+      searchToken({
+        params: {
+          currencyAddress: searchTerm,
+        },
       })
-      .finally(() => setLoading(false));
+        .then(({ data }) => {
+          setToken(data);
+        })
+        .finally(() => setLoading(false));
+    });
     return () => {
       controller.abort();
     };
   }, [searchTerm]);
+
+  const addToLocalStorage = (address: any) => {
+    if (!address) return;
+    if (typeof window !== "undefined") {
+      const previousSearches = (get("previousSearches") as []) || [];
+      set("previousSearches", [address, ...previousSearches.splice(0, 5)]);
+    }
+  };
+
+  const imageUrl = (address: string): string | undefined => {
+    const temp = images.find((image) => image.token == address);
+    return temp?.imageUrl;
+  };
 
   return (
     <>
@@ -75,15 +121,126 @@ export function Spotlight() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 relative overflow-hidden top-[30%]  md:top-[40%] lg:top-[50%]">
-          <div>
-            <Input
-              placeholder="Search for Wallets, Tokens, NFTs ..."
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-              }}
-            />
-          </div>
+        <DialogContent className="p-0 rounded-md w-[99%] top-[30%] md:top-[40%]">
+          <Input
+            placeholder="Search for Wallets, Tokens, NFTs ..."
+            className="focus-visible:ring-0 h-12 rounded-b-none"
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+          />
+          {token ? (
+            <ScrollArea className="max-h-80 md:max-h-96 w-full px-3">
+              <ScrollBar orientation="horizontal" />
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Token</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Change</TableHead>
+                    <TableHead>Liquidity</TableHead>
+                    <TableHead>Volume</TableHead>
+                    <TableHead>Dex</TableHead>
+                    <TableHead>Age</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {token.data.map((item) => (
+                    <TableRow
+                      key={item.id}
+                      onClick={() => {
+                        addToLocalStorage(item);
+                        // (
+                        //   document.getElementById("search-modal")! as any
+                        // ).close();
+                        // router.push(
+                        //   `/token/${
+                        //     item.relationships.base_token.data.id.split(
+                        //       "_"
+                        //     )[0]
+                        //   }/${
+                        //     item.relationships.base_token.data.id.split(
+                        //       "_"
+                        //     )[1]
+                        //   }`
+                        // );
+                        // setForm({ ...form, address: "" });
+                      }}
+                    >
+                      <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
+                        <div className="w-10 h-10">
+                          {imageUrl(
+                            item.relationships.base_token.data.id.split("_")[1]
+                          ) &&
+                            images && (
+                              <Image
+                                width={40}
+                                height={40}
+                                src={
+                                  imageUrl(
+                                    item.relationships.base_token.data.id.split(
+                                      "_"
+                                    )[1]
+                                  )!
+                                }
+                                alt=""
+                              />
+                            )}
+                        </div>
+                        <div className="flex flex-col items-start justify-center gap-1">
+                          <div className="whitespace-nowrap">
+                            {truncate(item.attributes.name, 15)}
+                          </div>
+                          <div>{minifyContract(item.attributes.address)}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {PriceFormatter({
+                          value: +item.attributes.base_token_price_usd,
+                        })}
+                      </TableCell>
+                      <TableCell>
+                        {item.attributes.price_change_percentage.h24}%
+                      </TableCell>
+                      <TableCell>
+                        {PriceFormatter({
+                          value: parseInt(
+                            item.attributes.reserve_in_usd
+                          ).toFixed(2),
+                        })}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {PriceFormatter({
+                          value: parseInt(
+                            item.attributes.volume_usd.h24
+                          ).toFixed(2),
+                          dollarSign: true,
+                        })}
+                      </TableCell>
+                      <TableCell>{item.relationships.dex.data.type}</TableCell>
+                      <TableCell>
+                        {formatDate(
+                          convertIsoToDate(item.attributes.pool_created_at)
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          ) : (
+            <div className="mb-4">
+              {loading ? (
+                <div className="flex items-center justify-center ">
+                  <Loading width={50} height={50} />
+                </div>
+              ) : (
+                <p className="text-muted-foreground opacity-40 flex items-center justify-center">
+                  Start typing to search
+                </p>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
