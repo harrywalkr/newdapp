@@ -1,6 +1,6 @@
 import { req, res } from "@/types/http.type";
-import axiosInstance from "../axios.config";
-import { SpotlightSearchType } from "@/types/features/spotlight.type";
+import axiosInstance from "./axios.config";
+import { SpotlightSearchType } from "@/types/spotlight.type";
 import { AxiosRequestConfig } from "axios";
 
 export const spotlightSearch = (

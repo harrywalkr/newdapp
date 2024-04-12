@@ -22,10 +22,10 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { spotlightSearch } from "@/http/features/spotlight.http";
+import { spotlightSearch } from "@/http/spotlight.http";
 import { searchToken } from "@/http/token.http";
 import { useEffect, useState } from "react";
-import { SpotlightSearchType } from "@/types/features/spotlight.type";
+import { SpotlightSearchType } from "@/types/spotlight.type";
 import { Token } from "@/types/token.type";
 import { get, set } from "local-storage";
 import { ImageType } from "@/types/Image.type";
@@ -79,7 +79,7 @@ export function Spotlight() {
     setWallet(undefined);
     const controller = new AbortController();
     spotlightSearch({
-      params: { address: searchTerm },
+      params: { address: searchTerm, chain: 'ETH' }, //FIXME: chain/network must be coming from global state. Fix it when react query/zustand/network-selector is working
       signal: controller.signal,
     }).then(({ data }) => {
       if (data?.subject?.label?.includes("Wallet")) {

@@ -28,6 +28,8 @@ import Link from "next/link";
 import { minifyContract } from "@/utils/truncate";
 import { Button } from "@/components/ui/button";
 import Copy from "@/components/ui/copy";
+import { BiFilterAlt } from "react-icons/bi";
+
 
 
 export default function Tokens() {
@@ -57,7 +59,13 @@ export default function Tokens() {
         </SectionDescription>
       </SectionHeader>
       <SectionContent>
-        <div className=" w-full">
+        <Button variant="secondary" className="mb-5 flex items-center justify-center gap-2">
+          <BiFilterAlt />
+          <span>
+            Filters
+          </span>
+        </Button>
+        <div className="w-full">
           {trends && (
             <Swiper
               onSlideChange={(swiper) => setActivePageIndex(swiper.activeIndex)}
@@ -112,7 +120,7 @@ export default function Tokens() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                   {trends.data.slice(3, 6).map((data: any, id: number) => (
                     <Card key={id} className="w-full">
-                 <CardContent className="pt-6">
+                      <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
                             width={52}
@@ -151,7 +159,7 @@ export default function Tokens() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                   {trends.data.slice(6, 9).map((data: any, id: number) => (
                     <Card key={id} className="w-full">
-                    <CardContent className="pt-6">
+                      <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
                             width={52}

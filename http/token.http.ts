@@ -1,5 +1,5 @@
 import { req, res } from "@/types/http.type";
-import { SpotlightSearchType } from "@/types/features/spotlight.type";
+import { SpotlightSearchType } from "@/types/spotlight.type";
 import { Token } from "@/types/token.type";
 import axiosInstance from "./axios.config";
 import { AxiosRequestConfig } from "axios";
