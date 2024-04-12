@@ -74,7 +74,7 @@ export default function Tokens() {
                   {trends.data.slice(0, 3).map((data: any, id: number) => (
                     <Card key={id} className="w-full">
                       <CardContent className="pt-6">
-                        <div className="header relative flex items-center justify-start gap-6">
+                        <div className="header relative flex items-start justify-start gap-6">
                           <Image
                             width={52}
                             height={52}
@@ -86,17 +86,23 @@ export default function Tokens() {
                               height: '100%'
                             }}
                           />
-                          <div className="token flex flex-col items-start justify-start gap-2">
-                            <Link
-                              href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
-                              className="font-medium text-lg link"
-                            >
-                              {minifyContract(data.name)}
-                            </Link>
-                            <Copy text={minifyContract(data.address)} />
+                          <div className="content flex flex-col items-start justify-between h-28 ">
+                            <div className="token flex flex-col items-start justify-start gap-2">
+                              <Link
+                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                className="font-medium text-lg link"
+                              >
+                                {minifyContract(data.name)}
+                              </Link>
+                              <Copy text={minifyContract(data.address)} />
+                            </div>
+                            <div className="flex items-center justify-center gap-5">
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                            </div>
                           </div>
                         </div>
-                        <div className="content"></div>
                       </CardContent>
                     </Card>
                   ))}
@@ -106,28 +112,75 @@ export default function Tokens() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                   {trends.data.slice(3, 6).map((data: any, id: number) => (
                     <Card key={id} className="w-full">
-                      <CardContent className="pt-6">
-                        <div className="header flex items-start justify-start gap-6">
+                 <CardContent className="pt-6">
+                        <div className="header relative flex items-start justify-start gap-6">
                           <Image
-                            width={50}
-                            height={50}
+                            width={52}
+                            height={52}
                             src={data.logo_url}
                             alt="token logo"
                             style={{
                               opacity: data.logo_url ? 1 : 0.3,
+
+                              height: '100%'
                             }}
                           />
-                          <div className="token flex flex-col items-start justify-start gap-2">
-                            <Link
-                              href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
-                              className="font-medium text-lg link"
-                            >
-                              {minifyContract(data.name)}
-                            </Link>
-                            <Copy text={minifyContract(data.address)} />
+                          <div className="content flex flex-col items-start justify-between h-28 ">
+                            <div className="token flex flex-col items-start justify-start gap-2">
+                              <Link
+                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                className="font-medium text-lg link"
+                              >
+                                {minifyContract(data.name)}
+                              </Link>
+                              <Copy text={minifyContract(data.address)} />
+                            </div>
+                            <div className="flex items-center justify-center gap-5">
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                            </div>
                           </div>
                         </div>
-                        <div className="content"></div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </SwiperSlide>
+              <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  {trends.data.slice(6, 9).map((data: any, id: number) => (
+                    <Card key={id} className="w-full">
+                    <CardContent className="pt-6">
+                        <div className="header relative flex items-start justify-start gap-6">
+                          <Image
+                            width={52}
+                            height={52}
+                            src={data.logo_url}
+                            alt="token logo"
+                            style={{
+                              opacity: data.logo_url ? 1 : 0.3,
+
+                              height: '100%'
+                            }}
+                          />
+                          <div className="content flex flex-col items-start justify-between h-28 ">
+                            <div className="token flex flex-col items-start justify-start gap-2">
+                              <Link
+                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                className="font-medium text-lg link"
+                              >
+                                {minifyContract(data.name)}
+                              </Link>
+                              <Copy text={minifyContract(data.address)} />
+                            </div>
+                            <div className="flex items-center justify-center gap-5">
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                              <p className="text-muted-foreground">more detail</p>
+                            </div>
+                          </div>
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
