@@ -11,7 +11,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
     <header
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 px-5 py-5 bg-background flex flex-col items-center justify-center gap-4 flex-shrink-0 flex-grow",
+        "fixed top-0 right-0 left-0 max-w-screen-2xl mx-auto z-50 px-5 py-5 bg-background flex flex-col items-center justify-center gap-4 flex-shrink-0 flex-grow",
         className
       )}
     >

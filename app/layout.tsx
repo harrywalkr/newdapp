@@ -19,10 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(
+        inter.className,
+        'relative max-w-screen-2xl mx-auto'
+      )}>
         <Providers>
           <Header />
-          <main className="mt-32 md:mt-36 lg:mt-40">
+          <main className="mt-32 md:mt-36 lg:mt-40 ">
             {children}
           </main>
         </Providers>
