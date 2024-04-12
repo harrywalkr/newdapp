@@ -62,27 +62,27 @@ export default function Wallet({ initTopWallets }: Prop) {
   const handlePrev = () => setPage((prev) => prev - 1);
 
   useEffect(() => {
-    let cloneFiltered: Wallet[] = [...wallets];
+    let cloneFiltered: WalletType[] = [...wallets];
     Object.keys(filters).forEach((item: string) => {
       if (item === "rank" && filters.rank.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             +i.rank >= filters.rank.value[0]! &&
             +i.rank <= filters.rank.value[1]!
         );
       } else if (item === "label" && filters.label.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) => i.buyAmountLabel === filters.label.value
+          (i: WalletType) => i.buyAmountLabel === filters.label.value
         );
       } else if (item === "pnl" && filters.pnl.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             +i.netProfit.toFixed(2) >= filters.pnl.value[0]! &&
             +i.netProfit.toFixed(2) <= filters.pnl.value[1]!
         );
       } else if (item === "winRate" && filters.winRate.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             Math.ceil(i.winRate / 10) >= filters.winRate.value[0]! &&
             Math.ceil(i.winRate / 10) <= filters.winRate.value[1]!
         );
@@ -91,7 +91,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         filters.dayActive.value !== undefined
       ) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             i.dayActive >= filters.dayActive.value[0]! &&
             i.dayActive <= filters.dayActive.value[1]!
         );
@@ -99,7 +99,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         item === "avgHoldingTime" &&
         filters.avgHoldingTime.value !== undefined
       ) {
-        cloneFiltered = cloneFiltered.filter((i: Wallet) => {
+        cloneFiltered = cloneFiltered.filter((i: WalletType) => {
           if (!i.avgHoldingTime) return true;
           return (
             +i.avgHoldingTime?.toFixed() >= filters.avgHoldingTime.value[0]! &&
@@ -120,17 +120,17 @@ export default function Wallet({ initTopWallets }: Prop) {
         filters.totalScore.value !== undefined
       ) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             i.totalScore >= filters.totalScore.value[0]! &&
             i.totalScore <= filters.totalScore.value[1]!
         );
       } else if (item === "age" && filters.age.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: Wallet) =>
+          (i: WalletType) =>
             i.age >= filters.age.value[0]! && i.age <= filters.age.value[1]!
         );
       } else if (item === "TotalFee" && filters.TotalFee.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter((i: Wallet) => {
+        cloneFiltered = cloneFiltered.filter((i: WalletType) => {
           return (
             +i.TotalFee?.toFixed() >= filters.TotalFee.value[0]! &&
             +i.TotalFee?.toFixed() <= filters.TotalFee.value[1]!
@@ -165,7 +165,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         setFiltered(cloneFiltered);
         break;
       case "SwapTime":
-        cloneFiltered = cloneFiltered.sort((a: Wallet, b: Wallet) => {
+        cloneFiltered = cloneFiltered.sort((a: WalletType, b: WalletType) => {
           if (sort[key] === true) {
             updateSort(key, false);
             if (!b.SwapTime[0] || !a.SwapTime[0]) return 0;
@@ -268,7 +268,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         </SectionDescription>
       </SectionHeader>
       <SectionContent variant={'vertical'}>
-        
+
         <TopWalletsFilter
           layout={layout}
           setLayout={setLayout}
