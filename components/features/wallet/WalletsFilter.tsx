@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Wallet } from "@/types/Wallet.type";
+import { WalletType } from "@/types/Wallet.type";
 import { FilterType } from "@/types/topwallet.type";
 import { BiFilterAlt } from "react-icons/bi";
 
@@ -18,8 +18,8 @@ interface Prop {
   setLayout: any;
   filters: { [key: string]: FilterType };
   setFilters: (filter: { [key: string]: FilterType }) => void;
-  wallet: Wallet[];
-  onSearch: (wallet: Wallet[]) => void;
+  wallet: WalletType[];
+  onSearch: (wallet: WalletType[]) => void;
 }
 
 export default function WalletsFilter({

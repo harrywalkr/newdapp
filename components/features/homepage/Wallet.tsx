@@ -7,7 +7,7 @@ import {
   SectionDescription,
   SectionContent,
 } from "@/components/layout/Section";
-import { Wallet } from "@/types/Wallet.type";
+import { WalletType } from "@/types/Wallet.type";
 import { useEffect, useState } from "react";
 import TopWalletsFilter from "../wallet/WalletsFilter";
 import { initTopWalletFilters, topWalletFiltersEnum, topWalletLayouts } from "@/types/topwallet.type";
@@ -26,7 +26,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 
 interface Prop {
-  initTopWallets: Wallet[];
+  initTopWallets: WalletType[];
 }
 
 

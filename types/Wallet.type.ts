@@ -1,4 +1,4 @@
-export interface Wallet {
+export interface WalletType {
   walletAddress: string;
   winRate: number;
   netProfit: number;
