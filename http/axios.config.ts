@@ -1,8 +1,4 @@
-import axios, {
-  AxiosInterceptorOptions,
-  AxiosRequestConfig,
-  InternalAxiosRequestConfig,
-} from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
 export const axiosInstance = axios.create({
   // baseURL: "https://api.dextrading.com/api/",
@@ -16,7 +12,6 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Do something before request is sent
-    config.params = { ...config.params, chain: "ETH" };
     return config;
   },
   (err: any) => {

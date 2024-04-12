@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import React from "react";
 import {
@@ -10,8 +12,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useCounterStore } from "@/store";
+
 
 export default function ChainSelector() {
+
+  const incrementAsync = useCounterStore((state) => state.incrementAsync);
+  const decrement = useCounterStore((state) => state.decrement);
+
   return (
     <Drawer>
       <DrawerTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80">
@@ -22,7 +30,7 @@ export default function ChainSelector() {
           <DrawerTitle>Choose Network Chain</DrawerTitle>
         </DrawerHeader>
         <DrawerFooter>
-          <Button variant="secondary">Etherium</Button>
+          <Button onClick={incrementAsync} variant="secondary">Etherium</Button>
           <Button variant="secondary">Bitcoin</Button>
           <Button variant="secondary">chain 2</Button>
           <Button variant="secondary">chain 3</Button>

@@ -86,3 +86,11 @@
 body {
   padding: 1.25rem !important;
 }
+
+.link {
+  color: var(--secondary-foreground);
+  &:hover {
+    color: var(--accent-foreground);
+    text-decoration: underline;
+  }
+}

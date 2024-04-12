@@ -6,7 +6,7 @@ const Section = forwardRef<HTMLDivElement, HTMLAttributes<HTMLTableElement>>(
     <div
       ref={ref}
       className={cn(
-        "relative w-full overflow-auto flex flex-col items-start justify-center gap-6",
+        "relative w-full overflow-auto flex flex-col md:flex-row items-start md:items-center justify-center gap-6 ",
         className
       )}
       {...props}
@@ -21,16 +21,16 @@ const SectionHeader = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <h1
+  <div
     ref={ref}
     className={cn(
-      "flex flex-col md:flex-row items-start justify-center gap-2",
+      "flex flex-col w-full md:w-1/4 md:max-w-96 items-start justify-center gap-2",
       className
     )}
     {...props}
   >
     {props.children}
-  </h1>
+  </div>
 ));
 SectionHeader.displayName = "SectionHeader";
 
@@ -66,7 +66,7 @@ const SectionContent = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("w-full", className)} {...props}>
+  <div ref={ref} className={cn("w-full md:w-3/4", className)} {...props}>
     {props.children}
   </div>
 ));
