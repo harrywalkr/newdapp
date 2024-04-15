@@ -8,14 +8,14 @@ import { getWallets } from "@/http/wallets.http";
 import { ImageEndpoint, ImageType } from "@/types/Image.type";
 
 export default async function Home() {
-  const images: ImageType[] = (await getImages({})).data.imageUrls
-  const initHotPairs = await getAverageRank({});
-  const wallets = await getWallets({});
+  const images: ImageType[] = (await getImages({ cache: 'no-store' })).data.imageUrls
+  const { data: initHotPairs } = await getAverageRank({});
+  const { data: wallets } = await getWallets({});
 
   return (
     <div className="flex flex-col gap-11 md:gap-11 lg:gap-14">
       <Tokens />
-      <Wallet initTopWallets={wallets.data} />
+      <Wallet initTopWallets={wallets} />
       <TableExample />
       {/* <NFT columns={columns} data={payments} /> */}
     </div>
