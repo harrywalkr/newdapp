@@ -12,6 +12,7 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
+      {/* //FIXME: Figure out table selected items */}
       {/* <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.

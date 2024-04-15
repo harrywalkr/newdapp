@@ -9,7 +9,7 @@ import { ImageEndpoint, ImageType } from "@/types/Image.type";
 
 export default async function Home() {
   const images: ImageType[] = (await getImages({
-    // cache: 'no-store'
+    // cache: 'no-store' //FIXME: stop cache for this page
   })).data.imageUrls
   const { data: initHotPairs } = await getAverageRank({});
   const { data: wallets } = await getWallets({});
