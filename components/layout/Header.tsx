@@ -6,6 +6,8 @@ import { Spotlight } from "../features/header/spotlight";
 import ConnectButton from "../features/header/Connnet-wallet";
 import ChainSelector from "../features/header/chain-selector";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { LiaRobotSolid } from "react-icons/lia";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
@@ -16,16 +18,53 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
       )}
     >
       <div className="flex items-center justify-between w-full">
-        <div className="inline-flex items-center justify-center gap-2">
+        <div className="flex md:hidden items-center justify-center gap-2">
           <MobileMenu />
+          <div>
+            <Logo />
+          </div>
+        </div>
+        <div className="flex items-center justify-start gap-20">
+          <ChainSelector />
+          <ul className="hidden md:flex items-center justify-center gap-10 text-muted-foreground">
+            <li>
+              ETH price: $25
+            </li>
+            <li>
+              ETH price: $25
+            </li>
+            <li>
+              ETH price: $25
+            </li>
+          </ul>
+        </div>
+        <ConnectButton />
+        <div className="block md:hidden">
+          <ModeToggle />
+        </div>
+      </div>
+      <div className="w-full flex items-center justify-center relative gap-10">
+        <div className="hidden md:flex " >
           <Logo />
         </div>
-        <ChainSelector />
-        <ConnectButton />
-        <ModeToggle />
-      </div>
-      <div className="w-full relative">
         <Spotlight />
+        <ul className="hidden md:flex items-center justify-center gap-10">
+          <li>Premium</li>
+          <li>Watchlist</li>
+        </ul>
+        <div className="hidden md:flex items-center justify-center gap-6">
+          <div  >
+            <ModeToggle />
+          </div>
+          <div >
+            <Button
+              variant="secondary"
+              size="icon"
+            >
+              <LiaRobotSolid className="text-2xl" />
+            </Button>
+          </div>
+        </div>
       </div>
     </header>
   );

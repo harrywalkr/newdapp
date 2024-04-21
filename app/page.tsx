@@ -15,7 +15,7 @@ export default async function Home() {
   const { data: wallets } = await getWallets({});
 
   return (
-    <div className="flex flex-col gap-11 md:gap-11 lg:gap-14">
+    <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-14">
       <Tokens />
       <Wallet initTopWallets={wallets} />
       <TableExample />

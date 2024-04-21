@@ -22,8 +22,9 @@ export default function ChainSelector() {
 
   return (
     <Drawer>
-      <DrawerTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80">
+      <DrawerTrigger className="flex items-end justify-end whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 md:h-10 lg:h-11 px-4 md:px-6 lg:px-8 py-2 md:py-3 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80">
         chain: ETH
+        
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>

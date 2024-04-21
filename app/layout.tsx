@@ -1,3 +1,4 @@
+import 'normalize.css/normalize.css';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
@@ -21,11 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(
         inter.className,
-        'relative max-w-screen-2xl mx-auto'
+        'relative w-full'
       )}>
         <Providers>
-          <Header />
-          <main className="mt-32 md:mt-36 lg:mt-40 ">
+          <main className="mt-32 md:mt-36 lg:mt-40 max-w-screen-2xl !mx-auto">
+            <Header />
             {children}
           </main>
         </Providers>

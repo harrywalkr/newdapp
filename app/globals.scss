@@ -59,6 +59,7 @@
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
+    // --muted: 231 10% 13%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 217.2 32.6% 17.5%;
@@ -93,4 +94,13 @@ body {
     color: var(--accent-foreground);
     text-decoration: underline;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+span {
+  // FIXME: add media query to change text size to be larger on bigger displays or do this using tailwind if possible
 }

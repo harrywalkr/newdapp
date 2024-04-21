@@ -13,7 +13,7 @@ export default function MobileMenu() {
   return (
     <Sheet>
       <SheetTrigger>
-        <TbMenu2 className="text-secondary-foreground" size={25} />
+        <TbMenu2 className="text-secondary-foreground md:hidden" size={25} />
       </SheetTrigger>
       <SheetContent side={"left"}>
         <SheetHeader>
@@ -21,6 +21,7 @@ export default function MobileMenu() {
             <ul className="mt-3 flex flex-col items-start justify-center gap-3 text-base font-normal">
               <li>About us</li>
               <li>Academy</li>
+              <li>Telegram robots</li>
             </ul>
           </SheetTitle>
         </SheetHeader>
