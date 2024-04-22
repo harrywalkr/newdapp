@@ -39,6 +39,7 @@ import formatDate, { convertIsoToDate } from "@/utils/date";
 import Loading from "@/components/common/Loading";
 import { IoWalletOutline } from "react-icons/io5";
 import { useDebouncedCallback } from "use-debounce";
+import { useRouter } from "@/utils/router-events";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -48,6 +49,7 @@ export function Spotlight() {
   const [token, setToken] = useState<Token>();
   const [images, setImages] = useState<ImageType[]>([]);
   const isMounted = useMounted();
+  const router = useRouter()
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -180,9 +182,10 @@ export function Spotlight() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {token.data.map((item) => (
+                      {token.data && token.data.map((item) => (
                         <TableRow
                           key={item.id}
+                          className="cursor-pointer"
                           onClick={() => {
                             addToLocalStorage(item);
                             // (
@@ -199,12 +202,19 @@ export function Spotlight() {
                             //     )[1]
                             //   }`
                             // );
-                            // setForm({ ...form, address: "" });
+                            // setForm({ ...form, address: "" }); 
+                            // FIXME: fix route handler
+                            // FIXME: fix history
+                            // FIXME: add navigation/router href abstraction as well
+                            if (item?.relationships?.base_token?.data?.id) {
+                              router.push(`/token/${item.relationships.base_token.data.id.split("_")[1]}`)
+                              setOpen(!open)
+                            }
                           }}
                         >
                           <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
                             <div className="w-10 h-10">
-                              {imageUrl(
+                              {item.relationships?.base_token?.data?.id && imageUrl(
                                 item.relationships.base_token.data.id.split(
                                   "_"
                                 )[1]
@@ -226,30 +236,33 @@ export function Spotlight() {
                             </div>
                             <div className="flex flex-col items-start justify-center gap-1">
                               <div className="whitespace-nowrap">
-                                {truncate(item.attributes.name, 15)}
+                                {item.attributes?.name && truncate(item.attributes.name, 15)}
                               </div>
                               <div>
-                                {minifyContract(item.attributes.address)}
+                                {item.attributes?.address && minifyContract(item.attributes.address)}
                               </div>
                             </div>
                           </TableCell>
                           <TableCell>
-                            {PriceFormatter({
-                              value: +item.attributes.base_token_price_usd,
-                            })}
+                            {
+                              item?.attributes?.base_token_price_usd &&
+
+                              PriceFormatter({
+                                value: + item.attributes.base_token_price_usd,
+                              })}
                           </TableCell>
                           <TableCell>
-                            {item.attributes.price_change_percentage.h24}%
+                            {item.attributes?.price_change_percentage?.h24 && item.attributes.price_change_percentage.h24}%
                           </TableCell>
                           <TableCell>
-                            {PriceFormatter({
+                            {item.attributes?.reserve_in_usd && PriceFormatter({
                               value: parseInt(
                                 item.attributes.reserve_in_usd
                               ).toFixed(2),
                             })}
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
-                            {PriceFormatter({
+                            {item.attributes?.volume_usd?.h24 && PriceFormatter({
                               value: parseInt(
                                 item.attributes.volume_usd.h24
                               ).toFixed(2),
@@ -257,10 +270,10 @@ export function Spotlight() {
                             })}
                           </TableCell>
                           <TableCell>
-                            {item.relationships.dex.data.type}
+                            {item.relationships?.dex?.data?.type && item.relationships.dex.data.type}
                           </TableCell>
                           <TableCell>
-                            {formatDate(
+                            {item.attributes?.pool_created_at && formatDate(
                               convertIsoToDate(item.attributes.pool_created_at)
                             )}
                           </TableCell>

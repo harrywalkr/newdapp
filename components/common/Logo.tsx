@@ -1,8 +1,18 @@
+'use client'
 import React from "react";
+import { motion } from "framer-motion";
 
 export default function Logo() {
   return (
-    <span className="flex items-center justify-center gap-2">
+    <motion.span
+      whileHover={{  }}
+      whileTap={{
+        // scale: 0.8,
+        // rotate: -90,
+        // borderRadius: "100%"
+        // FIXME: add hover spotlight effect on logo
+      }}
+      className="flex items-center justify-center gap-2">
       <div className="w-8 h-8 md:w-10 md:h-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -44,6 +54,6 @@ export default function Logo() {
         </svg>
       </div>
       <p className="text-accent-foreground text-lg font-semibold md:text-xl lg:text-[1.35rem]">Dextrading</p>
-    </span>
+    </motion.span>
   );
 }

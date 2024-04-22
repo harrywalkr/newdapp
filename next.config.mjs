@@ -6,12 +6,12 @@ const nextConfig = {
     },
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'api.dextrading.com',
-      },
-    ],
+    // remotePatterns: [
+    //   {
+    //     hostname: 'api.dextrading.com',
+    //   },
+    // ], FIXME: next must be updated for this to be supported. old package still depends on this older nextjs
+    domains: ['api.dextrading.com'],
   },
 };
 

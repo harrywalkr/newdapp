@@ -24,11 +24,11 @@ import { getTrends } from "@/http/trends.http";
 import { useCounterStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import Link from "next/link";
 import { minifyContract } from "@/utils/truncate";
 import { Button } from "@/components/ui/button";
 import Copy from "@/components/ui/copy";
 import { BiFilterAlt } from "react-icons/bi";
+import { Link } from "@/utils/router-events";
 
 
 
@@ -82,6 +82,9 @@ export default function Tokens() {
                   {trends.data.slice(0, 3).map((data: any, id: number) => (
                     <Card key={id} className="w-full">
                       <CardContent className="pt-6">
+                        {/* <Link href={`/token/${data?.relationships?.base_token?.data?.id?.split("_")[1]}
+                        ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
+                        `}*/}
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
                             width={52}
@@ -97,7 +100,10 @@ export default function Tokens() {
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
-                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                href={`/monitoring/${data?.relationships?.base_token?.data?.id?.split("_")[1]}
+                                ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
+                                `}  //FIXME: extend next/link to take searchparams and params without this mess :|
+                                //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
                                 className="font-medium text-lg link"
                               >
                                 {minifyContract(data.name)}
@@ -218,10 +224,11 @@ export default function Tokens() {
                     {activePageIndex == 0 && "next"}
                   </div>
                 </div> */}
-            </Swiper>
-          )}
-        </div>
-      </SectionContent>
-    </Section>
+            </Swiper >
+          )
+          }
+        </div >
+      </SectionContent >
+    </Section >
   );
 }

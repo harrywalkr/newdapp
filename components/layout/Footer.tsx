@@ -8,22 +8,21 @@ import ChainSelector from "../features/header/chain-selector";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { LiaRobotSolid } from "react-icons/lia";
-import Link from "@/utils/Link";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
     <header
       className={cn(
-        "fixed top-0 right-0 left-0 max-w-screen-2xl mx-auto z-40 px-5 2xl:px-0 py-5 bg-background flex flex-col items-center justify-center gap-4 flex-shrink-0 flex-grow",
+        "fixed top-0 right-0 left-0 max-w-screen-2xl mx-auto z-50 px-5 2xl:px-0 py-5 bg-background flex flex-col items-center justify-center gap-4 flex-shrink-0 flex-grow",
         className
       )}
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex md:hidden items-center justify-center gap-2">
           <MobileMenu />
-          <Link href={{ url: ['/'] }}>
+          <div>
             <Logo />
-          </Link>
+          </div>
         </div>
         <div className="flex items-center justify-start gap-20">
           <ChainSelector />
@@ -45,9 +44,9 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
-        <Link className="hidden md:flex" href={{ url: ['/'] }}>
+        <div className="hidden md:flex " >
           <Logo />
-        </Link>
+        </div>
         <Spotlight />
         <ul className="hidden md:flex items-center justify-center gap-10">
           <li>Premium</li>
@@ -67,6 +66,6 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           </div>
         </div>
       </div>
-    </header >
+    </header>
   );
 }
