@@ -1,17 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+
 import { getToken, searchToken } from "@/http/token.http";
 import { Metadata } from "next";
 import Image from "next/image";
 import { getLogo } from "@/http/image.http";
 import TokenOverview from "@/components/features/token/token-overview";
+import TokenDetail from "@/components/features/token/token-detail";
 
 interface Props {
     params: params
@@ -70,22 +63,7 @@ export default async function Token({ params }: Props) {
     return (
         <div className="flex flex-col gap-6 items-center justify-center w-full" >
             <TokenOverview token={searchedToken} logo={logo} />
-            <Card className="w-full">
-                <CardContent className="mt-5">
-                    <Tabs defaultValue="account" >
-                        <TabsList>
-                            <TabsTrigger value="account">Summary</TabsTrigger>
-                            <TabsTrigger value="password">Markets</TabsTrigger>
-                            <TabsTrigger value="password">Scoring</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="account">Token summary is here</TabsContent>
-                        <TabsContent value="password">Find out more about token markets</TabsContent>
-                        <TabsContent value="password">Token scoring and vuln</TabsContent>
-                    </Tabs>
-                </CardContent>
-
-            </Card>
-
+            <TokenDetail />
         </div >
 
     )
