@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
-import Link from '@/utils/Link'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 export default function notFound() {
@@ -25,7 +25,7 @@ export default function notFound() {
             </p>
             <div className='flex items-center justify-center gap-5'>
                 <Button>
-                    <Link href={{ url: ['/home'] }}>Homepage</Link>
+                    <Link href='/'>Homepage</Link>
                 </Button>
                 <a href="mailto:Info@dextrading.com">
                     Contact us

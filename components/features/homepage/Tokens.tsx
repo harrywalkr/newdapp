@@ -28,11 +28,11 @@ import { minifyContract } from "@/utils/truncate";
 import { Button } from "@/components/ui/button";
 import Copy from "@/components/ui/copy";
 import { BiFilterAlt } from "react-icons/bi";
-import { Link } from "@/utils/router-events";
+import Link from "next/link";
 
 
 
-export default function Tokens() {
+export default function Tokens() { // FIXME: this component must include trending, top and hot tokens all
   const [activePageIndex, setActivePageIndex] = useState<number>(0);
   const count = useCounterStore((state) => state.count);
 
@@ -47,7 +47,6 @@ export default function Tokens() {
       queryFn: () => getTrends({}).then(({ data }) => data),
     }
   )
-
 
   return (
     <Section>
@@ -66,7 +65,7 @@ export default function Tokens() {
           </span>
         </Button>
         <div className="w-full">
-          {trends && (
+          {trends && !isLoading ? (
             <Swiper
               onSlideChange={(swiper) => setActivePageIndex(swiper.activeIndex)}
               navigation={{
@@ -225,7 +224,13 @@ export default function Tokens() {
                   </div>
                 </div> */}
             </Swiper >
-          )
+          ) : <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {Array(3).fill(true).map((data: any, id: number) => (
+              <Card key={id} className="w-full h-40 relative  overflow-hidden">
+                <div className="pt-6 skeleton"/>
+              </Card>
+            ))}
+          </div>
           }
         </div >
       </SectionContent >

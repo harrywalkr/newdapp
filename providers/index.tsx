@@ -3,7 +3,6 @@ import { ThemeProvider } from "./theme.provider";
 import { WagmiiProvider } from "./wagmi.provider";
 import { GlobalContextProvider } from "./context.provider";
 import QueryProvider from "./query.provider";
-import LoadingOverlay from "@/components/layout/loading-overlay";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -14,7 +13,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      {/* <LoadingOverlay /> */}
       <WagmiiProvider>
         <GlobalContextProvider>
           <QueryProvider>

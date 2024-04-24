@@ -39,7 +39,7 @@ import formatDate, { convertIsoToDate } from "@/utils/date";
 import Loading from "@/components/common/Loading";
 import { IoWalletOutline } from "react-icons/io5";
 import { useDebouncedCallback } from "use-debounce";
-import { useRouter } from "@/utils/router-events";
+import { useRouter } from "next/navigation";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);

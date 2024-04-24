@@ -8,7 +8,7 @@ import ChainSelector from "../features/header/chain-selector";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { LiaRobotSolid } from "react-icons/lia";
-import Link from "@/utils/Link";
+import Link from "next/link";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
@@ -21,7 +21,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
       <div className="flex items-center justify-between w-full">
         <div className="flex md:hidden items-center justify-center gap-2">
           <MobileMenu />
-          <Link href={{ url: ['/'] }}>
+          <Link href='/'>
             <Logo />
           </Link>
         </div>
@@ -45,7 +45,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
-        <Link className="hidden md:flex" href={{ url: ['/'] }}>
+        <Link className="hidden md:flex" href='/'>
           <Logo />
         </Link>
         <Spotlight />
