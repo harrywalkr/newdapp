@@ -59,7 +59,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           </div>
           <div >
             <Button
-              variant="secondary"
+              variant="ghost"
               size="icon"
             >
               <LiaRobotSolid className="text-2xl" />

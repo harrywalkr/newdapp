@@ -10,10 +10,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Navigation, Pagination } from "swiper/modules";
@@ -86,8 +82,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                         `}*/}
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
-                            width={52}
-                            height={52}
+                            width={60}
+                            height={60}
+                            className='rounded-full'
                             src={data.logo_url}
                             alt="token logo"
                             style={{
@@ -99,10 +96,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
-                                href={`/monitoring/${data?.relationships?.base_token?.data?.id?.split("_")[1]}
-                                ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
-                                `}  //FIXME: extend next/link to take searchparams and params without this mess :|
+                                //FIXME: extend next/link to take searchparams and params without this mess :|
                                 //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
+                                href={`/monitoring/${data.address}`}
                                 className="font-medium text-lg link"
                               >
                                 {minifyContract(data.name)}
@@ -128,8 +124,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                       <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
-                            width={52}
-                            height={52}
+                            width={60}
+                            height={60}
+                            className='rounded-full'
                             src={data.logo_url}
                             alt="token logo"
                             style={{
@@ -167,8 +164,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                       <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
-                            width={52}
-                            height={52}
+                          width={60}
+                          height={60}
+                          className='rounded-full'
                             src={data.logo_url}
                             alt="token logo"
                             style={{
@@ -227,7 +225,7 @@ export default function Tokens() { // FIXME: this component must include trendin
           ) : <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {Array(3).fill(true).map((data: any, id: number) => (
               <Card key={id} className="w-full h-40 relative  overflow-hidden">
-                <div className="pt-6 skeleton"/>
+                <div className="pt-6 skeleton" />
               </Card>
             ))}
           </div>

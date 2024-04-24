@@ -19,3 +19,13 @@ export const searchToken = (options: AxiosRequestConfig): res<Token> => {
     options
   );
 };
+
+export const getToken = (data: {
+  tokenAddress: string;
+  options: AxiosRequestConfig;
+}): res<Token> => {
+  return axiosInstance.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/token/${data.tokenAddress}`,
+    data.options
+  );
+};
