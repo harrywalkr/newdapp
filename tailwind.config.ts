@@ -52,6 +52,8 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        skeleton: "hsl(var(--skeleton))",
+        brand: "hsl(var(--brand))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -74,7 +76,21 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    ({ addUtilities }: any) => {
+      const utilities = {
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+      };
+      addUtilities(utilities);
+    },
+    require("tailwindcss-animate"),
+  ],
 } satisfies Config;
 
 export default config;

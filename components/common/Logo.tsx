@@ -7,7 +7,7 @@ export default function Logo() {
     <motion.span
       whileHover={{  }}
       whileTap={{
-        // scale: 0.8,
+        scale: 0.9,
         // rotate: -90,
         // borderRadius: "100%"
         // FIXME: add hover spotlight effect on logo

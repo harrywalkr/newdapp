@@ -26,7 +26,7 @@ export default function Copy({ text, value, className }: Props) {
 
     return (
         <div className="relative">
-            <div className="content flex items-center justify-start gap-2" ref={contectRef}>
+            <div className="content flex items-center justify-start gap-1" ref={contectRef}>
                 <span className={clsx(className)}>
                     {text}
                 </span>
@@ -34,7 +34,7 @@ export default function Copy({ text, value, className }: Props) {
 
                     <FiCopy
                         onClick={handleCopyAddress(value ? value : text)}
-                        className="cursor-pointer text-base"
+                        className="cursor-pointer text-sm"
                     />
                 </Button>
             </div>

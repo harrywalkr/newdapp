@@ -9,7 +9,7 @@ export default function ConnectButton() {
 
   return (
     <>
-      <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 lg:h-11 lg:w-auto flex items-center justify-center gap-3 " onClick={() => open()}>
+      <Button variant="secondary" size="icon" className="h-9 w-9 md:h-10 md:w-10 lg:h-11 lg:w-auto flex items-center justify-center gap-3 " onClick={() => open()}>
         <LuWallet className="text-base md:text-lg md:ml-5"/>
         <h3 className="hidden lg:block md:mr-5">
           Connect

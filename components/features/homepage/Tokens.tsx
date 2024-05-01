@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import Copy from "@/components/ui/copy";
 import { BiFilterAlt } from "react-icons/bi";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 
@@ -138,7 +139,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
-                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                //FIXME: extend next/link to take searchparams and params without this mess :|
+                                //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
+                                href={`/monitoring/${data.address}`}
                                 className="font-medium text-lg link"
                               >
                                 {minifyContract(data.name)}
@@ -164,9 +167,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                       <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
                           <Image
-                          width={60}
-                          height={60}
-                          className='rounded-full'
+                            width={60}
+                            height={60}
+                            className='rounded-full'
                             src={data.logo_url}
                             alt="token logo"
                             style={{
@@ -178,7 +181,9 @@ export default function Tokens() { // FIXME: this component must include trendin
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
-                                href={`/token/eth/${data.address}`} //FIXME: network must be coming from gloab state. Fix it when network/chain selector is ready
+                                //FIXME: extend next/link to take searchparams and params without this mess :|
+                                //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
+                                href={`/monitoring/${data.address}`}
                                 className="font-medium text-lg link"
                               >
                                 {minifyContract(data.name)}
@@ -225,7 +230,14 @@ export default function Tokens() { // FIXME: this component must include trendin
           ) : <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {Array(3).fill(true).map((data: any, id: number) => (
               <Card key={id} className="w-full h-40 relative  overflow-hidden">
-                <div className="pt-6 skeleton" />
+                {/* <div className="pt-6 skeleton" /> */}
+                <div className="flex flex-col space-y-3">
+                  <Skeleton className="h-full w-full rounded-xl" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
               </Card>
             ))}
           </div>

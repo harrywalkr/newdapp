@@ -12,12 +12,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ModeToggle() {
+export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
 
+  //FIXME: Use switch component
   return (
     <Button
-      variant="ghost"
+      variant="secondary"
       size="icon"
       onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
     >

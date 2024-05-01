@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from "react";
 import Logo from "../common/Logo";
-import { ModeToggle } from "../features/header/Toggle-theme";
+import { ThemeToggle } from "../features/header/Toggle-theme";
 import MobileMenu from "../features/header/mobile-menu";
 import { Spotlight } from "../features/header/spotlight";
 import ConnectButton from "../features/header/Connnet-wallet";
@@ -41,7 +41,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
         <ConnectButton />
         <div className="block md:hidden">
-          <ModeToggle />
+          <ThemeToggle />
         </div>
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
@@ -55,11 +55,11 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </ul>
         <div className="hidden md:flex items-center justify-center gap-6">
           <div  >
-            <ModeToggle />
+            <ThemeToggle />
           </div>
           <div >
             <Button
-              variant="ghost"
+              variant="secondary"
               size="icon"
             >
               <LiaRobotSolid className="text-2xl" />

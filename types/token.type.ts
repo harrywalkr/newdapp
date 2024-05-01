@@ -1,6 +1,6 @@
 import { Error } from "./error.type";
 
-export interface Token extends Error {
+export interface TokenType extends Error {
   data?: Daum[];
   TokenMedia?: TokenMedia;
   isLowLiquidity?: boolean;
@@ -153,7 +153,19 @@ export interface TokenMedia {
 
 export interface TickersData {
   dex?: Dex2[];
-  cex?: any[];
+  cex?: cex[];
+}
+
+export interface cex {
+  id: number;
+  base?: string;
+  trade_url?: string;
+  target?: string;
+  volume?: number;
+  market?: Market;
+  target_coin_id?: string;
+  last?: string;
+  converted_volume?: ConvertedVolume;
 }
 
 export interface Dex2 {
@@ -161,6 +173,12 @@ export interface Dex2 {
   target_coin_id?: string;
   last?: string;
   converted_volume?: ConvertedVolume;
+  id: number;
+  base?: string;
+  trade_url?: string;
+  target?: string;
+  volume?: number;
+  coin_id?: string;
 }
 
 export interface Market {
@@ -218,6 +236,7 @@ export interface FunctionsCalled {
 
 export interface RenounceOwnership {
   Date?: any;
+  status?: any;
 }
 
 export interface ExtraFunction {

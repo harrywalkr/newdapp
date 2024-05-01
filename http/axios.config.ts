@@ -12,6 +12,7 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Do something before request is sent
+    console.log('axios req url is : ',config.url)
     return config;
   },
   (err: any) => {
@@ -32,7 +33,6 @@ axios.interceptors.response.use(
     // Do something with response error
     if (error.code != "ERR_CANCELED") {
       // Do something with the error
-      console.log(error);
     }
     return Promise.reject(error);
   }
