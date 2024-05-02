@@ -18,7 +18,7 @@ export default async function Home() {
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-14">
       <Tokens />
       <Wallet initTopWallets={wallets} />
-      <TableExample />
+      <TableExample initTopWallets={wallets}/>
       {/* <NFT columns={columns} data={payments} /> */}
     </div>
   );

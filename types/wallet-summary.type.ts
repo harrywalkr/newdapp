@@ -1,256 +1,107 @@
 export interface WalletSummaryType {
-  highestProfit: [number, string, string];
-  lowestProfit: [number, string, string];
-  highestLoss: [number, string, string];
-  lowestLoss: [number, string, string];
-  totalProfit: number;
-  totalLoss: number;
-  netProfit: number;
-  totalProfits: TotalProfits;
-  totalBuySellTimes: TotalBuySellTimes;
-  totalBuyAmounts: TotalBuyAmounts;
-  totalSellAmounts: TotalSellAmounts;
-  totalBuyTimes: TotalBuyTimes;
-  totalSellTimes: TotalSellTimes;
-  percentageWeek: PercentageWeek;
-  percentageMonth: PercentageMonth;
-  percentageYear: PercentageYear;
-  averageHoldingTimes: AverageHoldingTimes;
-  totalProfitsPerToken: TotalProfitsPerToken;
-  overallAverageHoldingTimeAndProfit: OverallAverageHoldingTimeAndProfit;
-  mostProfitableTokenWithShortestOpeningTime: MostProfitableTokenWithShortestOpeningTime;
-  swapTimeResults: SwapTimeResults;
-  avgHoldingTime: string;
-  avgProfit: number;
-  avgBuyAmount: number;
-  holdingTimeLabel: string;
-  profitLabel: string;
-  buyAmountLabel: string;
-  holdingTimeScore: number;
-  profitScore: number;
-  sizeScore: number;
-  totalScore: number;
-  winRate: string;
-  totalProfitableSwaps: number;
-  totalNegativeSwaps: number;
-  totalPositions: number;
-  newestBoughtToken: NewestBoughtToken;
-  newestSoldToken: NewestSoldToken;
-  formattedNewestBoughtToken: FormattedNewestBoughtToken;
-  formattedNewestSoldToken: FormattedNewestSoldToken;
-  transactionMetrics: TransactionMetrics;
-  percentageProfitsPerToken: PercentageProfitsPerToken;
-  totalWithdraw: number;
-  totalDeposit: number;
-  sendTokens: SendTokens;
-  sentHistory: SentHistory[];
-  WithdrawDuration: string;
-  receiveTokens: ReceiveTokens;
-  receiveHistory: ReceiveHistory[];
-  DepositDuration: string;
-  totalNotClosedBalance: number;
-  totalPartiallyClosed: number;
-  CurrentBalance: number;
-  totalNumofPartiallyClosed: TotalNumofPartiallyClosed;
-  totalNumofFullyOpenedData: TotalNumofFullyOpenedData;
-  totalNumTransactionsData: TotalNumTransactionsData;
-  Interaction: Interaction;
-  SwapTime: string[];
-  BotActivity: string;
-  details: 'string';
-  HotTokenHolders: HotTokenHolder[];
-  Top20HotTokenHolders: any[];
-  TotalFee: number;
-  DextraderScore: number;
-  averagePercentageyearly: number;
-  labelTrader: 'Day Trader' | 'Night Trader';
-  timestamp: number;
+  highestProfit?: [number, string, string];
+  lowestProfit?: [number, string, string];
+  highestLoss?: [number, string, string];
+  lowestLoss?: [number, string, string];
+  totalProfit?: number;
+  totalLoss?: number;
+  netProfit?: number;
+  averagePercentageProfit?: number;
+  totalProfits?: TotalProfits;
+  totalBuySellTimes?: TotalBuySellTimes;
+  totalBuyAmounts?: TotalBuyAmounts;
+  totalSellAmounts?: TotalSellAmounts;
+  totalBuyTimes?: TotalBuyTimes;
+  totalSellTimes?: TotalSellTimes;
+  percentageWeek?: { [key: string]: number };
+  percentageMonth?: { [key: string]: number };
+  percentageYear?: PercentageYear;
+  averageHoldingTimes?: AverageHoldingTimes;
+  totalProfitsPerToken?: TotalProfitsPerToken;
+  overallAverageHoldingTimeAndProfit?: OverallAverageHoldingTimeAndProfit;
+  mostProfitableTokenWithShortestOpeningTime?: MostProfitableTokenWithShortestOpeningTime;
+  swapTimeResults?: SwapTimeResults;
+  avgHoldingTime?: string;
+  avgProfit?: number;
+  avgBuyAmount?: number;
+  holdingTimeLabel?: string;
+  profitLabel?: string;
+  buyAmountLabel?: string;
+  holdingTimeScore?: number;
+  profitScore?: number;
+  sizeScore?: number;
+  totalScore?: number;
+  winRate?: string;
+  totalProfitableSwaps?: number;
+  totalNegativeSwaps?: number;
+  totalPositions?: number;
+  newestBoughtToken?: NewestBoughtToken;
+  newestSoldToken?: NewestSoldToken;
+  formattedNewestBoughtToken?: FormattedNewestBoughtToken;
+  formattedNewestSoldToken?: FormattedNewestSoldToken;
+  transactionMetrics?: TransactionMetrics;
+  percentageProfitsPerToken?: PercentageProfitsPerToken;
+  totalWithdraw?: number;
+  totalDeposit?: number;
+  sendTokens?: SendTokens;
+  sentHistory?: SentHistory[];
+  WithdrawDuration?: string;
+  receiveTokens?: ReceiveTokens;
+  receiveHistory?: ReceiveHistory[];
+  DepositDuration?: string;
+  totalNotClosedBalance?: number;
+  totalPartiallyClosed?: number;
+  CurrentBalance?: number;
+  totalNumofPartiallyClosed?: TotalNumofPartiallyClosed;
+  totalNumofFullyOpenedData?: TotalNumofFullyOpenedData;
+  totalNumTransactionsData?: TotalNumTransactionsData;
+  Interaction?: Interaction;
+  SwapTime?: string[];
+  BotActivity?: string;
+  details?: "Dex Trader" | "Not Dex Trader";
+  HotTokenHolders?: HotTokenHolder[];
+  Top20HotTokenHolders?: any[];
+  TotalFee?: number;
+  DextraderScore?: number[];
+  averagePercentageyearly?: number;
+  labelTrader?: "Day Trader" | "Night Trader";
+  timestamp?: number;
 }
 
 export interface TotalProfits {
-  month: Month;
-  week: Week;
-  year: Year;
-}
-
-export interface Month {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year {
-  "2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface TotalBuySellTimes {
-  month: Month2;
-  week: Week2;
-  year: Year2;
-}
-
-export interface Month2 {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week2 {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year2 {
-  "2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface TotalBuyAmounts {
-  month: Month3;
-  week: Week3;
-  year: Year3;
-}
-
-export interface Month3 {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week3 {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year3 {
-  "2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface TotalSellAmounts {
-  month: Month4;
-  week: Week4;
-  year: Year4;
-}
-
-export interface Month4 {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week4 {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year4 {
-  "2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface TotalBuyTimes {
-  month: Month5;
-  week: Week5;
-  year: Year5;
-}
-
-export interface Month5 {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week5 {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year5 {
-  "2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface TotalSellTimes {
-  month: Month6;
-  week: Week6;
-  year: Year6;
-}
-
-export interface Month6 {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
-}
-
-export interface Week6 {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface Year6 {
-  "2023": number;
-}
-
-export interface PercentageWeek {
-  "March 2023 week 1": number;
-  "July 2023 week 4": number;
-  "October 2023 week 1": number;
-  "July 2023 week 1": number;
-  "February 2023 week 1": number;
-  "March 2023 week 2": number;
-  "January 2023 week 1": number;
-}
-
-export interface PercentageMonth {
-  "March 2023": number;
-  "July 2023": number;
-  "October 2023": number;
-  "February 2023": number;
-  "January 2023": number;
+  month: { [key: string]: number };
+  week: { [key: string]: number };
+  year: { [key: string]: number };
 }
 
 export interface PercentageYear {

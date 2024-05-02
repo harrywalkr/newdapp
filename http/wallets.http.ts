@@ -6,6 +6,7 @@ import { WalletSummaryType } from "@/types/wallet-summary.type";
 import { WalletStatType } from "@/types/wallet-stat.type";
 import formatDate, { getPastDate } from "@/utils/date";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
+import { SwapType } from "@/types/swap.type";
 
 export const getWallets = (options: AxiosRequestConfig): res<WalletType[]> => {
   return axiosInstance.get(
@@ -29,6 +30,15 @@ export const getWalletStat = (
 ): res<WalletStatType> => {
   return axiosInstance.get(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/addressStats`,
+    options
+  );
+};
+
+export const getWalletSwaps = (
+  options: AxiosRequestConfig
+): res<SwapType> => {
+  return axiosInstance.get(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/api/swaps`,
     options
   );
 };

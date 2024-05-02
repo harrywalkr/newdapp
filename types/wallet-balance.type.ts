@@ -1,20 +1,20 @@
 export interface WalletBalanceType {
-  balances: Balance[];
-  totalBalance: TotalBalance;
+  balances?: Balance[];
+  totalBalance?: TotalBalance;
 }
 
 export interface Balance {
-  value: number;
-  currency: Currency;
-  tokenPrice: any;
+  value?: number;
+  currency?: Currency;
+  tokenPrice?: any;
   totalReserveInUSD?: string;
   valueInUsd?: number;
 }
 
 export interface Currency {
-  symbol: string;
-  tokenType: string;
-  address: string;
+  symbol?: string;
+  tokenType?: string;
+  address?: string;
 }
 
 export interface TotalBalance {

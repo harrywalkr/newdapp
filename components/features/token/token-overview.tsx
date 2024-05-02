@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import Copy from '@/components/ui/copy'
 import { ImageType } from '@/types/Image.type'
-import { Token } from '@/types/token.type'
+import { TokenType } from '@/types/token.type'
 import { formatCash } from '@/utils/numbers'
 import { minifyContract, minifyTokenName } from '@/utils/truncate'
 import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
@@ -15,12 +15,13 @@ import { RiTwitterXFill } from 'react-icons/ri'
 
 
 interface Props {
-    token: Token,
+    token: TokenType,
     logo: ImageType,
     tokenAddress: string
 }
 
 // FIXME: Add hover card tooltip for more info and redirect to blog
+// FIXME: Use KeyValue component
 
 export default function TokenOverview({ token, logo }: Props) {
     return (

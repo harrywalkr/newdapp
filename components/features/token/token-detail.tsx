@@ -4,17 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FaRankingStar } from 'react-icons/fa6'
 import { MdChecklist } from 'react-icons/md'
 import { RiExchangeDollarFill } from 'react-icons/ri'
-import Chart from './chart'
 import { TokenType } from '@/types/token.type'
 import { ImageType } from '@/types/Image.type'
-import clsx from 'clsx'
-import TradeReport from './trade-report'
 import CentralizedExchange from './CentralizedExchange'
 import DecentralizedExchange from './DecentralizedExchange'
 import TokenSummary from './TokenSummary'
-import DoughnutChart from './Doughnut'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
-import { ScrollBar } from '@/components/ui/scroll-area'
+import DoughnutChart from '../../ui/Doughnut'
 import { IoShieldHalfOutline } from 'react-icons/io5'
 import ContractSecurity from './ContractSecurity'
 
@@ -62,7 +57,8 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
             <div className='grid grid-cols-2 gap-1'>
               {
                 token?.ScoreData?.score1 != undefined &&
-                < DoughnutChart title='overall'
+                < DoughnutChart
+                  title='Overall'
                   tooltip="The Entry Point Score indicates the suitability of buying the token based on technical analysis.
                   The score ranges from 0 to 400, where 0 implies that it is not in a good condition for buying,
                   and 400 means it is highly favorable for purchase!"
@@ -71,21 +67,24 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
               }
               {
                 token?.ScoreData?.score2 != undefined &&
-                <DoughnutChart title='Reliability'
+                <DoughnutChart
+                  title='Reliability'
                   tooltip="Reliability Score indicates the risk associated with buying the token. The score ranges from 0 to 400, where 0 implies a high level of risk, and 400 means the token can be considered relatively reliable!"
                   data={[token?.ScoreData?.score2, 400]}
 
                 />}
               {
                 token?.ScoreData?.score3 != undefined &&
-                <DoughnutChart title='Security'
+                <DoughnutChart
+                  title='Security'
                   tooltip="The Token Security Score reflects the safety of the token based on smart contract analysis and age. The score ranges from 0 to 400, where 0 implies it is not safe and can be risky, while 400 indicates a high level of security!"
                   data={[token?.ScoreData?.score3, 400]}
 
                 />}
               {
                 token?.ScoreData?.score4 != undefined &&
-                <DoughnutChart title='Holders'
+                <DoughnutChart
+                  title='Holders'
                   tooltip="The Onchain Analysis Score gauges the suitability of prior onchain engagement, scrutinizing transaction participants and trading acumen. It ranges from 0 (indicating low quality) to 400 (reflecting the highest quality)."
                   data={[token?.ScoreData?.score4, 400]}
                 />}

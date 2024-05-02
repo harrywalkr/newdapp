@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PaymentType } from "./schema";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { WalletType } from "@/types/Wallet.type";
 
 async function getData(): Promise<PaymentType[]> {
   const res = await fetch(
@@ -12,18 +13,13 @@ async function getData(): Promise<PaymentType[]> {
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
-
   return res.json();
 }
 
-export default function TableExample() {
-  const [paymentData, setPaymentData] = useState<PaymentType[]>([]);
-  useEffect(() => {
-    const data = async () => {
-      const result = await getData();
-      setPaymentData(result);
-    };
-    data();
-  }, []);
-  return <DataTable columns={columns} data={paymentData} />;
+interface Props {
+  initTopWallets: WalletType[];
+}
+
+export default function TableExample({initTopWallets}: Props) {
+  return <DataTable columns={columns} data={initTopWallets} />;
 }
