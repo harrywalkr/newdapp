@@ -5,7 +5,7 @@ import { getImages } from '@/http/image.http';
 import { getWalletSwaps } from '@/http/wallets.http';
 import { useQueries } from '@tanstack/react-query';
 import React from 'react'
-import Transaction from './Transaction';
+import TransactionComponent from './Transaction';
 import { SwapType } from '@/types/swap.type';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -77,7 +77,6 @@ export default function WalletTransactions({ dateRange, walletAddress }: Props) 
         </div >)
 
 
-
     return (
         <ScrollArea className="h-96 w-full rounded-md border">
             <ScrollBar orientation="horizontal" />
@@ -86,7 +85,7 @@ export default function WalletTransactions({ dateRange, walletAddress }: Props) 
                 {walletSwapsQuery.data && sortedSwaps(walletSwapsQuery.data as SwapType).map((swap, id) => {
                     if (swap.type === null) return null
                     else return <>
-                        <Transaction
+                        <TransactionComponent
                             key={id}
                             swap={swap}
                             image={swap.type?.includes("swap")
