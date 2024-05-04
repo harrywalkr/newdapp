@@ -26,7 +26,7 @@ import { spotlightSearch } from "@/http/spotlight.http";
 import { searchToken } from "@/http/token.http";
 import { useEffect, useState } from "react";
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { Token } from "@/types/token.type";
+import { TokenType } from "@/types/token.type";
 import { get, set } from "local-storage";
 import { ImageType } from "@/types/Image.type";
 import { getImages } from "@/http/image.http";
@@ -46,7 +46,7 @@ export function Spotlight() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState<SpotlightSearchType>();
-  const [token, setToken] = useState<Token>();
+  const [token, setToken] = useState<TokenType>();
   const [images, setImages] = useState<ImageType[]>([]);
   const isMounted = useMounted();
   const router = useRouter()
