@@ -5,6 +5,7 @@ type TokenChain = {
   id: number;
   name: string;
   symbol: string;
+  // FIXME: add icons
 };
 
 // Define the type for the store's state

@@ -7,7 +7,7 @@ export default function page() {
 
     return (
         <div>
-            <Tab />
+            {/* <Tab /> */}
             <div className="content"></div>
         </div>
     )
