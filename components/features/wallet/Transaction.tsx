@@ -1,6 +1,6 @@
 import Copy from '@/components/ui/copy';
 import { ImageType } from '@/types/Image.type';
-import { Transaction } from '@/types/swap.type';
+import { TransactionType } from '@/types/swap.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import Image from 'next/image';
 import React from 'react'
@@ -13,7 +13,7 @@ dayjs.extend(relativeTime);
 
 
 interface Props {
-    swap: Transaction;
+    swap: TransactionType;
     image?: string,
     isSwap?: boolean
 }

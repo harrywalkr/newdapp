@@ -1,5 +1,5 @@
 export interface SwapType {
-    transactions: Transaction[]
+    transactions: TransactionType[]
     send: Send[]
     receive: Receive[]
     swap: Swap[]
@@ -15,7 +15,7 @@ export interface SwapType {
     timestamp: number
   }
   
-  export interface Transaction {
+  export interface TransactionType {
     type?: string
     sender?: Sender
     receiver?: Receiver
