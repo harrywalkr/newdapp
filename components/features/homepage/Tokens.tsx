@@ -17,7 +17,7 @@ import "swiper/css";
 import { ImageType } from "@/types/Image.type";
 import { useEffect, useState } from "react";
 import { getTrends } from "@/http/trends.http";
-import { useCounterStore } from "@/store";
+import useTokenChainStore from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { minifyContract } from "@/utils/truncate";
@@ -26,12 +26,13 @@ import Copy from "@/components/ui/copy";
 import { BiFilterAlt } from "react-icons/bi";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useStore } from "zustand";
 
 
 
 export default function Tokens() { // FIXME: this component must include trending, top and hot tokens all
   const [activePageIndex, setActivePageIndex] = useState<number>(0);
-  const count = useCounterStore((state) => state.count);
+  const { availableChains, selectedChain, setSelectedChain } = useTokenChainStore();
 
 
   const {

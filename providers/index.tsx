@@ -4,7 +4,7 @@ import { WagmiiProvider } from "./wagmi.provider";
 import { GlobalContextProvider } from "./context.provider";
 import QueryProvider from "./query.provider";
 
-
+//FIXME: implement chain provider. Maybe using thirdWeb (npm)
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider

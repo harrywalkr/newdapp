@@ -3,7 +3,7 @@ import Logo from "../common/Logo";
 import { ThemeToggle } from "../features/header/Toggle-theme";
 import MobileMenu from "../features/header/mobile-menu";
 import { Spotlight } from "../features/header/spotlight";
-import ConnectButton from "../features/header/Connnet-wallet";
+import ConnectWalletButton from "../features/header/Connnet-wallet";
 import ChainSelector from "../features/header/chain-selector";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -39,7 +39,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
             </li>
           </ul>
         </div>
-        <ConnectButton />
+        <ConnectWalletButton />
         <div className="block md:hidden">
           <ThemeToggle />
         </div>
