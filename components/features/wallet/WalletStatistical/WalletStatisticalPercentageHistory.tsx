@@ -1,7 +1,4 @@
-import { minifyContract, minifyTokenName } from "@/utils/contract";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiCopy } from "react-icons/fi";
 
 const months = [
   "January",
