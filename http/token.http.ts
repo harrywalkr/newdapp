@@ -24,14 +24,16 @@ export const searchToken = (options: AxiosRequestConfig): res<TokenType> => {
 export const getToken = (data: {
   tokenAddress: string;
   options: AxiosRequestConfig;
-}): res<Token> => {
+}): res<TokenType> => {
   return axiosInstance.get(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/token/${data.tokenAddress}`,
     data.options
   );
 };
 
-export const getTradeReport = (options: AxiosRequestConfig): res<TradeReportType> => {
+export const getTradeReport = (
+  options: AxiosRequestConfig
+): res<TradeReportType> => {
   return axiosInstance.get(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/tradeReport`,
     options
