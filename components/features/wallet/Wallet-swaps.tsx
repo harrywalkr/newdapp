@@ -124,6 +124,7 @@ const Record = ({
             <TableCell className="flex justify-center gap-2">
                 <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
+                        {/* FIXME: use shadcn/avatar instead of this mess */}
                         {imageUrl(data["Currency Address"]) != undefined ? (
                             <Image
                                 width={40}

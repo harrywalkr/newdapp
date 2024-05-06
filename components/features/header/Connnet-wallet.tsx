@@ -1,13 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { minifyContract } from "@/utils/truncate";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { LuWallet } from "react-icons/lu";
-import { useReadContract } from 'wagmi'
+import { useAccount, useConnect, useReadContract } from 'wagmi'
 
 export default function ConnectWalletButton() {
   const { open } = useWeb3Modal();
-  
+  const { isConnected, address } = useAccount();
+
   return (
     <>
       <Button
@@ -18,7 +20,13 @@ export default function ConnectWalletButton() {
       >
         <LuWallet className="text-base md:text-lg md:ml-5" />
         <h3 className="hidden lg:block md:mr-5">
-          Connect
+          {
+            isConnected && address ? <>
+              {minifyContract(address)}
+            </> : <>
+              Connect
+            </>
+          }
         </h3>
       </Button>
     </>
