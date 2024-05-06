@@ -1,6 +1,6 @@
 import { req, res } from "@/types/http.type";
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { Token } from "@/types/token.type";
+import { TokenType } from "@/types/token.type";
 import axiosInstance from "./axios.config";
 import { AxiosRequestConfig } from "axios";
 import { TradeReportType } from "@/types/trade-report.type";
@@ -14,7 +14,7 @@ export const spotlightSearch = (
   );
 };
 
-export const searchToken = (options: AxiosRequestConfig): res<Token> => {
+export const searchToken = (options: AxiosRequestConfig): res<TokenType> => {
   return axiosInstance.get(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/idsearch`,
     options
