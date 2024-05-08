@@ -13,8 +13,8 @@ export default function Tab({ tabItems }: Props) {
 
 
     return (
-        <div className='flex items-center justify-center'>
-            <ul className='container inline-flex gap-3 items-center justify-between bg-card rounded-md p-2 w-auto'>
+        <div className='flex items-center justify-center md:justify-start'>
+            <ul className='inline-flex gap-3 items-center justify-between bg-card rounded-md p-2 w-auto'>
                 {
                     tabItems.map((item, i) => <li key={i}>
                         <Button

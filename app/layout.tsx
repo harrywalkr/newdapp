@@ -25,7 +25,7 @@ export default function RootLayout({
         'relative w-full'
       )}>
         <Providers>
-          <main className="mt-28 md:mt-32 lg:mt-32 max-w-screen-2xl !mx-auto">
+          <main className="mt-28 md:mt-32 lg:mt-36 max-w-screen-2xl !mx-auto">
             <Header />
             {children}
           </main>
