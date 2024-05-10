@@ -3,11 +3,11 @@ import axiosInstance from "../axios.config";
 
 // findAll
 export async function getAllPosts(
-  options: PostsQueryConfig
+  options?: PostsQueryConfig
 ): Promise<PostEndpoint> {
   try {
     const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/posts`,
+      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts`,
       options
     );
     return response.data;
@@ -20,7 +20,7 @@ export async function getAllPosts(
 // findOne
 export async function findPostById(id: number) {
   try {
-    const response = await axiosInstance.get(`/${id}`);
+    const response = await axiosInstance.get(`/api/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -31,7 +31,7 @@ export async function findPostById(id: number) {
 // create
 export async function createPost(postData: IPost) {
   try {
-    const response = await axiosInstance.post("/posts", postData);
+    const response = await axiosInstance.post("/api/posts", postData);
     return response.data;
   } catch (error) {
     console.error("Error creating post:", error);
@@ -42,7 +42,7 @@ export async function createPost(postData: IPost) {
 // update
 export async function updatePost(id: number, updatedData: IPost) {
   try {
-    const response = await axiosInstance.put(`/${id}`, updatedData);
+    const response = await axiosInstance.put(`/api/${id}`, updatedData);
     return response.data;
   } catch (error) {
     console.error("Error updating post:", error);

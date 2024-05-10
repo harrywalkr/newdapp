@@ -5,7 +5,7 @@ import axiosInstance from "../axios.config";
 export async function getAllCategories(): Promise<ICategory[]> {
   try {
     const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/category`
+      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category`
       );
     return response.data;
   } catch (error) {

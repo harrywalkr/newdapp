@@ -4,7 +4,7 @@ import axiosInstance from "../axios.config";
 // findAll
 export async function getAllTags(): Promise<ITag[]> {
   try {
-    const response = await axiosInstance.get("/tags");
+    const response = await axiosInstance.get("/api/tags");
     return response.data;
   } catch (error) {
     console.error("Error fetching tags:", error);

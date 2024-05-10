@@ -11,7 +11,7 @@ const nextConfig = {
     //     hostname: 'api.dextrading.com',
     //   },
     // ], FIXME: next must be updated for this to be supported. old package still depends on this older nextjs
-    domains: ['api.dextrading.com'],
+    domains: ['api.dextrading.com', '95.81.93.198'],
   },
 };
 
