@@ -59,7 +59,7 @@ export default function Tokens() { // FIXME: this component must include trendin
           </span>
         </Button> */}
         <div className="w-full">
-          {false ? (
+          {trends && !isLoading ? (
             <Swiper
               onSlideChange={(swiper) => setActivePageIndex(swiper.activeIndex)}
               navigation={{
@@ -224,7 +224,7 @@ export default function Tokens() { // FIXME: this component must include trendin
             </Swiper >
           ) : <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {Array(3).fill(true).map((data: any, id: number) => (
-              <Card key={id} className="w-full h-40 relative overflow-hidden flex flex-col justify-center gap-2 p-4">
+              <Card key={id} className="w-full h-40 relative overflow-hidden flex flex-col justify-center gap-1 p-4">
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-full" />
                   <Skeleton className="h-4 w-[210px]" />
