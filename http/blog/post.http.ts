@@ -18,9 +18,13 @@ export async function getAllPosts(
 }
 
 // findOne
-export async function findPostById(id: number) {
+export async function findPostById(
+  id: number | string
+): Promise<{ data: IPost }> {
   try {
-    const response = await axiosInstance.get(`/api/${id}`);
+    const response = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/${id}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -73,9 +77,14 @@ export async function findPostsByTag(tag: string[]) {
 }
 
 // getPostsByCategory
-export async function findPostsByCategory(category: string[]) {
+export async function findPostsByCategory(
+  category: string,
+  options?: PostsQueryConfig
+): Promise<PostEndpoint> {
   try {
-    const response = await axiosInstance.get(`/categories/${category}`);
+    const response = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/categories/${category}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching posts by category:", error);
