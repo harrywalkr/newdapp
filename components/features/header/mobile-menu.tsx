@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -11,8 +12,10 @@ import { TbMenu2 } from "react-icons/tb";
 import Link from "next/link";
 
 export default function MobileMenu() {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger>
         <TbMenu2 className="text-secondary-foreground md:hidden" size={25} />
       </SheetTrigger>
@@ -21,17 +24,17 @@ export default function MobileMenu() {
           <SheetTitle>
             <ul className="mt-3 flex flex-col items-start justify-center gap-3 text-base font-normal">
               <li>
-                <Link href='/about-us'>
+                <Link href='/about-us' onClick={() => setIsOpen(!isOpen)}>
                   About us
                 </Link>
               </li>
               <li>
-                <Link href='/academy'>
+                <Link href='/academy' onClick={() => setIsOpen(!isOpen)}>
                   Academy
                 </Link>
               </li>
               <li>
-                <Link href='/robots'>
+                <Link href='/robots' onClick={() => setIsOpen(!isOpen)}>
                   Telegram robots
                 </Link>
               </li>
