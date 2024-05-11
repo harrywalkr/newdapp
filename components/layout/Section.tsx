@@ -42,7 +42,7 @@ const headerVariants = cva(
   {
     variants: {
       variant: {
-        default: "w-full md:w-1/4 lg:max-w-96",
+        default: "w-full md:w-1/4 md:max-w-80",
         vertical: "w-full",
         horizontal:
           "w-full md:w-1/4 lg:max-w-96"

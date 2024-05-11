@@ -19,6 +19,7 @@ export const getTopNFTs = async (
 
   const options: AxiosRequestConfig = {
     params: {
+      network: "eth",
       limit: limit,
       from: from.toISOString().split("T")[0],
       till: to.toISOString().split("T")[0],
@@ -27,7 +28,7 @@ export const getTopNFTs = async (
 
   try {
     const response = await axiosInstance.get<NFTTradeReportType>(
-      `${process.env.NEXT_PUBLIC_ONCHAIN_BASE_URL}/topNft`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/topNft`,
       options
     );
     return response.data; // Assuming the response data structure matches your type

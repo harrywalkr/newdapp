@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/table"
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Copy from "@/components/ui/copy";
+import { minifyContract } from "@/utils/truncate";
 
 
 interface Prop {
@@ -470,10 +472,9 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
                   href={`/wallet/${data.walletAddress}`}
                   className="font-medium link link-hover hover:text-info"
                 >
-                  {/* {minifyContract(data.walletAddress)} */}
+                  <Copy text={minifyContract(data.walletAddress)} />
                 </Link>
               </div>
-              {/* <CopyAddress address={data.walletAddress} /> */}
             </div>
           </div>
         </TableCell>

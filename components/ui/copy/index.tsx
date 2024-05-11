@@ -28,6 +28,8 @@ export default function Copy({ text, value, className }: Props) {
         }, 1000);
     }, [copied]);
 
+    //FIXME: add nextjs link capability
+
     return (
         <div className="relative">
             <div className="content flex items-center justify-start gap-2" ref={contectRef}>
