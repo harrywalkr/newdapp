@@ -1,4 +1,6 @@
+// Import persist from zustand middleware
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { TokenType } from "@/types/token.type";
 
 interface WatchlistState {
@@ -7,29 +9,35 @@ interface WatchlistState {
   removeFromWatchlist: (tokenId: string) => void;
 }
 
-const useWatchlistStore = create<WatchlistState>((set, get) => ({
-  watchlist: [],
+const useWatchlistStore = create(
+  persist<WatchlistState>(
+    (set, get) => ({
+      watchlist: [],
 
-  addToWatchlist: (token) => {
-    const { watchlist } = get();
-    // Check if the token is already in the watchlist based on an assumed unique identifier, e.g., token.data[0].id
-    if (
-      token.data &&
-      !watchlist.some((w) => w.data && w.data[0].id === token.data![0].id)
-    ) {
-      set({ watchlist: [...watchlist, token] });
+      addToWatchlist: (token) => {
+        const { watchlist } = get();
+        if (
+          token.data &&
+          !watchlist.some((w) => w.data && w.data[0].id === token.data![0].id)
+        ) {
+          set({ watchlist: [...watchlist, token] });
+        }
+      },
+
+      removeFromWatchlist: (tokenId) => {
+        const { watchlist } = get();
+        set({
+          watchlist: watchlist.filter(
+            (token) => token.data && token.data[0].id !== tokenId
+          ),
+        });
+      },
+    }),
+    {
+      name: "watchlist-storage", // unique name of the store in local storage
+      getStorage: () => localStorage,
     }
-  },
-
-  removeFromWatchlist: (tokenId) => {
-    const { watchlist } = get();
-    // Filter out the token based on its id
-    set({
-      watchlist: watchlist.filter(
-        (token) => token.data && token.data[0].id !== tokenId
-      ),
-    });
-  },
-}));
+  )
+);
 
 export default useWatchlistStore;
