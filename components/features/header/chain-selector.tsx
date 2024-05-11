@@ -12,7 +12,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import useTokenChainStore from "@/store";
+import useTokenChainStore from "@/store/tokenChains";
 
 export default function ChainSelector() {
   const { availableChains, selectedChain, setSelectedChain } = useTokenChainStore();

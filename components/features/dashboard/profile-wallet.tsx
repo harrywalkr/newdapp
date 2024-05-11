@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAccount, useBalance, useConnect, useDisconnect, Connector } from 'wagmi';
-import useTokenChainStore from '@/store';
+import useTokenChainStore from '@/store/tokenChains';
 import { minifyContract } from "@/utils/truncate";
 
 interface Transaction {

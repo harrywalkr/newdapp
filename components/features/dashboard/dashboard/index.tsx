@@ -15,11 +15,6 @@ export default function ProfileDashboard() {
   return (
     <>
       <div className=" flex-col md:flex">
-        {/* <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <MainNav className="" />
-          </div>
-        </div> */}
         <div className="flex-1 space-y-4 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -152,9 +147,9 @@ export default function ProfileDashboard() {
                 </Card>
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Recent Swaps</CardTitle>
+                    <CardTitle>Watchlist</CardTitle>
                     <CardDescription>
-                      You made 265 swaps this month.
+                      List of your favorite tokens
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

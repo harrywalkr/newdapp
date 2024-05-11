@@ -20,6 +20,8 @@ import { ImageType } from '@/types/Image.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import Copy from '@/components/ui/copy';
 import React from 'react';
+import { useWatchlistStore } from '@/store';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
 interface Props {
     walletAddress: string;
@@ -31,6 +33,7 @@ interface Props {
 }
 
 export default function WalletSwaps({ dateRange, walletAddress }: Props) {
+    const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
     const [walletSwapsQuery, imagesQuery] = useQueries({
         queries: [
             {
@@ -49,6 +52,14 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
             },
         ],
     });
+
+    const handleWatchlistToggle = (token: SwapWallet) => {
+        // FIXME: ask mehdi to uniform all types. wallets and tokens and everything else
+        const isInWatchlist = watchlist.some((item: any) => item.id === token.tokenName);
+        // FIXME: fix the next line as well
+        // isInWatchlist ? removeFromWatchlist(token.tokenName) : addToWatchlist(token);
+    };
+
 
     if (walletSwapsQuery.isLoading || imagesQuery.isLoading) {
         return <div className='flex flex-col gap-3'>
@@ -74,7 +85,7 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
             </TableHeader>
             <TableBody>
                 {walletSwapsQuery.data?.swapWallet?.map((swap, index) => (
-                    <MemoizedRecord key={index} id={index + 1} data={swap} images={imagesQuery.data!} />
+                    <MemoizedRecord key={index} id={index + 1} data={swap} images={imagesQuery.data!} handleWatchlistToggle={handleWatchlistToggle} />
                 ))}
             </TableBody>
         </Table>
@@ -85,14 +96,21 @@ const Record = ({
     data,
     id,
     images,
+    handleWatchlistToggle
 }: {
     data: SwapWallet;
     id: number;
     images: ImageType[];
+    handleWatchlistToggle: (token: SwapWallet) => void
 }) => {
     const buyAmount = parseFloat(data["Buy Amount (USD)"].toString());
     const sellAmount = parseFloat(data["Sell Amount (USD)"].toString());
     const profitAmount = parseFloat(data["Profit"].toString());
+    // FIXME: fix this line as well
+    // const isInWatchlist = useWatchlistStore(state => state.watchlist.some(item => item.id === token.id));
+
+
+
 
     const imageUrl = (address?: string): string | undefined => {
         if (!address) return undefined;
@@ -103,22 +121,8 @@ const Record = ({
     return (
         <TableRow>
             <TableCell className="text-center">
-                <div className="flex justify-center items-center gap-2">
-                    <span>{id}</span>
-                    {/* FIXME: implement watchlist */}
-                    {/* {!watch ? (
-                                 <AiOutlineStar
-                                     className="cursor-pointer"
-                                     size={20}
-                                     onClick={handleSaveToken}
-                                 />
-                             ) : (
-                                 <AiFillStar
-                                     className="cursor-pointer"
-                                     size={20}
-                                     onClick={handleSaveToken}
-                                 />
-                             )} */}
+                <div onClick={() => handleWatchlistToggle(data)} className="cursor-pointer">
+                    {true ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                 </div>
             </TableCell>
             <TableCell className="flex justify-center gap-2">
