@@ -1,5 +1,5 @@
 import React from 'react'
-import Tab from '@/components/features/blog/tab'
+import Tab from '@/components/ui/tab/tab'
 import BlogHomepage from '@/components/features/blog/BlogHomepage'
 import { getAllPosts } from '@/http/blog/post.http';
 import { getAllCategories } from '@/http/blog/category.http';

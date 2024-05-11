@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import Tab from '@/components/features/blog/tab';
 import { useQuery } from '@tanstack/react-query';
 import { getAllPosts, findPostsByCategory } from '@/http/blog/post.http';
 import { getAllCategories } from '@/http/blog/category.http';
@@ -27,6 +26,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useRouter } from 'next/navigation';
+import Tab from '@/components/ui/tab';
 
 function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) {
     return (

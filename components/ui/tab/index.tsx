@@ -5,10 +5,11 @@ import React, { useState } from 'react';
 
 interface Props {
     tabItems: string[];
-    onClick: (tab: string) => void; // Add a function type that accepts a string
+    onClick: (tab: string) => void;
+    className?: string
 }
 
-export default function Tab({ tabItems, onClick }: Props) {
+export default function Tab({ tabItems, onClick, className }: Props) {
     const [selectedTab, setSelectedTab] = useState<string>(tabItems[0]);
 
     const handleTabClick = (item: string) => {
@@ -17,8 +18,8 @@ export default function Tab({ tabItems, onClick }: Props) {
     };
 
     return (
-        <div className='flex items-center justify-center md:justify-start'>
-            <ul className='inline-flex gap-3 items-center justify-between bg-card rounded-md p-2 w-auto'>
+        <div className={clsx('flex items-center justify-center md:justify-start')}>
+            <ul className={clsx('inline-flex gap-3 items-center justify-between bg-card rounded-md p-2 w-auto', className)}>
                 {tabItems.map((item, i) => (
                     <li key={i}>
                         <Button
