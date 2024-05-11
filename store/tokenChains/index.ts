@@ -1,11 +1,12 @@
 import { create } from "zustand";
 
-// Define the type for a single token chain
+// Updated type for a single token chain with new properties
 type TokenChain = {
   id: number;
   name: string;
   symbol: string;
-  // FIXME: add icons
+  icon: string; // Icon URL for the token
+  url: string; // URL for token data or trends
 };
 
 // Define the type for the store's state
@@ -20,12 +21,64 @@ interface TokenChainState {
 // Create the store
 const useTokenChainStore = create<TokenChainState>((set, get) => ({
   availableChains: [
-    // Example initial chains
-    { id: 1, name: "Ethereum", symbol: "ETH" },
-    { id: 2, name: "Binance Smart Chain", symbol: "BSC" },
-    { id: 3, name: "Polygon", symbol: "MATIC" },
+    // Example initial chains updated with new properties
+    {
+      id: 1,
+      name: "Ethereum",
+      symbol: "ETH",
+      icon: "/ETH.png",
+      url: "eth",
+    },
+    {
+      id: 2,
+      name: "Binance Smart Chain",
+      symbol: "BSC",
+      icon: "/BSC.png",
+      url: "bsc",
+    },
+    {
+      id: 3,
+      name: "Polygon",
+      symbol: "MATIC",
+      icon: "/MATIC.png",
+      url: "polygon",
+    },
+    {
+      id: 4,
+      name: "Arbitrum",
+      symbol: "ARB",
+      icon: "/ARB.png",
+      url: "arbitrum",
+    },
+    {
+      id: 5,
+      name: "Optimism",
+      symbol: "OPT",
+      icon: "/OPT.png",
+      url: "optimism",
+    },
+    {
+      id: 6,
+      name: "Base",
+      symbol: "BASE",
+      icon: "/BASE.png",
+      url: "base",
+    },
+    {
+      id: 7,
+      name: "Solana",
+      symbol: "SOL",
+      icon: "/SOL.png",
+      url: "sol",
+    },
   ],
-  selectedChain: { id: 1, name: "Ethereum", symbol: "ETH" },
+  selectedChain: {
+    id: 1,
+    name: "Ethereum",
+    symbol: "ETH",
+    icon: "/ETH.png",
+    url: "eth",
+  },
 
   // Method to set the selected chain by its ID
   setSelectedChain: (id) => {

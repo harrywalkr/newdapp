@@ -1,103 +1,93 @@
-"use client";
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import Copy from "@/components/ui/copy";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import {
-  Section,
-  SectionHeader,
-  SectionTitle,
-  SectionDescription,
-  SectionContent,
-} from "@/components/layout/Section";
+} from "@/components/ui/table"
+import { NFTTradeReportType } from "@/types/nft.type"
+import PriceFormatter from "@/utils/PriceFormatter";
+import { minifyContract, minifyTokenName } from "@/utils/truncate";
+import Link from "next/link";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface Props {
+  NFTs: NFTTradeReportType
 }
 
-export function NFT<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
+export default function NFT({ NFTs }: Props) {
   return (
-    <Section>
-      <SectionHeader>
-        <SectionTitle>Trending NFTs</SectionTitle>
-        <SectionDescription>
-          Get to know the NFTs which make you money before everyone else and
-          learn about their security for ease of mind
-        </SectionDescription>
-      </SectionHeader>
-      <SectionContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </SectionContent>
-    </Section>
-  );
+    <Table>
+      <TableCaption>A list of NFT transactions.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-center w-[50px]">ID</TableHead>
+          <TableHead>Contract</TableHead>
+          <TableHead>Min Price</TableHead>
+          <TableHead>Max Price</TableHead>
+          <TableHead>Buy Amount</TableHead>
+          <TableHead>Sell Amount</TableHead>
+          <TableHead>Count</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {NFTs.data.EVM.DEXTrades.slice(0, 5).map((d, idx) => (
+          <TableRow key={idx}>
+            <Record key={idx} idx={idx + 1} data={d} />
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )
 }
+
+
+const Record = ({ data, idx }: { data: any; idx: number }) => {
+  return (
+    <TableRow>
+      <TableCell className="text-center">{idx}</TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <div className="flex space-x-2 items-center">
+            <div className="flex flex-col gap-2">
+              <Link
+                href={`https://opensea.io/assets/ethereum/${data.Trade.Buy.Currency.SmartContract}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium cursor-pointer"
+              >
+                {minifyTokenName(data.Trade.Buy.Currency.Symbol)}
+              </Link>
+              <div >
+                <Link
+                  href={`https://opensea.io/assets/ethereum/${data.Trade.Buy.Currency.SmartContract}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="opacity-40"
+                >
+                  {minifyContract(data.Trade.Buy.Currency.SmartContract)}
+                </Link>
+              </div>
+            </div>
+            <Copy text={data.Trade.Buy.Currency.SmartContract} />
+          </div>
+        </div>
+      </TableCell>
+      <TableCell>
+        <PriceFormatter value={data.Trade.Buy.min_price} />
+      </TableCell>
+      <TableCell>
+        <PriceFormatter value={data.Trade.Buy.max_price} />
+      </TableCell>
+      <TableCell>
+        {parseFloat(data.buy_amount)?.toFixed(2)}
+      </TableCell>
+      <TableCell>
+        {parseFloat(data.sell_amount)?.toFixed(2)}
+      </TableCell>
+      <TableCell>{data.count}</TableCell>
+    </TableRow>
+  );
+};

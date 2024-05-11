@@ -32,8 +32,7 @@ import { useStore } from "zustand";
 
 export default function Tokens() { // FIXME: this component must include trending, top and hot tokens all
   const [activePageIndex, setActivePageIndex] = useState<number>(0);
-  const { availableChains, selectedChain, setSelectedChain } = useTokenChainStore();
-
+  const { selectedChain } = useTokenChainStore();
 
   const {
     isLoading,
@@ -41,8 +40,8 @@ export default function Tokens() { // FIXME: this component must include trendin
     data: trends,
   } = useQuery(
     {
-      queryKey: ["trends"],
-      queryFn: () => getTrends({}).then(({ data }) => data),
+      queryKey: ["trends", selectedChain.name],
+      queryFn: () => getTrends(selectedChain.url).then(({ data }) => data),
     }
   )
 
@@ -56,12 +55,13 @@ export default function Tokens() { // FIXME: this component must include trendin
         </SectionDescription>
       </SectionHeader>
       <SectionContent>
-        <Button variant="secondary" className="mb-5 flex items-center justify-center gap-2">
+        {/* FIXME: dex old */}
+        {/* <Button variant="secondary" className="mb-5 flex items-center justify-center gap-2">
           <BiFilterAlt />
           <span>
             Filters
           </span>
-        </Button>
+        </Button> */}
         <div className="w-full">
           {trends && !isLoading ? (
             <Swiper
@@ -163,30 +163,27 @@ export default function Tokens() { // FIXME: this component must include trendin
               </SwiperSlide>
               <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  {trends.data.slice(6, 9).map((data: any, id: number) => (
+                  {trends.data.slice(6, 9).map((data: any, id: number, arr: any[]) => (
                     <Card key={id} className="w-full">
-                      <CardContent className="pt-6">
-                        <div className="header relative flex items-start justify-start gap-6">
+                      <CardContent className="pt-6 h-full">
+                        {id === arr.length - 1 ? (
+                          <Link
+                            href={`/trending/${selectedChain.symbol}`}
+                            className="flex h-full w-ful items-center justify-center text-lg cursor-pointer" >
+                            Show More
+                          </Link>
+                        ) : <div className="header relative flex items-start justify-start gap-6">
                           <Image
                             width={60}
                             height={60}
                             className='rounded-full'
                             src={data.logo_url}
                             alt="token logo"
-                            style={{
-                              opacity: data.logo_url ? 1 : 0.3,
-
-                              height: '100%'
-                            }}
+                            style={{ opacity: data.logo_url ? 1 : 0.3, height: '100%' }}
                           />
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
-                              <Link
-                                //FIXME: extend next/link to take searchparams and params without this mess :|
-                                //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
-                                href={`/monitoring/${data.address}`}
-                                className="font-medium text-lg link"
-                              >
+                              <Link href={`/monitoring/${data.address}`} className="font-medium text-lg link">
                                 {minifyContract(data.name)}
                               </Link>
                               <Copy text={minifyContract(data.address)} />
@@ -197,12 +194,13 @@ export default function Tokens() { // FIXME: this component must include trendin
                               <p className="text-muted-foreground">more detail</p>
                             </div>
                           </div>
-                        </div>
+                        </div>}
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               </SwiperSlide>
+
               {/* <div className="review-swiper-button-next">s</div>
               <div className="review-swiper-button-prev">f</div> */}
 
@@ -232,10 +230,14 @@ export default function Tokens() { // FIXME: this component must include trendin
             {Array(3).fill(true).map((data: any, id: number) => (
               <Card key={id} className="w-full h-40 relative  overflow-hidden">
                 {/* <div className="pt-6 skeleton" /> */}
-                <div className="flex flex-col space-y-3">
+                <div className="flex flex-col p-4">
                   <Skeleton className="h-full w-full rounded-xl" />
                   <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                  <div className="space-y-2 mt-5">
+                    <Skeleton className="h-4 w-full" />
                     <Skeleton className="h-4 w-[200px]" />
                   </div>
                 </div>
