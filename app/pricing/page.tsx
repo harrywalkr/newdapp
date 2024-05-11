@@ -6,13 +6,7 @@ import PricingPageContent from '@/components/features/pricinig/PricingPageConten
 
 const PricingPage = () => {
     return (
-        <>
-            <Head>
-                <title>Pricing - Dextrading</title>
-                <meta name="description" content="Explore our flexible pricing options to find the plan that best fits your needs." />
-            </Head>
-            <PricingPageContent />
-        </>
+        <PricingPageContent />
     );
 }
 

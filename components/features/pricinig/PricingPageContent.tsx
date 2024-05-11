@@ -49,7 +49,7 @@ const PricingPageContent = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div>
             <Tab tabItems={tabItems} onClick={handleTabClick} className='w-full md:w-auto' />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 max-w-xl">
                 {/* Free Tier Card */}
