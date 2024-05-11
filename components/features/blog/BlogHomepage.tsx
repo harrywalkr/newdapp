@@ -37,16 +37,23 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetError
     );
 }
 
-export default function BlogHomepage() {
+interface Props {
+    posts: PostEndpoint,
+    categories: ICategory[]
+}
+
+
+export default function BlogHomepage(props: Props) {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
     const isDesktop = useMedia('(min-width: 1024px)');
     const isMobile = useMedia('(max-width: 767px)');
 
-    const categoryQuery = useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
+    const categoryQuery = useQuery({ initialData: props.categories, queryKey: ['categories'], queryFn: getAllCategories });
     const postsQuery = useQuery(
         {
+            initialData: props.posts,
             queryKey: ['posts', selectedCategory, currentPage],
             queryFn: () => {
                 if (selectedCategory === 'All') {
