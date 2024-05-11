@@ -5,6 +5,7 @@ export interface PostEndpoint {
   count: number;
   pageSize: number;
   pageNo: number;
+  totalPages?: string;
 }
 
 //FIXME: make all of the below not null and make them mandatory in the backend
