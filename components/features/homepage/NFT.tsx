@@ -9,6 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionDescription,
+  SectionContent,
+} from "@/components/layout/Section";
 import { NFTTradeReportType } from "@/types/nft.type"
 import PriceFormatter from "@/utils/PriceFormatter";
 import { minifyContract, minifyTokenName } from "@/utils/truncate";
@@ -20,33 +27,44 @@ interface Props {
 
 export default function NFT({ NFTs }: Props) {
   return (
-    <ScrollArea className="w-full rounded-md pb-4">
-      <ScrollBar orientation="horizontal" />
-      <Table className="bg-card">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-center w-[50px]">ID</TableHead>
-            <TableHead className="whitespace-nowrap">Contract</TableHead>
-            <TableHead className="whitespace-nowrap">Min Price</TableHead>
-            <TableHead className="whitespace-nowrap">Max Price</TableHead>
-            <TableHead className="whitespace-nowrap">Buy Amount</TableHead>
-            <TableHead className="whitespace-nowrap">Sell Amount</TableHead>
-            <TableHead className="whitespace-nowrap">Count</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {NFTs.data.EVM.DEXTrades.slice(0, 5).map((d, id) => (
-            <Record key={id} id={id + 1} data={d} />
-          ))}
-        </TableBody>
-      </Table>
-    </ScrollArea>
+    <Section variant={'vertical'}>
+      <SectionHeader variant={'vertical'}>
+        <SectionTitle>Trending NFTs</SectionTitle>
+        <SectionDescription>
+          Trending NFTs being actively traded
+        </SectionDescription>
+      </SectionHeader>
+      <SectionContent variant={'vertical'}>
+        <ScrollArea className="w-full rounded-md pb-4">
+          <ScrollBar orientation="horizontal" />
+          <Table className="bg-card">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-center w-[50px]">ID</TableHead>
+                <TableHead className="whitespace-nowrap">Contract</TableHead>
+                <TableHead className="whitespace-nowrap">Min Price</TableHead>
+                <TableHead className="whitespace-nowrap">Max Price</TableHead>
+                <TableHead className="whitespace-nowrap">Buy Amount</TableHead>
+                <TableHead className="whitespace-nowrap">Sell Amount</TableHead>
+                <TableHead className="whitespace-nowrap">Count</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {NFTs.data.EVM.DEXTrades.slice(0, 5).map((d, id) => (
+                <Record key={id} id={id + 1} data={d} />
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </SectionContent>
+    </Section>
   )
 }
 
 
 const Record = ({ data, id }: { data: any; id: number }) => {
   return (
+
     <TableRow>
       <TableCell className="text-center p-4">{id}</TableCell>
       <TableCell >
