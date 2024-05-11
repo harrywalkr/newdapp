@@ -35,7 +35,18 @@ const useWatchlistStore = create(
     }),
     {
       name: "watchlist-storage", // unique name of the store in local storage
-      getStorage: () => localStorage,
+      storage: {
+        getItem: (name) => {
+          const item = localStorage.getItem(name);
+          return item ? JSON.parse(item) : null;
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+        },
+      },
     }
   )
 );
