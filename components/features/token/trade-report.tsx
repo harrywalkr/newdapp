@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { DextradeByToken, TradeReportType } from "@/types/trade-report.type";
+import { DextradeByToken} from "@/types/trade-report.type";
 import { useState } from "react";
 import { separate3digits } from "@/utils/numbers";
 import PriceFormatter from "@/utils/PriceFormatter";
@@ -50,7 +50,7 @@ export default function TradeReport({ tokenAddress }: Props) {
                         'offset': 0,
                         'token': tokenAddress
                     }
-                }).then(({ data }) => data?.data?.EVM?.DEXTradeByTokens)
+                }).then(({ data }) => data?.EVM?.DEXTradeByTokens)
             },
         }
     )
