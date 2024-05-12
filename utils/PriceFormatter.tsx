@@ -1,34 +1,35 @@
-export default function PriceFormatter({
-  value,
-  dollarSign,
-}: {
+import React from 'react';
+import clsx from 'clsx'; // Import clsx for handling dynamic classNames
+
+type PriceFormatterProps = {
   value: number | string;
   dollarSign?: boolean;
-}) {
-  const v = typeof value === "string" ? +value : value;
-  const vv = -Math.floor(Math.log(v) / Math.log(10) + 1);
-  const vvv = v.toExponential();
+  className?: string; // Optional className prop for custom styling
+};
 
-  if (!v)
-    return (
-      <div className="flex items-center gap-[2px]">{dollarSign && "$"}0</div>
-    );
+export default function PriceFormatter({ value, dollarSign, className }: PriceFormatterProps) {
+  // Parse the value to ensure it's a number
+  const parsedValue = Number(value);
 
-  if (v > 0.0001) {
-    return (
-      <div className="flex items-center gap-[2px]">
-        {dollarSign && "$"}
-        {value.toString().split(".")[0]}.
-        {value.toString().split(".")[1]?.slice(0, 8)}
-      </div>
-    );
-  }
+  // Define a function to format the value
+  const formatValue = (num: number) => {
+    if (num === 0) return "0";
+
+    if (num > 0.0001) {
+      // For values greater than 0.0001, format as a fixed decimal string
+      return num.toFixed(8).replace(/\.?0+$/, "");
+    }
+
+    // For very small numbers, use exponential notation and format it
+    const [leading, exponential] = num.toExponential(2).split("e");
+    const formattedExponential = `${leading}e${parseInt(exponential)}`;
+    return `0.0${formattedExponential}`;
+  };
+
   return (
-    <div className="flex items-center gap-[2px]">
-      {dollarSign && "$"}
-      <span>0.0</span>
-      <sub>{vv}</sub>
-      <span>{vvv.toString().slice(0, 4).replace(".", "").split("e")[0]}</span>
+    <div className={clsx("flex items-center gap-2", className)}>
+      {dollarSign && <span>$</span>}
+      {formatValue(parsedValue)}
     </div>
   );
 }

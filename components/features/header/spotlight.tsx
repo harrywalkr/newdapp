@@ -34,7 +34,6 @@ import { useMounted } from "@/utils/useMounted";
 import Image from "next/image";
 import { minifyContract, truncate } from "@/utils/truncate";
 import PriceFormatter from "@/utils/PriceFormatter";
-import { FaEthereum } from "react-icons/fa";
 import formatDate, { convertIsoToDate } from "@/utils/date";
 import Loading from "@/components/common/Loading";
 import { IoWalletOutline } from "react-icons/io5";
@@ -64,7 +63,7 @@ export function Spotlight() {
   }, []);
 
   useEffect(() => {
-    getImages({}).then(({ data }) => setImages(data.imageUrls));
+    getImages({}).then((data) => setImages(data.imageUrls));
   }, []);
 
   const onInputChange = useDebouncedCallback(
@@ -94,7 +93,7 @@ export function Spotlight() {
         },
         signal: controller.signal,
       })
-        .then(({ data }) => {
+        .then((data) => {
           setToken(data);
         })
         .finally(() => setLoading(false));

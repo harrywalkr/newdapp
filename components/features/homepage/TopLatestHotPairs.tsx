@@ -21,6 +21,7 @@ import { minifyContract, minifyTokenName } from "@/utils/truncate";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { imageUrl } from "@/utils/imageUrl";
+import Copy from "@/components/ui/copy";
 
 dayjs.extend(relativeTime);
 
@@ -92,7 +93,12 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="ml-4 space-y-1">
-                                                    <p className="text-sm font-medium leading-none">{minifyContract(token.contractAddress)}</p>
+                                                    <Copy className="text-sm font-medium leading-none"
+                                                        text={minifyContract(token.contractAddress)}
+                                                        value={token.contractAddress}
+                                                        link
+                                                        href={`/monitoring/${token.contractAddress}`}
+                                                    />
                                                     <p className="text-sm text-muted-foreground">
                                                         {minifyTokenName(token.tokenName)}
                                                     </p>
@@ -137,7 +143,12 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="ml-4 space-y-1">
-                                                    <p className="text-sm font-medium leading-none">{minifyContract(token.contractAddress)}</p>
+                                                    <Copy className="text-sm font-medium leading-none"
+                                                        text={minifyContract(token.contractAddress)}
+                                                        value={token.contractAddress}
+                                                        link
+                                                        href={`/monitoring/${token.contractAddress}`}
+                                                    />
                                                     <p className="text-sm text-muted-foreground">
                                                         {minifyTokenName(token.tokenName)}
                                                     </p>

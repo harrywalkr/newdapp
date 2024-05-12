@@ -23,6 +23,7 @@ import { minifyContract } from "@/utils/truncate";
 import Copy from "@/components/ui/copy";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
 
@@ -72,25 +73,22 @@ export default function Tokens() { // FIXME: this component must include trendin
             >
               <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  {trends.data.slice(0, 3).map((data: any, id: number) => (
+                  {trends.data.slice(0, 3).map((data, id: number) => (
                     <Card key={id} className="w-full">
                       <CardContent className="pt-6">
                         {/* <Link href={`/token/${data?.relationships?.base_token?.data?.id?.split("_")[1]}
                         ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
                         `}*/}
                         <div className="header relative flex items-start justify-start gap-6">
-                          <Image
-                            width={60}
-                            height={60}
-                            className='rounded-full'
-                            src={data.logo_url}
-                            alt="token logo"
-                            style={{
-                              opacity: data.logo_url ? 1 : 0.3,
-
-                              height: '100%'
-                            }}
-                          />
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage
+                              src={data.logo_url}
+                              alt="token logo"
+                              width={60}
+                              height={60}
+                            />
+                            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
@@ -117,26 +115,22 @@ export default function Tokens() { // FIXME: this component must include trendin
               </SwiperSlide>
               <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  {trends.data.slice(3, 6).map((data: any, id: number) => (
+                  {trends.data.slice(3, 6).map((data, id: number) => (
                     <Card key={id} className="w-full">
                       <CardContent className="pt-6">
                         <div className="header relative flex items-start justify-start gap-6">
-                          <Image
-                            width={60}
-                            height={60}
-                            className='rounded-full'
-                            src={data.logo_url}
-                            alt="token logo"
-                            style={{
-                              opacity: data.logo_url ? 1 : 0.3,
-
-                              height: '100%'
-                            }}
-                          />
+                          <Avatar>
+                            <AvatarImage
+                              src={data.logo_url}
+                              alt="token logo"
+                              width={60}
+                              height={60}
+                            />
+                            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link
-                                //FIXME: extend next/link to take searchparams and params without this mess :|
                                 //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
                                 href={`/monitoring/${data.address}`}
                                 className="font-medium text-lg link"
@@ -159,7 +153,7 @@ export default function Tokens() { // FIXME: this component must include trendin
               </SwiperSlide>
               <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  {trends.data.slice(6, 9).map((data: any, id: number, arr: any[]) => (
+                  {trends.data.slice(6, 9).map((data, id: number, arr: any[]) => (
                     <Card key={id} className="w-full">
                       <CardContent className="pt-6 h-full">
                         {id === arr.length - 1 ? (
@@ -169,14 +163,15 @@ export default function Tokens() { // FIXME: this component must include trendin
                             Show More
                           </Link>
                         ) : <div className="header relative flex items-start justify-start gap-6">
-                          <Image
-                            width={60}
-                            height={60}
-                            className='rounded-full'
-                            src={data.logo_url}
-                            alt="token logo"
-                            style={{ opacity: data.logo_url ? 1 : 0.3, height: '100%' }}
-                          />
+                          <Avatar>
+                            <AvatarImage
+                              src={data.logo_url}
+                              alt="token logo"
+                              width={60}
+                              height={60}
+                            />
+                            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
                           <div className="content flex flex-col items-start justify-between h-28 ">
                             <div className="token flex flex-col items-start justify-start gap-2">
                               <Link href={`/monitoring/${data.address}`} className="font-medium text-lg link">

@@ -12,6 +12,11 @@ import TokenSummary from './TokenSummary'
 import DoughnutChart from '../../ui/Doughnut'
 import { IoShieldHalfOutline } from 'react-icons/io5'
 import ContractSecurity from './ContractSecurity'
+import { GrStakeholder } from 'react-icons/gr'
+import TokenHolders from './TokenHolders-old-dex/TokenHoldersAmountFilter'
+import RenderConditionalComponent from '@/utils/RenderConditionalComponent'
+import { isPaidMember } from '@/utils/isPaidMember'
+import Paywall from '@/components/common/Paywall'
 
 interface Props {
   token: TokenType,
@@ -42,6 +47,10 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
             <TabsTrigger value="security">
               <IoShieldHalfOutline />
               <span className='ml-1'>Security</span>
+            </TabsTrigger>
+            <TabsTrigger value="holders" onClick={(e) => { e.stopPropagation(); e.preventDefault(); console.log('kjkjkj') }}>
+              <GrStakeholder />
+              <span className='ml-1'>Holders</span>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="summary" className='mt-5'>
@@ -92,6 +101,16 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
           </TabsContent>
           <TabsContent value="security" className='mt-5'>
             <ContractSecurity token={token} />
+          </TabsContent>
+          <TabsContent value="holders" className='mt-5'>
+            {RenderConditionalComponent(isPaidMember(), {
+              trueValueComponent: (
+                <TokenHolders />
+              ),
+              falseValueComponent: (
+                <Paywall />
+              )
+            })}
           </TabsContent>
         </Tabs>
       </CardContent>

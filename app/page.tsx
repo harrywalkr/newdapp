@@ -11,17 +11,15 @@ import { TopLatestHotPairs } from "@/components/features/homepage/TopLatestHotPa
 import { getLatestTokens } from "@/http/latestTokens.http";
 
 export default async function Home() {
-  const images: ImageType[] = (await getImages({
-    // cache: 'no-store' //FIXME: stop cache for this page
-  })).data.imageUrls
-
+  //   // cache: 'no-store' //FIXME: stop cache for this page
+  const images = await getImages();
   const { data: wallets } = await getWallets({});
   const nfts = await getTopNFTs();
 
   return (
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-16">
       <Tokens />
-      <TopLatestHotPairs images={images} />
+      <TopLatestHotPairs images={images.imageUrls} />
       <Wallet initTopWallets={wallets} />
       {/* FIXME: dex old migrate */}
       {/* <TableExample initTopWallets={wallets} /> */}
