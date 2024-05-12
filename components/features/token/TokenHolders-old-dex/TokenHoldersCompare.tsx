@@ -1,4 +1,4 @@
-import { minifyContract } from "@/utils/contract";
+import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";

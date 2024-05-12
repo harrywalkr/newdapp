@@ -1,5 +1,5 @@
-import CopyAddress from "@/utils/CopyAddress";
-import { minifyContract } from "@/utils/contract";
+import Copy from "@/components/ui/copy";
+import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";
@@ -16,19 +16,17 @@ export default function MostActiveAddress() {
     from.setDate(from.getDate() - 6);
     const controller = new AbortController();
     fetch(
-      `https://onchain.dextrading.com/TopTokenActiveTraders?limit=10&network=${
-        params.params[0]
-      }&address=${
-        params.params[1]
+      `https://onchain.dextrading.com/TopTokenActiveTraders?limit=10&network=${params.params[0]
+      }&address=${params.params[1]
       }&from=${from.toISOString()}&till=${to.toISOString()}`
-    , { signal: controller.signal })
+      , { signal: controller.signal })
       .then((data) => data.json())
       .then((json) => setData(json.data.ethereum.smartContractCalls))
       .finally(() => setLoading(false));
-      return () => {
-        controller.abort();
-      } 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      controller.abort();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading)
@@ -100,10 +98,7 @@ const Record = ({ data, idx }: { data: any; idx: number }) => {
     <tr>
       <td className="text-base-content">
         <div className="flex space-x-2 items-center">
-          <span className="opacity-70">
-            {minifyContract(data.address.address)}
-          </span>
-          <CopyAddress address={data.address.address} />
+          <Copy text={minifyContract(data.address.address)} value={data.address.address} />
         </div>
       </td>
       <td
