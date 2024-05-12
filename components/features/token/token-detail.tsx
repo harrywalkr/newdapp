@@ -48,7 +48,7 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
               <IoShieldHalfOutline />
               <span className='ml-1'>Security</span>
             </TabsTrigger>
-            <TabsTrigger value="holders" onClick={(e) => { e.stopPropagation(); e.preventDefault(); console.log('kjkjkj') }}>
+            <TabsTrigger value="holders" >
               <GrStakeholder />
               <span className='ml-1'>Holders</span>
             </TabsTrigger>

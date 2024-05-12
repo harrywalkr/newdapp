@@ -23,17 +23,20 @@ function Search({ wallet, onSearch }: Props) {
     };
 
     return (
-        <>
-            <LuSearch />
+        <div className="relative">
+            {/* <LuSearch className="absolute left-0"/> */}
+            <div className="absolute inset-y-0 left-3 flex items-center">
+                <LuSearch />
+            </div>
             <Input
                 type="text"
                 name="addresses"
                 id="addresses"
                 placeholder="Find addresses ..."
-                className="w-52"
+                className="w-52 md:w-64 !pl-9"
                 onChange={(event) => handleSearch(event.target.value)}
             />
-        </>
+        </div>
     );
 }
 

@@ -24,7 +24,7 @@ import WalletSwaps from "./Wallet-swaps"
 import { TbTransactionBitcoin } from "react-icons/tb"
 import WalletTransactions from "./Wallet-transactions"
 import { GoGraph } from "react-icons/go";
-import WalletStatistical from "./WalletStatistical/WalletStatistical"
+import WalletStatistical from "./WalletStatistical-old-dex/WalletStatistical"
 
 
 interface Props {
