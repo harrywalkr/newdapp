@@ -50,7 +50,7 @@ export default function Copy({ text, value, className, link, href }: Props) {
             </div>
             <div
                 className="cursor-pointer text-sm"
-                onClick={() => handleCopyAddress(value || text)}
+                onClick={() => handleCopyAddress(value ? value : text!)}
             >
                 <FiCopy
                 />
