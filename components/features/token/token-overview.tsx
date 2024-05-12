@@ -18,6 +18,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 interface Props {
+    tokenAddress: string,
     token: TokenType,
     logo: ImageType
 }
