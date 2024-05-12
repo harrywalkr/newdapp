@@ -7,7 +7,6 @@ import {
     TableBody,
     TableCaption,
     TableCell,
-    TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
@@ -48,7 +47,7 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
             },
             {
                 queryKey: ['images'],
-                queryFn: () => getImages({}).then(({ data }) => data.imageUrls),
+                queryFn: () => getImages({}).then((data) => data.imageUrls),
             },
         ],
     });

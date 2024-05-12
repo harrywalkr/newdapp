@@ -42,7 +42,7 @@ export default function WalletTransactions({ dateRange, walletAddress }: Props) 
             {
                 queryKey: ['images'],
                 queryFn: () =>
-                    getImages({}).then(({ data }) => data.imageUrls)
+                    getImages({}).then((data) => data.imageUrls)
             },
         ],
     });
