@@ -46,14 +46,14 @@ export default function TokenOverview({ token, logo }: Props) {
                             )
                         })}
                         <div className='flex flex-col items-start justify-center gap-2'>
-                            {renderConditionalComponent(token?.data?.[0]?.attributes?.name, {
+                            {renderConditionalComponent(token?.data?.[0]?.attributes?.name && token?.data[0]?.id, {
                                 trueValueComponent: (
                                     <>
                                         <h1 className="text-base m-0 p-0">
-                                            {minifyTokenName(token.data[0].attributes.name)}
+                                            {minifyTokenName(token!.data![0].attributes!.name)}
                                         </h1>
-                                        <Copy value={token?.data[0]?.id?.split("_")[1]} text={minifyContract(
-                                            token?.data[0]?.id.split("_")[1]
+                                        <Copy value={token!.data![0]?.id?.split("_")[1]} text={minifyContract(
+                                            token!.data![0].id!.split("_")[1]
                                         )}
                                             className='text-sm'
                                         />
@@ -92,7 +92,7 @@ export default function TokenOverview({ token, logo }: Props) {
                     <div className='flex flex-col items-end justify-end gap-3 mt-2'>
                         {renderConditionalComponent(token?.data?.[0]?.attributes?.base_token_price_usd, {
                             trueValueComponent: (
-                                <PriceFormatter dollarSign value={token.data[0]?.attributes?.base_token_price_usd} />
+                                <PriceFormatter dollarSign value={token!.data![0].attributes!.base_token_price_usd!} />
                             ),
                             falseValueComponent: <p>No price available</p>
                         })}
@@ -104,19 +104,19 @@ export default function TokenOverview({ token, logo }: Props) {
     )
 }
 
-function PriceChange({ token }) {
-    return renderConditionalComponent(token?.data[0]?.attributes?.price_change_percentage?.h24, {
+function PriceChange({ token }: { token: TokenType }) {
+    return renderConditionalComponent(token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24, {
         trueValueComponent: (
             <div className='whitespace-nowrap'>
                 {`24hr Change: `}
                 <h2
                     className={clsx('text-sm inline text-center',
-                        +token.data[0]?.attributes.price_change_percentage.h24 > 0
+                        +token!.data![0].attributes!.price_change_percentage!.h24! > 0
                             ? " text-green-500"
                             : " text-red-500"
                     )}
                 >
-                    {`${token?.data[0]?.attributes?.price_change_percentage?.h24}%`}
+                    {`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
                 </h2>
             </div>
         ),
@@ -124,13 +124,13 @@ function PriceChange({ token }) {
     });
 }
 
-function Liquidity({ token }) {
-    return renderConditionalComponent(token?.data[0]?.attributes?.reserve_in_usd, {
+function Liquidity({ token }: { token: TokenType }) {
+    return renderConditionalComponent(token?.data && token?.data[0]?.attributes?.reserve_in_usd, {
         trueValueComponent: (
             <div className='whitespace-nowrap'>
                 {`Liquidity: `}
                 <h2 className='text-sm inline text-center text-muted-foreground'>
-                    ${formatCash(+token.data[0].attributes.reserve_in_usd)}
+                    ${formatCash(+token!.data![0].attributes!.reserve_in_usd!)}
                 </h2>
             </div>
         ),
@@ -138,7 +138,7 @@ function Liquidity({ token }) {
     });
 }
 
-function BuySellTaxes({ token }) {
+function BuySellTaxes({ token }: { token: TokenType }) {
     // Implementation similar to PriceChange using renderConditionalComponent
     return (
         <div className='flex items-center justify-start gap-2'>
@@ -147,7 +147,7 @@ function BuySellTaxes({ token }) {
                     <div className='whitespace-nowrap'>
                         {`Buy tax: `}
                         <h2 className='text-sm inline text-center text-green-500'>
-                            {token.SecurityData?.tokenSecurity?.details?.buy_tax * 100}%
+                            {+token!.SecurityData!.tokenSecurity!.details!.buy_tax! * 100}%
                         </h2>
                     </div>
                 ),
@@ -158,7 +158,7 @@ function BuySellTaxes({ token }) {
                     <div className='whitespace-nowrap'>
                         {`Sell tax: `}
                         <h2 className='text-sm inline text-center text-red-500'>
-                            {token.SecurityData?.tokenSecurity?.details?.sell_tax * 100}%
+                            {+token!.SecurityData!.tokenSecurity!.details!.sell_tax! * 100}%
                         </h2>
                     </div>
                 ),
@@ -168,13 +168,13 @@ function BuySellTaxes({ token }) {
     );
 }
 
-function HolderInterest({ token }) {
+function HolderInterest({ token }: { token: TokenType }) {
     return renderConditionalComponent(token?.BalancesData?.numberOfAddresses, {
         trueValueComponent: (
             <div className='whitespace-nowrap'>
                 {`Holder interest: `}
                 <h2 className={clsx('text-sm inline text-center',
-                    token?.BalancesData?.numberOfAddresses > 10 ? "text-green-500" : "text-red-500"
+                    token!.BalancesData!.numberOfAddresses! > 10 ? "text-green-500" : "text-red-500"
                 )}>
                     {token?.BalancesData?.numberOfAddresses}
                 </h2>
@@ -184,7 +184,7 @@ function HolderInterest({ token }) {
     });
 }
 
-function Timestamp({ token }) {
+function Timestamp({ token }: { token: TokenType }) {
     return renderConditionalComponent(token?.timestamp, {
         trueValueComponent: (
             <h3 className="bottom whitespace-nowrap text-muted-foreground text-sm">
