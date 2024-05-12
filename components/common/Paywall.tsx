@@ -14,9 +14,14 @@ export default function Paywall() {
                 <li>Advanced analytics and reports.</li>
                 <li>Continued access to our expert content.</li>
             </ul>
-            <Button onClick={() => window.location.href = '/pricing'} variant="default">
-                View Subscription Plans
-            </Button>
+            <div className="flex items-center justify-center gap-2">
+                <Button onClick={() => window.location.href = '/pricing'} variant="default">
+                    View Subscription Plans
+                </Button>
+                <Button onClick={() => window.location.href = '/login'} variant="outline">
+                    login
+                </Button>
+            </div>
             <p className="mt-4 text-sm text-gray-600">
                 Learn more about our <Link href="/pricing" className="underline text-blue-600">pricing options</Link> and find the plan that best suits your needs.
             </p>
