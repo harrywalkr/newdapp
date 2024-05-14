@@ -1,6 +1,6 @@
 'use client'
 import { Skeleton } from '@/components/ui/skeleton';
-import { getWalletSwaps } from '@/http/wallets.http';
+import { getWalletSwaps } from '@/services/http/wallets.http';
 import { useQueries } from '@tanstack/react-query';
 import {
     Table,
@@ -14,7 +14,7 @@ import { separate3digits } from '@/utils/numbers';
 import { minifyContract, minifyTokenName } from '@/utils/truncate';
 import Image from 'next/image';
 import { SwapWallet } from '@/types/swap.type';
-import { getImages } from '@/http/image.http';
+import { getImages } from '@/services/http/image.http';
 import { ImageType } from '@/types/Image.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import Copy from '@/components/ui/copy';

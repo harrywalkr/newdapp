@@ -1,13 +1,16 @@
 'use client'
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 import Script from "next/script";
 
 import {
   ChartingLibraryWidgetOptions,
   ResolutionString,
 } from "@/public/static/charting_library";
+import { IDatafeed, IOhlcvData } from "@/types/datafeed.type";
+import { getDataFeed } from "@/services/http/token.http";
+import { cex } from "@/types/token.type";
+import { useQuery } from "@tanstack/react-query";
 
 const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
   symbol: "AAPL",
@@ -22,27 +25,40 @@ const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
   autosize: true,
 };
 
-const TVChartContainer = dynamic(
-  () =>
-    import("@/components/features/token/TVChartContainer").then((mod) => mod.TVChartContainer),
-  { ssr: false }
-);
+interface Props {
+  cex: cex[],
+  tokenAddress: string
+}
 
-export default function Chart() {
-  const [isScriptReady, setIsScriptReady] = useState(false);
+const TVChartContainer = dynamic(() => import("@/components/features/token/TVChartContainer").then(mod => mod.TVChartContainer), {
+  ssr: false,
+});
+
+export default function Chart({ cex, tokenAddress }: Props) {
+  const { data: ohlcvData, isSuccess } = useQuery<IOhlcvData[]>(
+    {
+      queryKey: ['ohlcvData'],
+      queryFn: async () => {
+        const data = await getDataFeed(tokenAddress);
+        return data.data.attributes.ohlcv_list.map(item => ({
+          time: item[0],
+          open: item[1],
+          high: item[2],
+          low: item[3],
+          close: item[4],
+          volume: item[5]
+        })).splice(0, 5);
+      }
+    });
+
   return (
     <>
-      <Head>
-        <title>Sample Demo TradingView with NextJS</title>
-      </Head>
       <Script
         src="/static/datafeeds/udf/dist/bundle.js"
         strategy="lazyOnload"
-        onReady={() => {
-          setIsScriptReady(true);
-        }}
+        onLoad={() => {/* Handle Script Load */ }}
       />
-      {isScriptReady && <TVChartContainer {...defaultWidgetProps} />}
+      {isSuccess && ohlcvData && ohlcvData.length > 0 && <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: cex![0].base }} ohlcvData={ohlcvData} />}
     </>
   );
 }

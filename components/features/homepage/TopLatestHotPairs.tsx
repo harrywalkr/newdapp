@@ -12,9 +12,9 @@ import {
 import { HotPairs } from "@/types/hotpair.type";
 import { ILatestToken, LatestTokenType } from "@/types/latestToke.type";
 import { useQuery } from "@tanstack/react-query";
-import { getAverageRank } from "@/http/averagerank.http";
+import { getAverageRank } from "@/services/http/averagerank.http";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getLatestTokens } from "@/http/latestTokens.http";
+import { getLatestTokens } from "@/services/http/latestTokens.http";
 import { useState } from "react";
 import { ImageType } from "@/types/Image.type";
 import { minifyContract, minifyTokenName } from "@/utils/truncate";

@@ -1,71 +1,128 @@
-import styles from "./index.module.css";
-import { useEffect, useRef } from "react";
-import { ChartingLibraryWidgetOptions, LanguageCode, ResolutionString, widget } from "@/public/static/charting_library";
+import React, { useEffect, useRef } from 'react';
+import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionString, LanguageCode, IBasicDataFeed, IDatafeedQuotesApi } from "@/public/static/charting_library";
+import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
 
-export const TVChartContainer = (props: Partial<ChartingLibraryWidgetOptions>) => {
+const dataFeed = (ohlcvData3: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
+    return {
+        onReady: (callback: any) => {
+            setTimeout(() => callback({
+                supported_resolutions: ["1D", "1W", "1M"],
+                supports_search: false,
+                supports_group_request: false,
+                supports_marks: false,
+                supports_timescale_marks: false,
+                supports_time: true
+            }), 0);
+        },
+        resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
+            setTimeout(() => {
+                onSymbolResolvedCallback({
+                    name: symbolName,
+                    timezone: 'Etc/UTC',
+                    minmov: 1,
+                    session: '24x7',
+                    has_intraday: true,
+                    has_daily: true,
+                    has_weekly_and_monthly: true,
+                    type: 'crypto',
+                    supported_resolutions: ["1D", "1W", "1M"] as ResolutionString[],
+                    pricescale: 100000000,
+                    ticker: symbolName,
+                    description: 'Description of the symbol',
+                    exchange: 'Exchange name',
+                    listed_exchange: 'Listed exchange name',
+                    format: 'price'
+                });
+            }, 0);
+        },
+        getBars: (symbolInfo, resolution, periodParams, onResult, onError) => {
+            setTimeout(() => {
+                const bars = ohlcvData3.filter(bar => {
+                    return bar.time >= periodParams.from && bar.time < periodParams.to;
+                }).map(bar => ({
+                    time: bar.time,
+                    open: bar.open,
+                    high: bar.high,
+                    low: bar.low,
+                    close: bar.close,
+                    volume: bar.volume
+                }));
+                if (bars.length) {
+                    onResult(bars, { noData: false });
+                } else {
+                    onResult([], { noData: true });
+                }
+            }, 0);
+        },
+        searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
+            // Implement search logic here, or provide a mock implementation if not applicable
+        },
+        subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) => {
+            // Implement subscription logic here, or provide a mock implementation if not applicable
+        },
+        unsubscribeBars: (subscriberUID) => {
+            // Implement unsubscription logic here, or provide a mock implementation if not applicable
+        },
+        getQuotes: (symbols, onDataCallback, onErrorCallback) => {
+            onDataCallback(symbols.map(symbol => ({
+                s: "ok",
+                n: symbol,
+                v: {
+                    price: 123.45,
+                }
+            })));
+        },
+        subscribeQuotes: (symbols, fastSymbols, onRealtimeCallback, listenerGUID) => {
+            // Mock implementation, possibly use setInterval to simulate real-time data
+        },
+        unsubscribeQuotes: (listenerGUID) => {
+            // Mock implementation
+        }
+    }
+};
+
+
+interface Props {
+    chartOptions: Partial<ChartingLibraryWidgetOptions>,
+    ohlcvData: IOhlcvData[]
+}
+
+export const TVChartContainer = ({ chartOptions, ohlcvData }: Props) => {
     const chartContainerRef =
         useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
     useEffect(() => {
-        const widgetOptions: ChartingLibraryWidgetOptions = {
-            symbol: props.symbol,
-            // BEWARE: no trailing slash is expected in feed URL
-            datafeed: new (window as any).Datafeeds.UDFCompatibleDatafeed(
-                "https://demo_feed.tradingview.com",
-                undefined,
-                {
-                    maxResponseLength: 1000,
-                    expectedOrder: "latestFirst",
-                }
-            ),
-            interval: props.interval as ResolutionString,
-            container: chartContainerRef.current,
-            library_path: props.library_path,
-            locale: props.locale as LanguageCode,
-            disabled_features: ["use_localstorage_for_settings", 'header_resolutions', 'header_widget', "header_symbol_search", "header_settings", "left_toolbar", "control_bar", "timeframes_toolbar", "legend_widget", "context_menus", 'widget_logo'],
-            enabled_features: [],
-            charts_storage_url: props.charts_storage_url,
-            charts_storage_api_version: props.charts_storage_api_version,
-            client_id: props.client_id,
-            user_id: props.user_id,
-            fullscreen: props.fullscreen,
-            autosize: props.autosize,
-            theme: 'dark',
-            timezone: 'Asia/Bangkok',
-            
+        if (chartContainerRef.current) {
+            const widgetOptions: ChartingLibraryWidgetOptions = {
+                symbol: chartOptions.symbol || 'DefaultSymbol',
+                datafeed: dataFeed(ohlcvData),
+                interval: chartOptions.interval as ResolutionString || 'D' as ResolutionString,
+                container: chartContainerRef.current,
+                library_path: chartOptions.library_path,
+                locale: 'en',
+                disabled_features: ["use_localstorage_for_settings"],
+                enabled_features: ["study_templates"],
+                charts_storage_url: chartOptions.charts_storage_url,
+                charts_storage_api_version: chartOptions.charts_storage_api_version,
+                client_id: chartOptions.client_id,
+                user_id: chartOptions.user_id,
+                fullscreen: chartOptions.fullscreen,
+                autosize: chartOptions.autosize,
+                theme: 'dark',
+                timezone: 'Etc/UTC',
+            };
 
-            // debug: true,
-        };
+            const tvWidget = new TradingViewWidget(widgetOptions);
 
-        const tvWidget = new widget(widgetOptions);
-        // tvWidget.setSymbol('Binance:GALAUSDT', 2222, () => {
+            tvWidget.onChartReady(() => {
+                console.log("Chart is ready");
+            });
 
-        // })
+            return () => {
+                tvWidget.remove();
+            };
+        }
+    }, [chartOptions, ohlcvData]);
 
-        tvWidget.onChartReady(() => {
-            tvWidget.headerReady().then(() => {
-                const button = tvWidget.createButton();
-                button.setAttribute("title", "Click to show a notification popup");
-                button.classList.add("apply-common-tooltip");
-                button.addEventListener("click", () =>
-                    tvWidget.showNoticeDialog({
-                        title: "Notification",
-                        body: "TradingView Charting Library API works correctly",
-                        callback: () => {
-                            console.log("Noticed!");
-                        },
-                    })
-                );
-                button.innerHTML = "Check API";
-            }).catch(err => console.log('err hello err hello  err hello  err hello  err hello  '))
-        });
-
-        return () => {
-            tvWidget.remove();
-        };
-    }, [props]);
-
-    return (
-        <div ref={chartContainerRef} className='h-80' />
-    );
+    return <div ref={chartContainerRef} className='h-80 md:h-96' />;
 };

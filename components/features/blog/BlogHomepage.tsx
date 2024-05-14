@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useQuery } from '@tanstack/react-query';
-import { getAllPosts, findPostsByCategory } from '@/http/blog/post.http';
-import { getAllCategories } from '@/http/blog/category.http';
+import { getAllPosts, findPostsByCategory } from '@/services/http/blog/post.http';
+import { getAllCategories } from '@/services/http/blog/category.http';
 import { IPost, PostEndpoint } from '@/types/post.type';
 import { ICategory } from '@/types/category.type';
 import clsx from 'clsx';

@@ -1,4 +1,4 @@
-import { findPostById } from '@/http/blog/post.http';
+import { findPostById } from '@/services/http/blog/post.http';
 import Image from 'next/image';
 import React from 'react'
 

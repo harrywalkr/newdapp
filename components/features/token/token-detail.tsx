@@ -15,7 +15,7 @@ import ContractSecurity from './ContractSecurity'
 import { GrStakeholder } from 'react-icons/gr'
 import TokenHolders from './TokenHolders-old-dex/TokenHoldersAmountFilter'
 import RenderConditionalComponent from '@/utils/RenderConditionalComponent'
-import { isPaidMember } from '@/utils/isPaidMember'
+import { isPaidMember } from '@/services/auth.service'
 import Paywall from '@/components/common/Paywall'
 
 interface Props {

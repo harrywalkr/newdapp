@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { getWalletBalance, getWalletParams, getWalletSummary } from "@/http/wallets.http";
+import { getWalletBalance, getWalletParams, getWalletSummary } from "@/services/http/wallets.http";
 import { ImageType } from "@/types/Image.type";
-import { getImages } from "@/http/image.http";
+import { getImages } from "@/services/http/image.http";
 import WalletDetail from "@/components/features/wallet/wallet-detail";
 import WalletOverview from "@/components/features/wallet/wallet-overview";
 

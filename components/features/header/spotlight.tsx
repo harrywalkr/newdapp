@@ -22,14 +22,14 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { spotlightSearch } from "@/http/spotlight.http";
-import { searchToken } from "@/http/token.http";
+import { spotlightSearch } from "@/services/http/spotlight.http";
+import { searchToken } from "@/services/http/token.http";
 import { useEffect, useState } from "react";
 import { SpotlightSearchType } from "@/types/spotlight.type";
 import { TokenType } from "@/types/token.type";
 import { get, set } from "local-storage";
 import { ImageType } from "@/types/Image.type";
-import { getImages } from "@/http/image.http";
+import { getImages } from "@/services/http/image.http";
 import { useMounted } from "@/utils/useMounted";
 import Image from "next/image";
 import { minifyContract, truncate } from "@/utils/truncate";

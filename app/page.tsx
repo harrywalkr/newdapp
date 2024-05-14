@@ -2,13 +2,13 @@ import NFT from "@/components/features/homepage/NFT";
 import Tokens from "@/components/features/homepage/Tokens";
 import Wallet from "@/components/features/homepage/Wallet";
 import TableExample from "@/components/features/data-table/data";
-import { getAverageRank } from "@/http/averagerank.http";
-import { getImages } from "@/http/image.http";
-import { getWallets } from "@/http/wallets.http";
+import { getAverageRank } from "@/services/http/averagerank.http";
+import { getImages } from "@/services/http/image.http";
+import { getWallets } from "@/services/http/wallets.http";
 import { ImageEndpoint, ImageType } from "@/types/Image.type";
-import { getTopNFTs } from "@/http/nft.http";
+import { getTopNFTs } from "@/services/http/nft.http";
 import { TopLatestHotPairs } from "@/components/features/homepage/TopLatestHotPairs";
-import { getLatestTokens } from "@/http/latestTokens.http";
+import { getLatestTokens } from "@/services/http/latestTokens.http";
 
 export default async function Home() {
   //   // cache: 'no-store' //FIXME: stop cache for this page

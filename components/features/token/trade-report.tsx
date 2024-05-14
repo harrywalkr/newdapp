@@ -2,7 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton"
 import Loading from "@/components/common/Loading";
-import { getTradeReport } from "@/http/token.http";
+import { getTradeReport } from "@/services/http/token.http";
 import { useQuery } from "@tanstack/react-query";
 import {
     Table,

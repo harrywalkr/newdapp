@@ -26,7 +26,7 @@ export default function LoadingOverlay() {
 
   return (
     <div
-      className="fixed inset-0 backdrop-blur-sm bg-background bg-opacity-70 h-screen z-50 w-screen flex flex-col items-center justify-center gap-6"
+      className="fixed inset-0 backdrop-blur-sm bg-background bg-opacity-70 h-screen z-50 w-screen flex flex-col items-center justify-center gap-6 md:gap-8"
     >
       <Loading width={70} height={70} />
       <div className="text-base flex items-start gap-2 justify-center md:text-lg text-muted-foreground px-10">

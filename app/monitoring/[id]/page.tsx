@@ -1,7 +1,7 @@
 
-import { getToken, searchToken } from "@/http/token.http";
+import { getToken, searchToken } from "@/services/http/token.http";
 import { Metadata } from "next";
-import { getLogo } from "@/http/image.http";
+import { getLogo } from "@/services/http/image.http";
 import TokenOverview from "@/components/features/token/token-overview";
 import TokenDetail from "@/components/features/token/token-detail";
 import { merge } from "@/utils/merger";

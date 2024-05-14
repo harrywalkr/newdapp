@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import { useState } from "react";
-import { getTrends } from "@/http/trends.http";
+import { getTrends } from "@/services/http/trends.http";
 import useTokenChainStore from "@/store/tokenChains";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -110,12 +110,10 @@ export default function Tokens() { // FIXME: this component must include trendin
                         ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
                         `}*/}
                       <div className="header relative flex items-start justify-start gap-6">
-                        <Avatar className="h-12 w-12">
+                        <Avatar className="h-14 w-14">
                           <AvatarImage
                             src={data.logo_url}
                             alt="token logo"
-                            width={60}
-                            height={60}
                           />
                           <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
                         </Avatar>
@@ -149,7 +147,7 @@ export default function Tokens() { // FIXME: this component must include trendin
                   <Card key={id} className="w-full">
                     <CardContent className="pt-6">
                       <div className="header relative flex items-start justify-start gap-6">
-                        <Avatar>
+                        <Avatar className="h-14 w-14">
                           <AvatarImage
                             src={data.logo_url}
                             alt="token logo"
@@ -193,7 +191,7 @@ export default function Tokens() { // FIXME: this component must include trendin
                           Show More
                         </Link>
                       ) : <div className="header relative flex items-start justify-start gap-6">
-                        <Avatar>
+                        <Avatar className="h-14 w-14">
                           <AvatarImage
                             src={data.logo_url}
                             alt="token logo"

@@ -163,6 +163,10 @@ span {
   }
 }
 
+.tradingview-widget-copyright {
+  display: none !important;
+}
+
 // FIXME: delete this when it's no longer needed on tvchart
 // .VersionHeader {
 // 	text-align: center;

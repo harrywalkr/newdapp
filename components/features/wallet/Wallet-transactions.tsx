@@ -1,8 +1,8 @@
 'use client'
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { getImages } from '@/http/image.http';
-import { getWalletSwaps } from '@/http/wallets.http';
+import { getImages } from '@/services/http/image.http';
+import { getWalletSwaps } from '@/services/http/wallets.http';
 import { useQueries } from '@tanstack/react-query';
 import React from 'react'
 import TransactionComponent from './Transaction';
