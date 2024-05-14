@@ -94,7 +94,6 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                     </div>
                 )
             })}
-
             <TradeReport tokenAddress={tokenAddress} />
         </div>
     )
