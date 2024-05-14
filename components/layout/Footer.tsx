@@ -10,7 +10,7 @@ export const Footer = () => {
           >
             <span>DexTrading</span>
           </a>
-        </div>
+        </div> 
 
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Follow Us</h3>
