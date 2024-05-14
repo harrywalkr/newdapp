@@ -29,7 +29,9 @@ import Spinner from "@/components/common/Spinner"
 const formSchema = z.object({
     password: z.string().min(32, {
         message: "Password must be at least 32 characters",
-    }).max(32),
+    }).max(32, {
+        message: "Password must less than 32 characters",
+    }),
 })
 
 
@@ -42,7 +44,7 @@ export default function LoginForm() {
             password: "",
         },
     })
-
+    // FIXME: Another 500 error !!!!!
     const { mutate, isPending, isError } = useMutation(
         {
             mutationFn:
@@ -66,14 +68,14 @@ export default function LoginForm() {
 
     return (
         <Card className="w-full relative max-w-sm">
-            {isPending && <Spinner />}
-            <CardHeader>
-                <CardTitle>Enter your access key</CardTitle>
-                <CardDescription>Login to your Dextrading account</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                    {isPending && <Spinner />}
+                    <CardHeader>
+                        <CardTitle>Enter your access key</CardTitle>
+                        <CardDescription>Login to your Dextrading account</CardDescription>
+                    </CardHeader>
+                    <CardContent>
                         <FormField
                             control={form.control}
                             name="password"
@@ -81,7 +83,12 @@ export default function LoginForm() {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input className="outline outline-1 outline-muted-foreground/35" placeholder="*********" {...field} />
+                                        <Input
+                                            {...field}
+                                            className="outline outline-1 outline-muted-foreground/35"
+                                            type="password"
+                                            placeholder="*********"
+                                        />
                                     </FormControl>
                                     <FormDescription>
                                         This is your access key
@@ -90,14 +97,12 @@ export default function LoginForm() {
                                 </FormItem>
                             )}
                         />
-                    </form>
-                </Form>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-                <Button type="submit">Submit</Button>
-            </CardFooter>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                        <Button type="submit">Submit</Button>
+                    </CardFooter>
+                </form>
+            </Form>
         </Card >
     )
 }
-
-
