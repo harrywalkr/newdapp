@@ -26,15 +26,17 @@ export default function LoadingOverlay() {
 
   return (
     <div
-      className="fixed inset-0 backdrop-blur-sm bg-background bg-opacity-70 h-screen z-50 w-screen flex flex-col items-center justify-center gap-5"
+      className="fixed inset-0 backdrop-blur-sm bg-background bg-opacity-70 h-screen z-50 w-screen flex flex-col items-center justify-center gap-6"
     >
       <Loading width={70} height={70} />
-      <p className="text-base md:text-lg text-muted-foreground px-10">
-        <span className="font-bold">
-          Tip : {' '}
+      <div className="text-base flex items-start gap-2 justify-center md:text-lg text-muted-foreground px-10">
+        <span className="font-bold whitespace-nowrap">
+          Tip :
         </span>
-        {tips[randomIndex]}
-      </p>
+        <p className="max-w-lg">
+          {tips[randomIndex]}
+        </p>
+      </div>
     </div>
   );
 }
