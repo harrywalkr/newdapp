@@ -36,7 +36,7 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                                 <div className='whitespace-nowrap'>
                                     {'Total holders: '}
                                     <h2 className={clsx('text-sm inline text-center',
-                                        token!.BalancesData!.numberOfAddresses > 10
+                                        token!.BalancesData!.numberOfAddresses! > 10
                                             ? " text-green-400"
                                             : " text-red-500"
                                     )}
