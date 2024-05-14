@@ -22,7 +22,7 @@ export const HeroCards = () => {
             <CardDescription>@john_doe</CardDescription>
           </div>
         </CardHeader>
-        <CardContent>"This landing page is awesome!"</CardContent>
+        <CardContent>This landing page is awesome!</CardContent>
       </Card>
 
       {/* Team Card */}
@@ -33,7 +33,7 @@ export const HeroCards = () => {
           <CardDescription className="font-normal text-primary">Frontend Developer</CardDescription>
         </CardHeader>
         <CardContent className="text-center pb-2">
-          "I really enjoy transforming ideas into functional software that exceeds expectations."
+          I really enjoy transforming ideas into functional software that exceeds expectations.
         </CardContent>
         <CardFooter>
           <div className="flex gap-2">
