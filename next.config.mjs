@@ -11,7 +11,8 @@ const nextConfig = {
     //     hostname: 'api.dextrading.com',
     //   },
     // ], FIXME: next must be updated for this to be supported. old package still depends on this older nextjs
-    domains: ['api.dextrading.com', '95.81.93.198'],
+    // FIXME: remove pravatar from domain later
+    domains: ["api.dextrading.com", "95.81.93.198", "i.pravatar.cc"],
   },
 };
 
