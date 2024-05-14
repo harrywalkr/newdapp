@@ -5,6 +5,7 @@ import "./globals.scss";
 import Header from "@/components/layout/Header";
 import Providers from "@/providers";
 import { cn } from "@/lib/utils";
+import { Footer } from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <main className="mt-28 md:mt-32 lg:mt-36 max-w-screen-2xl !mx-auto">
             <Header />
             {children}
+            <Footer />
           </main>
         </Providers>
       </body>

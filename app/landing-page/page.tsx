@@ -2,7 +2,6 @@ import { About } from "@/components/features/landing-page/About";
 import { Cta } from "@/components/features/landing-page/Cta";
 import { FAQ } from "@/components/features/landing-page/FAQ";
 import { Features } from "@/components/features/landing-page/Features";
-import { Footer } from "@/components/features/landing-page/Footer";
 import { Hero } from "@/components/features/landing-page/Hero";
 import { HowItWorks } from "@/components/features/landing-page/HowItWorks";
 import { Newsletter } from "@/components/features/landing-page/Newsletter";
@@ -28,7 +27,6 @@ function Landing() {
       <Pricing />
       <Newsletter />
       <FAQ />
-      <Footer />
       <ScrollToTop />
     </>
   );

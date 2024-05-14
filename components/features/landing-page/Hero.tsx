@@ -1,6 +1,5 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { HeroCards } from "./HeroCards";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export const Hero = () => {
   return (
@@ -9,17 +8,13 @@ export const Hero = () => {
         <main className="text-5xl md:text-6xl font-bold">
           <h1 className="inline text-5xl md:text-7xl">
             <span className="inline text-brand">
-              DexTrading
-              landing page
-              DEX
-              for
-              traders
+              DexTrading: Empowering Crypto Traders
             </span>
           </h1>
         </main>
 
         <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-          A landing page related to crypto stuff. The text here will be rewritten
+          Unlock advanced crypto trading insights with DexTrading. Our platform offers real-time analysis, predictive market algorithms, and comprehensive trading tools designed to optimize your strategies and enhance market understanding.
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
@@ -27,12 +22,12 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Hero cards sections */}
+      {/* Hero cards sections showcasing key features or tools */}
       <div className="z-10">
         <HeroCards />
       </div>
 
-      {/* Shadow effect */}
+      {/* Shadow effect for visual depth */}
       <div className="shadow"></div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { GiftIcon, MapIcon, MedalIcon, PlaneIcon } from "./Icons";
-// import { MedalIcon, MapIcon, PlaneIcon, GiftIcon } from "../components/Icons";
+import { CiMedal , CiMap, CiGift} from "react-icons/ci";
+import { FaRegPaperPlane } from "react-icons/fa";
 
 interface FeatureProps {
   icon: JSX.Element;
@@ -10,28 +10,28 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    icon: <MedalIcon />,
-    title: "Accessibility",
+    icon: <CiMedal />,
+    title: "Real-Time Analytics",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Access real-time market data and trends to stay ahead. Utilize dynamic charts and crypto indicators to make informed decisions swiftly.",
   },
   {
-    icon: <MapIcon />,
-    title: "Community",
+    icon:<CiMap />,
+    title: "Global Community",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Join a worldwide network of crypto traders. Share insights, discuss strategies, and enhance your trading knowledge through community wisdom.",
   },
   {
-    icon: <PlaneIcon />,
-    title: "Scalability",
+    icon: <FaRegPaperPlane />,
+    title: "High Scalability",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Our platform scales to handle the needs of both new traders and professionals without sacrificing speed or reliability, supporting vast data volumes.",
   },
   {
-    icon: <GiftIcon />,
-    title: "Gamification",
+    icon: <CiGift />,
+    title: "Rewards System",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Engage continuously with our platform and earn rewards. Participate in competitions and challenges to win prizes and gain recognition.",
   },
 ];
 
@@ -49,20 +49,19 @@ export const HowItWorks = () => {
         Step-by-Step Guide
       </h2>
       <p className="md:w-3/4 mx-auto mt-4 mb-8 text-xl text-muted-foreground">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-        dolor pariatur sit!
+        Explore how DexTrading enhances your crypto trading experience with advanced tools and features designed for optimal trading efficiency.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {features.map(({ icon, title, description }: FeatureProps) => (
           <Card
             key={title}
-            className="bg-muted/50"
+            className="bg-muted/50 transition-shadow duration-300 hover:shadow-lg"
           >
             <CardHeader>
               <CardTitle className="grid gap-4 place-items-center">
                 {icon}
-                {title}
+                <span className="font-semibold">{title}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>{description}</CardContent>

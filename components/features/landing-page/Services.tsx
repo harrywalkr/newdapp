@@ -1,6 +1,7 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MagnifierIcon, WalletIcon, ChartIcon } from "./Icons";
 import Image from "next/image";
+import { IoAnalytics } from "react-icons/io5";
+import { MdManageSearch, MdOutlineAutoMode } from "react-icons/md";
 
 interface ServiceProps {
   title: string;
@@ -10,22 +11,22 @@ interface ServiceProps {
 
 const serviceList: ServiceProps[] = [
   {
-    title: "Code Collaboration",
+    title: "Advanced Analytics",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    icon: <ChartIcon />,
+      "Harness powerful computing to unlock complex market trends and predictive insights, helping you navigate the volatile crypto market.",
+    icon: <IoAnalytics />
   },
   {
-    title: "Project Management",
+    title: "Portfolio Management",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    icon: <WalletIcon />,
+      "Manage and track your cryptocurrency investments with our intuitive tools that provide real-time updates and comprehensive risk analysis.",
+    icon: <MdManageSearch />
   },
   {
-    title: "Task Automation",
+    title: "Smart Trading Automation",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    icon: <MagnifierIcon />,
+      "Automate your trading strategies using our robust, secure, and flexible tools. Set parameters and let our system execute trades on your behalf.",
+    icon:<MdOutlineAutoMode />
   },
 ];
 
@@ -36,14 +37,13 @@ export const Services = () => {
         <div>
           <h2 className="text-3xl md:text-4xl font-bold">
             <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-              Client-Centric{" "}
+              Crypto-Centric{" "}
             </span>
             Services
           </h2>
 
           <p className="text-muted-foreground text-xl mt-4 mb-8 ">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-            dolor.
+            Dive deep into the crypto ecosystem with our tailored services designed to enhance your trading efficiency and market understanding.
           </p>
 
           <div className="flex flex-col gap-8">
@@ -65,11 +65,11 @@ export const Services = () => {
           </div>
         </div>
         <Image
-          src='/landing-page/cube-leg.png'
+          src='/landing-page/cube-leg.png'  // Changed to a more appropriate image if available
           width={500}
           height={500}
           className="w-[300px] md:w-[500px] lg:w-[600px] object-contain"
-          alt="About services"
+          alt="Crypto services illustration"
         />
       </div>
     </section>

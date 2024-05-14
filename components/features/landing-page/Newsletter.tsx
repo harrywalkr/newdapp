@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Newsletter = () => {
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Subscribed!");
+    // Ideally, add an API call here to actually subscribe the user
   };
 
   return (
@@ -13,13 +14,13 @@ export const Newsletter = () => {
       <hr className="w-11/12 mx-auto" />
       <div className="py-24 sm:py-32">
         <h3 className="text-center text-4xl md:text-5xl font-bold">
-          Join Our Daily{" "}
+          Stay Updated with Our{" "}
           <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-            Newsletter
+            Crypto Insights
           </span>
         </h3>
         <p className="text-xl text-muted-foreground text-center mt-4 mb-8">
-          Lorem ipsum dolor sit amet consectetur.
+          Subscribe to receive the latest crypto market trends, analysis, and updates directly to your inbox.
         </p>
 
         <form
@@ -27,14 +28,17 @@ export const Newsletter = () => {
           onSubmit={handleSubmit}
         >
           <Input
-            placeholder="leomirandadev@gmail.com"
-            className="bg-muted/50 dark:bg-muted/80 "
-            aria-label="email"
+            type="email"  // specify the type to get email-specific keyboard on mobile
+            placeholder="Enter your email"
+            className="bg-muted/50 dark:bg-muted/80 px-4 py-2 rounded-md" // improved styling for better UX
+            aria-label="Enter your email to subscribe"  // more descriptive aria-label
+            required  // ensure the form cannot be submitted without an email
           />
-          <Button>Subscribe</Button>
+          <Button >
+            Subscribe
+          </Button>
         </form>
       </div>
-
       <hr className="w-11/12 mx-auto" />
     </section>
   );

@@ -5,9 +5,9 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="py-24 sm:py-32"
+      className="py-24 sm:py-32 bg-background-dark"
     >
-      <div className="bg-muted/50 border rounded-lg py-12">
+      <div className="bg-muted/50 border rounded-lg py-12 shadow-lg">
         <div className="px-6 flex flex-col-reverse md:flex-row gap-8 md:gap-12">
           <Image
             src='/landing-page/pilot.png'
@@ -15,21 +15,16 @@ export const About = () => {
             width={200}
             height={200}
             className="w-[300px] object-contain rounded-lg"
-          />
-          <div className="bg-green-0 flex flex-col justify-between">
+          /> 
+          <div className="flex flex-col justify-between">
             <div className="pb-6">
-              <h2 className="text-3xl md:text-4xl font-bold">
-                <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                  About{" "}
+              <h2 className="text-3xl md:text-4xl font-bold text-primary">
+                <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                  Empowering Crypto Traders
                 </span>
-                Company
               </h2>
               <p className="text-xl text-muted-foreground mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                amet, consectetur adipiscing elit.
+                At DexTrading, we leverage cutting-edge analytics to provide deep insights into the cryptocurrency market. Our platform empowers traders by offering real-time data analysis, predictive trends, and comprehensive market reports. Whether you're a seasoned investor or new to crypto, DexTrading equips you with the tools needed to make informed decisions.
               </p>
             </div>
 

@@ -1,11 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface TestimonialProps {
   image: string;
@@ -16,46 +10,34 @@ interface TestimonialProps {
 
 const testimonials: TestimonialProps[] = [
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe",
-    comment: "This landing page is awesome!",
+    image: "https://example.com/images/user1.png",
+    name: "Alice Johnson",
+    userName: "@alice_crypto",
+    comment: "The real-time data and market insights from this platform have dramatically improved my trading strategies and results.",
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe1",
-    comment:
-      "Lorem ipsum dolor sit amet,empor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
-  },
-
-  {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe2",
-    comment:
-      "Lorem ipsum dolor sit amet,exercitation. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+    image: "https://example.com/images/user2.png",
+    name: "Bob Smith",
+    userName: "@bob_trader",
+    comment: "I appreciate the intuitive design and how easy it is to navigate the complex world of crypto trading with this app.",
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe3",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    image: "https://example.com/images/user3.png",
+    name: "Cathy Lee",
+    userName: "@cathy_hodl",
+    comment: "Automated trading has never been easier. I set my parameters, and the system executes flawlessly, saving me time and reducing stress.",
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe4",
-    comment:
-      "Lorem ipsum dolor sit amet, tempor incididunt  aliqua. Ut enim ad minim veniam, quis nostrud.",
+    image: "https://example.com/images/user4.png",
+    name: "David Park",
+    userName: "@david_invests",
+    comment: "Portfolio management tools on this platform are second to none. I can easily review my investments and make adjustments on the fly.",
   },
   {
-    image: "https://github.com/shadcn.png",
-    name: "John Doe React",
-    userName: "@john_Doe5",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    image: "https://example.com/images/user5.png",
+    name: "Eva Grant",
+    userName: "@eva_analytics",
+    comment: "Thanks to the predictive algorithms, I'm making more informed decisions that are based on solid data analytics.",
   },
 ];
 
@@ -69,42 +51,30 @@ export const Testimonials = () => {
         Discover Why
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
           {" "}
-          People Love{" "}
+          Traders Trust Us
         </span>
-        This Landing Page
       </h2>
 
       <p className="text-xl text-muted-foreground pt-4 pb-8">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non unde error
-        facere hic reiciendis illo
+        Here’s what our users say about leveraging our cutting-edge tools to enhance their trading success.
       </p>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2  lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">
-        {testimonials.map(
-          ({ image, name, userName, comment }: TestimonialProps) => (
-            <Card
-              key={userName}
-              className="max-w-md md:break-inside-avoid overflow-hidden"
-            >
-              <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                <Avatar>
-                  <AvatarImage
-                    alt=""
-                    src={image}
-                  />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-
-                <div className="flex flex-col">
-                  <CardTitle className="text-lg">{name}</CardTitle>
-                  <CardDescription>{userName}</CardDescription>
-                </div>
-              </CardHeader>
-
-              <CardContent>{comment}</CardContent>
-            </Card>
-          )
-        )}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {testimonials.map(({ image, name, userName, comment }: TestimonialProps) => (
+          <Card key={userName} className="bg-muted/70 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="flex flex-row items-center gap-4 pb-2">
+              <Avatar>
+                <AvatarImage src={image} alt={`Profile of ${name}`} />
+                <AvatarFallback>?</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <CardTitle className="text-lg">{name}</CardTitle>
+                <CardDescription>{userName}</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent>{comment}</CardContent>
+          </Card>
+        ))}
       </div>
     </section>
   );

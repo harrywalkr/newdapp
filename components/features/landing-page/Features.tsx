@@ -6,9 +6,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import image from "@/public/landing-page/growth.png";
-import image3 from "@/public/landing-page/reflecting.png";
-import image4 from "@/public/landing-page/looking-ahead.png";
+import growthImage from "@/public/landing-page/growth.png";
+import reflectingImage from "@/public/landing-page/reflecting.png";
+import lookingAheadImage from "@/public/landing-page/looking-ahead.png";
 import Image, { StaticImageData } from "next/image";
 
 interface FeatureProps {
@@ -19,35 +19,35 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    title: "Responsive Design",
+    title: "Advanced Chart Tools",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image4,
+      "Utilize state-of-the-art charting tools to visualize trading data and analyze market trends with precision.",
+    image: lookingAheadImage,
   },
   {
-    title: "Intuitive user interface",
+    title: "Market Sentiment Analysis",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image3,
+      "Gain insights into market sentiment through advanced analytics, helping you make informed trading decisions.",
+    image: reflectingImage,
   },
   {
-    title: "AI-Powered insights",
+    title: "Predictive AI Algorithms",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image,
+      "Leverage artificial intelligence to predict market movements and get a competitive edge in your trading strategy.",
+    image: growthImage,
   },
 ];
 
 const featureList: string[] = [
-  "Dark/Light theme",
-  "Reviews",
-  "Features",
-  "Pricing",
-  "Contact form",
-  "Our team",
-  "Responsive design",
-  "Newsletter",
-  "Minimalist",
+  "Real-time Updates",
+  "Community Insights",
+  "Secure Transactions",
+  "Portfolio Management",
+  "Risk Assessment Tools",
+  "Crypto-specific Analytics",
+  "User-friendly Interface",
+  "24/7 Support",
+  "Mobile Compatibility",
 ];
 
 export const Features = () => {
@@ -57,9 +57,9 @@ export const Features = () => {
       className="py-24 sm:py-32 space-y-8"
     >
       <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
-        Many{" "}
+        Explore Our{" "}
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Great Features
+          Powerful Features
         </span>
       </h2>
 
@@ -88,8 +88,11 @@ export const Features = () => {
             <CardFooter>
               <Image
                 src={image}
-                alt="About feature"
-                className="w-[200px] lg:w-[300px] mx-auto"
+                alt={`${title} illustration`}
+                className="w-full mx-auto" // adjusted for responsiveness and full width
+                layout="responsive" // added for better image scaling
+                width={300} // set width for responsive layout
+                height={200} // set height to maintain aspect ratio
               />
             </CardFooter>
           </Card>

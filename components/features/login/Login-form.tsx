@@ -27,11 +27,12 @@ import { verifyKey } from "@/services/auth.service"
 import Spinner from "@/components/common/Spinner"
 
 const formSchema = z.object({
-    password: z.string().min(32, {
-        message: "Password must be at least 32 characters",
-    }).max(32, {
-        message: "Password must less than 32 characters",
-    }),
+    password: z.string()
+        // .min(32, {
+        //     message: "Password must be at least 32 characters",
+        // }).max(32, {
+        //     message: "Password must less than 32 characters",
+        // }),
 })
 
 
