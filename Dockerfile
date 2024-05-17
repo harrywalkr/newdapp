@@ -22,16 +22,13 @@ RUN yarn build
 
 # Stage 4: Production
 FROM node:18-alpine AS production
-LABEL maintainer="your_email@example.com"
+LABEL maintainer="ahmad.b1995@gmail.com"
 LABEL stage="production"
 WORKDIR /app
 ENV NODE_ENV=production
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
