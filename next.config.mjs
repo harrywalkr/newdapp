@@ -14,6 +14,7 @@ const nextConfig = {
     // FIXME: remove pravatar from domain later
     domains: ["api.dextrading.com", "95.81.93.198", "i.pravatar.cc"],
   },
+  future: { webpack5: true }
 };
 
 export default nextConfig;
