@@ -10,8 +10,8 @@ type RenderComponentOptions = {
 };
 
 // FIXME: Can do promises as well but can only be imported into client components
-function RenderConditionalComponent(value: boolean | 0 | undefined | null | Promise<boolean | 0 | undefined | null>, options: RenderComponentOptions): React.ReactNode {
-    const [resolvedValue, setResolvedValue] = useState<boolean | 0 | undefined | null | Promise<boolean | 0 | undefined | null>>(null);
+function RenderConditionalComponent(value: any | Promise<any>, options: RenderComponentOptions): React.ReactNode {
+    const [resolvedValue, setResolvedValue] = useState<any | Promise<any>>(null);
     const { zeroValueComponent, nullValueComponent, falseValueComponent, trueValueComponent } = options;
 
     useEffect(() => {
