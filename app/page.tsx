@@ -13,7 +13,7 @@ import { getLatestTokens } from "@/services/http/latestTokens.http";
 export default async function Home() {
   //   // cache: 'no-store' //FIXME: stop cache for this page
   const images = await getImages();
-  const { data: wallets } = await getWallets({});
+  const wallets = await getWallets({});
   const nfts = await getTopNFTs();
 
   return (
