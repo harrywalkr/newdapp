@@ -1,67 +1,53 @@
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ICategory } from "@/types/category.type";
-import axiosInstance from "../axios.config";
+import { fetchData } from "../axios.config";
 
 // findAll
 export async function getAllCategories(): Promise<ICategory[]> {
-  try {
-    const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category`
-      );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    throw error;
-  }
+  return fetchData<ICategory[]>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category`
+  );
 }
 
-// findOne (assuming it might be needed)
+// findOne
 export async function findCategoryById(id: string): Promise<ICategory> {
-  try {
-    const response = await axiosInstance.get(`/api/category/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching category by ID:", error);
-    throw error;
-  }
+  return fetchData<ICategory>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category/${id}`
+  );
 }
 
-// create
+// Function to create category
 export async function createCategory(
   categoryData: ICategory
 ): Promise<ICategory> {
-  try {
-    const response = await axiosInstance.post("/api/category", categoryData);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating category:", error);
-    throw error;
-  }
+  return fetchData<ICategory>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category`,
+    {
+      method: "POST",
+      data: categoryData,
+    }
+  );
 }
 
-// update
+// Function to update category
 export async function updateCategory(
   id: string,
   updatedData: ICategory
 ): Promise<ICategory> {
-  try {
-    const response = await axiosInstance.put(
-      `/api/category/${id}`,
-      updatedData
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error updating category:", error);
-    throw error;
-  }
+  return fetchData<ICategory>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category/${id}`,
+    {
+      method: "PUT",
+      data: updatedData,
+    }
+  );
 }
-
-// remove
+// Function to delete category
 export async function deleteCategory(id: string): Promise<{ message: string }> {
-  try {
-    const response = await axiosInstance.delete(`/api/category/${id}`);
-    return response.data; // Assuming the API returns a message object
-  } catch (error) {
-    console.error("Error deleting category:", error);
-    throw error;
-  }
+  return fetchData<{ message: string }>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/category/${id}`,
+    {
+      method: 'DELETE',
+    }
+  );
 }

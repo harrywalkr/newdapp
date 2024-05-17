@@ -1,93 +1,71 @@
 import { IPost, PostEndpoint, PostsQueryConfig } from "@/types/post.type";
-import axiosInstance from "../axios.config";
+import axiosInstance, { fetchData } from "../axios.config";
 
-// findAll
+// Function to get all posts
 export async function getAllPosts(
   options?: PostsQueryConfig
 ): Promise<PostEndpoint> {
-  try {
-    const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts`,
-      options
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    throw error;
-  }
+  return fetchData<PostEndpoint>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts`,
+    { method: 'GET', ...options }
+  );
 }
 
-// findOne
+// Function to find post by ID
 export async function findPostById(
   id: number | string
 ): Promise<{ data: IPost }> {
-  try {
-    const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/${id}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    throw error;
-  }
+  return fetchData<{ data: IPost }>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/${id}`,
+    { method: 'GET' }
+  );
 }
 
-// create
-export async function createPost(postData: IPost) {
-  try {
-    const response = await axiosInstance.post("/api/posts", postData);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating post:", error);
-    throw error;
-  }
+// Function to create post
+export async function createPost(postData: IPost): Promise<IPost> {
+  return fetchData<IPost>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts`,
+    {
+      method: 'POST',
+      data: postData,
+    }
+  );
 }
 
-// update
-export async function updatePost(id: number, updatedData: IPost) {
-  try {
-    const response = await axiosInstance.put(`/api/${id}`, updatedData);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating post:", error);
-    throw error;
-  }
+// Function to update post
+export async function updatePost(id: number, updatedData: IPost): Promise<IPost> {
+  return fetchData<IPost>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/${id}`,
+    {
+      method: 'PUT',
+      data: updatedData,
+    }
+  );
 }
 
-// remove
-export async function deletePost(id: number) {
-  try {
-    const response = await axiosInstance.delete(`/posts/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting post:", error);
-    throw error;
-  }
+// Function to delete post
+export async function deletePost(id: number): Promise<{ message: string }> {
+  return fetchData<{ message: string }>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/${id}`,
+    { method: 'DELETE' }
+  );
 }
 
-// getPostsByTag
-export async function findPostsByTag(tag: string[]) {
-  try {
-    const response = await axiosInstance.get(`/tags/${tag}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching posts by tag:", error);
-    throw error;
-  }
+// Function to find posts by tag
+export async function findPostsByTag(tag: string[]): Promise<PostEndpoint> {
+  return fetchData<PostEndpoint>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags/${tag.join(',')}`,
+    { method: 'GET' }
+  );
 }
 
-// getPostsByCategory
+// Function to find posts by category
 export async function findPostsByCategory(
   category: string,
   options?: PostsQueryConfig
 ): Promise<PostEndpoint> {
-  try {
-    const response = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/categories/${category}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching posts by category:", error);
-    throw error;
-  }
+  return fetchData<PostEndpoint>(
+    `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts/categories/${category}`,
+    { method: 'GET', ...options }
+  );
 }

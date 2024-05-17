@@ -1,57 +1,39 @@
 import { ITag } from "@/types/tag.type";
-import axiosInstance from "../axios.config";
+import axiosInstance, { fetchData } from "../axios.config";
 
-// findAll
+// Function to get all tags
 export async function getAllTags(): Promise<ITag[]> {
-  try {
-    const response = await axiosInstance.get("/api/tags");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching tags:", error);
-    throw error;
-  }
+  return fetchData<ITag[]>(`${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags`, {
+    method: "GET",
+  });
 }
 
-// findOne (assuming there might be a use case)
+// Function to find tag by ID
 export async function findTagById(id: string): Promise<ITag> {
-  try {
-    const response = await axiosInstance.get(`/api/tags/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching tag by ID:", error);
-    throw error;
-  }
+  return fetchData<ITag>(`${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags/${id}`, {
+    method: "GET",
+  });
 }
 
-// create
+// Function to create tag
 export async function createTag(tagData: ITag): Promise<ITag> {
-  try {
-    const response = await axiosInstance.post("/api/tags", tagData);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating tag:", error);
-    throw error;
-  }
+  return fetchData<ITag>(`${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags`, {
+    method: "POST",
+    data: tagData,
+  });
 }
 
-// update
+// Function to update tag
 export async function updateTag(id: string, updatedData: ITag): Promise<ITag> {
-  try {
-    const response = await axiosInstance.put(`/api/tags/${id}`, updatedData);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating tag:", error);
-    throw error;
-  }
+  return fetchData<ITag>(`${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags/${id}`, {
+    method: "PUT",
+    data: updatedData,
+  });
 }
 
-// remove
+// Function to delete tag
 export async function deleteTag(id: string): Promise<ITag> {
-  try {
-    const response = await axiosInstance.delete(`/api/tags/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting tag:", error);
-    throw error;
-  }
+  return fetchData<ITag>(`${process.env.NEXT_PUBLIC_BLOG_URL}/api/tags/${id}`, {
+    method: "DELETE",
+  });
 }
