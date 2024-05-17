@@ -6,7 +6,8 @@ import { getAllCategories } from '@/services/http/blog/category.http';
 export default async function Blog() {
     // FIXME: implement seo meta data to all pages
 
-    // const posts = await getAllPosts()
+    const posts = await getAllPosts()
+    console.log('posts posts posts posts posts posts',posts)
     // const categories = await getAllCategories()
 
     return (

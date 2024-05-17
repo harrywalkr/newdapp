@@ -11,6 +11,23 @@ export async function getAllPosts(
   );
 }
 
+// findAll
+// export async function getAllPosts(
+//   options?: PostsQueryConfig
+// ): Promise<PostEndpoint> {
+//   try {
+//     const response = await axiosInstance.get(
+//       `${process.env.NEXT_PUBLIC_BLOG_URL}/api/posts`,
+//       options
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching posts:", error);
+//     throw error;
+//   }
+// }
+
+
 // Function to find post by ID
 export async function findPostById(
   id: number | string
