@@ -138,18 +138,29 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             <WalletTransactions walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
           <TabsContent value="nft" className='mt-5'>
-            NFT Holdings
-            <br />
-            <span className="text-sm text-muted-foreground">
-              No Activity in NFT
-            </span>
-            <br />
-            <br />
-            NFT Trades
-            <br />
-            <span className="text-sm text-muted-foreground">
-              No Activity in NFT
-            </span>
+
+            {RenderConditionalComponent(isPaidMember(), {
+              trueValueComponent: (
+                <>
+                  NFT Holdings
+                  <br />
+                  <span className="text-sm text-muted-foreground">
+                    No Activity in NFT
+                  </span>
+                  <br />
+                  <br />
+                  NFT Trades
+                  <br />
+                  <span className="text-sm text-muted-foreground">
+                    No Activity in NFT
+                  </span>
+                </>
+              ),
+              falseValueComponent: (
+                <Paywall />
+              )
+            })}
+
           </TabsContent>
           <TabsContent value="statistics" className='mt-5'>
             {RenderConditionalComponent(isPaidMember(), {
