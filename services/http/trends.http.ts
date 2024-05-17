@@ -1,15 +1,12 @@
-import { res } from "@/types/http.type";
-import axiosInstance from "./axios.config";
 import { AxiosRequestConfig } from "axios";
-import { ImageEndpoint } from "@/types/Image.type";
+import { fetchData } from "./axios.config";
 import { Trend } from "@/types/trend.type";
 
 export const getTrends = (
   network: string,
   options?: AxiosRequestConfig
-): res<Trend> => {
-  return axiosInstance.get(
+): Promise<Trend> =>
+  fetchData<Trend>(
     `${process.env.NEXT_PUBLIC_BASE_URL_FOUR}/trends/${network}`, // FIXME: remove 'eth' when wallet provider is ready and backend supports header chain
     options
   );
-};

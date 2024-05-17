@@ -41,7 +41,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
   } = useQuery(
     {
       queryKey: ["trends", selectedChain.name],
-      queryFn: () => getTrends(selectedChain.url).then(({ data }) => data),
+      queryFn: () => getTrends(selectedChain.url).then(data => data),
     }
   )
 
