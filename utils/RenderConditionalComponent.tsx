@@ -27,15 +27,15 @@ function RenderConditionalComponent(value: any, options: RenderComponentOptions)
 export default RenderConditionalComponent;
 
 
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 
-// Define a type for the options parameter
-type RenderComponentOptions = {
-    zeroValueComponent?: React.ReactNode;
-    nullValueComponent?: React.ReactNode;
-    falseValueComponent?: React.ReactNode;
-    trueValueComponent: React.ReactNode;
-};
+// // Define a type for the options parameter
+// type RenderComponentOptions = {
+//     zeroValueComponent?: React.ReactNode;
+//     nullValueComponent?: React.ReactNode;
+//     falseValueComponent?: React.ReactNode;
+//     trueValueComponent: React.ReactNode;
+// };
 
 // FIXME: Can do promises as well but can only be imported into client components
 // General conditional rendering function
