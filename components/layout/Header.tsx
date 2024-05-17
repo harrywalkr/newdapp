@@ -50,8 +50,16 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </Link>
         <Spotlight />
         <ul className="hidden md:flex items-center justify-center gap-10">
-          <li>Premium</li>
-          <li>Watchlist</li>
+          <li>
+            <Link href='/pricing'>
+            Premium
+            </Link>
+            </li>
+          <li>
+            <Link href='/dashboard'>
+            Dashboard
+            </Link>
+            </li>
         </ul>
         <div className="hidden md:flex items-center justify-center gap-6">
           <div  >

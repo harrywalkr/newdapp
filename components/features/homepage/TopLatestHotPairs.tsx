@@ -33,8 +33,8 @@ interface Props {
 }
 
 export function TopLatestHotPairs({ images }: Props) {
-    const [averageRankPage, setAverageRankPage] = useState(1);
-    const [latestTokenPage, setLatestTokenPage] = useState(1);
+    const [averageRankPage, setAverageRankPage] = useState(0);
+    const [latestTokenPage, setLatestTokenPage] = useState(0);
     const { selectedChain } = useTokenChainStore();
 
     const { data: averageRank, isPending: averageRankPending, refetch: averageRankRefetch } = useQuery(
