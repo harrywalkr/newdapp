@@ -55,8 +55,8 @@ export function TopLatestHotPairs({ images }: Props) {
         },
     );
 
-    const maxAverageRankPage = averageRank ? Math.ceil(averageRank.data.length / 10) - 1 : 0;
-    const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.data.length / 10) - 1 : 0;
+    const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
+    const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
 
 
     return (
@@ -96,7 +96,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                 </ul>
                                 :
                                 <div className="space-y-8">
-                                    {averageRank!.data
+                                    {averageRank!
                                         .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
                                         .map((token: HotPairs, id: number) => (
                                             <div key={id} className="flex items-center">
@@ -159,7 +159,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                 </ul>
                                 :
                                 <div className="space-y-8">
-                                    {latestTokens!.data
+                                    {latestTokens!
                                         .slice(latestTokenPage * 10, (latestTokenPage + 1) * 10)
                                         .map((token: LatestTokenType, id: number) => (
                                             <div key={id} className="flex items-center">

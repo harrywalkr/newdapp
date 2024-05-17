@@ -1,8 +1,6 @@
-import { res } from "@/types/http.type";
-import { fetchData } from "./axios.config";
 import { AxiosRequestConfig } from "axios";
+import { fetchData } from "./axios.config";
 import { ImageEndpoint, ImageType } from "@/types/Image.type";
-;
 
 export const getImages = (
   options?: AxiosRequestConfig
