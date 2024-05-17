@@ -1,75 +1,72 @@
-import { res } from "@/types/http.type";
-import axiosInstance from "./axios.config";
 import { AxiosRequestConfig } from "axios";
-import { WalletType } from "@/types/Wallet.type";
+import { fetchData } from "./axios.config";
 import { WalletSummaryType } from "@/types/wallet-summary.type";
 import { WalletStatType } from "@/types/wallet-stat.type";
-import formatDate, { getPastDate } from "@/utils/date";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
 import { SwapType } from "@/types/swap.type";
+import formatDate, { getPastDate } from "@/utils/date";
+import { WalletType } from "@/types/Wallet.type";
 
-export const getWallets = (options: AxiosRequestConfig): res<WalletType[]> => {
-  return axiosInstance.get(
+export const getWallets = (
+  options: AxiosRequestConfig
+): Promise<WalletType[]> =>
+  fetchData<WalletType[]>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/valuable_wallets/`,
     options
   );
-};
 
-export const getWalletSummary = (data: {
-  walletAddress: string;
-  options: AxiosRequestConfig;
-}): res<WalletSummaryType> => {
-  return axiosInstance.get(
-    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/walletSummary/${data.walletAddress}`,
-    data.options
+export const getWalletSummary = (
+  walletAddress: string,
+  options?: AxiosRequestConfig
+): Promise<WalletSummaryType> =>
+  fetchData<WalletSummaryType>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/walletSummary/${walletAddress}`,
+    options
   );
-};
 
 export const getWalletStat = (
-  options: AxiosRequestConfig
-): res<WalletStatType> => {
-  return axiosInstance.get(
+  options?: AxiosRequestConfig
+): Promise<WalletStatType> =>
+  fetchData<WalletStatType>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/addressStats`,
     options
   );
-};
 
 export const getWalletSwaps = (
   options: AxiosRequestConfig
-): res<SwapType> => {
-  return axiosInstance.get(
+): Promise<SwapType> =>
+  fetchData<SwapType>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/api/swaps`,
     options
   );
-};
 
-export const getWalletBalance = (data: {
-  walletAddress: string;
-  options: AxiosRequestConfig;
-}): res<WalletBalanceType> => {
-  return axiosInstance.get(
-    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/balance/${data.walletAddress}`,
-    data.options
+export const getWalletBalance = (
+  walletAddress: string,
+  options?: AxiosRequestConfig
+): Promise<WalletBalanceType> =>
+  fetchData<WalletBalanceType>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/balance/${walletAddress}`,
+    options
   );
-};
 
-export const getWalletParams = async (data: {
-  walletAddress: string;
-}): Promise<{
+export const getWalletParams = async (
+  walletAddress: string
+): Promise<{
   limit?: number;
   from?: string;
   till?: string;
 }> => {
   const { data: walletStat } = await getWalletStat({
     params: {
-      address: data.walletAddress,
-      network: "ethereum", //FIXME: network must come globally
+      address: walletAddress,
+      network: "ethereum", // FIXME: network must come globally
     },
   });
-  const sendTxCount =
-    +walletStat.data.ethereum.addressStats[0].address.sendTxCount;
+
+  const sendTxCount = +walletStat.ethereum.addressStats[0].address.sendTxCount;
   const receiveTxCount =
-    +walletStat.data.ethereum.addressStats[0].address.receiveTxCount;
+    +walletStat.ethereum.addressStats[0].address.receiveTxCount;
+
   if (
     4000 < sendTxCount + receiveTxCount &&
     sendTxCount + receiveTxCount < 12000

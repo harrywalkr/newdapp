@@ -25,10 +25,8 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 interface Props {
     walletAddress: string;
     dateRange: {
-        limit?: number;
-        from?: string;
-        till?: string;
-    };
+        from: string, till: string
+    } | null
 }
 
 export default function WalletSwaps({ dateRange, walletAddress }: Props) {
@@ -43,7 +41,7 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
                         address: walletAddress
                     }
                 }
-                ).then(({ data }) => data),
+                ).then(data => data),
             },
             {
                 queryKey: ['images'],

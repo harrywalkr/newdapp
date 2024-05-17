@@ -9,10 +9,6 @@ import CustomizedTimeline from './Timeline'
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import WalletSummaryComponent from "./Wallet-summary"
 import { IoMdTime } from "react-icons/io";
@@ -26,19 +22,16 @@ import WalletTransactions from "./Wallet-transactions"
 import { GoGraph } from "react-icons/go";
 import WalletStatistical from "./WalletStatistical-old-dex/WalletStatistical"
 
-
 interface Props {
   walletAddress: string
   walletSummary: WalletSummaryType,
   walletBalance: WalletBalanceType,
   dateRange: {
-    limit?: number;
-    from?: string;
-    till?: string;
-  }
+    from: string, till: string
+  } | null
 }
 
-export default function WalletDetail({ walletSummary, walletAddress, dateRange }: Props) {
+export default function WalletDetail({ walletSummary, walletAddress, dateRange, walletBalance }: Props) {
   return (
     <Card className="w-full">
       <CardContent className="mt-5 overflow-hidden relative">

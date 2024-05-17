@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+'use client'
 import { Card, CardContent } from '@/components/ui/card'
 import Copy from '@/components/ui/copy'
 import { KeyValue } from '@/components/ui/key-value'
@@ -16,13 +16,15 @@ import { IoIosWine } from "react-icons/io";
 import { DatePickerWithRange } from './DatePickerWithRange'
 
 interface Props {
-    walletAddress: string
-    walletSummary: WalletSummaryType,
-    walletBalance: WalletBalanceType,
+    walletAddress: string;
+    initialWalletSummary: WalletSummaryType;
+    walletBalance: WalletBalanceType;
+    onDateChange: (newDateRange: { from: string, till: string }) => void;
 }
 
 // FIXME: Add hover card tooltip for more info and redirect to blog
-export default function WalletOverview({ walletAddress, walletSummary, walletBalance }: Props) {
+export default function WalletOverview({ walletAddress, initialWalletSummary, walletBalance, onDateChange }: Props) {
+
     return (
         <Card className="w-full">
             <CardContent className="pt-6 flex flex-col gap-5">
@@ -31,10 +33,10 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                         <Copy className='text-sm' text={minifyContract(walletAddress)} value={walletAddress} />
                         <KeyValue title='Rank' titleIcon={<FaRankingStar />} value='hard-code' variant='bad' />
                         {
-                            walletSummary.labelTrader &&
+                            initialWalletSummary.labelTrader &&
                             <KeyValue title='Type' titleIcon={<TbSunMoon />}
-                                value={walletSummary.labelTrader}
-                                valueIcon={walletSummary.labelTrader == "Day Trader" ? (
+                                value={initialWalletSummary.labelTrader}
+                                valueIcon={initialWalletSummary.labelTrader == "Day Trader" ? (
                                     <IoSunnyOutline />
                                 ) : (
                                     <IoMoonOutline />
@@ -42,24 +44,24 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                                 variant='default' />
                         }
                         {
-                            walletSummary.totalScore &&
+                            initialWalletSummary.totalScore &&
                             <KeyValue
                                 title='Score'
                                 titleIcon={<MdOutlineScoreboard />}
                                 // FIXME: what is the total score so I can type 400/2000
-                                value={walletSummary.totalScore}
-                                variant={walletSummary.totalScore > 1000 ? 'good' : 'bad'} />
+                                value={initialWalletSummary.totalScore}
+                                variant={initialWalletSummary.totalScore > 1000 ? 'good' : 'bad'} />
                         }
                         {
-                            walletSummary.netProfit != undefined &&
+                            initialWalletSummary.netProfit != undefined &&
                             <KeyValue
                                 title='Pnl'
                                 titleIcon={<MdAttachMoney />}
                                 value={
-                                    separate3digits(walletSummary.netProfit?.toFixed(2)) + '$'
+                                    separate3digits(initialWalletSummary.netProfit?.toFixed(2)) + '$'
                                 }
                                 variant={
-                                    walletSummary.netProfit > 0
+                                    initialWalletSummary.netProfit > 0
                                         ? "good"
                                         : "bad"
                                 } />
@@ -67,14 +69,14 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                     </div>
                     <div className="right flex flex-col items-start justify-center gap-4">
                         {
-                            walletSummary.TotalFee != undefined &&
+                            initialWalletSummary.TotalFee != undefined &&
                             <KeyValue title='Fees Paid'
                                 titleIcon={<IoReceiptOutline />}
-                                value={(walletSummary.TotalFee || 0).toFixed(2)}
+                                value={(initialWalletSummary.TotalFee || 0).toFixed(2)}
                                 variant='default' />
                         }
                         {
-                            walletSummary.labelTrader &&
+                            initialWalletSummary.labelTrader &&
                             <KeyValue
                                 title='Profit'
                                 titleIcon={<BiCoin />}
@@ -82,31 +84,30 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                                 variant='bad' />
                         }
                         {
-                            walletSummary.winRate != undefined &&
+                            initialWalletSummary.winRate != undefined &&
                             <KeyValue
                                 title='Winrate'
                                 titleIcon={<IoIosWine />}
-                                value={+walletSummary.winRate / 10}
+                                value={+initialWalletSummary.winRate / 10}
                                 variant='default' />
                         }
                         {
-                            walletSummary.labelTrader &&
+                            initialWalletSummary.labelTrader &&
                             <KeyValue
                                 title='Size'
                                 value='HC'
                                 variant='bad' />
                         }
                         {
-                            walletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
+                            initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
                             <KeyValue
                                 title='Avg Pos'
-                                value={walletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime}
+                                value={initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime}
                                 variant='default' />
                         }
-
                     </div>
                 </div>
-                <DatePickerWithRange className='max-w-64' />
+                <DatePickerWithRange className='max-w-64' onDateChange={onDateChange} />
             </CardContent>
         </Card>
     )

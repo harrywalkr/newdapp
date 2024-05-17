@@ -13,13 +13,25 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DatePickerWithRange({
-    className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
+    onDateChange: (dateRange: { from: string, till: string }) => void;
+}
+
+export function DatePickerWithRange({ className, onDateChange }: DatePickerWithRangeProps) {
     const [date, setDate] = React.useState<DateRange | undefined>({
         from: new Date(2022, 0, 20),
         to: addDays(new Date(2022, 0, 20), 20),
     })
+
+    const handleDateChange = (selectedDate: DateRange | undefined) => {
+        setDate(selectedDate);
+        if (selectedDate?.from && selectedDate.to) {
+            onDateChange({
+                from: selectedDate.from.toISOString().split('T')[0],
+                till: selectedDate.to.toISOString().split('T')[0],
+            });
+        }
+    };
 
     return (
         <div className={cn("grid gap-2 w-full", className)}>
@@ -55,7 +67,7 @@ export function DatePickerWithRange({
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={handleDateChange}
                         numberOfMonths={2}
                     />
                 </PopoverContent>

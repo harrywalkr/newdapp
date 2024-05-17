@@ -32,7 +32,7 @@ axiosInstance.interceptors.request.use(
     // Log the full request details for debugging
     console.log(
       `Sending request to ${config.url} with method ${config.method} and data:`,
-      config.data
+      // config.data
     );
     return config;
   },

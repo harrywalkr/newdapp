@@ -1,29 +1,18 @@
+// app/[id]/page.tsx
 import { Metadata } from "next";
-import { getWalletBalance, getWalletParams, getWalletSummary } from "@/services/http/wallets.http";
-import { ImageType } from "@/types/Image.type";
-import { getImages } from "@/services/http/image.http";
-import WalletDetail from "@/components/features/wallet/wallet-detail";
-import WalletOverview from "@/components/features/wallet/wallet-overview";
+import { getWalletBalance, getWalletSummary } from "@/services/http/wallets.http";
+import { WalletBalanceType } from "@/types/wallet-balance.type";
+import { WalletSummaryType } from "@/types/wallet-summary.type";
+import WalletPage from "@/components/features/wallet/Wallet-page";
 
 interface Props {
-    params: params
-    searchParams: searchParams
-}
-
-type params = {
-    id: string
-}
-
-type searchParams = {
-    network: string
+    params: { id: string };
+    searchParams: { network: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     try {
-        const { data } = await getWalletSummary({
-            walletAddress: params.id,
-            options: {}
-        })
+        const data = await getWalletSummary(params.id);
         const totalProfit = data.totalProfit || 0;
         const totalLoss = data.totalLoss || 0;
         const trader = data.labelTrader || 'Unknown';
@@ -40,23 +29,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Token({ params }: Props) {
-    // FIXME: catch all 500 errors
-    const dateRange = await getWalletParams({ walletAddress: params.id });
-    const { data: walletSummary } = await getWalletSummary({
-        walletAddress: params.id,
-        options: {
-            params: dateRange
-        }
-    })
-    const { data: walletBalance } = await getWalletBalance({
-        walletAddress: params.id,
-        options: {}
-    });
+    // Fetch initial data on the server
+    const walletSummary: WalletSummaryType = await getWalletSummary(params.id);
+    const walletBalance: WalletBalanceType = await getWalletBalance(params.id);
 
     return (
-        <div className="flex flex-col gap-6 items-center justify-center w-full" >
-            <WalletOverview walletSummary={walletSummary} walletBalance={walletBalance} walletAddress={params.id} />
-            <WalletDetail walletSummary={walletSummary} walletBalance={walletBalance} walletAddress={params.id} dateRange={dateRange} />
-        </div >
-    )
+        <WalletPage
+            walletAddress={params.id}
+            initialWalletSummary={walletSummary}
+            initialWalletBalance={walletBalance}
+        />
+    );
 }

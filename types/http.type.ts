@@ -8,4 +8,4 @@ export interface params {
   [key: string]: string;
 }
 
-export type res<T> = Promise<AxiosResponse<T>>;
+// export type res<T> = Promise<AxiosResponse<T>>;
