@@ -7,7 +7,7 @@ const sectionVariants = cva(
   {
     variants: {
       variant: {
-        default: "flex-col md:flex-row items-start md:items-center justify-between ",
+        default: "flex-col md:flex-row items-start md:items-start justify-between ",
         vertical: "flex-col items-start justify-center",
         horizontal:
           "md:flex-row md:items-center justify-center",

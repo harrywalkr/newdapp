@@ -1,5 +1,5 @@
 import NFT from "@/components/features/homepage/NFT";
-import Tokens from "@/components/features/homepage/Tokens";
+import TrendPairs from "@/components/features/homepage/Trend-pair";
 import Wallet from "@/components/features/homepage/Wallet";
 import TableExample from "@/components/features/data-table/data";
 import { getAverageRank } from "@/services/http/averagerank.http";
@@ -18,7 +18,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-16">
-      <Tokens />
+      <TrendPairs />
       <TopLatestHotPairs images={images.imageUrls} />
       <Wallet initTopWallets={wallets} />
       {/* FIXME: dex old migrate */}

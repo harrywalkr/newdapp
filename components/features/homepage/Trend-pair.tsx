@@ -29,7 +29,7 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function Tokens() { // FIXME: this component must include trending, top and hot tokens all
+export default function TrendPairs() { // FIXME: this component must include trending, top and hot tokens all
   const [activePageIndex, setActivePageIndex] = useState<number>(0);
   const { selectedChain } = useTokenChainStore();
   const router = useRouter()
