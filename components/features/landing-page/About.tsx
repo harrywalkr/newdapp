@@ -27,7 +27,6 @@ export const About = () => {
                 At DexTrading, we leverage cutting-edge analytics to provide deep insights into the cryptocurrency market. Our platform empowers traders by offering real-time data analysis, predictive trends, and comprehensive market reports. Whether you&apos;re a seasoned investor or new to crypto, DexTrading equips you with the tools needed to make informed decisions.
               </p>
             </div>
-
             <Statistics />
           </div>
         </div>
