@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   app:
     image: dextrading:production
@@ -15,8 +17,8 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
-    environment:
-      - NODE_ENV=production
+    env_file:
+      - .env.local
 
   dev:
     image: dextrading:development
@@ -34,6 +36,6 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - .env.local
     command: ["yarn", "dev"]
