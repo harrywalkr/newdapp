@@ -6,6 +6,8 @@ import Header from "@/components/layout/Header";
 import Providers from "@/providers";
 import { cn } from "@/lib/utils";
 import { Footer } from '@/components/layout/Footer';
+import Script from "next/script";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +38,16 @@ export default function RootLayout({
           </main>
         </Providers>
       </body>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-EQXQQ1Z402" />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-EQXQQ1Z402');
+          `}
+      </Script>
     </html>
   );
 }

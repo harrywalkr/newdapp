@@ -7,7 +7,7 @@ EXPOSE 3019
 
 FROM base as builder
 WORKDIR /app
-RUN npm ci --verbose
+RUN yarn install --frozen-lockfile --network-timeout 1000000 -ddd
 COPY . .
 RUN npm run build
 
@@ -27,11 +27,12 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
 
-CMD npm start
+CMD yarn start
 
 FROM base as dev
 ENV NODE_ENV=development
-RUN npm install 
+RUN yarn install --production --frozen-lockfile --network-timeout 1000000 -ddd && yarn cache clean --force
 COPY . .
-CMD npm run dev
+CMD yarn run dev
+
 
