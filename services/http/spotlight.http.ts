@@ -1,13 +1,11 @@
-import { req, res } from "@/types/http.type";
-import axiosInstance from "./axios.config";
-import { SpotlightSearchType } from "@/types/spotlight.type";
 import { AxiosRequestConfig } from "axios";
+import { fetchData } from "./axios.config";
+import { SpotlightSearchType } from "@/types/spotlight.type";
 
 export const spotlightSearch = (
   options: AxiosRequestConfig
-): res<SpotlightSearchType> => {
-  return axiosInstance.get(
+): Promise<SpotlightSearchType> =>
+  fetchData<SpotlightSearchType>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/search`,
     options
   );
-};

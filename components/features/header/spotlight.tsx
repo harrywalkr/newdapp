@@ -82,7 +82,7 @@ export function Spotlight() {
     spotlightSearch({
       params: { address: searchTerm, chain: 'ETH' }, //FIXME: chain/network must be coming from global state. Fix it when react query/zustand/network-selector is working
       signal: controller.signal,
-    }).then(({ data }) => {
+    }).then((data) => {
       if (data?.subject?.label?.includes("Wallet")) {
         setLoading(false);
         return setWallet(data);
