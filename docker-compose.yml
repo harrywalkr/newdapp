@@ -1,6 +1,5 @@
 services:
   app:
-    image: dextrading:production
     build:
       context: .
       target: production
@@ -19,7 +18,6 @@ services:
       - .env.local
 
   dev:
-    image: dextrading:development
     build:
       context: .
       target: dev
