@@ -1,13 +1,41 @@
+version: '3.8'
+
 services:
   app:
-    image: dextrading
+    image: dextrading:production
     build:
-      context: ./
+      context: .
       target: production
       dockerfile: Dockerfile
-    volumes:
-        - .:/app
-        - /app/node_modules
-        - /app/.next
+      labels:
+        - "service=app"
+        - "stage=production"
+    container_name: dextrading_app
     ports:
       - "3019:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=production
+
+  dev:
+    image: dextrading:development
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
+      labels:
+        - "service=dev"
+        - "stage=development"
+    container_name: dextrading_dev
+    ports:
+      - "3019:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+    command: ["yarn", "dev"]
