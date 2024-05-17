@@ -14,12 +14,6 @@ const nextConfig = {
     // FIXME: remove pravatar from domain later
     domains: ["api.dextrading.com", "95.81.93.198", "i.pravatar.cc"],
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback.fs = false;
-    }
-    return config;
-  },
 };
 
 export default nextConfig;
