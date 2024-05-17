@@ -20,7 +20,7 @@ interface Props {
 // FIXME: what's SHIV holder? implement it in this new project
 export default function WalletSummary({ walletSummary }: Props) {
     return (
-        <div className='flex flex-col items-center justify-center gap-5 '>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start justify-start gap-5 '>
             <Card className="border border-muted w-full">
                 <CardHeader>
                     <CardTitle>PnL Overview</CardTitle>

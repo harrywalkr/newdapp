@@ -106,7 +106,7 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
 
                     </div>
                 </div>
-                <DatePickerWithRange />
+                <DatePickerWithRange className='max-w-64' />
             </CardContent>
         </Card>
     )
