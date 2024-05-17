@@ -21,6 +21,9 @@ import { TbTransactionBitcoin } from "react-icons/tb"
 import WalletTransactions from "./Wallet-transactions"
 import { GoGraph } from "react-icons/go";
 import WalletStatistical from "./WalletStatistical-old-dex/WalletStatistical"
+import RenderConditionalComponent from "@/utils/RenderConditionalComponent"
+import { isPaidMember } from "@/services/auth.service"
+import Paywall from "@/components/common/Paywall"
 
 interface Props {
   walletAddress: string
@@ -149,8 +152,15 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             </span>
           </TabsContent>
           <TabsContent value="statistics" className='mt-5'>
-            {/* FIXME: remove this abomination from the old project and all its files and folders and deps */}
-            <WalletStatistical walletInfo={walletSummary} />
+            {RenderConditionalComponent(isPaidMember(), {
+              trueValueComponent: (
+                // FIXME: remove this abomination from the old project and all its files and folders and deps
+                <WalletStatistical walletInfo={walletSummary} walletAddress={walletAddress} />
+              ),
+              falseValueComponent: (
+                <Paywall />
+              )
+            })}
           </TabsContent>
         </Tabs>
       </CardContent>

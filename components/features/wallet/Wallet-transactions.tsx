@@ -14,10 +14,8 @@ import { Separator } from '@/components/ui/separator';
 interface Props {
     walletAddress: string
     dateRange: {
-        limit?: number;
-        from?: string;
-        till?: string;
-    }
+        from: string, till: string
+    } | null
 }
 
 export default function WalletTransactions({ dateRange, walletAddress }: Props) {
@@ -32,7 +30,7 @@ export default function WalletTransactions({ dateRange, walletAddress }: Props) 
                             params: dateRange,
                             address: walletAddress
                         }
-                    }).then(({ data }) => data)
+                    }).then(data => data)
                         .catch(error => {
                             // FIXME: Create a service handler which sends errors to the logging backend
                             console.error("Failed to fetch wallet swaps:", error);

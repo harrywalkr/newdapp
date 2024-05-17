@@ -1,4 +1,3 @@
-// app/[id]/page.tsx
 import { Metadata } from "next";
 import { getWalletBalance, getWalletSummary } from "@/services/http/wallets.http";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
@@ -29,7 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Token({ params }: Props) {
-    // Fetch initial data on the server
     const walletSummary: WalletSummaryType = await getWalletSummary(params.id);
     const walletBalance: WalletBalanceType = await getWalletBalance(params.id);
 

@@ -7,7 +7,7 @@ import WalletStatisticalPercentageHistory from "./WalletStatisticalPercentageHis
 import { useParams, useRouter } from "next/navigation";
 
 
-export default function WalletStatistical({ walletInfo }: any) {
+export default function WalletStatistical({ walletInfo, walletAddress }: any) {
   const router = useRouter();
   const params = useParams();
   const [tab, setTab] = useState("#PnL-Trades");
@@ -27,7 +27,7 @@ export default function WalletStatistical({ walletInfo }: any) {
         <div
           onClick={handleScroll("#PnL-Trades")}
           className={`bg-base-300 cursor-pointer text-xs p-2 md:text-base md:p-4 font-bold  ${tab === "#PnL-Trades" &&
-            "bg-base-content/80 text-base-100 rounded-lg"
+            "bg-background rounded-lg"
             }`}
         >
           P&L Trades
@@ -35,7 +35,7 @@ export default function WalletStatistical({ walletInfo }: any) {
         <div
           onClick={handleScroll("#PnL-History")}
           className={`bg-base-300 cursor-pointer text-xs p-2 md:text-base md:p-4 font-bold  ${tab === "#PnL-History" &&
-            "bg-base-content/80 text-base-100 rounded-lg"
+            "bg-background rounded-lg"
             }`}
         >
           P&L History
@@ -43,15 +43,15 @@ export default function WalletStatistical({ walletInfo }: any) {
         <div
           onClick={handleScroll("#Trade-Count")}
           className={`bg-base-300 cursor-pointer text-xs p-2 md:text-base md:p-4 font-bold  ${tab === "#Trade-Count" &&
-            "bg-base-content/80 text-base-100 rounded-lg"
+            "bg-background rounded-lg"
             }`}
         >
           Trade Count
         </div>
       </div>
       {tab === "#PnL-Trades" && (
-        <div className="w-full lg:col-span-2">
-          <WalletStatisticalPnLTrades />
+        <div className="w-full lg:col-span-2 ">
+          <WalletStatisticalPnLTrades walletAddress={walletAddress} />
         </div>
       )}
       {tab === "#PnL-History" && (
