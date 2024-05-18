@@ -119,15 +119,17 @@ export default function TrendPairs() { // FIXME: this component must include tre
                         </Avatar>
                         <div className="content flex flex-col items-start justify-between h-28 ">
                           <div className="token flex flex-col items-start justify-start gap-2">
-                            <Link
-                              //FIXME: extend next/link to take searchparams and params without this mess :|
-                              //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
-                              href={`/monitoring/${data.address}`}
+                            {/* <Link */}
+                            {/* //FIXME: extend next/link to take searchparams and params without this mess :| */}
+                            {/* //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search) */}
+                            {/* > */}
+                            {/* {minifyContract(data.name)}
+                            </Link> */}
+                            <Copy
+                              href={`/tokens/${data.address}`}
                               className="font-medium text-lg link"
-                            >
-                              {minifyContract(data.name)}
-                            </Link>
-                            <Copy text={minifyContract(data.address)} />
+                              value={data.address}
+                              text={minifyContract(data.address)} />
                           </div>
                           <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
@@ -160,7 +162,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                           <div className="token flex flex-col items-start justify-start gap-2">
                             <Link
                               //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
-                              href={`/monitoring/${data.address}`}
+                              href={`/tokens/${data.address}`}
                               className="font-medium text-lg link"
                             >
                               {minifyContract(data.name)}
@@ -202,7 +204,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                         </Avatar>
                         <div className="content flex flex-col items-start justify-between h-28 ">
                           <div className="token flex flex-col items-start justify-start gap-2">
-                            <Link href={`/monitoring/${data.address}`} className="font-medium text-lg link">
+                            <Link href={`/tokens/${data.address}`} className="font-medium text-lg link">
                               {minifyContract(data.name)}
                             </Link>
                             <Copy text={minifyContract(data.address)} />

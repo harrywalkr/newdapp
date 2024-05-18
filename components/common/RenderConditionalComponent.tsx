@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 
-// Define a type for the options parameter
 type RenderComponentOptions = {
     zeroValueComponent?: React.ReactNode;
     nullValueComponent?: React.ReactNode;
@@ -9,8 +8,12 @@ type RenderComponentOptions = {
     trueValueComponent: React.ReactNode;
 };
 
-// FIXME: Can do promises as well but can only be imported into client components
-function RenderConditionalComponent(value: any | Promise<any>, options: RenderComponentOptions): React.ReactNode {
+type RenderConditionalComponentProps = {
+    value: any | Promise<any>;
+    options: RenderComponentOptions;
+};
+
+const RenderConditionalComponent: React.FC<RenderConditionalComponentProps> = ({ value, options }) => {
     const [resolvedValue, setResolvedValue] = useState<any | Promise<any>>(null);
     const { zeroValueComponent, nullValueComponent, falseValueComponent, trueValueComponent } = options;
 
@@ -33,7 +36,7 @@ function RenderConditionalComponent(value: any | Promise<any>, options: RenderCo
     }, [value]);
 
     if (resolvedValue === null) {
-        return null; // FIXME: replace this with a loading spinner if needed
+        return null; // Replace this with a loading spinner if needed
     } else if (resolvedValue === 0 && zeroValueComponent !== undefined) {
         return zeroValueComponent;
     } else if (resolvedValue === null && nullValueComponent !== undefined) {
@@ -44,6 +47,6 @@ function RenderConditionalComponent(value: any | Promise<any>, options: RenderCo
         return trueValueComponent;
     }
     return null;
-}
+};
 
 export default RenderConditionalComponent;

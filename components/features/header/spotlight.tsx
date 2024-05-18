@@ -103,7 +103,7 @@ export function Spotlight() {
     };
   }, [searchTerm]);
 
-  const addToLocalStorage = (address: any) => {
+  const addToLocalStorage = (address: TokenType | SpotlightSearchType) => {
     if (!address) return;
     if (typeof window !== "undefined") {
       const previousSearches = (get("previousSearches") as []) || [];
@@ -148,10 +148,8 @@ export function Spotlight() {
                 <div
                   className="cursor-pointer px-3 flex items-center gap-3 pb-4"
                   onClick={() => {
-                    // addToLocalStorage(data);
-                    // (document.getElementById("search-modal")! as any).close();
-                    // router.push(`/wallet/${data.subject.address}`);
-                    // setForm({ ...form, address: "" });
+                    addToLocalStorage(wallet);
+                    router.push(`/wallet/${wallet.subject.address}`);
                   }}
                 >
                   <IoWalletOutline className="text-xl" />
@@ -186,10 +184,7 @@ export function Spotlight() {
                           key={item.id}
                           className="cursor-pointer"
                           onClick={() => {
-                            addToLocalStorage(item);
-                            // (
-                            //   document.getElementById("search-modal")! as any
-                            // ).close();
+                            addToLocalStorage(token);
                             // router.push(
                             //   `/token/${
                             //     item.relationships.base_token.data.id.split(
@@ -201,12 +196,11 @@ export function Spotlight() {
                             //     )[1]
                             //   }`
                             // );
-                            // setForm({ ...form, address: "" }); 
                             // FIXME: fix route handler
                             // FIXME: fix history
                             // FIXME: add navigation/router href abstraction as well
                             if (item?.relationships?.base_token?.data?.id) {
-                              router.push(`/token/${item.relationships.base_token.data.id.split("_")[1]}`)
+                              router.push(`/tokens/${item.relationships.base_token.data.id.split("_")[1]}`)
                               setOpen(!open)
                             }
                           }}

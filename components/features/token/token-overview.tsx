@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { IoEarth } from 'react-icons/io5';
 import { RiTwitterXFill } from 'react-icons/ri';
-import renderConditionalComponent from '@/utils/RenderConditionalComponent';
+import RenderConditionalComponent from '@/components/common/RenderConditionalComponent';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
@@ -29,7 +29,7 @@ export default function TokenOverview({ token, logo }: Props) {
             <CardContent className="pt-6 flex items-stretch justify-between h-full">
                 <div className="left flex flex-col gap-5">
                     <div className="top flex items-center justify-start gap-5">
-                        {renderConditionalComponent(logo, {
+                        <RenderConditionalComponent value={logo} options={{
                             trueValueComponent: (
                                 <Image
                                     width={60}
@@ -44,9 +44,9 @@ export default function TokenOverview({ token, logo }: Props) {
                                     {token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}
                                 </div>
                             )
-                        })}
+                        }} />
                         <div className='flex flex-col items-start justify-center gap-2'>
-                            {renderConditionalComponent(token?.data?.[0]?.attributes?.name && token?.data[0]?.id, {
+                            <RenderConditionalComponent value={token?.data?.[0]?.attributes?.name && token?.data[0]?.id} options={{
                                 trueValueComponent: (
                                     <>
                                         <h1 className="text-base m-0 p-0">
@@ -60,11 +60,11 @@ export default function TokenOverview({ token, logo }: Props) {
                                     </>
                                 ),
                                 falseValueComponent: <p>No token name :(</p>
-                            })}
+                            }} />
                         </div>
                     </div>
                     <div className="bottom flex flex-col gap-4">
-                        {renderConditionalComponent(token?.data?.[0]?.attributes, {
+                        <RenderConditionalComponent value={token?.data?.[0]?.attributes} options={{
                             trueValueComponent: (
                                 <>
                                     <PriceChange token={token} />
@@ -74,7 +74,7 @@ export default function TokenOverview({ token, logo }: Props) {
                                 </>
                             ),
                             falseValueComponent: <p>Data is not available :(</p>
-                        })}
+                        }} />
                     </div>
                 </div>
                 <div className='right flex flex-col justify-between'>
@@ -90,12 +90,12 @@ export default function TokenOverview({ token, logo }: Props) {
                         </Button>
                     </div>
                     <div className='flex flex-col items-end justify-end gap-3 mt-2'>
-                        {renderConditionalComponent(token?.data?.[0]?.attributes?.base_token_price_usd, {
+                        <RenderConditionalComponent value={token?.data?.[0]?.attributes?.base_token_price_usd} options={{
                             trueValueComponent: (
                                 <PriceFormatter dollarSign value={token!.data![0].attributes!.base_token_price_usd!} />
                             ),
                             falseValueComponent: <p>No price available</p>
-                        })}
+                        }} />
                         <Timestamp token={token} />
                     </div>
                 </div>
@@ -105,44 +105,47 @@ export default function TokenOverview({ token, logo }: Props) {
 }
 
 function PriceChange({ token }: { token: TokenType }) {
-    return renderConditionalComponent(token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24, {
-        trueValueComponent: (
-            <div className='whitespace-nowrap'>
-                {`24hr Change: `}
-                <h2
-                    className={clsx('text-sm inline text-center',
-                        +token!.data![0].attributes!.price_change_percentage!.h24! > 0
-                            ? " text-green-500"
-                            : " text-red-500"
-                    )}
-                >
-                    {`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
-                </h2>
-            </div>
-        ),
-        falseValueComponent: <p>No 24hr change data</p>
-    });
+    return (
+        <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24} options={{
+            trueValueComponent: (
+                <div className='whitespace-nowrap'>
+                    {`24hr Change: `}
+                    <h2
+                        className={clsx('text-sm inline text-center',
+                            +token!.data![0].attributes!.price_change_percentage!.h24! > 0
+                                ? " text-green-500"
+                                : " text-red-500"
+                        )}
+                    >
+                        {`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
+                    </h2>
+                </div>
+            ),
+            falseValueComponent: <p>No 24hr change data</p>
+        }} />
+    );
 }
 
 function Liquidity({ token }: { token: TokenType }) {
-    return renderConditionalComponent(token?.data && token?.data[0]?.attributes?.reserve_in_usd, {
-        trueValueComponent: (
-            <div className='whitespace-nowrap'>
-                {`Liquidity: `}
-                <h2 className='text-sm inline text-center text-muted-foreground'>
-                    ${formatCash(+token!.data![0].attributes!.reserve_in_usd!)}
-                </h2>
-            </div>
-        ),
-        falseValueComponent: <p>No liquidity data</p>
-    });
+    return (
+        <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.reserve_in_usd} options={{
+            trueValueComponent: (
+                <div className='whitespace-nowrap'>
+                    {`Liquidity: `}
+                    <h2 className='text-sm inline text-center text-muted-foreground'>
+                        ${formatCash(+token!.data![0].attributes!.reserve_in_usd!)}
+                    </h2>
+                </div>
+            ),
+            falseValueComponent: <p>No liquidity data</p>
+        }} />
+    );
 }
 
 function BuySellTaxes({ token }: { token: TokenType }) {
-    // Implementation similar to PriceChange using renderConditionalComponent
     return (
         <div className='flex items-center justify-start gap-2'>
-            {renderConditionalComponent(token.SecurityData?.tokenSecurity?.details?.buy_tax, {
+            <RenderConditionalComponent value={token.SecurityData?.tokenSecurity?.details?.buy_tax} options={{
                 trueValueComponent: (
                     <div className='whitespace-nowrap'>
                         {`Buy tax: `}
@@ -152,8 +155,8 @@ function BuySellTaxes({ token }: { token: TokenType }) {
                     </div>
                 ),
                 falseValueComponent: <p>No buy tax data</p>
-            })}
-            {renderConditionalComponent(token.SecurityData?.tokenSecurity?.details?.sell_tax, {
+            }} />
+            <RenderConditionalComponent value={token.SecurityData?.tokenSecurity?.details?.sell_tax} options={{
                 trueValueComponent: (
                     <div className='whitespace-nowrap'>
                         {`Sell tax: `}
@@ -163,34 +166,38 @@ function BuySellTaxes({ token }: { token: TokenType }) {
                     </div>
                 ),
                 falseValueComponent: <p>No sell tax data</p>
-            })}
+            }} />
         </div>
     );
 }
 
 function HolderInterest({ token }: { token: TokenType }) {
-    return renderConditionalComponent(token?.BalancesData?.numberOfAddresses, {
-        trueValueComponent: (
-            <div className='whitespace-nowrap'>
-                {`Holder interest: `}
-                <h2 className={clsx('text-sm inline text-center',
-                    token!.BalancesData!.numberOfAddresses! > 10 ? "text-green-500" : "text-red-500"
-                )}>
-                    {token?.BalancesData?.numberOfAddresses}
-                </h2>
-            </div>
-        ),
-        falseValueComponent: <p>No holder interest data</p>
-    });
+    return (
+        <RenderConditionalComponent value={token?.BalancesData?.numberOfAddresses} options={{
+            trueValueComponent: (
+                <div className='whitespace-nowrap'>
+                    {`Holder interest: `}
+                    <h2 className={clsx('text-sm inline text-center',
+                        token!.BalancesData!.numberOfAddresses! > 10 ? "text-green-500" : "text-red-500"
+                    )}>
+                        {token?.BalancesData?.numberOfAddresses}
+                    </h2>
+                </div>
+            ),
+            falseValueComponent: <p>No holder interest data</p>
+        }} />
+    );
 }
 
 function Timestamp({ token }: { token: TokenType }) {
-    return renderConditionalComponent(token?.timestamp, {
-        trueValueComponent: (
-            <h3 className="bottom whitespace-nowrap text-muted-foreground text-sm">
-                {dayjs().to(token.timestamp)}
-            </h3>
-        ),
-        falseValueComponent: <p>No timestamp available</p>
-    });
+    return (
+        <RenderConditionalComponent value={token?.timestamp} options={{
+            trueValueComponent: (
+                <h3 className="bottom whitespace-nowrap text-muted-foreground text-sm">
+                    {dayjs().to(token.timestamp)}
+                </h3>
+            ),
+            falseValueComponent: <p>No timestamp available</p>
+        }} />
+    );
 }

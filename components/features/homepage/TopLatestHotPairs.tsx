@@ -108,8 +108,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <Copy className="text-sm font-medium leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
-                                                        link
-                                                        href={`/monitoring/${token.contractAddress}`}
+                                                        href={`/tokens/${token.contractAddress}`}
                                                     />
                                                     <p className="text-sm text-muted-foreground">
                                                         {minifyTokenName(token.tokenName)}
@@ -171,8 +170,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <Copy className="text-sm font-medium leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
-                                                        link
-                                                        href={`/monitoring/${token.contractAddress}`}
+                                                        href={`/tokens/${token.contractAddress}`}
                                                     />
                                                     <p className="text-sm text-muted-foreground">
                                                         {minifyTokenName(token.tokenName)}

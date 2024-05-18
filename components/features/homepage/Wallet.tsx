@@ -468,12 +468,11 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
           <div className="flex items-center gap-2">
             <div className="flex space-x-2 items-center">
               <div className="flex flex-col gap-2">
-                <Link
+                <Copy
                   href={`/wallet/${data.walletAddress}`}
-                  className="font-medium link link-hover hover:text-info"
-                >
-                  <Copy text={minifyContract(data.walletAddress)} />
-                </Link>
+                  text={minifyContract(data.walletAddress)}
+                  value={data.walletAddress}
+                />
               </div>
             </div>
           </div>
