@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { ImageType } from '@/types/Image.type';
@@ -7,18 +6,12 @@ import { TokenType } from '@/types/token.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import { formatCash } from '@/utils/numbers';
 import { minifyContract, minifyTokenName } from '@/utils/truncate';
-import { StarIcon } from '@radix-ui/react-icons';
-import clsx from 'clsx';
-import Image from 'next/image';
-import { IoEarth } from 'react-icons/io5';
-import { RiTwitterXFill } from 'react-icons/ri';
 import RenderConditionalComponent from '@/components/common/RenderConditionalComponent';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { FaDiscord } from 'react-icons/fa';
-import { BiLogoTelegram } from 'react-icons/bi';
+import SocialMedia from './social-media';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -73,47 +66,7 @@ export default function TokenOverview({ token, logo }: Props) {
                     </div>
                 </div>
                 <div className='right flex flex-col justify-between'>
-                    <div className="top flex flex-col items-end justify-center gap-2">
-                        <Button size='icon' variant='outline'>
-                            <StarIcon />
-                        </Button>
-                        {token?.TokenMedia?.Token_Discord != undefined && (
-                            <Button
-                                variant='link'
-                                size='icon'
-                                onClick={() => window.open(token.TokenMedia!.Token_Discord, "_blank")}
-                            >
-                                <FaDiscord />
-                            </Button>
-                        )}
-                        {token?.TokenMedia?.Token_Website && (
-                            <Button
-                                variant="link"
-                                size='icon'
-                                onClick={() => window.open(token.TokenMedia!.Token_Website, "_blank")}
-                            >
-                                <IoEarth />
-                            </Button>
-                        )}
-                        {token?.TokenMedia?.Token_Telegram && (
-                            <Button
-                                variant="link"
-                                size='icon'
-                                onClick={() => window.open(token.TokenMedia!.Token_Telegram, "_blank")}
-                            >
-                                <BiLogoTelegram />
-                            </Button>
-                        )}
-                        {token?.TokenMedia?.Token_Twitter && (
-                            <Button
-                                variant="link"
-                                size='icon'
-                                onClick={() => window.open(token.TokenMedia!.Token_Twitter, "_blank")}
-                            >
-                                <RiTwitterXFill />
-                            </Button>
-                        )}
-                    </div>
+                    <SocialMedia token={token} />
                     <div className='flex flex-col items-end justify-end gap-3 mt-2'>
                         <RenderConditionalComponent value={token?.data?.[0]?.attributes?.base_token_price_usd} options={{
                             trueValueComponent: (
