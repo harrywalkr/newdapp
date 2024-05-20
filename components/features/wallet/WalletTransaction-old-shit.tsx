@@ -134,7 +134,7 @@ export default function WalletTransaction({ dateRange, walletAddress }: Props) {
   );
 }
 
-const Swap = ({ data, image }: { data: any; image: string }) => {
+const Swap = ({ data, image }: { data: any; image?: string }) => {
 
   const type: 'buy' | 'sell' = data.type.split(' ')[0] as 'buy' | 'sell';
   const { sentTokenName, sentTokenAddress, receivedTokenName, receivedTokenAddress, sentAmount, receivedAmount, timestamp, profit } = data.description;
@@ -169,7 +169,7 @@ const Swap = ({ data, image }: { data: any; image: string }) => {
   );
 };
 
-const Other = ({ data, image }: { data: any; image: string }) => {
+const Other = ({ data, image }: { data: any; image?: string }) => {
   const type: 'send' | 'receive' = data.type as 'send' | 'receive';
 
   return (

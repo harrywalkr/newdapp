@@ -18,6 +18,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FaDiscord } from 'react-icons/fa';
+import { BiLogoTelegram } from 'react-icons/bi';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -79,19 +80,39 @@ export default function TokenOverview({ token, logo }: Props) {
                         {token?.TokenMedia?.Token_Discord != undefined && (
                             <Button
                                 variant='link'
-                                // href={token?.TokenMedia?.Token_Discord}
-                                // target="_blank"
+                                size='icon'
+                                onClick={() => window.open(token.TokenMedia!.Token_Discord, "_blank")}
                             >
                                 <FaDiscord />
                             </Button>
                         )}
-
-                        <Button size='icon' variant='ghost'>
-                            <IoEarth />
-                        </Button>
-                        <Button size='icon' variant='ghost'>
-                            <RiTwitterXFill />
-                        </Button>
+                        {token?.TokenMedia?.Token_Website && (
+                            <Button
+                                variant="link"
+                                size='icon'
+                                onClick={() => window.open(token.TokenMedia!.Token_Website, "_blank")}
+                            >
+                                <IoEarth />
+                            </Button>
+                        )}
+                        {token?.TokenMedia?.Token_Telegram && (
+                            <Button
+                                variant="link"
+                                size='icon'
+                                onClick={() => window.open(token.TokenMedia!.Token_Telegram, "_blank")}
+                            >
+                                <BiLogoTelegram />
+                            </Button>
+                        )}
+                        {token?.TokenMedia?.Token_Twitter && (
+                            <Button
+                                variant="link"
+                                size='icon'
+                                onClick={() => window.open(token.TokenMedia!.Token_Twitter, "_blank")}
+                            >
+                                <RiTwitterXFill />
+                            </Button>
+                        )}
                     </div>
                     <div className='flex flex-col items-end justify-end gap-3 mt-2'>
                         <RenderConditionalComponent value={token?.data?.[0]?.attributes?.base_token_price_usd} options={{
