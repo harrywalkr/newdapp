@@ -21,6 +21,7 @@ import WalletStatistical from "./WalletStatistical-old-dex/WalletStatistical";
 import RenderConditionalComponent from "@/components/common/RenderConditionalComponent";
 import { isPaidMember } from "@/services/auth.service";
 import Paywall from "@/components/common/Paywall";
+import WalletTransactionOldShit from "./WalletTransaction-old-shit";
 
 interface Props {
   walletAddress: string;
@@ -123,7 +124,9 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             <WalletSwaps walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
           <TabsContent value="transactions" className='mt-5'>
-            <WalletTransactions walletAddress={walletAddress} dateRange={dateRange} />
+            {/* <WalletTransactions walletAddress={walletAddress} dateRange={dateRange} /> */}
+            {/* FIXME: replace this old component with above */}
+            <WalletTransactionOldShit walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
           <TabsContent value="nft" className='mt-5'>
             <RenderConditionalComponent

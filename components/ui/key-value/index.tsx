@@ -51,7 +51,7 @@ const KeyValue = forwardRef<HTMLDivElement, KeyValueProps>(({
             <div className='font-bold flex items-center gap-1'>
                 {titleIcon}
                 <div className='flex flex-col'>
-                    <h2>
+                    <h2 className='whitespace-nowrap'>
                         {title}
                         {stretch && ' : '}
                     </h2>

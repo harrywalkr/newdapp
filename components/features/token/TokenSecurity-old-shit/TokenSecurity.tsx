@@ -13,7 +13,7 @@ export default function TokenSecurityOldShit({ token, tokenAddress }: Props) {
   return (
     <div className="flex flex-col gap-16 mt-5">
       <TokenSecurityMeasureLine token={token} />
-      <TokenSecurityBox />
+      <TokenSecurityBox tokenAddress={tokenAddress} />
       <TokenSecurityCallActivity tokenAddress={tokenAddress} />
     </div>
   );

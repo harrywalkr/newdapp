@@ -113,7 +113,7 @@ export default function Transaction({ swap, image, isSwap }: Props) {
                                     <Copy text={minifyContract(swap.description.receivedTokenAddress)} value={swap.description.receivedTokenAddress} />}
                             </div>
                             <div className='flex flex-col items-center justify-center gap-2'>
-                              
+
                                 {
                                     swap.description?.profit != undefined &&
                                     <span className={`${swap.description.profit > 0 ? "text-success" : "text-error"}`}>
@@ -136,7 +136,7 @@ export default function Transaction({ swap, image, isSwap }: Props) {
                                 }
                             </div>
                             <div>
-                            {
+                                {
                                     swap.description?.timestamp != undefined &&
                                     <>
                                         <span>{dayjs().format(swap.description.timestamp.split(" ")[0])}</span>

@@ -78,7 +78,6 @@ export default function WalletTransactions({ dateRange, walletAddress }: Props) 
     return (
         <ScrollArea className="h-96 w-full rounded-md border">
             <ScrollBar orientation="horizontal" />
-
             <div>
                 {walletSwapsQuery.data && sortedSwaps(walletSwapsQuery.data as SwapType).map((swap, id) => {
                     if (swap.type === null) return null

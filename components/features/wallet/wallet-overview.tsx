@@ -88,7 +88,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                             <KeyValue
                                 title='Winrate'
                                 titleIcon={<IoIosWine />}
-                                value={+initialWalletSummary.winRate / 10}
+                                value={(+initialWalletSummary.winRate / 10).toFixed(2)}
                                 variant='default' />
                         }
                         {
@@ -107,7 +107,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         }
                     </div>
                 </div>
-                <DatePickerWithRange className='max-w-64' onDateChange={onDateChange} />
+                <DatePickerWithRange className='md:max-w-64' onDateChange={onDateChange} />
             </CardContent>
         </Card>
     )
