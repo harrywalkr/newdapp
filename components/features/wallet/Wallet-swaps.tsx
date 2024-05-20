@@ -7,6 +7,7 @@ import {
     TableBody,
     TableCaption,
     TableCell,
+    TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
@@ -77,7 +78,41 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
             <TableCaption>Summary of Token Transactions</TableCaption>
             <TableHeader>
                 <TableRow>
-                    {/* Table headers with consistency in the use of double quotes */}
+                    <TableHead className="whitespace-nowrap">Rank</TableHead>
+                    <TableHead className="whitespace-nowrap">Token</TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Buy Amount (USD)
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Sell Amount (USD)
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Profit
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Entry Price
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Exit Price
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Buy Times
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Sell Times
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Current Value
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Live P&L
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Price
+                    </TableHead>
+                    <TableHead className="whitespace-nowrap">
+                        Status
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
