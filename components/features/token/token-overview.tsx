@@ -16,6 +16,7 @@ import RenderConditionalComponent from '@/components/common/RenderConditionalCom
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -30,22 +31,13 @@ export default function TokenOverview({ token, logo }: Props) {
             <CardContent className="pt-6 flex items-stretch justify-between h-full">
                 <div className="left flex flex-col gap-5">
                     <div className="top flex items-center justify-start gap-5">
-                        <RenderConditionalComponent value={logo} options={{
-                            trueValueComponent: (
-                                <Image
-                                    width={60}
-                                    height={60}
-                                    className='rounded-full'
-                                    src={logo.imageUrl}
-                                    alt={token?.data?.[0]?.attributes?.name || ''}
-                                />
-                            ),
-                            falseValueComponent: (
-                                <div className="flex justify-center items-center w-15 h-15 font-bold text-3xl border rounded-full">
-                                    {token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}
-                                </div>
-                            )
-                        }} />
+                                <Avatar className="h-14 w-14">
+                                    <AvatarImage
+                                        src={logo.imageUrl}
+                                        alt={token?.data?.[0]?.attributes?.name || ''}
+                                    />
+                                    <AvatarFallback>{token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}</AvatarFallback>
+                                </Avatar>
                         <div className='flex flex-col items-start justify-center gap-2'>
                             <RenderConditionalComponent value={token?.data?.[0]?.attributes?.name && token?.data[0]?.id} options={{
                                 trueValueComponent: (

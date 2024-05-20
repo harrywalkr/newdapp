@@ -17,6 +17,7 @@ import TokenHolders from './TokenHolders-old-dex/TokenHoldersAmountFilter'
 import RenderConditionalComponent from '@/components/common/RenderConditionalComponent'
 import { isPaidMember } from '@/services/auth.service'
 import Paywall from '@/components/common/Paywall'
+import TokenSecurityOldShit from './TokenSecurity-old-shit/TokenSecurity'
 
 interface Props {
   token: TokenType,
@@ -95,7 +96,9 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
             </div>
           </TabsContent>
           <TabsContent value="security" className='mt-5'>
-            <ContractSecurity token={token} />
+            {/* FIXME: contract security must be uncommented and updated to replace the old next line */}
+            {/* <ContractSecurity token={token} /> */}
+            <TokenSecurityOldShit token={token} tokenAddress={tokenAddress}/>
           </TabsContent>
           <TabsContent value="holders" className='mt-5'>
             <RenderConditionalComponent
