@@ -15,6 +15,7 @@ import { RiTwitterXFill } from 'react-icons/ri';
 import RenderConditionalComponent from '@/components/common/RenderConditionalComponent';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { KeyValue } from '@/components/ui/key-value';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -108,18 +109,11 @@ function PriceChange({ token }: { token: TokenType }) {
     return (
         <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24} options={{
             trueValueComponent: (
-                <div className='whitespace-nowrap'>
-                    {`24hr Change: `}
-                    <h2
-                        className={clsx('text-sm inline text-center',
-                            +token!.data![0].attributes!.price_change_percentage!.h24! > 0
-                                ? " text-green-500"
-                                : " text-red-500"
-                        )}
-                    >
-                        {`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
-                    </h2>
-                </div>
+                <KeyValue
+                    title="24hr Change"
+                    value={`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
+                    variant={+token!.data![0].attributes!.price_change_percentage!.h24! > 0 ? "good" : "bad"}
+                />
             ),
             falseValueComponent: <p>No 24hr change data</p>
         }} />
@@ -130,12 +124,11 @@ function Liquidity({ token }: { token: TokenType }) {
     return (
         <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.reserve_in_usd} options={{
             trueValueComponent: (
-                <div className='whitespace-nowrap'>
-                    {`Liquidity: `}
-                    <h2 className='text-sm inline text-center text-muted-foreground'>
-                        ${formatCash(+token!.data![0].attributes!.reserve_in_usd!)}
-                    </h2>
-                </div>
+                <KeyValue
+                    title="Liquidity"
+                    value={`$${formatCash(+token!.data![0].attributes!.reserve_in_usd!)}`}
+                    variant="default"
+                />
             ),
             falseValueComponent: <p>No liquidity data</p>
         }} />
@@ -147,23 +140,22 @@ function BuySellTaxes({ token }: { token: TokenType }) {
         <div className='flex items-center justify-start gap-2'>
             <RenderConditionalComponent value={token.SecurityData?.tokenSecurity?.details?.buy_tax} options={{
                 trueValueComponent: (
-                    <div className='whitespace-nowrap'>
-                        {`Buy tax: `}
-                        <h2 className='text-sm inline text-center text-green-500'>
-                            {+token!.SecurityData!.tokenSecurity!.details!.buy_tax! * 100}%
-                        </h2>
-                    </div>
+                    <KeyValue
+                        title="Buy tax"
+                        value={`${+token!.SecurityData!.tokenSecurity!.details!.buy_tax! * 100}%`}
+                        variant="good"
+                    />
+
                 ),
                 falseValueComponent: <p>No buy tax data</p>
             }} />
             <RenderConditionalComponent value={token.SecurityData?.tokenSecurity?.details?.sell_tax} options={{
                 trueValueComponent: (
-                    <div className='whitespace-nowrap'>
-                        {`Sell tax: `}
-                        <h2 className='text-sm inline text-center text-red-500'>
-                            {+token!.SecurityData!.tokenSecurity!.details!.sell_tax! * 100}%
-                        </h2>
-                    </div>
+                    <KeyValue
+                        title="Sell tax"
+                        value={`${+token!.SecurityData!.tokenSecurity!.details!.sell_tax! * 100}%`}
+                        variant="bad"
+                    />
                 ),
                 falseValueComponent: <p>No sell tax data</p>
             }} />
@@ -175,14 +167,11 @@ function HolderInterest({ token }: { token: TokenType }) {
     return (
         <RenderConditionalComponent value={token?.BalancesData?.numberOfAddresses} options={{
             trueValueComponent: (
-                <div className='whitespace-nowrap'>
-                    {`Holder interest: `}
-                    <h2 className={clsx('text-sm inline text-center',
-                        token!.BalancesData!.numberOfAddresses! > 10 ? "text-green-500" : "text-red-500"
-                    )}>
-                        {token?.BalancesData?.numberOfAddresses}
-                    </h2>
-                </div>
+                <KeyValue
+                    title="Holder interest"
+                    value={token?.BalancesData?.numberOfAddresses}
+                    variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
+                />
             ),
             falseValueComponent: <p>No holder interest data</p>
         }} />

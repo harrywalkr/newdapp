@@ -26,7 +26,7 @@ import { spotlightSearch } from "@/services/http/spotlight.http";
 import { searchToken } from "@/services/http/token.http";
 import { useEffect, useState } from "react";
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { TokenType } from "@/types/token.type";
+import { Daum, TokenType } from "@/types/token.type";
 import { get, set } from "local-storage";
 import { ImageType } from "@/types/Image.type";
 import { getImages } from "@/services/http/image.http";
@@ -39,6 +39,7 @@ import Loading from "@/components/common/Loading";
 import { IoWalletOutline } from "react-icons/io5";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -105,13 +106,11 @@ export function Spotlight() {
 
   const addToLocalStorage = (address: TokenType | SpotlightSearchType) => {
     if (!address) return;
-    if (typeof window !== "undefined") {
-      const previousSearches = (get("previousSearches") as []) || [];
-      set("previousSearches", [address, ...previousSearches.splice(0, 5)]);
-    }
+    const previousSearches = (get("previousSearches") as TokenType[] | SpotlightSearchType[]) || [];
+    set("previousSearches", [address, ...previousSearches.splice(0, 5)]);
   };
 
-  const imageUrl = (address: string): string | undefined => {
+  const imageUrl = (address?: string): string | undefined => {
     const temp = images.find((image) => image.token == address);
     return temp?.imageUrl;
   };
@@ -185,20 +184,6 @@ export function Spotlight() {
                           className="cursor-pointer"
                           onClick={() => {
                             addToLocalStorage(token);
-                            // router.push(
-                            //   `/token/${
-                            //     item.relationships.base_token.data.id.split(
-                            //       "_"
-                            //     )[0]
-                            //   }/${
-                            //     item.relationships.base_token.data.id.split(
-                            //       "_"
-                            //     )[1]
-                            //   }`
-                            // );
-                            // FIXME: fix route handler
-                            // FIXME: fix history
-                            // FIXME: add navigation/router href abstraction as well
                             if (item?.relationships?.base_token?.data?.id) {
                               router.push(`/tokens/${item.relationships.base_token.data.id.split("_")[1]}`)
                               setOpen(!open)
@@ -290,6 +275,57 @@ export function Spotlight() {
               )}
             </div>
           )}
+          <Separator />
+          <div className="px-4 pb-4 flex flex-col md:flex-row items-start justify-start gap-6 md:gap-12">
+            {get("previousSearches") != null && (
+              <>
+                <h4>
+                  Previous searches:
+                </h4>
+                <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {(get("previousSearches") as (SpotlightSearchType | TokenType)[]).map((item) => (
+                    <li
+                      key={(item as SpotlightSearchType).subject?.address || (item as TokenType).data?.[0]?.id}
+                      className="cursor-pointer flex items-center justify-center"
+                      onClick={() => {
+                        if ((item as SpotlightSearchType).subject?.address) {
+                          router.push(`/wallet/${(item as SpotlightSearchType).subject.address}`);
+                        } else {
+                          router.push(
+                            `/tokens/${(item as TokenType).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]}`
+                          );
+                        }
+                      }}
+                    >
+                      {(item as SpotlightSearchType).subject?.address ? (
+                        <p>{truncate((item as SpotlightSearchType).subject.address, 15)}</p>
+                      ) : (
+                        <div className="flex items-center justify-start gap-1 md:gap-2">
+                          {imageUrl(
+                            (item as TokenType).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
+                          ) != undefined && (
+                              <Image
+                                className="w-8 h-8 md:w-9 md:h-9"
+                                width={20}
+                                height={20}
+                                src={imageUrl(
+                                  (item as TokenType).data![0].relationships?.base_token?.data?.id?.split("_")[1]!
+                                )!}
+                                alt=""
+                              />
+                            )}
+                          {
+                            (item as Daum)?.attributes?.name != undefined &&
+                            <p>{truncate((item as Daum).attributes!.name!, 15)}</p>
+                          }
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </>
