@@ -49,11 +49,11 @@ const PricingPageContent = () => {
     };
 
     return (
-        <div>
+        <div className='flex flex-col items-center justify-center'>
             <Tab tabItems={tabItems} onClick={handleTabClick} className='w-full md:w-auto' />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 max-w-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 max-w-xl w-full">
                 {/* Free Tier Card */}
-                <div className='flex items-start justify-end'>
+                <div className='flex items-start justify-end w-full'>
                     <Card className='w-full max-w-96 min-h-72 md:min-h-80 flex flex-col items-start justify-between'>
                         <CardHeader>
                             <p>$0/month</p>

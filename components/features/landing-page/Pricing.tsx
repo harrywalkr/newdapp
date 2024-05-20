@@ -83,9 +83,8 @@ export const Pricing = () => {
         {pricingList.map((pricing: PricingProps) => (
           <Card
             key={pricing.title}
-            className={`bg-muted/50 transition-all duration-300 ease-in-out ${
-              pricing.popular === PopularPlanType.YES ? "ring ring-primary ring-offset-2" : ""
-            }`}
+            className={`bg-muted/50 transition-all duration-300 ease-in-out ${pricing.popular === PopularPlanType.YES ? "ring ring-primary ring-offset-2" : ""
+              }`}
           >
             <CardHeader>
               <CardTitle className="flex item-center justify-between">
