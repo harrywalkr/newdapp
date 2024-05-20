@@ -4,10 +4,10 @@ import { IoWarningOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { TokenData } from "@/types/token/token.type";
+import { TokenType } from "@/types/token.type";
 
 interface Props {
-  token: TokenData
+  token: TokenType
 }
 
 export default function TokenSecurityMeasureLine({ token }: Props) {

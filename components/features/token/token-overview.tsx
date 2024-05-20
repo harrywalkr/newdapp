@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { FaDiscord } from 'react-icons/fa';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -31,13 +32,13 @@ export default function TokenOverview({ token, logo }: Props) {
             <CardContent className="pt-6 flex items-stretch justify-between h-full">
                 <div className="left flex flex-col gap-5">
                     <div className="top flex items-center justify-start gap-5">
-                                <Avatar className="h-14 w-14">
-                                    <AvatarImage
-                                        src={logo.imageUrl}
-                                        alt={token?.data?.[0]?.attributes?.name || ''}
-                                    />
-                                    <AvatarFallback>{token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}</AvatarFallback>
-                                </Avatar>
+                        <Avatar className="h-14 w-14">
+                            <AvatarImage
+                                src={logo.imageUrl}
+                                alt={token?.data?.[0]?.attributes?.name || ''}
+                            />
+                            <AvatarFallback>{token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}</AvatarFallback>
+                        </Avatar>
                         <div className='flex flex-col items-start justify-center gap-2'>
                             <RenderConditionalComponent value={token?.data?.[0]?.attributes?.name && token?.data[0]?.id} options={{
                                 trueValueComponent: (
@@ -75,6 +76,16 @@ export default function TokenOverview({ token, logo }: Props) {
                         <Button size='icon' variant='outline'>
                             <StarIcon />
                         </Button>
+                        {token?.TokenMedia?.Token_Discord != undefined && (
+                            <Button
+                                variant='link'
+                                // href={token?.TokenMedia?.Token_Discord}
+                                // target="_blank"
+                            >
+                                <FaDiscord />
+                            </Button>
+                        )}
+
                         <Button size='icon' variant='ghost'>
                             <IoEarth />
                         </Button>
