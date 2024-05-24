@@ -4,6 +4,7 @@ import { fetchData } from "./axios.config";
 import { AxiosRequestConfig } from "axios";
 import { TradeReportType } from "@/types/trade-report.type";
 import { IDatafeed } from "@/types/datafeed.type";
+import { IchainInfo } from "@/types/chain-info.type";
 
 export const spotlightSearch = (
   options: AxiosRequestConfig
@@ -33,6 +34,20 @@ export const getTradeReport = (
 ): Promise<TradeReportType> =>
   fetchData<TradeReportType>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/tradeReport`,
+    options
+  );
+
+export const getTopTrends = (options: AxiosRequestConfig): Promise<TokenType> =>
+  fetchData<TokenType>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/toptrends`,
+    options
+  );
+
+export const getChainData = (
+  options: AxiosRequestConfig
+): Promise<IchainInfo> =>
+  fetchData<IchainInfo>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/chaindata`,
     options
   );
 

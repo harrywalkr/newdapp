@@ -1,60 +1,69 @@
+'use client'
+import { useTokenChainStore } from "@/store";
+import { TokenType } from "@/types/token.type";
 import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 
-export default function HolderStats() {
+interface Props {
+  // token: TokenType
+  tokenAddress: string
+}
+
+export default function HolderStats({ tokenAddress }: Props) {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const [sum, setSum] = useState(0);
-/*
+  const { selectedChain } = useTokenChainStore();
+
+  /*
+    useEffect(() => {
+      fetch(
+        `https://onchain.dextrading.com/token-holders?network=${
+          params.params[0] === "ethereum" ? "eth" : params.params[0]
+        }&token=${params.params[1]}`
+      )
+        .then((data) => data.json())
+        .then((json) => {
+          const rawData = Object.entries(json.date3[0]);
+          const d = rawData
+            .map((dd: any) => {
+              if (
+                dd[0] === "BalanceUpdate" ||
+                dd[0] === "count" ||
+                dd[0] === "supply" ||
+                dd[0] === "theil_index" ||
+                dd[0] === "standard_deviation" ||
+                dd[0] === "dispersion"
+              )
+                return;
+              return dd;
+            })
+            .filter((dd: any) => Boolean(dd));
+          const s = d.reduce((acc, curr) => {
+            return acc + parseFloat(curr[1] as string);
+          }, 0);
+  
+          setSum(s);
+          setData(d as any);
+        })
+        .finally(() => setLoading(false));
+    }, []);
+  */
+
+
   useEffect(() => {
+    // FIXME: fix chain from being hard coded
     fetch(
-      `https://onchain.dextrading.com/token-holders?network=${
-        params.params[0] === "ethereum" ? "eth" : params.params[0]
-      }&token=${params.params[1]}`
-    )
-      .then((data) => data.json())
-      .then((json) => {
-        const rawData = Object.entries(json.date3[0]);
-        const d = rawData
-          .map((dd: any) => {
-            if (
-              dd[0] === "BalanceUpdate" ||
-              dd[0] === "count" ||
-              dd[0] === "supply" ||
-              dd[0] === "theil_index" ||
-              dd[0] === "standard_deviation" ||
-              dd[0] === "dispersion"
-            )
-              return;
-            return dd;
-          })
-          .filter((dd: any) => Boolean(dd));
-        const s = d.reduce((acc, curr) => {
-          return acc + parseFloat(curr[1] as string);
-        }, 0);
-
-        setSum(s);
-        setData(d as any);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-*/
-
-
- useEffect(() => {
-    fetch(
-      `https://onchain.dextrading.com/token-holders?network=${
-        params.params[0] === "ethereum" ? "eth" : params.params[0]
-      }&token=${params.params[1]}`
+      `https://onchain.dextrading.com/token-holders?network=${selectedChain.symbol.toLowerCase()}&token=${tokenAddress}`
     )
       .then((response) => response.json())
       .then((json) => {
         const rawData = Object.entries(json.date3[0]);
-  
+
         // Mapping of original names to desired names
         const nameMapping: { [key: string]: string } = {
           entropy_label: "HolderDiversity",
@@ -64,8 +73,8 @@ export default function HolderStats() {
           quantile_label: "HolderPercentile",
           skew_label: "OwnershipSkewness",
         };
-  
-  
+
+
         // Include only specific entries and apply name mapping
         const d = rawData
           .filter((dd: any) => {
@@ -76,17 +85,17 @@ export default function HolderStats() {
             const key = dd[0];
             return [nameMapping[key as keyof typeof nameMapping], dd[1]];
           });
-  
+
         const s = d.reduce((acc, curr) => {
           return acc + parseFloat(curr[1] as string);
         }, 0);
-  
+
         setSum(s);
         setData(d as any);
       })
       .finally(() => setLoading(false));
   }, []);
-  
+
 
 
 
@@ -99,7 +108,7 @@ export default function HolderStats() {
     const from = new Date();
     from.setDate(from.getDate() - 6);
     fetch(
-      `https://onchain.dextrading.com/topHolders?network=${params.params[0] === 'ethereum' ? 'eth' : params.params[0]}&till=${to.toISOString().split('T')[0]}&token=${params.params[1]}&limit=10`
+      `https://onchain.dextrading.com/topHolders?network=${selectedChain.symbol.toLowerCase()}&till=${to.toISOString().split('T')[0]}&token=${tokenAddress}&limit=10`
     )
       .then((data) => data.json())
       .then((json) => setData2(json.data.EVM.TokenHolders))
@@ -191,11 +200,11 @@ export const RateLeft = ({ value, title }: { value: number; title: string }) => 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-       <div className={`w-[100px] sm:text-right font-medium sm:font-normal ${isHovered ? 'text-black' : ''}`}>
+        <div className={`w-[100px] sm:text-right font-medium sm:font-normal ${isHovered ? 'text-black' : ''}`}>
           {title.replaceAll("_", " ")}
         </div>
         <div
-        
+
         ></div>
         {/* Input range for interactive value change */}
         <input

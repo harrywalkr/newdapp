@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { LiaRobotSolid } from "react-icons/lia";
 import Link from "next/link";
+import ChainInfo from "../features/header/chain-info";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
@@ -27,17 +28,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
         <div className="flex items-center justify-start gap-20">
           <ChainSelector />
-          <ul className="hidden md:flex items-center justify-center gap-10 text-muted-foreground">
-            <li>
-              ETH price: $25
-            </li>
-            <li>
-              ETH price: $25
-            </li>
-            <li>
-              ETH price: $25
-            </li>
-          </ul>
+          <ChainInfo />
         </div>
         <ConnectWalletButton />
         <div className="block md:hidden">
@@ -51,15 +42,25 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         <Spotlight />
         <ul className="hidden md:flex items-center justify-center gap-10">
           <li>
-            <Link href='/pricing'>
-            Premium
+            <Link href='/watchlist'>
+              Watchlist
             </Link>
-            </li>
+          </li>
+          <li>
+            <Link href='/academy'>
+              Academy
+            </Link>
+          </li>
+          <li>
+            <Link href='/pricing'>
+              Premium
+            </Link>
+          </li>
           <li>
             <Link href='/dashboard'>
-            Dashboard
+              Dashboard
             </Link>
-            </li>
+          </li>
         </ul>
         <div className="hidden md:flex items-center justify-center gap-6">
           <div  >

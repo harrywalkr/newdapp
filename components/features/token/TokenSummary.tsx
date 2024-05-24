@@ -82,7 +82,7 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
             />
 
             <RenderConditionalComponent
-                value={token?.TickersData?.cex && token?.TickersData?.cex.length > 0}
+                value={token?.TickersData?.cex && token?.TickersData?.cex.length > 0 && token?.TickersData?.cex[0].market?.name}
                 options={{
                     trueValueComponent: (
                         <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-80 md:h-96">

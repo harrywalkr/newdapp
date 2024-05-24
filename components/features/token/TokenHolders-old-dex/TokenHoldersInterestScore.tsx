@@ -2,7 +2,12 @@ import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function InterestScore() {
+interface Props {
+  tokenAddress: string
+}
+
+
+export default function InterestScore({ tokenAddress }: Props) {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -11,7 +16,7 @@ export default function InterestScore() {
     const controller = new AbortController();
     setLoading(true);
     fetch(
-      `https://onchain.dextrading.com/getBalances?tokenSmartContract=${params.params[1]}`
+      `https://onchain.dextrading.com/getBalances?tokenSmartContract=${tokenAddress}`
       , { signal: controller.signal })
       .then((data) => data.json())
       .then((json) => setData(json.results))

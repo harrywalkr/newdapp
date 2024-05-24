@@ -4,6 +4,7 @@ import React from 'react'
 
 //FIXME: add meta data
 export default function Profile() {
+  
   return (
     <ProfileDashboard />
   )

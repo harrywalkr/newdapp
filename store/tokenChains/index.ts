@@ -5,6 +5,7 @@ type TokenChain = {
   id: number;
   name: string;
   symbol: string;
+  nativeTokenName: string;
   icon: string; // Icon URL for the token
   url: string; // URL for token data or trends
 };
@@ -24,58 +25,66 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
     // Example initial chains updated with new properties
     {
       id: 1,
+      nativeTokenName: "eth",
       name: "Ethereum",
-      symbol: "ETH",
+      symbol: "eth",
       icon: "/ETH.png",
       url: "eth",
     },
     {
       id: 2,
+      nativeTokenName: "bnb",
       name: "Binance Smart Chain",
-      symbol: "BSC",
+      symbol: "bsc",
       icon: "/BSC.png",
       url: "bsc",
     },
-    {
-      id: 3,
-      name: "Polygon",
-      symbol: "MATIC",
-      icon: "/MATIC.png",
-      url: "polygon",
-    },
+    // {
+    //   id: 3,
+    // nativeTokenName: "matic",
+    //   name: "Polygon",
+    //   symbol: "matic",
+    //   icon: "/MATIC.png",
+    //   url: "polygon",
+    // },
     {
       id: 4,
+      nativeTokenName: "weth",
       name: "Arbitrum",
-      symbol: "ARB",
+      symbol: "arbitrum",
       icon: "/ARB.png",
       url: "arbitrum",
     },
     {
       id: 5,
+      nativeTokenName: "weth",
       name: "Optimism",
-      symbol: "OPT",
+      symbol: "optimism",
       icon: "/OPT.png",
       url: "optimism",
     },
     {
       id: 6,
+      nativeTokenName: "weth",
       name: "Base",
-      symbol: "BASE",
+      symbol: "base",
       icon: "/BASE.png",
       url: "base",
     },
     {
       id: 7,
+      nativeTokenName: "sol",
       name: "Solana",
-      symbol: "SOL",
+      symbol: "solana",
       icon: "/SOL.png",
       url: "sol",
     },
   ],
   selectedChain: {
     id: 1,
+    nativeTokenName: "eth",
     name: "Ethereum",
-    symbol: "ETH",
+    symbol: "eth",
     icon: "/ETH.png",
     url: "eth",
   },

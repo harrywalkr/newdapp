@@ -1,5 +1,6 @@
 'use client';
 import { useTokenChainStore } from '@/store';
+import clsx from 'clsx';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -56,28 +57,28 @@ const Record = ({
   transparent,
 }: {
   title: string;
-  color: 'bg-success/70' | 'bg-error/70';
+  color: 'bg-green-300/70' | 'bg-red-300/70';
   transparent: 'openSource' | 'proxy' | null;
 }) => (
-  <div
-    className={`p-4 rounded-sm min-w-[110px] w-[110px] h-[80px] ${transparent === 'proxy'
-      ? 'bg-error-content/30'
-      : transparent === 'openSource'
-        ? 'bg-base-content/50'
-        : color
-      } flex items-center justify-center`}
+
+  <p
+    className={clsx('p-4 rounded-sm min-w-[110px] w-[120px] h-[80px] flex items-center justify-center break-all text-sm', {
+      'bg-red-300': transparent === 'proxy',
+      'bg-gray-200': transparent === 'openSource',
+      [color]: !transparent
+    })}
   >
-    <span
-      className={`text-center text-xs ${transparent === 'proxy'
+    {/* <span
+      className={`text-center text-xs break-words ${transparent === 'proxy'
         ? 'text-base-content/70'
         : transparent === 'openSource'
           ? 'text-base-content/80'
           : 'text-base-content/80'
         }`}
-    >
-      {title}
-    </span>
-  </div>
+    > */}
+    {title}
+    {/* </span> */}
+  </p >
 );
 
 export default function TokenSecurityBox({ tokenAddress }: Props) {
@@ -89,7 +90,7 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
 
   useEffect(() => {
     fetch(
-      `https://onchain.dextrading.com/security-data?chainId=${selectedChain.symbol}&baseCurrency=${tokenAddress}`
+      `https://onchain.dextrading.com/security-data?chainId=${selectedChain.symbol.toLowerCase()}&baseCurrency=${tokenAddress}`
     )
       .then((response) => response.json())
       .then((json) => {
@@ -125,13 +126,13 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
   const renderRecords = (title: string, records: any | Record<string, string | null>) => (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-5 overflow-x-auto">
-        <div className="font-medium min-w-[160px] w-[160px]">{title}</div>
+        <div className="font-medium min-w-[160px] w-[160px] break-words">{title}</div>
         {Object.entries(records).map(([key, value]) => (
           <Record
             key={key}
             title={key}
             transparent={isBoxTransparent}
-            color={value !== 'no' ? 'bg-error/70' : 'bg-success/70'}
+            color={value !== 'no' ? 'bg-red-300/70' : 'bg-green-300/70'}
           />
         ))}
       </div>
@@ -143,11 +144,11 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
       className={`py-4 px-4 lg:px-16 rounded-md ${data.sourceCodeControl.is_open_source === 'no'
         ? 'bg-base-content/30'
         : data.sourceCodeControl.isProxy === 'yes'
-          ? 'bg-error/50'
+          ? 'bg-red-300'
           : 'bg-base-content/10'
         }`}
     >
-      <h2 className="mb-8 mt-4 text-center flex flex-col gap-2">
+      <h2 className="mb-8 mt-4 text-center flex flex-col gap-2 break-words">
         <span className="text-xl font-semibold">Security Box</span>
         <span className="text-lg font-medium text-base-content/80">
           {data.sourceCodeControl.is_open_source === 'no'

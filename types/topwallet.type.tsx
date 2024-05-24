@@ -105,7 +105,7 @@ export enum topWalletFiltersEnum {
   BotActivity = "BotActivity",
   details = "details",
   totalnumPartiallyClosedData = "totalnumPartiallyClosedData",
-  totalNumofFullyOpenedData = "totalNumofFullyOpenedData",
+  notClosedPositions = "notClosedPositions",
   totalTransactions = "totalTransactions",
 }
 
@@ -122,8 +122,8 @@ export const topWalletLayouts: {
   [topWalletFiltersEnum.HotHolder]: true,
   [topWalletFiltersEnum.TotalFee]: true,
   [topWalletFiltersEnum.details]: true,
-  [topWalletFiltersEnum.totalnumPartiallyClosedData]: true,
-  [topWalletFiltersEnum.totalNumofFullyOpenedData]: true,
+  [topWalletFiltersEnum.totalnumPartiallyClosedData]: false,
+  [topWalletFiltersEnum.notClosedPositions]: true,
   [topWalletFiltersEnum.SwapTime]: false,
   [topWalletFiltersEnum.avgHoldingTime]: true,
   [topWalletFiltersEnum.totalScore]: true,

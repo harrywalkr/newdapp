@@ -19,7 +19,12 @@ const latestSearches = [
   },
 ];
 
-export default function HolderCompare() {
+interface Props {
+  tokenAddress: string
+}
+
+
+export default function HolderCompare({ tokenAddress }: Props) {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -30,7 +35,7 @@ export default function HolderCompare() {
     if (form.length !== 42) return;
     setLoading(true);
     fetch(
-      `https://onchain.dextrading.com/compare-holders?contract1=${params.params[1]}&contract2=${form}&limit=10`
+      `https://onchain.dextrading.com/compare-holders?contract1=${tokenAddress}&contract2=${form}&limit=10`
     )
       .then((data) => data.json())
       .then((json) => setData(json.data.EVM.BalanceUpdates))

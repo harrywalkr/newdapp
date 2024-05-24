@@ -13,6 +13,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import useTokenChainStore from "@/store/tokenChains";
+import Image from "next/image";
 
 export default function ChainSelector() {
   const { availableChains, selectedChain, setSelectedChain } = useTokenChainStore();
@@ -38,6 +39,12 @@ export default function ChainSelector() {
                 setIsOpen(!isOpen)
               }}>
               {chain.name}
+              <Image
+                src={chain.icon}
+                height={20}
+                width={20}
+                alt={chain.name}
+              />
             </Button>
           ))}
           <DrawerClose>

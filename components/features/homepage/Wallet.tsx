@@ -25,6 +25,7 @@ import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Copy from "@/components/ui/copy";
 import { minifyContract } from "@/utils/truncate";
+import { separate3digits } from "@/utils/numbers";
 
 
 interface Prop {
@@ -54,7 +55,7 @@ export default function Wallet({ initTopWallets }: Prop) {
     BotActivity: false,
     details: false,
     totalnumPartiallyClosedData: false,
-    totalNumofFullyOpenedData: false,
+    notClosedPositions: false,
     totalTransactions: false,
   });
   const [layout, setLayout] = useState(topWalletLayouts);
@@ -335,6 +336,8 @@ export default function Wallet({ initTopWallets }: Prop) {
                     onClick={() => handleSort("HotHolder")}
                   >
                     Hot Holder
+
+
                   </TableHead>
                 )}
                 {layout[topWalletFiltersEnum.avgHoldingTime] && (
@@ -366,7 +369,7 @@ export default function Wallet({ initTopWallets }: Prop) {
                     className="whitespace-nowrap	"
                     onClick={() => handleSort("TotalFee")}
                   >
-                    Total Fee
+                    Total Fee (eth)
                   </TableHead>
                 )}
                 {layout[topWalletFiltersEnum.BotActivity] && (
@@ -393,12 +396,12 @@ export default function Wallet({ initTopWallets }: Prop) {
                     Total number of Partially Closed Data
                   </TableHead>
                 )}
-                {layout[topWalletFiltersEnum.totalNumofFullyOpenedData] && (
+                {layout[topWalletFiltersEnum.notClosedPositions] && (
                   <TableHead
                     className="whitespace-nowrap	"
-                    onClick={() => handleSort("totalNumofFullyOpenedData")}
+                    onClick={() => handleSort("notClosedPositions")}
                   >
-                    Total Number of Fully Opened Data
+                    not closed
                   </TableHead>
                 )}
                 {layout[topWalletFiltersEnum.totalTransactions] && (
@@ -487,10 +490,10 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
       )}
       {layout.pnl && (
         <TableCell
-          className={`text-base-content whitespace-nowrap ${data.netProfit > 0 ? "text-success" : "text-error"
+          className={`text-base-content whitespace-nowrap ${data.netProfit > 0 ? "text-green-300" : "text-red-300"
             }`}
         >
-          {/* ${separate3digits(data.netProfit.toFixed(2))} */}
+          ${separate3digits(data.netProfit.toFixed(2))}
         </TableCell>
       )}
       {layout.winRate && (
@@ -504,6 +507,43 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
         </TableCell>
       )}
       {layout.HotHolder && (
+        // <TableCell className={`text-base-content whitespace-nowrap`}>
+        //   <div className="flex items-center gap-2">
+        //     <div className="flex space-x-2 items-center">
+        //       <Link className="flex flex-col gap-2"
+        //         src={`token/${data.HotTokenHolders}`}
+
+        //       >
+        //         <span
+        //           className={
+        //             data.firstTopTokenHolder.tokenName && "gradient-text"
+        //           }
+        //         >
+        //           {data.firstTopTokenHolder.tokenName
+        //             ? data.firstTopTokenHolder.tokenName !== "-"
+        //               ? data.firstTopTokenHolder.tokenName
+        //               : "-"
+        //             : data.HotTokenHolders[0]?.tokenName || "-"}
+        //         </span>
+        //       </Link>
+        //       {/* {data.firstTopTokenHolder.tokenName
+        //         ? data.firstTopTokenHolder.tokenName !== "-" &&
+        //         data.firstTopTokenHolder["Currency Address"] && (
+        //           <CopyAddress
+        //             address={data.firstTopTokenHolder["Currency Address"]}
+        //           />
+        //         )
+        //         : data.HotTokenHolders[0]?.tokenName &&
+        //         data.HotTokenHolders[0]?.["Currency Address"] && (
+        //           <CopyAddress
+        //             address={data.HotTokenHolders[0]["Currency Address"]}
+        //           />
+        //         )} */}
+        //     </div>
+        //   </div>
+        // </TableCell>
+
+
         <TableCell className={`text-base-content whitespace-nowrap`}>
           <div className="flex items-center gap-2">
             <div className="flex space-x-2 items-center">
@@ -520,25 +560,28 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
                     : data.HotTokenHolders[0]?.tokenName || "-"}
                 </span>
               </div>
-              {/* {data.firstTopTokenHolder.tokenName
+              {data.firstTopTokenHolder.tokenName
                 ? data.firstTopTokenHolder.tokenName !== "-" &&
                 data.firstTopTokenHolder["Currency Address"] && (
-                  <CopyAddress
-                    address={data.firstTopTokenHolder["Currency Address"]}
+                  <Copy
+                    text=""
+                    value={data.firstTopTokenHolder["Currency Address"]}
                   />
                 )
                 : data.HotTokenHolders[0]?.tokenName &&
                 data.HotTokenHolders[0]?.["Currency Address"] && (
-                  <CopyAddress
-                    address={data.HotTokenHolders[0]["Currency Address"]}
+                  <Copy
+                    text=""
+                    value={data.HotTokenHolders[0]["Currency Address"]}
                   />
-                )} */}
+                )}
             </div>
           </div>
         </TableCell>
+
       )}
       {layout.avgHoldingTime && (
-        <TableCell className={`text-base-content whitespace-nowrap`}>
+        <TableCell className={`text-base-content text-center whitespace-nowrap `}           >
           {Math.ceil(data.avgHoldingTime) || 0} D
         </TableCell>
       )}
@@ -557,7 +600,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
         </TableCell>
       )}
       {layout?.TotalFee && (
-        <TableCell className={`text-base-content text-center`}>{data?.TotalFee}</TableCell>
+        <TableCell className={`text-base-content text-center`}>{data?.TotalFee.toFixed(2)}</TableCell>
       )}
       {layout?.BotActivity && (
         <TableCell
@@ -574,9 +617,9 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
           {data?.totalnumPartiallyClosedData}
         </TableCell>
       )}
-      {layout?.totalNumofFullyOpenedData && (
+      {layout?.notClosedPositions && (
         <TableCell className={`text-base-content text-center`}>
-          {data.totalNumofFullyOpenedData}
+          {data?.totalNumofFullyOpenedData}
         </TableCell>
       )}
       {layout?.totalTransactions && (
@@ -589,6 +632,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
           className={`text-base-content whitespace-nowrap min-w-[200px] max-w-[200px]`}
         >
           <div>
+          {data.totalScore}
             {/* <TotalScore value={data.totalScore} /> */}
           </div>
         </TableCell>

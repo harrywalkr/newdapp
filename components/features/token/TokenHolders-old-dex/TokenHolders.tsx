@@ -1,3 +1,4 @@
+import { TokenType } from "@/types/token.type";
 import TokenHoldersAmountFilter from "./TokenHoldersAmountFilter";
 import TokenHoldersCompare from "./TokenHoldersCompare";
 import TokenHoldersHolderStats from "./TokenHoldersHolderStats";
@@ -5,15 +6,20 @@ import TokenHoldersInterestScore from "./TokenHoldersInterestScore";
 import TokenHoldersMostActiveAddress from "./TokenHoldersMostActiveAddress";
 
 
-export default function TokenHolders() {
+interface Props {
+  token: TokenType
+  tokenAddress: string
+}
+
+export default function TokenHolders({ token, tokenAddress }: Props) {
 
   return (
     <div className="flex flex-col gap-12 pt-8">
-      <TokenHoldersHolderStats />
-      <TokenHoldersAmountFilter />
-      <TokenHoldersCompare />
-      <TokenHoldersMostActiveAddress />
-      <TokenHoldersInterestScore />
+      <TokenHoldersHolderStats tokenAddress={tokenAddress} />
+      <TokenHoldersAmountFilter tokenAddress={tokenAddress} />
+      <TokenHoldersCompare tokenAddress={tokenAddress} />
+      <TokenHoldersMostActiveAddress tokenAddress={tokenAddress} />
+      {/* <TokenHoldersInterestScore tokenAddress={tokenAddress} /> */}
     </div>
   )
 }

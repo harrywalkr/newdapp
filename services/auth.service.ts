@@ -6,20 +6,21 @@ export async function isPaidMember(): Promise<boolean> {
   const key = localStorage.getItem("LICENSE_KEY");
   if (!key) {
     return false;
-  } else return true;
+  } else {
+    verifyKey(key)
+      .then((data) => {
+        console.log("hello", data);
+        if (data === "OK") return true;
+        return false;
+      })
+      .catch((error: Error) => {
+        console.error("Error fetching key:", error.message);
+        return false;
+      });
+      // FIXME: refactor this code
+    return false;
+  }
   // FIXME: Backend must implement checkMembership api
-  // try {
-  //   const response = await fetchData<{ status: boolean }>(
-  //     `${process.env.NEXT_PUBLIC_MEMBERSHIP_URL}/checkMembership`, // FIXME: Ask backend to add this endpoint
-  //     {
-  //       headers: { Authorization: `Bearer ${key}` },
-  //     }
-  //   );
-  //   return response.status;
-  // } catch (error) {
-  //   console.error("Error checking membership status:", error);
-  //   return false;
-  // }
 }
 
 export const verifyKey = (

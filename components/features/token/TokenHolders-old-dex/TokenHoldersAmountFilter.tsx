@@ -14,7 +14,12 @@ interface FormState {
   to: number;
 }
 
-export default function TokenHolders() {
+interface Props {
+  tokenAddress: string
+}
+
+
+export default function TokenHolders({tokenAddress}: Props) {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Holder[]>([]);

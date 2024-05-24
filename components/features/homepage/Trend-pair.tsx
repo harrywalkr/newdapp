@@ -57,7 +57,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
     <SectionContent>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {Array(3).fill(true).map((data: any, id: number) => (
-          <Card key={id} className="w-full h-40 relative overflow-hidden flex flex-col justify-center gap-1 p-4">
+          <Card key={id} className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
             <div className="space-y-2">
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-[210px]" />
@@ -117,7 +117,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                           />
                           <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="content flex flex-col items-start justify-between h-28 ">
+                        <div className="content flex flex-col items-start justify-between ">
                           <div className="token flex flex-col items-start justify-start gap-2">
                             {/* <Link */}
                             {/* //FIXME: extend next/link to take searchparams and params without this mess :| */}
@@ -125,17 +125,20 @@ export default function TrendPairs() { // FIXME: this component must include tre
                             {/* > */}
                             {/* {minifyContract(data.name)}
                             </Link> */}
+                            <div className="font-medium">
+                              {minifyContract(data.name)}
+                            </div>
                             <Copy
                               href={`/tokens/${data.address}`}
-                              className="font-medium text-lg link"
+                              className="text-sm !text-muted-foreground link"
                               value={data.address}
                               text={minifyContract(data.address)} />
                           </div>
-                          <div className="flex items-center justify-center gap-5">
+                          {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </CardContent>
@@ -158,7 +161,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                           />
                           <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="content flex flex-col items-start justify-between h-28 ">
+                        <div className="content flex flex-col items-start justify-between">
                           <div className="token flex flex-col items-start justify-start gap-2">
                             <Link
                               //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
@@ -167,13 +170,18 @@ export default function TrendPairs() { // FIXME: this component must include tre
                             >
                               {minifyContract(data.name)}
                             </Link>
-                            <Copy text={minifyContract(data.address)} />
+
+                            <Copy
+                              href={`/tokens/${data.address}`}
+                              className="text-sm !text-muted-foreground link"
+                              value={data.address}
+                              text={minifyContract(data.address)} />
                           </div>
-                          <div className="flex items-center justify-center gap-5">
+                          {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </CardContent>
@@ -202,18 +210,22 @@ export default function TrendPairs() { // FIXME: this component must include tre
                           />
                           <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="content flex flex-col items-start justify-between h-28 ">
+                        <div className="content flex flex-col items-start justify-between">
                           <div className="token flex flex-col items-start justify-start gap-2">
                             <Link href={`/tokens/${data.address}`} className="font-medium text-lg link">
                               {minifyContract(data.name)}
                             </Link>
-                            <Copy text={minifyContract(data.address)} />
+                            <Copy
+                              href={`/tokens/${data.address}`}
+                              className="text-sm !text-muted-foreground link"
+                              value={data.address}
+                              text={minifyContract(data.address)} />
                           </div>
-                          <div className="flex items-center justify-center gap-5">
+                          {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
                             <p className="text-muted-foreground">more detail</p>
-                          </div>
+                          </div> */}
                         </div>
                       </div>}
                     </CardContent>

@@ -13,11 +13,12 @@ import DoughnutChart from '../../ui/Doughnut'
 import { IoShieldHalfOutline } from 'react-icons/io5'
 import ContractSecurity from './ContractSecurity'
 import { GrStakeholder } from 'react-icons/gr'
-import TokenHolders from './TokenHolders-old-dex/TokenHoldersAmountFilter'
 import RenderConditionalComponent from '@/components/common/RenderConditionalComponent'
 import { isPaidMember } from '@/services/auth.service'
 import Paywall from '@/components/common/Paywall'
 import TokenSecurityOldShit from './TokenSecurity-old-shit/TokenSecurity'
+import TokenHolders from './TokenHolders-old-dex/TokenHolders'
+import { KeyValue } from '@/components/ui/key-value'
 
 interface Props {
   token: TokenType,
@@ -64,31 +65,41 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
             </div>
           </TabsContent>
           <TabsContent value="scoring" className='mt-5'>
-            <div className='grid grid-cols-2 gap-1'>
+            {
+              token?.ScoreData?.score1 != undefined &&
+              token?.ScoreData?.score2 != undefined &&
+              token?.ScoreData?.score3 != undefined &&
+              token?.ScoreData?.score4 != undefined &&
+              <KeyValue
+                title="Total score"
+                value={token?.ScoreData?.score1 + token?.ScoreData?.score2 + token?.ScoreData?.score3 + token?.ScoreData?.score4 + '/' + 1600}
+              />
+            }
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1'>
               {token?.ScoreData?.score1 !== undefined && (
                 <DoughnutChart
-                  title='Overall'
+                  title={'Technical' + ' : ' + token?.ScoreData?.score1}
                   tooltip="The Entry Point Score indicates the suitability of buying the token based on technical analysis. The score ranges from 0 to 400, where 0 implies that it is not in a good condition for buying, and 400 means it is highly favorable for purchase!"
                   data={[token?.ScoreData?.score1, 400]}
                 />
               )}
               {token?.ScoreData?.score2 !== undefined && (
                 <DoughnutChart
-                  title='Reliability'
+                  title={'Reliability' + ' : ' + token?.ScoreData?.score2}
                   tooltip="Reliability Score indicates the risk associated with buying the token. The score ranges from 0 to 400, where 0 implies a high level of risk, and 400 means the token can be considered relatively reliable!"
                   data={[token?.ScoreData?.score2, 400]}
                 />
               )}
               {token?.ScoreData?.score3 !== undefined && (
                 <DoughnutChart
-                  title='Security'
+                  title={'Security' + ' : ' + token?.ScoreData?.score3}
                   tooltip="The Token Security Score reflects the safety of the token based on smart contract analysis and age. The score ranges from 0 to 400, where 0 implies it is not safe and can be risky, while 400 indicates a high level of security!"
                   data={[token?.ScoreData?.score3, 400]}
                 />
               )}
               {token?.ScoreData?.score4 !== undefined && (
                 <DoughnutChart
-                  title='Holders'
+                  title={'Holders' + ' : ' + token?.ScoreData?.score4}
                   tooltip="The Onchain Analysis Score gauges the suitability of prior onchain engagement, scrutinizing transaction participants and trading acumen. It ranges from 0 (indicating low quality) to 400 (reflecting the highest quality)."
                   data={[token?.ScoreData?.score4, 400]}
                 />
@@ -98,13 +109,17 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
           <TabsContent value="security" className='mt-5'>
             {/* FIXME: contract security must be uncommented and updated to replace the old next line */}
             {/* <ContractSecurity token={token} /> */}
-            <TokenSecurityOldShit token={token} tokenAddress={tokenAddress}/>
+            <TokenSecurityOldShit token={token} tokenAddress={tokenAddress} />
           </TabsContent>
           <TabsContent value="holders" className='mt-5'>
             <RenderConditionalComponent
-              value={isPaidMember()}
+              // value={isPaidMember()}
+              // FIXME: Fix conditional rendering compoent for promises!!!
+              value={true}
               options={{
-                trueValueComponent: <TokenHolders />,
+                trueValueComponent: <TokenHolders
+                  token={token} tokenAddress={tokenAddress}
+                />,
                 falseValueComponent: <Paywall />
               }}
             />

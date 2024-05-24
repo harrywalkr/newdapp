@@ -8,37 +8,39 @@ import { TokenType } from "@/types/token.type";
 
 interface Props {
   token: TokenType
+  tokenAddress: string
 }
 
-export default function TokenSecurityMeasureLine({ token }: Props) {
-  // const params = useParams();
-  // const [loading, setLoading] = useState(true);
-  // const [data, setData] = useState<any>({});
-  // const [safe, setSafe] = useState("");
+export default function TokenSecurityMeasureLine({ token, tokenAddress }: Props) {
+  const params = useParams();
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({});
+  const [safe, setSafe] = useState("");
 
-  // useEffect(() => {
-  //   fetch(
-  //     `https://onchain.dextrading.com/token/${params.params[1]}?network=eth`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       setData(json);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }, [params.params[1]]);
 
-  // useEffect(() => {
-  //   setSafe(
-  //     !data.maliciousLibraries?.count && !data.malFunc?.count ? "safe" : "error"
-  //   );
-  // }, [data]);
+  useEffect(() => {
+    fetch(
+      `https://onchain.dextrading.com/token/${tokenAddress}?network=eth`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-  // if (loading || safe === "")
-  //   return (
-  //     <div className="w-full h-[350px] flex justify-center items-center">
-  //       <span className="loading loading-bars loading-md"></span>
-  //     </div>
-  //   );
+  useEffect(() => {
+    setSafe(
+      !data.maliciousLibraries?.count && !data.malFunc?.count ? "safe" : "error"
+    );
+  }, [data]);
+
+  if (loading || safe === "")
+    return (
+      <div className="w-full h-[350px] flex justify-center items-center">
+        <span className="loading loading-bars loading-md"></span>
+      </div>
+    );
   return (
     <div className="my-8 mb-14 sm:mb-8 flex flex-col gap-3">
       <div className="flex flex-col sm:flex-row items-center sm:items-start justify-around gap-5">
