@@ -5,14 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Overview } from "./components/overview";
 import { RecentSales } from "./components/recent-sales";
 import ProfileWallet from "../profile-wallet";
-import { Config, useAccount, useConnect } from 'wagmi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAccount} from 'wagmi';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from "react";
 import { getWalletSummary } from "@/services/http/wallets.http";
-import { ConnectMutate } from "wagmi/query";
+import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import clsx from "clsx";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -21,8 +20,6 @@ export const metadata: Metadata = {
 
 export default function ProfileDashboard() {
   const { isConnected, address } = useAccount();
-  const { connect, connectors } = useConnect();
-  const queryClient = useQueryClient();
 
   const { mutate: fetchWalletSummary, data: walletSummary } = useMutation(
     {
