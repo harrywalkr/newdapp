@@ -160,7 +160,7 @@ function DashboardCard({ title, value, iconPath, connect, connectors }: Dashboar
         {value !== null && value !== undefined ? (
           <div className="text-2xl font-bold">{value}</div>
         ) : (
-          <div className="flex items-center justify-center"><ConnectWalletMessage2 connectors={connectors} connect={connect} /></div>
+          <div className="flex items-center justify-center"><ConnectWalletMessage2 /></div>
         )}
       </CardContent>
     </Card>
