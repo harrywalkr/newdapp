@@ -7,7 +7,7 @@ const sectionVariants = cva(
   {
     variants: {
       variant: {
-        default: "flex-col md:flex-row items-start md:items-start justify-between ",
+        default: "flex-col lg:flex-row items-start md:items-start justify-between ",
         vertical: "flex-col items-start justify-center",
         horizontal:
           "md:flex-row md:items-center justify-center",
@@ -42,10 +42,10 @@ const headerVariants = cva(
   {
     variants: {
       variant: {
-        default: "w-full md:w-1/4 md:max-w-80",
+        default: "w-full lg:w-1/4 md:max-w-80",
         vertical: "w-full",
         horizontal:
-          "w-full md:w-1/4 lg:max-w-96"
+          "w-full lg:w-1/4 lg:max-w-96"
       },
     },
     defaultVariants: {
@@ -105,10 +105,10 @@ const contentVariants = cva(
   {
     variants: {
       variant: {
-        default: "w-full md:w-3/4",
+        default: "w-full lg:w-3/4",
         vertical: "w-full",
         horizontal:
-          "md:w-3/4"
+          "lg:w-3/4"
       },
     },
     defaultVariants: {

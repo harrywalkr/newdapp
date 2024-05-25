@@ -82,7 +82,7 @@ export function TopLatestHotPairs({ images }: Props) {
                     The most active and recently trending cryptocurrency pairs in real-time.
                 </SectionDescription>
             </SectionHeader>
-            <SectionContent className="flex flex-col md:flex-row items-start justify-between gap-5">
+            <SectionContent className="flex flex-col md:flex-row items-stretch justify-between gap-5">
                 {selectedChain.symbol === 'eth' ? <>
                     <Card className="w-full">
                         <CardHeader>
@@ -108,7 +108,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                 :
                                 <div className="space-y-8">
                                     {averageRank!
-                                        .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
+                                        .slice(averageRankPage * 5, (averageRankPage + 1) * 5)
                                         .map((token: HotPairs, id: number) => (
                                             <div key={id} className="flex items-center">
                                                 <Avatar className="h-9 w-9">
@@ -125,7 +125,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                                         href={`/tokens/${token.contractAddress}`}
                                                     />
                                                 </div>
-                                                <div className="ml-auto font-medium">{dayjs().to(token.latestDate)}</div>
+                                                <div className="ml-auto font-medium text-sm lg:text-base">{dayjs().to(token.latestDate)}</div>
                                             </div>
                                         ))}
                                 </div>

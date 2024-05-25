@@ -20,7 +20,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
       )}
     >
       <div className="flex items-center justify-between w-full">
-        <div className="flex md:hidden items-center justify-center gap-2">
+        <div className="flex lg:hidden items-center justify-center gap-2">
           <MobileMenu />
           <Link href='/'>
             <Logo />
@@ -31,16 +31,16 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           <ChainInfo />
         </div>
         <ConnectWalletButton />
-        <div className="block md:hidden">
+        <div className="block lg:hidden">
           <ThemeToggle />
         </div>
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
-        <Link className="hidden md:flex" href='/'>
+        <Link className="hidden lg:flex" href='/'>
           <Logo />
         </Link>
         <Spotlight />
-        <ul className="hidden md:flex items-center justify-center gap-10">
+        <ul className="hidden lg:flex items-center justify-center gap-10">
           <li>
             <Link href='/watchlist'>
               Watchlist
@@ -62,7 +62,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
             </Link>
           </li>
         </ul>
-        <div className="hidden md:flex items-center justify-center gap-6">
+        <div className="hidden lg:flex items-center justify-center gap-6">
           <div  >
             <ThemeToggle />
           </div>
