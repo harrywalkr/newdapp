@@ -126,7 +126,7 @@ export default function ProfileDashboard() {
             )}
           </TabsContent>
           <TabsContent value="wallets" className="space-y-4">
-            {/* {isConnected ? <ProfileWallet /> : <ConnectWalletGrid />} */}
+            {isConnected ? <ProfileWallet /> : <NoData />}
           </TabsContent>
         </Tabs>
       </div>
