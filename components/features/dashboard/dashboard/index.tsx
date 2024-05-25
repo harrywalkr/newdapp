@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +12,7 @@ import { getWalletSummary } from "@/services/http/wallets.http";
 import { ConnectMutate } from "wagmi/query";
 import { Button } from "@/components/ui/button";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import clsx from "clsx";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -56,71 +57,70 @@ export default function ProfileDashboard() {
                   <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
                     <DashboardCard
                       title="Net Profit"
-                      value={walletSummary?.netProfit !== undefined ? `$${walletSummary.netProfit}` : null}
                       iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-                      connect={connect}
-                      connectors={connectors}
-                    />
-                    {
-                      walletSummary?.transactionMetrics?.totalTransactions != undefined &&
+                    >
+                      {walletSummary?.netProfit !== undefined ? (
+                        <div className="text-2xl font-bold">${walletSummary.netProfit}</div>
+                      ) : (
+                        <ConnectWalletMessage2 />
+                      )}
+                    </DashboardCard>
+                    {walletSummary?.transactionMetrics?.totalTransactions !== undefined && (
                       <DashboardCard
                         title="Total Transactions"
-                        value={walletSummary?.transactionMetrics?.totalTransactions}
                         iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
-                        connect={connect}
-                        connectors={connectors}
-                      />
-                    }
+                      >
+                        <div className="text-2xl font-bold">{walletSummary.transactionMetrics.totalTransactions}</div>
+                      </DashboardCard>
+                    )}
                     <DashboardCard
                       title="Highest Profitable Trade"
-                      value={walletSummary?.highestProfit !== undefined ? walletSummary.highestProfit[0] : null}
                       iconPath="M2 10h20"
-                      connect={connect}
-                      connectors={connectors}
-                    />
+                    >
+                      {walletSummary?.highestProfit !== undefined ? (
+                        <div className="text-2xl font-bold">{walletSummary.highestProfit[0]}</div>
+                      ) : (
+                        <ConnectWalletMessage2 />
+                      )}
+                    </DashboardCard>
                     <DashboardCard
                       title="Money Flow"
-                      value={
-                        walletSummary?.totalDeposit !== undefined && walletSummary?.totalWithdraw !== undefined
-                          ? `Inflow: ${walletSummary.totalDeposit}, Outflow: ${walletSummary.totalWithdraw}`
-                          : null
-                      }
                       iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-                      connect={connect}
-                      connectors={connectors}
-                    />
+                    >
+                      {walletSummary?.totalDeposit !== undefined && walletSummary?.totalWithdraw !== undefined ? (
+                        <div className="text-2xl font-bold">
+                          <div className="text-sm text-muted-foreground">Inflow: {walletSummary.totalDeposit}</div>
+                          <div className="text-sm text-muted-foreground">Outflow: {walletSummary.totalWithdraw}</div>
+                        </div>
+                      ) : (
+                        <ConnectWalletMessage2 />
+                      )}
+                    </DashboardCard>
                   </div>
                   <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-                    <Card className="col-span-3 md:col-span-4">
-                      <CardHeader>
-                        <CardTitle>Overview</CardTitle>
-                      </CardHeader>
-                      <CardContent className="md:pl-2">
-                        {
-                          walletSummary != undefined &&
-                          <Overview walletInfo={walletSummary} />
-                        }
-                      </CardContent>
-                    </Card>
-                    <Card className="col-span-3">
-                      <CardHeader>
-                        <CardTitle>Watchlist</CardTitle>
-                        <CardDescription>
-                          List of your favorite tokens
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <RecentSales />
-                      </CardContent>
-                    </Card>
+                    <DashboardCard
+                      title="Overview"
+                      iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
+                      classNames="col-span-3 md:col-span-4">
+                      {walletSummary && <Overview walletInfo={walletSummary} />}
+                    </DashboardCard>
+
+                    <DashboardCard
+                      title="Watchlist"
+                      iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
+                      classNames="col-span-3">
+                      <RecentSales />
+                    </DashboardCard>
+
+
                   </div>
                 </div>
               ) : (
-                <ConnectWalletMessage connectors={connectors} connect={connect} />
+                <ConnectWalletMessage />
               )}
             </TabsContent>
             <TabsContent value="wallets" className="space-y-4">
-              {isConnected ? <ProfileWallet /> : <ConnectWalletMessage connectors={connectors} connect={connect} />}
+              {isConnected ? <ProfileWallet /> : <ConnectWalletMessage />}
             </TabsContent>
           </Tabs>
         </div>
@@ -131,16 +131,14 @@ export default function ProfileDashboard() {
 
 interface DashboardCardProps {
   title: string;
-  value?: string | number | null;
   iconPath: string;
-  connectors: readonly Connector[];
-  // connect: (options: { connector: Connector }) => void;
-  connect: ConnectMutate<Config, unknown>
+  children: React.ReactNode;
+  classNames?: string;
 }
 
-function DashboardCard({ title, value, iconPath, connect, connectors }: DashboardCardProps) {
+function DashboardCard({ title, iconPath, children, classNames }: DashboardCardProps) {
   return (
-    <Card className="w-full">
+    <Card className={clsx('w-full', classNames)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <svg
@@ -157,98 +155,53 @@ function DashboardCard({ title, value, iconPath, connect, connectors }: Dashboar
         </svg>
       </CardHeader>
       <CardContent>
-        {value !== null && value !== undefined ? (
-          <div className="text-2xl font-bold">{value}</div>
-        ) : (
-          <div className="flex items-center justify-center"><ConnectWalletMessage2 /></div>
-        )}
+        {children}
       </CardContent>
     </Card>
   );
 }
 
-interface Connector {
-  id: string;
-  name: string;
-}
-
-interface ConnectWalletMessageProps {
-  connectors: readonly Connector[];
-  // connect: (options: { connector: Connector }) => void;
-  connect: ConnectMutate<Config, unknown>
-}
-
-function ConnectWalletMessage({ connectors, connect }: ConnectWalletMessageProps) {
+function ConnectWalletMessage() {
   return (
     <div className="space-y-4">
       <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
         <DashboardCard
           title="Net Profit"
           iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-          connect={connect}
-          connectors={connectors}
-        />
+        >
+          <ConnectWalletMessage2 />
+        </DashboardCard>
         <DashboardCard
           title="Total Transactions"
           iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
-          connect={connect}
-          connectors={connectors}
-        />
+        >
+          <ConnectWalletMessage2 />
+        </DashboardCard>
         <DashboardCard
           title="Highest Profitable Trade"
           iconPath="M2 10h20"
-          connect={connect}
-          connectors={connectors}
-        />
+        >
+          <ConnectWalletMessage2 />
+        </DashboardCard>
         <DashboardCard
           title="Money Flow"
           iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-          connect={connect}
-          connectors={connectors}
-        />
+        >
+          <ConnectWalletMessage2 />
+        </DashboardCard>
       </div>
-      {/* <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-3 md:col-span-4">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="md:pl-2">
-            {
-              walletSummary != undefined &&
-              <Overview walletInfo={walletSummary} />
-            }
-          </CardContent>
-        </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Watchlist</CardTitle>
-            <CardDescription>
-              List of your favorite tokens
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentSales />
-          </CardContent>
-        </Card>
-      </div> */}
     </div>
-
-
   );
 }
-
 
 function ConnectWalletMessage2() {
   const { open } = useWeb3Modal();
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 my-5">
-      <Button
-        variant='outline'
-        onClick={() => open()}
-      >
+      <Button variant="outline" onClick={() => open()}>
         Connect with wallet to see info
       </Button>
     </div>
-  )
+  );
 }
