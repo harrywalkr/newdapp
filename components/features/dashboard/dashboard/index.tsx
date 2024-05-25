@@ -15,7 +15,7 @@ import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Example dashboard app built using the components.",
+  description: "Your dashboard.",
 };
 
 export default function ProfileDashboard() {
@@ -26,7 +26,7 @@ export default function ProfileDashboard() {
   });
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (typeof window !== "undefined" && isConnected && address) {
       fetchWalletSummary(address);
     }
   }, [isConnected, address, fetchWalletSummary]);
