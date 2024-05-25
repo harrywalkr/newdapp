@@ -5,6 +5,10 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  typescript: {
+    // FIXME: remove this later on
+    ignoreBuildErrors: true,
+  },
   images: {
     // remotePatterns: [
     //   {

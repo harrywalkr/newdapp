@@ -1,36 +1,30 @@
-'use client';
+"use client";
 import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Overview } from "./components/overview";
 import { RecentSales } from "./components/recent-sales";
 import ProfileWallet from "../profile-wallet";
-import { useAccount } from 'wagmi';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect } from "react";
+import { useAccount } from "wagmi";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { getWalletSummary } from "@/services/http/wallets.http";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 
-// @ts-ignore
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Example dashboard app built using the components.",
 };
 
-// @ts-ignore
 export default function ProfileDashboard() {
-  // @ts-ignore
   const { isConnected, address } = useAccount();
-  // @ts-ignore
   const { mutate: fetchWalletSummary, data: walletSummary } = useMutation({
-    mutationKey: ['userWallet', address],
-    // @ts-ignore
+    mutationKey: ["userWallet", address],
     mutationFn: (walletAddress: string) => getWalletSummary(walletAddress),
   });
 
-  // @ts-ignore
   useEffect(() => {
     if (isConnected && address) {
       fetchWalletSummary(address);
@@ -47,8 +41,12 @@ export default function ProfileDashboard() {
           <TabsList className="w-full md:w-auto">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="wallets">Wallets</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>Reports</TabsTrigger>
-            <TabsTrigger value="notifications" disabled>Notifications</TabsTrigger>
+            <TabsTrigger value="analytics" disabled>
+              Reports
+            </TabsTrigger>
+            <TabsTrigger value="notifications" disabled>
+              Notifications
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="overview">
             {isConnected ? (
@@ -59,25 +57,32 @@ export default function ProfileDashboard() {
                     iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
                   >
                     {walletSummary?.netProfit !== undefined ? (
-                      <div className="text-2xl font-bold">${walletSummary.netProfit}</div>
+                      <div className="text-2xl font-bold">
+                        ${walletSummary.netProfit}
+                      </div>
                     ) : (
                       <ConnectWalletMessage />
                     )}
                   </DashboardCard>
-                  {walletSummary?.transactionMetrics?.totalTransactions !== undefined && (
-                    <DashboardCard
-                      title="Total Transactions"
-                      iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
-                    >
-                      <div className="text-2xl font-bold">{walletSummary.transactionMetrics.totalTransactions}</div>
-                    </DashboardCard>
-                  )}
+                  {walletSummary?.transactionMetrics?.totalTransactions !==
+                    undefined && (
+                      <DashboardCard
+                        title="Total Transactions"
+                        iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
+                      >
+                        <div className="text-2xl font-bold">
+                          {walletSummary.transactionMetrics.totalTransactions}
+                        </div>
+                      </DashboardCard>
+                    )}
                   <DashboardCard
                     title="Highest Profitable Trade"
                     iconPath="M2 10h20"
                   >
                     {walletSummary?.highestProfit !== undefined ? (
-                      <div className="text-2xl font-bold">{walletSummary.highestProfit[0]}</div>
+                      <div className="text-2xl font-bold">
+                        {walletSummary.highestProfit[0]}
+                      </div>
                     ) : (
                       <ConnectWalletMessage />
                     )}
@@ -86,33 +91,38 @@ export default function ProfileDashboard() {
                     title="Money Flow"
                     iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
                   >
-                    {walletSummary?.totalDeposit !== undefined && walletSummary?.totalWithdraw !== undefined ? (
-                      <div className="text-2xl font-bold">
-                        <div className="text-sm text-muted-foreground">Inflow: {walletSummary.totalDeposit}</div>
-                        <div className="text-sm text-muted-foreground">Outflow: {walletSummary.totalWithdraw}</div>
-                      </div>
-                    ) : (
-                      <ConnectWalletMessage />
-                    )}
+                    {walletSummary?.totalDeposit !== undefined &&
+                      walletSummary?.totalWithdraw !== undefined && (
+                        <div className="text-2xl font-bold">
+                          <div className="text-sm text-muted-foreground">
+                            Inflow: {walletSummary.totalDeposit}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Outflow: {walletSummary.totalWithdraw}
+                          </div>
+                        </div>
+                      )}
                   </DashboardCard>
                 </div>
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
                   <DashboardCard
                     title="Overview"
                     iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-                    classNames="col-span-3 md:col-span-4">
-                    {walletSummary && <Overview walletInfo={walletSummary} />}
+                    classNames="col-span-3 md:col-span-4"
+                  >
+                    { walletSummary && <Overview walletInfo={walletSummary} />}
                   </DashboardCard>
                   <DashboardCard
                     title="Watchlist"
                     iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-                    classNames="col-span-3">
+                    classNames="col-span-3"
+                  >
                     <RecentSales />
                   </DashboardCard>
                 </div>
               </div>
             ) : (
-              <ConnectWalletGrid />
+              <NoData />
             )}
           </TabsContent>
           <TabsContent value="wallets" className="space-y-4">
@@ -124,42 +134,7 @@ export default function ProfileDashboard() {
   );
 }
 
-// @ts-ignore
-interface DashboardCardProps {
-  title: string;
-  iconPath: string;
-  children: React.ReactNode;
-  classNames?: string;
-}
-
-// @ts-ignore
-function DashboardCard({ title, iconPath, children, classNames }: DashboardCardProps) {
-  return (
-    <Card className={clsx('w-full', classNames)}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-4 w-4 text-muted-foreground"
-        >
-          <path d={iconPath} />
-        </svg>
-      </CardHeader>
-      <CardContent>
-        {children}
-      </CardContent>
-    </Card>
-  );
-}
-
-// @ts-ignore
-function ConnectWalletGrid() {
+function NoData() {
   return (
     <div className="space-y-4">
       <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
@@ -175,16 +150,10 @@ function ConnectWalletGrid() {
         >
           <ConnectWalletMessage />
         </DashboardCard>
-        <DashboardCard
-          title="Highest Profitable Trade"
-          iconPath="M2 10h20"
-        >
+        <DashboardCard title="Highest Profitable Trade" iconPath="M2 10h20">
           <ConnectWalletMessage />
         </DashboardCard>
-        <DashboardCard
-          title="Money Flow"
-          iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-        >
+        <DashboardCard title="Money Flow" iconPath="M22 12h-4l-3 9L9 3l-3 9H2">
           <ConnectWalletMessage />
         </DashboardCard>
       </div>
@@ -192,13 +161,15 @@ function ConnectWalletGrid() {
         <DashboardCard
           title="Overview"
           iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-          classNames="col-span-3 md:col-span-4">
+          classNames="col-span-3 md:col-span-4"
+        >
           <ConnectWalletMessage />
         </DashboardCard>
         <DashboardCard
           title="Watchlist"
           iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-          classNames="col-span-3">
+          classNames="col-span-3"
+        >
           <RecentSales />
         </DashboardCard>
       </div>
@@ -206,7 +177,41 @@ function ConnectWalletGrid() {
   );
 }
 
-// @ts-ignore
+interface DashboardCardProps {
+  title: string;
+  iconPath: string;
+  children: React.ReactNode;
+  classNames?: string;
+}
+
+function DashboardCard({
+  title,
+  iconPath,
+  children,
+  classNames,
+}: DashboardCardProps) {
+  return (
+    <Card className={clsx("w-full", classNames)}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          className="h-4 w-4 text-muted-foreground"
+        >
+          <path d={iconPath} />
+        </svg>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
+  );
+}
+
 function ConnectWalletMessage() {
   const { open } = useWeb3Modal();
 
