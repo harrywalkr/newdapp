@@ -48,36 +48,62 @@ export default function ProfileDashboard() {
               <TabsTrigger value="analytics" disabled>Reports</TabsTrigger>
               <TabsTrigger value="notifications" disabled>Notifications</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
+            <TabsContent value="overview">
               {isConnected ? (
-                <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
-                  <DashboardCard
-                    title="Net Profit"
-                    value={walletSummary?.netProfit !== undefined ? `$${walletSummary.netProfit}` : null}
-                    iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-                  />
-                  {
-                    walletSummary?.transactionMetrics?.totalTransactions != undefined &&
+                <div className="space-y-4">
+                  <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
                     <DashboardCard
-                      title="Total Transactions"
-                      value={walletSummary?.transactionMetrics?.totalTransactions}
-                      iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
+                      title="Net Profit"
+                      value={walletSummary?.netProfit !== undefined ? `$${walletSummary.netProfit}` : null}
+                      iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
                     />
-                  }
-                  <DashboardCard
-                    title="Highest Profitable Trade"
-                    value={walletSummary?.highestProfit !== undefined ? walletSummary.highestProfit[0] : null}
-                    iconPath="M2 10h20"
-                  />
-                  <DashboardCard
-                    title="Money Flow"
-                    value={
-                      walletSummary?.totalDeposit !== undefined && walletSummary?.totalWithdraw !== undefined
-                        ? `Inflow: ${walletSummary.totalDeposit}, Outflow: ${walletSummary.totalWithdraw}`
-                        : null
+                    {
+                      walletSummary?.transactionMetrics?.totalTransactions != undefined &&
+                      <DashboardCard
+                        title="Total Transactions"
+                        value={walletSummary?.transactionMetrics?.totalTransactions}
+                        iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
+                      />
                     }
-                    iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
-                  />
+                    <DashboardCard
+                      title="Highest Profitable Trade"
+                      value={walletSummary?.highestProfit !== undefined ? walletSummary.highestProfit[0] : null}
+                      iconPath="M2 10h20"
+                    />
+                    <DashboardCard
+                      title="Money Flow"
+                      value={
+                        walletSummary?.totalDeposit !== undefined && walletSummary?.totalWithdraw !== undefined
+                          ? `Inflow: ${walletSummary.totalDeposit}, Outflow: ${walletSummary.totalWithdraw}`
+                          : null
+                      }
+                      iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
+                    />
+                  </div>
+                  <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+                    <Card className="col-span-3 md:col-span-4">
+                      <CardHeader>
+                        <CardTitle>Overview</CardTitle>
+                      </CardHeader>
+                      <CardContent className="md:pl-2">
+                        {
+                          walletSummary != undefined &&
+                          <Overview walletInfo={walletSummary} />
+                        }
+                      </CardContent>
+                    </Card>
+                    <Card className="col-span-3">
+                      <CardHeader>
+                        <CardTitle>Watchlist</CardTitle>
+                        <CardDescription>
+                          List of your favorite tokens
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <RecentSales />
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
               ) : (
                 <ConnectWalletMessage connectors={connectors} connect={connect} />
