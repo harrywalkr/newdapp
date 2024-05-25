@@ -25,9 +25,9 @@ export default function ProfileDashboard() {
   const queryClient = useQueryClient();
 
   const { mutate: fetchWalletSummary, data: walletSummary } = useMutation(
-    (walletAddress: string) => getWalletSummary(walletAddress),
     {
       mutationKey: ['userWallet', address],
+      mutationFn: (walletAddress: string) => getWalletSummary(walletAddress),
     }
   );
 
