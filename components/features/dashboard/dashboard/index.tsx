@@ -62,7 +62,7 @@ export default function ProfileDashboard() {
                       {walletSummary?.netProfit !== undefined ? (
                         <div className="text-2xl font-bold">${walletSummary.netProfit}</div>
                       ) : (
-                        <ConnectWalletMessage2 />
+                        <ConnectWalletMessage />
                       )}
                     </DashboardCard>
                     {walletSummary?.transactionMetrics?.totalTransactions !== undefined && (
@@ -80,7 +80,7 @@ export default function ProfileDashboard() {
                       {walletSummary?.highestProfit !== undefined ? (
                         <div className="text-2xl font-bold">{walletSummary.highestProfit[0]}</div>
                       ) : (
-                        <ConnectWalletMessage2 />
+                        <ConnectWalletMessage />
                       )}
                     </DashboardCard>
                     <DashboardCard
@@ -93,7 +93,7 @@ export default function ProfileDashboard() {
                           <div className="text-sm text-muted-foreground">Outflow: {walletSummary.totalWithdraw}</div>
                         </div>
                       ) : (
-                        <ConnectWalletMessage2 />
+                        <ConnectWalletMessage />
                       )}
                     </DashboardCard>
                   </div>
@@ -104,23 +104,20 @@ export default function ProfileDashboard() {
                       classNames="col-span-3 md:col-span-4">
                       {walletSummary && <Overview walletInfo={walletSummary} />}
                     </DashboardCard>
-
                     <DashboardCard
                       title="Watchlist"
                       iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
                       classNames="col-span-3">
                       <RecentSales />
                     </DashboardCard>
-
-
                   </div>
                 </div>
               ) : (
-                <ConnectWalletMessage />
+                <ConnectWalletGrid />
               )}
             </TabsContent>
             <TabsContent value="wallets" className="space-y-4">
-              {isConnected ? <ProfileWallet /> : <ConnectWalletMessage />}
+              {isConnected ? <ProfileWallet /> : <ConnectWalletGrid />}
             </TabsContent>
           </Tabs>
         </div>
@@ -161,7 +158,7 @@ function DashboardCard({ title, iconPath, children, classNames }: DashboardCardP
   );
 }
 
-function ConnectWalletMessage() {
+function ConnectWalletGrid() {
   return (
     <div className="space-y-4">
       <div className="grid gap-4 grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-4">
@@ -169,32 +166,46 @@ function ConnectWalletMessage() {
           title="Net Profit"
           iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
         >
-          <ConnectWalletMessage2 />
+          <ConnectWalletMessage />
         </DashboardCard>
         <DashboardCard
           title="Total Transactions"
           iconPath="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"
         >
-          <ConnectWalletMessage2 />
+          <ConnectWalletMessage />
         </DashboardCard>
         <DashboardCard
           title="Highest Profitable Trade"
           iconPath="M2 10h20"
         >
-          <ConnectWalletMessage2 />
+          <ConnectWalletMessage />
         </DashboardCard>
         <DashboardCard
           title="Money Flow"
           iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
         >
-          <ConnectWalletMessage2 />
+          <ConnectWalletMessage />
+        </DashboardCard>
+      </div>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+        <DashboardCard
+          title="Overview"
+          iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
+          classNames="col-span-3 md:col-span-4">
+          <ConnectWalletMessage />
+        </DashboardCard>
+        <DashboardCard
+          title="Watchlist"
+          iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
+          classNames="col-span-3">
+          <RecentSales />
         </DashboardCard>
       </div>
     </div>
   );
 }
 
-function ConnectWalletMessage2() {
+function ConnectWalletMessage() {
   const { open } = useWeb3Modal();
 
   return (
