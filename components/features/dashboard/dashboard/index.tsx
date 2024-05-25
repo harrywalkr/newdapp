@@ -25,9 +25,9 @@ export default function ProfileDashboard() {
   const queryClient = useQueryClient();
 
   const { mutate: fetchWalletSummary, data: walletSummary } = useMutation(
+    (walletAddress: string) => getWalletSummary(walletAddress),
     {
       mutationKey: ['userWallet', address],
-      mutationFn: (walletAddress: string) => getWalletSummary(walletAddress),
     }
   );
 
@@ -207,6 +207,10 @@ function ConnectWalletGrid() {
 
 function ConnectWalletMessage() {
   const { open } = useWeb3Modal();
+
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 my-5">
