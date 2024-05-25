@@ -1,4 +1,4 @@
-export const chartAnimation = (dataLength=6) => {
+export const chartAnimation = (dataLength = 6) => {
   const totalDuration = 500;
   const delayBetweenPoints = totalDuration / dataLength;
   const previousY = (ctx: any) =>
@@ -37,37 +37,42 @@ export const chartAnimation = (dataLength=6) => {
   };
 };
 
-export const chartOptions = (dataLength=6) => (
-  {
-    responsive: true,
-    // animation: chartAnimation(dataLength),
-    plugins: {
-      legend: {
-        display: false,
+export const chartOptions = (dataLength = 6) => ({
+  responsive: true,
+  // animation: chartAnimation(dataLength),
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      border: {
+        display: true,
       },
-      title: {
+      grid: {
         display: false,
       },
     },
-    scales: {
-      x: {
-        border: {
-          display: true,
-        },
-        grid: {
-          display: false,
-        }
+    y: {
+      border: {
+        display: false,
       },
-      y: {
-        border: {
-          display: false,
-        },
-        grid: {
-          display: true,
-        }
+      grid: {
+        display: true,
       },
-    }
-  }
-);
+    },
+  },
+});
 
-export const chartHeight = window !== undefined ? window.innerWidth > 1024 ? 400 : window.innerWidth < 1024 && window.innerWidth > 600 ? 700 : 1000 : 400;
+export const chartHeight =
+  typeof window !== 'undefined'
+    ? window.innerWidth > 1024
+      ? 400
+      : window.innerWidth < 1024 && window.innerWidth > 600
+      ? 700
+      : 1000
+    : 400;
