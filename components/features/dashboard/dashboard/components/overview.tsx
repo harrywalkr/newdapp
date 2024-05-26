@@ -1,4 +1,5 @@
 "use client";
+//FIXME: Replace this component with the one from chart2
 import {
   CategoryScale,
   Chart as ChartJS,
