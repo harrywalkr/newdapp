@@ -9,14 +9,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Dex2, TokenType } from "@/types/token.type"
+import { Dex2, IToken } from "@/types/token.type"
 import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
 import Image from "next/image";
 import { useState } from "react";
 
 interface Props {
-    token: TokenType
+    token: IToken
 }
 
 

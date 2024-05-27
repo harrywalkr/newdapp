@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { TokenType } from '@/types/token.type';
+import { IToken } from '@/types/token.type';
 import React from 'react'
 import { IoWarningOutline } from 'react-icons/io5';
 import { AiOutlineSafety } from "react-icons/ai";
@@ -25,7 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 interface Props {
-    token: TokenType
+    token: IToken
 }
 
 export default function ContractSecurity({ token }: Props) {

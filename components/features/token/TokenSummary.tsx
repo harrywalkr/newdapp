@@ -1,13 +1,13 @@
 import React from 'react';
 import TradeReport from './trade-report';
 import Chart from './chart';
-import { TokenType } from '@/types/token.type';
+import { IToken } from '@/types/token.type';
 import clsx from 'clsx';
 import RenderConditionalComponent from '@/components/common/RenderConditionalComponent';
 import Tradingview from './Tradingview';
 
 interface Props {
-    token: TokenType;
+    token: IToken;
     tokenAddress: string;
 }
 

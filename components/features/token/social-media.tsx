@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { TokenType } from '@/types/token.type'
+import { IToken } from '@/types/token.type'
 import React from 'react'
 import { BiLogoTelegram } from 'react-icons/bi'
 import { FaDiscord } from 'react-icons/fa'
@@ -9,7 +9,7 @@ import { RiTwitterXFill } from 'react-icons/ri'
 import { StarIcon } from '@radix-ui/react-icons';
 
 interface Props {
-    token: TokenType
+    token: IToken
 }
 
 export default function SocialMedia({ token }: Props) {

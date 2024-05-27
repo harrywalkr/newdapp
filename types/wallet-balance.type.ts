@@ -13,7 +13,7 @@ export interface Balance {
 
 export interface Currency {
   symbol?: string;
-  tokenType?: string;
+  IToken?: string;
   address?: string;
 }
 

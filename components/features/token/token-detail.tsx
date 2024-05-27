@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FaRankingStar } from 'react-icons/fa6'
 import { MdChecklist } from 'react-icons/md'
 import { RiExchangeDollarFill } from 'react-icons/ri'
-import { TokenType } from '@/types/token.type'
+import { IToken } from '@/types/token.type'
 import { ImageType } from '@/types/Image.type'
 import CentralizedExchange from './CentralizedExchange'
 import DecentralizedExchange from './DecentralizedExchange'
@@ -21,7 +21,7 @@ import TokenHolders from './TokenHolders-old-dex/TokenHolders'
 import { KeyValue } from '@/components/ui/key-value'
 
 interface Props {
-  token: TokenType,
+  token: IToken,
   logo: ImageType,
   tokenAddress: string
 }

@@ -1,13 +1,13 @@
-const isDebugEnabled = process.env.DEBUG === "true";
+const isProduction = process.env.NODE_ENV === "production";
 
 export const log = (...args: any) => {
-  if (isDebugEnabled) {
+  if (!isProduction) {
     console.log(...args);
   }
 };
 
 export const logError = (...args: any) => {
-  if (isDebugEnabled) {
+  if (!isProduction) {
     console.error(...args);
   }
 };

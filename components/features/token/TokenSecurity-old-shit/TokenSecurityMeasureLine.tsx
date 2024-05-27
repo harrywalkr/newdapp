@@ -4,10 +4,10 @@ import { IoWarningOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 
 interface Props {
-  token: TokenType
+  token: IToken
   tokenAddress: string
 }
 

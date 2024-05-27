@@ -1,11 +1,11 @@
 // Import persist from zustand middleware
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 
 interface WatchlistState {
-  watchlist: TokenType[];
-  addToWatchlist: (token: TokenType) => void;
+  watchlist: IToken[];
+  addToWatchlist: (token: IToken) => void;
   removeFromWatchlist: (tokenId: string) => void;
 }
 

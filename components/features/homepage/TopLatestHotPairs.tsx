@@ -10,7 +10,7 @@ import {
     SectionContent,
 } from "@/components/layout/Section";
 import { HotPairs } from "@/types/hotpair.type";
-import { ILatestToken, LatestTokenType } from "@/types/latestToke.type";
+import { ILatestToken, LatestIToken } from "@/types/latestToke.type";
 import { useQuery } from "@tanstack/react-query";
 import { getAverageRank } from "@/services/http/averagerank.http";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -169,7 +169,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                 <div className="space-y-8">
                                     {latestTokens!
                                         .slice(latestTokenPage * 10, (latestTokenPage + 1) * 10)
-                                        .map((token: LatestTokenType, id: number) => (
+                                        .map((token: LatestIToken, id: number) => (
                                             <div key={id} className="flex items-center">
                                                 <Avatar className="h-9 w-9">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />

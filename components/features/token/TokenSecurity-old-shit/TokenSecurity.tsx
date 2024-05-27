@@ -1,11 +1,11 @@
 import TokenSecurityCallActivity from "./TokenSecurityCallActivity";
 import TokenSecurityBox from "./TokenSecurityBox";
 import TokenSecurityMeasureLine from "./TokenSecurityMeasureLine";
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 
 
 interface Props {
-  token: TokenType
+  token: IToken
   tokenAddress: string
 }
 

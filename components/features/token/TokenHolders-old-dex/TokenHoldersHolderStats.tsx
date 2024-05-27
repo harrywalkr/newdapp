@@ -1,13 +1,13 @@
 'use client'
 import { useTokenChainStore } from "@/store";
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 
 interface Props {
-  // token: TokenType
+  // token: IToken
   tokenAddress: string
 }
 

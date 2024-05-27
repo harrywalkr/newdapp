@@ -1,6 +1,6 @@
-export type ILatestToken = LatestTokenType[];
+export type ILatestToken = LatestIToken[];
 
-export interface LatestTokenType {
+export interface LatestIToken {
   tokenName: string;
   contractAddress: string;
   count: number;

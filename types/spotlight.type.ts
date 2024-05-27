@@ -12,7 +12,7 @@ export interface Subject {
   address: string;
   name: string;
   symbol: string;
-  tokenType: string;
+  IToken: string;
   properties: any;
   label: string;
 }

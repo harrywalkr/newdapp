@@ -1,5 +1,5 @@
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 import { fetchData } from "./axios.config";
 import { AxiosRequestConfig } from "axios";
 import { TradeReportType } from "@/types/trade-report.type";
@@ -14,8 +14,8 @@ export const spotlightSearch = (
     options
   );
 
-export const searchToken = (options: AxiosRequestConfig): Promise<TokenType> =>
-  fetchData<TokenType>(
+export const searchToken = (options: AxiosRequestConfig): Promise<IToken> =>
+  fetchData<IToken>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/idsearch`,
     options
   );
@@ -23,8 +23,8 @@ export const searchToken = (options: AxiosRequestConfig): Promise<TokenType> =>
 export const getToken = (
   tokenAddress: string,
   options: AxiosRequestConfig
-): Promise<TokenType> =>
-  fetchData<TokenType>(
+): Promise<IToken> =>
+  fetchData<IToken>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/token/${tokenAddress}`,
     options
   );
@@ -37,8 +37,8 @@ export const getTradeReport = (
     options
   );
 
-export const getTopTrends = (options: AxiosRequestConfig): Promise<TokenType> =>
-  fetchData<TokenType>(
+export const getTopTrends = (options: AxiosRequestConfig): Promise<IToken> =>
+  fetchData<IToken>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/toptrends`,
     options
   );

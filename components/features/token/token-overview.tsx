@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { ImageType } from '@/types/Image.type';
-import { TokenType } from '@/types/token.type';
+import { IToken } from '@/types/token.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import { formatCash } from '@/utils/numbers';
 import { minifyContract, minifyTokenName } from '@/utils/truncate';
@@ -16,7 +16,7 @@ dayjs.extend(relativeTime);
 
 interface Props {
     tokenAddress: string,
-    token: TokenType,
+    token: IToken,
     logo: ImageType
 }
 
@@ -82,7 +82,7 @@ export default function TokenOverview({ token, logo }: Props) {
     )
 }
 
-function PriceChange({ token }: { token: TokenType }) {
+function PriceChange({ token }: { token: IToken }) {
     return (
         <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24} options={{
             trueValueComponent: (
@@ -97,7 +97,7 @@ function PriceChange({ token }: { token: TokenType }) {
     );
 }
 
-function Liquidity({ token }: { token: TokenType }) {
+function Liquidity({ token }: { token: IToken }) {
     return (
         <RenderConditionalComponent value={token?.data && token?.data[0]?.attributes?.reserve_in_usd} options={{
             trueValueComponent: (
@@ -112,7 +112,7 @@ function Liquidity({ token }: { token: TokenType }) {
     );
 }
 
-function BuySellTaxes({ token }: { token: TokenType }) {
+function BuySellTaxes({ token }: { token: IToken }) {
     return (
         <div className='flex items-center justify-start gap-2'>
             <RenderConditionalComponent value={token.SecurityData?.tokenSecurity?.details?.buy_tax} options={{
@@ -140,7 +140,7 @@ function BuySellTaxes({ token }: { token: TokenType }) {
     );
 }
 
-function HolderInterest({ token }: { token: TokenType }) {
+function HolderInterest({ token }: { token: IToken }) {
     return (
         <RenderConditionalComponent value={token?.BalancesData?.numberOfAddresses} options={{
             trueValueComponent: (
@@ -155,7 +155,7 @@ function HolderInterest({ token }: { token: TokenType }) {
     );
 }
 
-function Timestamp({ token }: { token: TokenType }) {
+function Timestamp({ token }: { token: IToken }) {
     return (
         <RenderConditionalComponent value={token?.timestamp} options={{
             trueValueComponent: (

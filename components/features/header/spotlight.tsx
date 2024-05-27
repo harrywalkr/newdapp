@@ -4,29 +4,21 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { spotlightSearch } from "@/services/http/spotlight.http";
 import { searchToken } from "@/services/http/token.http";
 import { useEffect, useState } from "react";
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { Daum, TokenType } from "@/types/token.type";
+import { Daum, IToken } from "@/types/token.type";
 import { get, set } from "local-storage";
 import { ImageType } from "@/types/Image.type";
 import { getImages } from "@/services/http/image.http";
@@ -46,7 +38,7 @@ export function Spotlight() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState<SpotlightSearchType>();
-  const [token, setToken] = useState<TokenType>();
+  const [token, setToken] = useState<IToken>();
   const [images, setImages] = useState<ImageType[]>([]);
   const isMounted = useMounted();
   const router = useRouter()
@@ -104,9 +96,9 @@ export function Spotlight() {
     };
   }, [searchTerm]);
 
-  const addToLocalStorage = (address: TokenType | SpotlightSearchType) => {
+  const addToLocalStorage = (address: IToken | SpotlightSearchType) => {
     if (!address) return;
-    const previousSearches = (get("previousSearches") as TokenType[] | SpotlightSearchType[]) || [];
+    const previousSearches = (get("previousSearches") as IToken[] | SpotlightSearchType[]) || [];
     set("previousSearches", [address, ...previousSearches.splice(0, 5)]);
   };
 
@@ -185,7 +177,8 @@ export function Spotlight() {
                           onClick={() => {
                             addToLocalStorage(token);
                             if (item?.relationships?.base_token?.data?.id) {
-                              router.push(`/tokens/${item.relationships.base_token.data.id.split("_")[1]}`)
+                              const [baseToken, tokenId] = item.relationships.base_token.data.id.split("_");
+                              router.push(`/tokens/${baseToken}/${tokenId}`);
                               setOpen(!open)
                             }
                           }}
@@ -283,16 +276,16 @@ export function Spotlight() {
                   Previous searches:
                 </h4>
                 <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(get("previousSearches") as (SpotlightSearchType | TokenType)[]).map((item) => (
+                  {(get("previousSearches") as (SpotlightSearchType | IToken)[]).map((item) => (
                     <li
-                      key={(item as SpotlightSearchType).subject?.address || (item as TokenType).data?.[0]?.id}
+                      key={(item as SpotlightSearchType).subject?.address || (item as IToken).data?.[0]?.id}
                       className="cursor-pointer flex items-center justify-center"
                       onClick={() => {
                         if ((item as SpotlightSearchType).subject?.address) {
                           router.push(`/wallet/${(item as SpotlightSearchType).subject.address}`);
                         } else {
                           router.push(
-                            `/tokens/${(item as TokenType).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]}`
+                            `/tokens/${(item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]}`
                           );
                         }
                       }}
@@ -302,14 +295,14 @@ export function Spotlight() {
                       ) : (
                         <div className="flex items-center justify-start gap-1 md:gap-2">
                           {imageUrl(
-                            (item as TokenType).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
+                            (item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
                           ) != undefined && (
                               <Image
                                 className="w-8 h-8 md:w-9 md:h-9"
                                 width={20}
                                 height={20}
                                 src={imageUrl(
-                                  (item as TokenType).data![0].relationships?.base_token?.data?.id?.split("_")[1]!
+                                  (item as IToken).data![0].relationships?.base_token?.data?.id?.split("_")[1]!
                                 )!}
                                 alt=""
                               />

@@ -1,4 +1,4 @@
-import { TokenType } from "@/types/token.type";
+import { IToken } from "@/types/token.type";
 import TokenHoldersAmountFilter from "./TokenHoldersAmountFilter";
 import TokenHoldersCompare from "./TokenHoldersCompare";
 import TokenHoldersHolderStats from "./TokenHoldersHolderStats";
@@ -7,7 +7,7 @@ import TokenHoldersMostActiveAddress from "./TokenHoldersMostActiveAddress";
 
 
 interface Props {
-  token: TokenType
+  token: IToken
   tokenAddress: string
 }
 
