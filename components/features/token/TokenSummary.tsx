@@ -81,34 +81,20 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                 }}
             />
 
-            hello
-            {(token?.TickersData?.cex != undefined &&
+            {token?.TickersData?.cex !== undefined &&
                 token?.TickersData?.cex?.length > 0 &&
-                token?.TickersData?.cex[0]?.market?.name != undefined).toString()}
-            googd
-            <RenderConditionalComponent
-                value={token?.TickersData?.cex != undefined &&
-                    token?.TickersData?.cex?.length > 0 &&
-                    token?.TickersData?.cex[0]?.market?.name != undefined}
-                options={{
-                    trueValueComponent: (
-                        <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-80 md:h-96">
-                            <Tradingview
-                                symbol={
-                                    `${token!.TickersData!.cex![0].market!.name!}:` +
-                                    token!.TickersData!.cex![0].base +
-                                    token.TickersData!.cex![0].target
-                                }
-                            />
-                        </div>
-                    ),
-                    falseValueComponent: (
-                        <div className='h-80 md:h-96 w-full my-6 md:my-7'>
-                            <Chart tokenAddress={tokenAddress} cex={token!.TickersData!.cex!} />
-                        </div>
-                    ),
-                }}
-            />
+                token?.TickersData?.cex[0]?.market?.name !== undefined ? (
+                <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-80 md:h-96">
+                    <Tradingview
+                        symbol={`${token.TickersData.cex[0].market.name}:${token.TickersData.cex[0].base}${token.TickersData.cex[0].target}`}
+                    />
+                </div>
+            ) : (
+                <div className='h-80 md:h-96 w-full my-6 md:my-7'>
+                    <Chart tokenAddress={tokenAddress} cex={token!.TickersData!.cex!} />
+                </div>
+            )}
+
             <TradeReport tokenAddress={tokenAddress} />
         </div>
     );
