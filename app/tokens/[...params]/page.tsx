@@ -43,8 +43,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Token({ params }: Props) {
-    console.log('ahmad ahmad', params)
-
     // FIXME: no 500 when image is non-existant
     const logo = await getLogo(params.params[1]);
     const searchedToken = await searchToken({

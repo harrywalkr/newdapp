@@ -227,13 +227,6 @@ export function TopLatestHotPairs({ images }: Props) {
                                     nonEthData!.data!.map((token, index: number) => (
                                         <TableRow key={index}>
                                             <TableCell className="font-medium break-words">
-                                                {/* {
-                                                item?.attributes?.address &&
-                                                <>
-                                                    {minifyContract(item.attributes.address)}
-                                                </>
-                                            } */}
-
                                                 {
                                                     token?.attributes?.address != undefined &&
                                                     token.attributes.name != undefined &&
@@ -243,21 +236,20 @@ export function TopLatestHotPairs({ images }: Props) {
                                                             <AvatarFallback>{token.attributes.address.charAt(0)}</AvatarFallback>
                                                         </Avatar>
                                                         <div className="ml-4 space-y-1">
-                                                            <p className="text-sm">
+                                                            <Link
+                                                                href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
+                                                                className="text-sm">
                                                                 {token.attributes.name.split('/')[0]}
-                                                            </p>
+                                                            </Link>
                                                             <Copy className="text-sm text-muted-foreground leading-none"
                                                                 text={minifyContract(token.attributes.address)}
                                                                 value={token.attributes.address}
-                                                                href={`/tokens/${token.attributes.address}`}
+                                                                href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
                                                             />
                                                         </div>
-                                                        {/* <div className="ml-auto font-medium">{dayjs().to(token.)}</div> */}
                                                     </div>
 
                                                 }
-
-
                                             </TableCell>
 
                                             <TableCell >
