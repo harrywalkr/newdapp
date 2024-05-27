@@ -32,6 +32,7 @@ import { getTopTrends } from "@/services/http/token.http";
 import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
 import clsx from "clsx";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -116,9 +117,11 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="ml-4 space-y-1">
-                                                    <p className="text-sm">
+                                                    <Link
+                                                        href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`}
+                                                        className="text-sm">
                                                         {minifyTokenName(token.tokenName)}
-                                                    </p>
+                                                    </Link>
                                                     <Copy className="text-sm text-muted-foreground leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
@@ -173,13 +176,15 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="ml-4 space-y-1">
-                                                    <p className="text-sm">
+                                                    <Link
+                                                        href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`}
+                                                        className="text-sm">
                                                         {minifyTokenName(token.tokenName)}
-                                                    </p>
+                                                    </Link>
                                                     <Copy className="text-sm text-muted-foreground font-medium leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
-                                                        href={`/tokens/${token.contractAddress}`}
+                                                        href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`}
                                                     />
                                                 </div>
                                                 <div className="ml-auto font-medium">{dayjs().to(token.latestDate)}</div>
