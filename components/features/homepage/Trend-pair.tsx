@@ -125,9 +125,12 @@ export default function TrendPairs() { // FIXME: this component must include tre
                             {/* > */}
                             {/* {minifyContract(data.name)}
                             </Link> */}
-                            <div className="font-medium">
+                            <Link
+                              className="font-medium hover:underline"
+                              href={`/tokens/${data.address}`}
+                            >
                               {minifyContract(data.name)}
-                            </div>
+                            </Link>
                             <Copy
                               href={`/tokens/${data.address}`}
                               className="text-sm !text-muted-foreground link"
