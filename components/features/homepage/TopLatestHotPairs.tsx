@@ -143,7 +143,6 @@ export function TopLatestHotPairs({ images }: Props) {
                             </Button>
                         </CardFooter>
                     </Card>
-
                     <Card className="w-full">
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between cursor-pointer">
@@ -251,7 +250,6 @@ export function TopLatestHotPairs({ images }: Props) {
 
                                                 }
                                             </TableCell>
-
                                             <TableCell >
                                                 {
                                                     token?.attributes?.price_change_percentage?.h24 != undefined &&
@@ -277,25 +275,19 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     token?.attributes?.reserve_in_usd != undefined &&
                                                     formatCash(+token.attributes.reserve_in_usd)
                                                 }
-
                                             </TableCell>
-
                                             <TableCell className="break-words">
                                                 {
                                                     token?.attributes?.volume_usd?.h24 != undefined &&
                                                     formatCash(+token?.attributes?.volume_usd?.h24)
                                                 }
-
                                             </TableCell>
-
                                             <TableCell className="break-words">
                                                 {
                                                     token?.attributes?.pool_created_at != undefined &&
                                                     dayjs().to(token.attributes?.pool_created_at)
                                                 }
-
                                             </TableCell>
-
                                         </TableRow>
                                     ))}
                             </TableBody>

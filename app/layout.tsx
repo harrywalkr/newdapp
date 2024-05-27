@@ -7,7 +7,7 @@ import Providers from "@/providers";
 import { cn } from "@/lib/utils";
 import { Footer } from '@/components/layout/Footer';
 import Script from "next/script";
-
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +23,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <meta name="ahrefs-site-verification" content="e0126c4c482c36a1009f59bdf25461160da3e532ae99fd5c060b217818d6f886" />
+      </Head>
       <body className={cn(
         inter.className,
         'relative w-full'
       )}>
         <Providers>
-          <main >
+          <main>
             <Header />
             {/* FIXME: fix min height when content is limited and footer is too close to the header and is in the middle of the screen */}
             <div className="my-28 md:mt-32 lg:mt-36 max-w-screen-2xl !mx-auto">
@@ -44,9 +47,9 @@ export default function RootLayout({
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
- 
+
           gtag('config', 'G-EQXQQ1Z402');
-          `}
+        `}
       </Script>
       <Script id="clarity-script">
         {`
