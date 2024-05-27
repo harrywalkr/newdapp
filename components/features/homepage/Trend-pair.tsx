@@ -103,39 +103,33 @@ export default function TrendPairs() { // FIXME: this component must include tre
           >
             <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {trends!.data.slice(0, 3).map((data, id: number) => (
+                {trends!.data != undefined && trends!.data.slice(0, 3).map((token, id: number) => (
                   <Card key={id} className="w-full">
                     <CardContent className="pt-6">
-                      {/* <Link href={`/token/${data?.relationships?.base_token?.data?.id?.split("_")[1]}
-                        ?network=${data.relationships?.base_token?.data?.id?.split("_")[0]}
+                      {/* <Link href={`/token/${token?.relationships?.base_token?.token?.id?.split("_")[1]}
+                        ?network=${token.relationships?.base_token?.token?.id?.split("_")[0]}
                         `}*/}
                       <div className="header relative flex items-start justify-start gap-6">
                         <Avatar className="h-14 w-14">
                           <AvatarImage
-                            src={data.logo_url}
+                            src={token.logo_url}
                             alt="token logo"
                           />
-                          <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>{token.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="content flex flex-col items-start justify-between ">
                           <div className="token flex flex-col items-start justify-start gap-2">
-                            {/* <Link */}
-                            {/* //FIXME: extend next/link to take searchparams and params without this mess :| */}
-                            {/* //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search) */}
-                            {/* > */}
-                            {/* {minifyContract(data.name)}
-                            </Link> */}
                             <Link
                               className="font-medium hover:underline"
-                              href={`/tokens/${data.address}`}
+                              href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.address}`}
                             >
-                              {minifyContract(data.name)}
+                              {minifyContract(token.name)}
                             </Link>
                             <Copy
-                              href={`/tokens/${data.address}`}
+                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
-                              value={data.address}
-                              text={minifyContract(data.address)} />
+                              value={token.address}
+                              text={minifyContract(token.address)} />
                           </div>
                           {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
@@ -151,34 +145,32 @@ export default function TrendPairs() { // FIXME: this component must include tre
             </SwiperSlide>
             <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {trends!.data.slice(3, 6).map((data, id: number) => (
+                {trends!.data != undefined && trends!.data.slice(3, 6).map((token, id: number) => (
                   <Card key={id} className="w-full">
                     <CardContent className="pt-6">
                       <div className="header relative flex items-start justify-start gap-6">
                         <Avatar className="h-14 w-14">
                           <AvatarImage
-                            src={data.logo_url}
+                            src={token.logo_url}
                             alt="token logo"
                             width={60}
                             height={60}
                           />
-                          <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>{token.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="content flex flex-col items-start justify-between">
                           <div className="token flex flex-col items-start justify-start gap-2">
                             <Link
-                              //FIXME: network must come from global state not passed around as a url param! (canceled; what about global token search)
-                              href={`/tokens/${data.address}`}
-                              className="font-medium text-lg link"
+                              className="font-medium hover:underline"
+                              href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.address}`}
                             >
-                              {minifyContract(data.name)}
+                              {minifyContract(token.name)}
                             </Link>
-
                             <Copy
-                              href={`/tokens/${data.address}`}
+                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
-                              value={data.address}
-                              text={minifyContract(data.address)} />
+                              value={token.address}
+                              text={minifyContract(token.address)} />
                           </div>
                           {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>
@@ -194,7 +186,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
             </SwiperSlide>
             <SwiperSlide className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {trends!.data.slice(6, 9).map((data, id: number, arr: any[]) => (
+                {trends!.data != undefined && trends!.data.slice(6, 9).map((token, id: number, arr: any[]) => (
                   <Card key={id} className="w-full">
                     <CardContent className="pt-6 h-full">
                       {id === arr.length - 1 ? (
@@ -206,23 +198,26 @@ export default function TrendPairs() { // FIXME: this component must include tre
                       ) : <div className="header relative flex items-start justify-start gap-6">
                         <Avatar className="h-14 w-14">
                           <AvatarImage
-                            src={data.logo_url}
+                            src={token.logo_url}
                             alt="token logo"
                             width={60}
                             height={60}
                           />
-                          <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>{token.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="content flex flex-col items-start justify-between">
                           <div className="token flex flex-col items-start justify-start gap-2">
-                            <Link href={`/tokens/${data.address}`} className="font-medium text-lg link">
-                              {minifyContract(data.name)}
+                            <Link
+                              className="font-medium hover:underline"
+                              href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.address}`}
+                            >
+                              {minifyContract(token.name)}
                             </Link>
                             <Copy
-                              href={`/tokens/${data.address}`}
+                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
-                              value={data.address}
-                              text={minifyContract(data.address)} />
+                              value={token.address}
+                              text={minifyContract(token.address)} />
                           </div>
                           {/* <div className="flex items-center justify-center gap-5">
                             <p className="text-muted-foreground">more detail</p>

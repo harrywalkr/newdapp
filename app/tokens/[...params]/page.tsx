@@ -7,14 +7,13 @@ import TokenDetail from "@/components/features/token/token-detail";
 import { merge } from "@/utils/merger";
 
 interface Props {
-    params: params
+    params: IParam
     searchParams: searchParams
 }
 
-type params = {
-    id: string
+type IParam = {
+    params: [string, string]
 }
-
 
 type searchParams = {
     network: string
@@ -24,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     try {
         const data = await searchToken({
             params: {
-                currencyAddress: params.id,
+                currencyAddress: params.params[1],
             },
         })
         const tokenName = data?.data?.[0]?.attributes?.name || "";
@@ -44,26 +43,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Token({ params }: Props) {
+    console.log('ahmad ahmad', params)
+
     // FIXME: no 500 when image is non-existant
-    const logo = await getLogo(params.id);
+    const logo = await getLogo(params.params[1]);
     const searchedToken = await searchToken({
         params: {
-            currencyAddress: params.id,
+            currencyAddress: params.params[1],
         }
     });
     const token = await getToken(
-        params.id,
+        params.params[1],
         //FIXME: backend must return empty or null with the proper status code not 500 :|
         {
-            params: { network: 'eth' }, // FIXME: must be dynamic
+            params: { network: params.params[0] }
         });
 
     const mergedToken = merge(searchedToken, token)
 
     return (
         <div className="flex flex-col gap-6 items-center justify-center w-full" >
-            <TokenOverview token={mergedToken} logo={logo} tokenAddress={params.id} />
-            <TokenDetail token={mergedToken} logo={logo} tokenAddress={params.id} />
+            <TokenOverview token={mergedToken} logo={logo} tokenAddress={params.params[1]} />
+            <TokenDetail token={mergedToken} logo={logo} tokenAddress={params.params[1]} />
         </div >
     )
 }
