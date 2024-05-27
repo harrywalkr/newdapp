@@ -18,6 +18,7 @@ const RenderConditionalComponent: React.FC<RenderConditionalComponentProps> = ({
     const { zeroValueComponent, nullValueComponent, falseValueComponent, trueValueComponent } = options;
 
     useEffect(() => {
+        console.log('hkjkjkjkj', value)
         let isMounted = true;
         const resolveValue = async () => {
             if (value instanceof Promise) {

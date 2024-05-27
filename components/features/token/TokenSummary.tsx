@@ -81,8 +81,15 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                 }}
             />
 
+            hello
+            {(token?.TickersData?.cex != undefined &&
+                token?.TickersData?.cex?.length > 0 &&
+                token?.TickersData?.cex[0]?.market?.name != undefined).toString()}
+            googd
             <RenderConditionalComponent
-                value={token?.TickersData?.cex && token?.TickersData?.cex.length > 0 && token?.TickersData?.cex[0].market?.name}
+                value={token?.TickersData?.cex != undefined &&
+                    token?.TickersData?.cex?.length > 0 &&
+                    token?.TickersData?.cex[0]?.market?.name != undefined}
                 options={{
                     trueValueComponent: (
                         <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-80 md:h-96">
