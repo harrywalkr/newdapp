@@ -125,7 +125,6 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <Copy className="text-sm text-muted-foreground leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
-                                                        href={`/tokens/${token.contractAddress}`}
                                                     />
                                                 </div>
                                                 <div className="ml-auto font-medium text-sm lg:text-base">{dayjs().to(token.latestDate)}</div>
@@ -183,7 +182,6 @@ export function TopLatestHotPairs({ images }: Props) {
                                                     <Copy className="text-sm text-muted-foreground font-medium leading-none"
                                                         text={minifyContract(token.contractAddress)}
                                                         value={token.contractAddress}
-                                                        href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`}
                                                     />
                                                 </div>
                                                 <div className="ml-auto font-medium">{dayjs().to(token.latestDate)}</div>

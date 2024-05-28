@@ -126,7 +126,6 @@ export default function TrendPairs() { // FIXME: this component must include tre
                               {minifyContract(token.name)}
                             </Link>
                             <Copy
-                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
                               value={token.address}
                               text={minifyContract(token.address)} />
@@ -167,7 +166,6 @@ export default function TrendPairs() { // FIXME: this component must include tre
                               {minifyContract(token.name)}
                             </Link>
                             <Copy
-                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
                               value={token.address}
                               text={minifyContract(token.address)} />
@@ -214,7 +212,6 @@ export default function TrendPairs() { // FIXME: this component must include tre
                               {minifyContract(token.name)}
                             </Link>
                             <Copy
-                              href={`/tokens/${token.address}`}
                               className="text-sm !text-muted-foreground link"
                               value={token.address}
                               text={minifyContract(token.address)} />
