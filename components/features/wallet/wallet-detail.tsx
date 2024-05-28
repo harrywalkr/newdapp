@@ -22,6 +22,8 @@ import RenderConditionalComponent from "@/components/common/RenderConditionalCom
 import { isPaidMember } from "@/services/auth.service";
 import Paywall from "@/components/common/Paywall";
 import WalletTransactionOldShit from "./WalletTransaction-old-shit";
+import Nft from "./Nft";
+import Statistical from "./statistical";
 
 interface Props {
   walletAddress: string;
@@ -129,39 +131,10 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             <WalletTransactionOldShit walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
           <TabsContent value="nft" className='mt-5'>
-            <RenderConditionalComponent
-              value={isPaidMember()}
-              options={{
-                trueValueComponent: (
-                  <>
-                    NFT Holdings
-                    <br />
-                    <span className="text-sm text-muted-foreground">
-                      No Activity in NFT
-                    </span>
-                    <br />
-                    <br />
-                    NFT Trades
-                    <br />
-                    <span className="text-sm text-muted-foreground">
-                      No Activity in NFT
-                    </span>
-                  </>
-                ),
-                falseValueComponent: <Paywall />
-              }}
-            />
+            <Nft />
           </TabsContent>
           <TabsContent value="statistics" className='mt-5'>
-            <RenderConditionalComponent
-              value={isPaidMember()}
-              options={{
-                trueValueComponent: (
-                  <WalletStatistical walletInfo={walletSummary} walletAddress={walletAddress} />
-                ),
-                falseValueComponent: <Paywall />
-              }}
-            />
+            <Statistical walletInfo={walletSummary} walletAddress={walletAddress} />
           </TabsContent>
         </Tabs>
       </CardContent>
