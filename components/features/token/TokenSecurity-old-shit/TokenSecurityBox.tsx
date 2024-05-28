@@ -142,10 +142,10 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
   return (
     <div
       className={`py-4 px-4 lg:px-16 rounded-md ${data.sourceCodeControl.is_open_source === 'no'
-        ? 'bg-base-content/30'
+        ? '/30'
         : data.sourceCodeControl.isProxy === 'yes'
           ? 'bg-red-300'
-          : 'bg-base-content/10'
+          : '/10'
         }`}
     >
       <h2 className="mb-8 mt-4 text-center flex flex-col gap-2 break-words">

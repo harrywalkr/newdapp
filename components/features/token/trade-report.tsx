@@ -74,25 +74,25 @@ export default function TradeReport({ tokenAddress }: Props) {
             <TableCaption>A list of trading reports.</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="bg-base-content text-base-100 w-28">
+                    <TableHead className=" text-base-100 w-28">
                         Time
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100">
+                    <TableHead className=" text-base-100">
                         Type
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100">
+                    <TableHead className=" text-base-100">
                         {tradeReport && tradeReport[0].Trade?.Currency?.Symbol ? tradeReport[0].Trade.Currency.Symbol : "-"}
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100">
+                    <TableHead className=" text-base-100">
                         {tradeReport && tradeReport[0].Trade?.Side?.Currency?.Symbol && tradeReport[0].Trade.Side.Currency.Symbol}
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100">
+                    <TableHead className=" text-base-100">
                         Price
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100">
+                    <TableHead className=" text-base-100">
                         Maker
                     </TableHead>
-                    <TableHead className="bg-base-content text-base-100 w-24">
+                    <TableHead className=" text-base-100 w-24">
                         TXN
                     </TableHead>
                 </TableRow>

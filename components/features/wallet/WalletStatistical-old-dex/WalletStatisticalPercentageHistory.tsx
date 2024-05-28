@@ -51,11 +51,11 @@ export default function WalletStatisticalPercentageHistory({ walletInfo }: any) 
         <table className="table table-pin-rows table-pin-cols bg-base-100 rounded-lg overflow-hidden">
           <thead>
             <tr>
-              <th className="text-center bg-base-content text-base-100">
+              <th className="text-center  text-base-100">
                 Year
               </th>
               {months.map((m: string) => (
-                <th key={m} className="bg-base-content text-base-100">{m}</th>
+                <th key={m} className=" text-base-100">{m}</th>
               ))}
             </tr>
           </thead>

@@ -135,9 +135,9 @@ const Addresses = ({ value, address, haveLine }: { value: number; address: strin
 
   return (
     <div className="relative flex items-center gap-2">
-      {haveLine && <div className="absolute w-[1px] h-[22px] bg-base-content/70 left-[66px] top-[20px] hidden sm:block"></div>}
+      {haveLine && <div className="absolute w-[1px] h-[22px] /70 left-[66px] top-[20px] hidden sm:block"></div>}
       <div className="w-[50px] text-right">{value + 1}</div>
-      <div className="rounded-full bg-base-content/70 p-[8px] z-10"></div>
+      <div className="rounded-full /70 p-[8px] z-10"></div>
       <div className="flex items-center gap-2">
         <span className="text-base-content/80 hidden sm:block">{address}</span>
         <span className="text-base-content/80 text-lg block sm:hidden">{minifyContract(address)}</span>

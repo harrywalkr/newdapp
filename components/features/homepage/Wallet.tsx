@@ -483,7 +483,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
       )}
       {layout.label && (
         <TableCell className={`text-base-content whitespace-nowrap`}>
-          <div className="p-2 bg-base-content/70 text-base-100 rounded-lg max-w-[100px] text-center whitespace-nowrap">
+          <div className="p-2 /70 text-base-100 rounded-lg max-w-[100px] text-center whitespace-nowrap">
             {data.buyAmountLabel}
           </div>
         </TableCell>

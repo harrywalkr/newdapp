@@ -87,7 +87,7 @@ export default function TableA({ params }: any) {
             </p>
             <Link
               href="/login"
-              className="bg-base-200/70 hover:bg-base-200 p-2 px-4 rounded-md text-base cursor-pointer"
+              className="p-2 px-4 rounded-md text-base cursor-pointer"
             >
               login
             </Link>

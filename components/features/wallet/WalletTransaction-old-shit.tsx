@@ -142,7 +142,7 @@ const Swap = ({ data, image }: { data: any; image?: string }) => {
 
   return (
     <div className="relative bg-base-200/70 w-full p-4 rounded-lg grid grid-cols-1 lg:grid-cols-3 gap-5 col-span-1">
-      <div className="absolute w-2 h-full bg-base-content/60 rounded-l-lg"></div>
+      <div className="absolute w-2 h-full /60 rounded-l-lg"></div>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <div className="avatar-group -space-x-6">

@@ -31,19 +31,19 @@ export default function DecentralizedExchange({ token }: Props) {
             <TableCaption>Decentralized Exchanges</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="text-center bg-base-content w-[50px]">
+                    <TableHead className="text-center  w-[50px]">
                         #
                     </TableHead>
-                    <TableHead className="bg-base-content">
+                    <TableHead className="">
                         Exchange
                     </TableHead>
-                    <TableHead className="bg-base-content">
+                    <TableHead className="">
                         Pair
                     </TableHead>
-                    <TableHead className="bg-base-content">
+                    <TableHead className="">
                         Price
                     </TableHead>
-                    <TableHead className="bg-base-content">
+                    <TableHead className="">
                         Volume
                     </TableHead>
                 </TableRow>
