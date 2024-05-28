@@ -65,9 +65,9 @@ export default function TableA({ params }: any) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Token Name</TableHead>
-              <TableHead className="text-center">Price</TableHead>
-              <TableHead className="text-right">Volume</TableHead>
+              <TableHead >Token Name</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead >Volume</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -122,16 +122,16 @@ const Record = ({ token, selectedChain }: { token: Daum, selectedChain: TokenCha
             text={minifyContract(token.address)} />
         </div>
       </TableCell>
-      <TableCell className="text-center text-base-content">
+      <TableCell >
         {
-          token.attributes?.base_token_price_usd != undefined &&
-          <PriceFormatter value={token.attributes?.base_token_price_usd} dollarSign={true} />
+          token.price_stats?.usd?.price != undefined &&
+          <PriceFormatter value={token.price_stats?.usd?.price} dollarSign={true} />
         }
       </TableCell>
-      <TableCell className="text-right text-base-content">
+      <TableCell >
         {
-          token.attributes?.volume_usd != undefined &&
-          <PriceFormatter value={+token.attributes?.volume_usd} dollarSign={true} />
+          token.price_stats?.usd?.volume_24h != undefined &&
+          <PriceFormatter value={+token.price_stats?.usd?.volume_24h} dollarSign={true} />
         }
       </TableCell>
     </TableRow>

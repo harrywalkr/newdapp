@@ -23,6 +23,64 @@ export interface Daum {
   logo_url: string;
   name: string;
   address: string;
+  price_stats?: PriceStats;
+}
+
+export interface PriceStats {
+  btc?: Btc;
+  usd?: Usd;
+  eth?: Eth;
+}
+
+export interface Btc {
+  price?: number;
+  change_1h?: number;
+  change_24h?: number;
+  change_7d?: number;
+  volume_24h?: number;
+  market_cap?: number;
+  change_30d?: number;
+  change_1q?: number;
+  change_1y?: number;
+  volume_24h_formatted?: string;
+  price_formatted?: string;
+  market_cap_formatted?: string;
+  volume_24h_change_24h?: number;
+  market_cap_change_24h?: number;
+}
+
+export interface Usd {
+  price: number;
+  change_1h: number;
+  change_24h: number;
+  change_7d: number;
+  volume_24h: number;
+  market_cap: number;
+  change_30d: number;
+  change_1q: number;
+  change_1y: number;
+  volume_24h_formatted: string;
+  price_formatted: string;
+  market_cap_formatted: string;
+  volume_24h_change_24h: number;
+  market_cap_change_24h: number;
+}
+
+export interface Eth {
+  price: number;
+  change_1h: number;
+  change_24h: number;
+  change_7d: number;
+  volume_24h: number;
+  market_cap: number;
+  change_30d: number;
+  change_1q: number;
+  change_1y: number;
+  volume_24h_formatted: string;
+  price_formatted: string;
+  market_cap_formatted: string;
+  volume_24h_change_24h: number;
+  market_cap_change_24h: number;
 }
 
 export interface Attributes {
