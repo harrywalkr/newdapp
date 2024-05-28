@@ -96,7 +96,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         <CardContent>
                             {averageRankPending ?
                                 <ul>
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {Array.from({ length: 10 }).map((_, index) => (
                                         <li key={index} className="flex items-center space-x-4 mb-4">
                                             <Skeleton className="h-12 w-12 rounded-full" />
                                             <div className="space-y-2">
@@ -109,7 +109,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                 :
                                 <div className="space-y-8">
                                     {averageRank!
-                                        .slice(averageRankPage * 5, (averageRankPage + 1) * 5)
+                                        .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
                                         .map((token: HotPairs, id: number) => (
                                             <div key={id} className="flex items-center">
                                                 <Avatar className="h-9 w-9">
@@ -154,7 +154,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         <CardContent>
                             {latestTokensPending ?
                                 <ul>
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {Array.from({ length: 10 }).map((_, index) => (
                                         <li key={index} className="flex items-center space-x-4 mb-4">
                                             <Skeleton className="h-12 w-12 rounded-full" />
                                             <div className="space-y-2">
