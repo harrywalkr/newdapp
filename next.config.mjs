@@ -5,6 +5,9 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  experimental: {
+    staticPageGenerationTimeout: 120,
+  },
   images: {
     // remotePatterns: [
     //   {
