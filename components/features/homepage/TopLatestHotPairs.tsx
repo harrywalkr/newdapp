@@ -33,6 +33,7 @@ import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
 import clsx from "clsx";
 import Link from "next/link";
+import { AnimationControls, motion, useAnimation } from "framer-motion";
 
 dayjs.extend(relativeTime);
 
@@ -44,6 +45,8 @@ export function TopLatestHotPairs({ images }: Props) {
     const [averageRankPage, setAverageRankPage] = useState(0);
     const [latestTokenPage, setLatestTokenPage] = useState(0);
     const { selectedChain } = useTokenChainStore();
+    const control1 = useAnimation();
+    const control2 = useAnimation();
 
     const { data: averageRank, isPending: averageRankPending, refetch: averageRankRefetch } = useQuery(
         {
@@ -72,8 +75,15 @@ export function TopLatestHotPairs({ images }: Props) {
         },
     );
 
+    const handleClick = async (refreshFun: Function, animationControl: AnimationControls) => {
+        await animationControl.start({ rotate: 360, transition: { duration: 1 } });
+        animationControl.set({ rotate: 0 });
+        refreshFun()
+    };
+
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
+
 
     return (
         <Section>
@@ -89,7 +99,11 @@ export function TopLatestHotPairs({ images }: Props) {
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between cursor-pointer">
                                 <span>Top Hot Pairs</span>
-                                <UpdateIcon onClick={() => averageRankRefetch()} />
+                                <Button size="icon" variant='outline' onClick={() => handleClick(averageRankRefetch, control1)}>
+                                    <motion.div animate={control1} >
+                                        <UpdateIcon />
+                                    </motion.div>
+                                </Button>
                             </CardTitle>
                             <CardDescription>Hot Pairs of the last one week</CardDescription>
                         </CardHeader>
@@ -146,7 +160,11 @@ export function TopLatestHotPairs({ images }: Props) {
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between cursor-pointer">
                                 <span>Latest Hot Pairs</span>
-                                <UpdateIcon onClick={() => latestTokenRefetch()} />
+                                <Button size="icon" variant='outline' onClick={() => handleClick(latestTokenRefetch, control2)}>
+                                    <motion.div animate={control2} >
+                                        <UpdateIcon />
+                                    </motion.div>
+                                </Button>
                             </CardTitle>
                             <CardDescription>Hot Pairs of the last 24 hours</CardDescription>
                         </CardHeader>

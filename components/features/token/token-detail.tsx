@@ -23,10 +23,11 @@ import { KeyValue } from '@/components/ui/key-value'
 interface Props {
   token: IToken,
   logo: ImageType,
-  tokenAddress: string
+  network: string,
+  tokenAddress: string,
 }
 
-export default function TokenDetail({ token, tokenAddress }: Props) {
+export default function TokenDetail({ token, tokenAddress, network }: Props) {
   return (
     <Card className="w-full">
       <CardContent className="mt-5 overflow-hidden relative">
@@ -56,7 +57,7 @@ export default function TokenDetail({ token, tokenAddress }: Props) {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="summary" className='mt-5'>
-            <TokenSummary token={token} tokenAddress={tokenAddress} />
+            <TokenSummary token={token} tokenAddress={tokenAddress} network={network} />
           </TabsContent>
           <TabsContent value="markets" className='mt-5'>
             <div className='flex flex-col items-start justify-center gap-5'>

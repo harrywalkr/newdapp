@@ -17,7 +17,7 @@ export async function isPaidMember(): Promise<boolean> {
         console.error("Error fetching key:", error.message);
         return false;
       });
-      // FIXME: refactor this code
+    // FIXME: refactor this code
     return false;
   }
   // FIXME: Backend must implement checkMembership api

@@ -62,7 +62,7 @@ export default async function Token({ params }: Props) {
     return (
         <div className="flex flex-col gap-6 items-center justify-center w-full" >
             <TokenOverview token={mergedToken} logo={logo} tokenAddress={params.params[1]} />
-            <TokenDetail token={mergedToken} logo={logo} tokenAddress={params.params[1]} />
+            <TokenDetail token={mergedToken} logo={logo} tokenAddress={params.params[1]} network={params.params[0]} />
         </div >
     )
 }

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-
+// FIXME: fuck this component
 type RenderComponentOptions = {
     zeroValueComponent?: React.ReactNode;
     nullValueComponent?: React.ReactNode;

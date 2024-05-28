@@ -1,5 +1,5 @@
 export interface IDatafeed {
-  data: Data;
+  data: Data | null;
   meta: Meta;
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionString, LanguageCode, IBasicDataFeed, IDatafeedQuotesApi } from "@/public/static/charting_library";
 import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
 
-const dataFeed = (ohlcvData3: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
+const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
@@ -37,7 +37,7 @@ const dataFeed = (ohlcvData3: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & 
         },
         getBars: (symbolInfo, resolution, periodParams, onResult, onError) => {
             setTimeout(() => {
-                const bars = ohlcvData3.filter(bar => {
+                const bars = ohlcvData.filter(bar => {
                     return bar.time >= periodParams.from && bar.time < periodParams.to;
                 }).map(bar => ({
                     time: bar.time,

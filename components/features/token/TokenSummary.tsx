@@ -8,10 +8,11 @@ import Tradingview from './Tradingview';
 
 interface Props {
     token: IToken;
+    network: string,
     tokenAddress: string;
 }
 
-export default function TokenSummary({ token, tokenAddress }: Props) {
+export default function TokenSummary({ token, tokenAddress, network }: Props) {
     return (
         <div className='flex flex-col items-start justify-center gap-4'>
             <RenderConditionalComponent
@@ -80,7 +81,6 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                     falseValueComponent: <p>Data is not available :(</p>,
                 }}
             />
-
             {token?.TickersData?.cex !== undefined &&
                 token?.TickersData?.cex?.length > 0 &&
                 token?.TickersData?.cex[0]?.market?.name !== undefined ? (
@@ -90,11 +90,8 @@ export default function TokenSummary({ token, tokenAddress }: Props) {
                     />
                 </div>
             ) : (
-                <div className='h-80 md:h-96 w-full my-6 md:my-7'>
-                    <Chart tokenAddress={tokenAddress} cex={token!.TickersData!.cex!} />
-                </div>
+                <Chart tokenAddress={tokenAddress} cex={token!.TickersData!.cex!} network={network} />
             )}
-
             <TradeReport tokenAddress={tokenAddress} />
         </div>
     );

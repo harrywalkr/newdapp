@@ -52,11 +52,9 @@ export const getChainData = (
   );
 
 export const getDataFeed = (
-  tokenAddress: string,
   options?: AxiosRequestConfig
 ): Promise<IDatafeed> =>
   fetchData<IDatafeed>(
-    // FIXME: how to handle network in the url below?? backend? front? url param???
-    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ohlcv?network=base&contractAddress=${tokenAddress}&timeframe=day&aggregate=1`,
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ohlcv?&timeframe=day&aggregate=1`,
     options
   );

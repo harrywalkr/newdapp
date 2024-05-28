@@ -27,6 +27,7 @@ const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
 
 interface Props {
   cex: cex[],
+  network: string
   tokenAddress: string
 }
 
@@ -34,12 +35,13 @@ const TVChartContainer = dynamic(() => import("@/components/features/token/TVCha
   ssr: false,
 });
 
-export default function Chart({ cex, tokenAddress }: Props) {
+export default function Chart({ cex, tokenAddress, network }: Props) {
   const { data: ohlcvData, isSuccess } = useQuery<IOhlcvData[]>(
     {
       queryKey: ['ohlcvData'],
       queryFn: async () => {
-        const data = await getDataFeed(tokenAddress);
+        const data = await getDataFeed({ params: { contractAddress: tokenAddress, network: network } });
+        if (!data.data) return [];
         return data.data.attributes.ohlcv_list.map(item => ({
           time: item[0],
           open: item[1],
@@ -58,7 +60,11 @@ export default function Chart({ cex, tokenAddress }: Props) {
         strategy="lazyOnload"
         onLoad={() => {/* Handle Script Load */ }}
       />
-      {isSuccess && ohlcvData && ohlcvData.length > 0 && <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: cex![0].base }} ohlcvData={ohlcvData} />}
+      {isSuccess && ohlcvData && ohlcvData.length > 0 &&
+        <div className='h-80 md:h-96 w-full my-6 md:my-7'>
+          <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: cex![0].base }} ohlcvData={ohlcvData} />
+        </div>
+      }
     </>
   );
 }
