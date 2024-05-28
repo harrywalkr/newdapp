@@ -336,8 +336,6 @@ export default function Wallet({ initTopWallets }: Prop) {
                     onClick={() => handleSort("HotHolder")}
                   >
                     Hot Holder
-
-
                   </TableHead>
                 )}
                 {layout[topWalletFiltersEnum.avgHoldingTime] && (
@@ -507,44 +505,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
         </TableCell>
       )}
       {layout.HotHolder && (
-        // <TableCell className={`text-base-content whitespace-nowrap`}>
-        //   <div className="flex items-center gap-2">
-        //     <div className="flex space-x-2 items-center">
-        //       <Link className="flex flex-col gap-2"
-        //         src={`token/${data.HotTokenHolders}`}
-
-        //       >
-        //         <span
-        //           className={
-        //             data.firstTopTokenHolder.tokenName && "gradient-text"
-        //           }
-        //         >
-        //           {data.firstTopTokenHolder.tokenName
-        //             ? data.firstTopTokenHolder.tokenName !== "-"
-        //               ? data.firstTopTokenHolder.tokenName
-        //               : "-"
-        //             : data.HotTokenHolders[0]?.tokenName || "-"}
-        //         </span>
-        //       </Link>
-        //       {/* {data.firstTopTokenHolder.tokenName
-        //         ? data.firstTopTokenHolder.tokenName !== "-" &&
-        //         data.firstTopTokenHolder["Currency Address"] && (
-        //           <CopyAddress
-        //             address={data.firstTopTokenHolder["Currency Address"]}
-        //           />
-        //         )
-        //         : data.HotTokenHolders[0]?.tokenName &&
-        //         data.HotTokenHolders[0]?.["Currency Address"] && (
-        //           <CopyAddress
-        //             address={data.HotTokenHolders[0]["Currency Address"]}
-        //           />
-        //         )} */}
-        //     </div>
-        //   </div>
-        // </TableCell>
-
-
-        <TableCell className={`text-base-content whitespace-nowrap`}>
+        <TableCell className={`text-base-content whitespace-nowrap text-orange-300`}>
           <div className="flex items-center gap-2">
             <div className="flex space-x-2 items-center">
               <div className="flex flex-col gap-2">
