@@ -16,6 +16,8 @@ import { useTokenChainStore } from "@/store";
 import { Daum } from "@/types/token.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function TableA({ params }: any) {
   const { selectedChain } = useTokenChainStore();
@@ -40,15 +42,23 @@ export default function TableA({ params }: any) {
   });
 
   if (error) return <div>Failed to load trends, please try again.</div>;
-  //FIXME: Create loading component where you can use everywhere
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className='flex flex-col gap-3'>
+    {Array.from({ length: 10 }, (_, i) => (
+      <div key={i} className="flex items-center space-x-4 w-full">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/5" />
+        </div>
+      </div>
+    ))}
+  </div>;
   if (loadingPaidMember) return <div>Checking membership status...</div>;
 
   return (
-    <div className="px-2 pt-8 min-h-[80vh] relative">
+    <div className="px-2 pt-8 relative">
       <div className="overflow-x-auto">
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Token Name</TableHead>
@@ -60,15 +70,15 @@ export default function TableA({ params }: any) {
           <TableBody>
             {paidMember ? (
               trends!.data != undefined &&
-              trends!.data.map((d) => <Record key={d.id} data={d} />)
+              trends!.data.map((d) => <Record key={d.id} token={d} />)
             ) : (
               trends!.data != undefined &&
-              trends!.data.slice(0, 10).map((d) => <Record key={d.id} data={d} />)
+              trends!.data.slice(0, 15).map((d) => <Record key={d.id} token={d} />)
             )}
           </TableBody>
         </Table>
         {!paidMember && (
-          <div className="absolute z-10 bottom-0 left-0 right-0 w-full h-96 bg-gradient-to-t from-white via-white flex flex-col items-center justify-center gap-6 md:gap-5 px-10 text-center">
+          <div className="absolute z-10 bottom-0 left-0 right-0 w-full h-96 bg-gradient-to-t from-muted via-background flex flex-col items-center justify-center gap-6 md:gap-5 px-10 text-center">
             <p className="text-2xl font-medium">
               Please login to see more trending tokens
             </p>
@@ -85,13 +95,19 @@ export default function TableA({ params }: any) {
   );
 }
 
-const Record = ({ data }: { data: Daum }) => {
+const Record = ({ token }: { token: Daum }) => {
   return (
     <TableRow>
-      <TableCell className="text-base-content">image</TableCell>
       <TableCell className="text-center text-base-content">
-        {/* {data.symbol} */}
+        <Avatar >
+          <AvatarImage
+            src={token.logo_url}
+            alt="token logo"
+          />
+          <AvatarFallback>{token.name.charAt(0)}</AvatarFallback>
+        </Avatar>
       </TableCell>
+      <TableCell className="text-base-content">symbol</TableCell>
       <TableCell className="text-center text-base-content">
         {/* <PriceFormatter value={data.price_stats.usd.price} dollarSign={true} /> */}
         price

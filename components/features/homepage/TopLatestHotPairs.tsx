@@ -84,7 +84,6 @@ export function TopLatestHotPairs({ images }: Props) {
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
 
-
     return (
         <Section>
             <SectionHeader>

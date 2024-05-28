@@ -191,7 +191,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                     <CardContent className="pt-6 h-full">
                       {id === arr.length - 1 ? (
                         <Link
-                          href={`/trending-pairs/${selectedChain.symbol}`}
+                          href={'/trending-pairs'}
                           className="flex h-full w-ful items-center justify-center text-lg cursor-pointer" >
                           Show More
                         </Link>
@@ -238,7 +238,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
                 next
               </Button>
               {activePageIndex == 2 && (
-                <Button disabled={false} onClick={() => router.push(`/trending-pairs/${selectedChain.symbol}`)}>
+                <Button disabled={false} onClick={() => router.push('/trending-pairs')}>
                   show more
                 </Button>
               )}
