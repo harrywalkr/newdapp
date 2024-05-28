@@ -18,6 +18,10 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Copy from "@/components/ui/copy";
+import { minifyContract } from "@/utils/truncate";
+import { TokenChain } from "@/store/tokenChains";
+import PriceFormatter from "@/utils/PriceFormatter";
 
 export default function TableA({ params }: any) {
   const { selectedChain } = useTokenChainStore();
@@ -62,7 +66,6 @@ export default function TableA({ params }: any) {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Token Name</TableHead>
-              <TableHead className="text-center">Symbol</TableHead>
               <TableHead className="text-center">Price</TableHead>
               <TableHead className="text-right">Volume</TableHead>
             </TableRow>
@@ -70,10 +73,10 @@ export default function TableA({ params }: any) {
           <TableBody>
             {paidMember ? (
               trends!.data != undefined &&
-              trends!.data.map((d) => <Record key={d.id} token={d} />)
+              trends!.data.map((d) => <Record key={d.id} token={d} selectedChain={selectedChain} />)
             ) : (
               trends!.data != undefined &&
-              trends!.data.slice(0, 15).map((d) => <Record key={d.id} token={d} />)
+              trends!.data.slice(0, 15).map((d) => <Record key={d.id} token={d} selectedChain={selectedChain} />)
             )}
           </TableBody>
         </Table>
@@ -95,10 +98,10 @@ export default function TableA({ params }: any) {
   );
 }
 
-const Record = ({ token }: { token: Daum }) => {
+const Record = ({ token, selectedChain }: { token: Daum, selectedChain: TokenChain }) => {
   return (
     <TableRow>
-      <TableCell className="text-center text-base-content">
+      <TableCell className="flex items-center justify-start gap-4">
         <Avatar >
           <AvatarImage
             src={token.logo_url}
@@ -106,18 +109,30 @@ const Record = ({ token }: { token: Daum }) => {
           />
           <AvatarFallback>{token.name.charAt(0)}</AvatarFallback>
         </Avatar>
+        <div className="token flex flex-col items-start justify-start gap-2">
+          <Link
+            className="font-medium hover:underline"
+            href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.address}`}
+          >
+            {minifyContract(token.name)}
+          </Link>
+          <Copy
+            className="text-sm !text-muted-foreground link"
+            value={token.address}
+            text={minifyContract(token.address)} />
+        </div>
       </TableCell>
-      <TableCell className="text-base-content">symbol</TableCell>
       <TableCell className="text-center text-base-content">
-        {/* <PriceFormatter value={data.price_stats.usd.price} dollarSign={true} /> */}
-        price
+        {
+          token.attributes?.base_token_price_usd != undefined &&
+          <PriceFormatter value={token.attributes?.base_token_price_usd} dollarSign={true} />
+        }
       </TableCell>
       <TableCell className="text-right text-base-content">
-        {/* <PriceFormatter
-          value={data.price_stats.usd.volume_24h.toFixed(2)}
-          dollarSign={true}
-        /> */}
-        vol 24
+        {
+          token.attributes?.volume_usd != undefined &&
+          <PriceFormatter value={+token.attributes?.volume_usd} dollarSign={true} />
+        }
       </TableCell>
     </TableRow>
   );

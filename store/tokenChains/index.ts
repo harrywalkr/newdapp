@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 // Updated type for a single token chain with new properties
-type TokenChain = {
+export type TokenChain = {
   id: number;
   name: string;
   symbol: string;
