@@ -3,6 +3,12 @@ import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionSt
 import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
 
 const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
+    var periodParams = {
+        from: 1668639600000,
+        to: 1668675540000,
+        countBack: 301,
+        firstDataRequest: true,
+    };
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
@@ -37,22 +43,25 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
         },
         getBars: (symbolInfo, resolution, periodParams, onResult, onError) => {
             setTimeout(() => {
-                const bars = ohlcvData.filter(bar => {
-                    return bar.time >= periodParams.from && bar.time < periodParams.to;
-                }).map(bar => ({
-                    time: bar.time,
+                const bars = ohlcvData.map(bar => ({
+                    time: bar.time * 1000, // Convert to milliseconds
                     open: bar.open,
                     high: bar.high,
                     low: bar.low,
                     close: bar.close,
                     volume: bar.volume
-                }));
+                }))
+                    .filter(bar => {
+                        return bar.time >= periodParams.from * 1000 && bar.time < periodParams.to * 1000;
+                    })
+                    .sort((a, b) => a.time - b.time);
+
                 if (bars.length) {
                     onResult(bars, { noData: false });
                 } else {
                     onResult([], { noData: true });
                 }
-            }, 0);
+            }, 50);
         },
         searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
             // Implement search logic here, or provide a mock implementation if not applicable
@@ -68,7 +77,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                 s: "ok",
                 n: symbol,
                 v: {
-                    price: 123.45,
+                    // price: 123.45,
                 }
             })));
         },
@@ -100,6 +109,7 @@ export const TVChartContainer = ({ chartOptions, ohlcvData }: Props) => {
                 container: chartContainerRef.current,
                 library_path: chartOptions.library_path,
                 locale: 'en',
+                debug: true,
                 disabled_features: ["use_localstorage_for_settings"],
                 enabled_features: ["study_templates"],
                 charts_storage_url: chartOptions.charts_storage_url,

@@ -13,7 +13,6 @@ import { cex } from "@/types/token.type";
 import { useQuery } from "@tanstack/react-query";
 
 const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
-  symbol: "AAPL",
   interval: "D" as ResolutionString,
   library_path: "/static/charting_library/",
   locale: "en",
@@ -26,7 +25,6 @@ const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
 };
 
 interface Props {
-  cex: cex[],
   network: string
   tokenAddress: string
 }
@@ -35,21 +33,25 @@ const TVChartContainer = dynamic(() => import("@/components/features/token/TVCha
   ssr: false,
 });
 
-export default function Chart({ cex, tokenAddress, network }: Props) {
+export default function Chart({ tokenAddress, network }: Props) {
   const { data: ohlcvData, isSuccess } = useQuery<IOhlcvData[]>(
     {
       queryKey: ['ohlcvData'],
       queryFn: async () => {
         const data = await getDataFeed({ params: { contractAddress: tokenAddress, network: network } });
         if (!data.data) return [];
-        return data.data.attributes.ohlcv_list.map(item => ({
-          time: item[0],
-          open: item[1],
-          high: item[2],
-          low: item[3],
-          close: item[4],
-          volume: item[5]
-        })).splice(0, 5);
+        return data.data.attributes.ohlcv_list
+          .map(item => ({
+            time: item[0],
+            // time: new Date(item[0] * 1000).setUTCHours(0, 0, 0, 0) / 1000, // Set time to 00:00 GMT
+            open: item[1],
+            high: item[2],
+            low: item[3],
+            close: item[4],
+            volume: item[5]
+          }))
+          .sort((a, b) => a.time - b.time) // Sorting by time
+          .splice(0, 30); // Limiting to first 5 items
       }
     });
 
@@ -62,7 +64,7 @@ export default function Chart({ cex, tokenAddress, network }: Props) {
       />
       {isSuccess && ohlcvData && ohlcvData.length > 0 &&
         <div className='h-80 md:h-96 w-full my-6 md:my-7'>
-          <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: cex![0].base }} ohlcvData={ohlcvData} />
+          <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: 'cex![0].base' }} ohlcvData={ohlcvData} />
         </div>
       }
     </>

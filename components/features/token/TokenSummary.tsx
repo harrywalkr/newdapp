@@ -90,7 +90,12 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
                     />
                 </div>
             ) : (
-                <Chart tokenAddress={tokenAddress} cex={token!.TickersData!.cex!} network={network} />
+                <>
+                    {
+                        token!.data![0]?.id?.split("_")[1] != undefined &&
+                        <Chart tokenAddress={token!.data![0]?.id?.split("_")[1]} network={network} />
+                    }
+                </>
             )}
             <TradeReport tokenAddress={tokenAddress} />
         </div>
