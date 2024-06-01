@@ -15,29 +15,33 @@ import { convertIsoToDate } from "@/utils/date";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import Link from "next/link";
+} from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Copy from "@/components/ui/copy";
 import { minifyContract } from "@/utils/truncate";
 import { separate3digits } from "@/utils/numbers";
-
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { isPaidMember } from "@/services/auth.service";
 
 interface Prop {
   initTopWallets: WalletType[];
 }
 
-
 export default function Wallet({ initTopWallets }: Prop) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [wallets, setWallets] = useState(initTopWallets);
   const [filtered, setFiltered] = useState(initTopWallets);
+  const [maxPage, setMaxPage] = useState(0);
+  const router = useRouter();
   const [sort, setSort] = useState<{ [key: string]: boolean }>({
     rank: true,
     label: false,
@@ -60,6 +64,8 @@ export default function Wallet({ initTopWallets }: Prop) {
   });
   const [layout, setLayout] = useState(topWalletLayouts);
   const [filters, setFilters] = useState(initTopWalletFilters);
+
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
 
   const handleNext = () => setPage((prev) => prev + 1);
   const handlePrev = () => setPage((prev) => prev - 1);
@@ -142,6 +148,7 @@ export default function Wallet({ initTopWallets }: Prop) {
       }
     });
     setFiltered(cloneFiltered as any);
+    setMaxPage(Math.ceil(cloneFiltered.length / 10) - 1);
     setPage(0);
   }, [filters]);
 
@@ -245,7 +252,6 @@ export default function Wallet({ initTopWallets }: Prop) {
             return -a[key] + b[key];
           } else {
             updateSort(key, true);
-            // setSort({ ...sort, [key]: true });
             return a[key] - b[key];
           }
         });
@@ -262,6 +268,28 @@ export default function Wallet({ initTopWallets }: Prop) {
     }));
   };
 
+  const handleStarClick = (wallet: IWatchlistItem) => {
+    const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
+    if (isInWatchlist) {
+      removeFromWatchlist(wallet.contractAddress);
+    } else {
+      addToWatchlist(wallet);
+    }
+  };
+
+  const isTokenInWatchlist = (wallet: IWatchlistItem) => {
+    return watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
+  };
+
+  const handlePageChange = async (newPage: number) => {
+    const isAuthenticated = await isPaidMember();
+    if (isAuthenticated) {
+      setPage(newPage);
+    } else {
+      router.replace(`/login`);
+    }
+  };
+
   return (
     <Section variant={'vertical'}>
       <SectionHeader variant={'vertical'}>
@@ -271,7 +299,6 @@ export default function Wallet({ initTopWallets }: Prop) {
         </SectionDescription>
       </SectionHeader>
       <SectionContent variant={'vertical'}>
-
         <TopWalletsFilter
           layout={layout}
           setLayout={setLayout}
@@ -285,6 +312,7 @@ export default function Wallet({ initTopWallets }: Prop) {
           <Table className="bg-card">
             <TableHeader>
               <TableRow>
+                <TableHead>Watchlist</TableHead>
                 {layout[topWalletFiltersEnum.rank] && (
                   <TableHead className="w-[100px]"
                     onClick={() => handleSort("rank")}
@@ -424,43 +452,34 @@ export default function Wallet({ initTopWallets }: Prop) {
               {filtered
                 .slice(page * 10, (page + 1) * 10)
                 .map((d: any, idx: number) => (
-                  <Record key={d.walletAddress} data={d} layout={layout} />
-                  // <TableCell>Credit Card</TableCell>
+                  <Record key={d.walletAddress} data={d} layout={layout} handleStarClick={handleStarClick} isTokenInWatchlist={isTokenInWatchlist} />
                 ))}
             </TableBody>
           </Table>
         </ScrollArea>
 
-
         <div className="mt-5 flex justify-end items-center">
-          <span className="text-info text-sm">Next/Previous</span>
-          {/* <FiChevronsLeft
-                className={`ml-2 ${page === 0 && "opacity-30 pointer-events-none"
-                  } text-xl cursor-pointer`}
-                onClick={() => setPage(0)}
-              />
-              <CiCircleChevLeft
-                className={`text-3xl cursor-pointer ml-2 ${page === 0 && "opacity-30 pointer-events-none"
-                  }`}
-                onClick={handlePrev}
-              />
-              <span className="mx-2">{page + 1}</span>
-              <CiCircleChevRight
-                className={`text-3xl cursor-pointer ${(page + 1) * 10 >= filtered.length &&
-                  "opacity-30 pointer-events-none"
-                  }`}
-                onClick={handleNext}
-              /> */}
+          <Button variant='outline' size='icon' disabled={page <= 0} onClick={() => handlePageChange(page - 1)}>
+            <ChevronLeftIcon />
+          </Button>
+          <span className="mx-2">{page + 1}</span>
+          <Button variant='outline' size='icon' disabled={page >= maxPage} onClick={() => handlePageChange(page + 1)}>
+            <ChevronRightIcon />
+          </Button>
         </div>
       </SectionContent>
     </Section>
   );
 }
 
-
-const Record = ({ data, layout }: { data: any; layout: any }) => {
+const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: WalletType; layout: any; handleStarClick: (wallet: IWatchlistItem) => void; isTokenInWatchlist: (wallet: IWatchlistItem) => boolean }) => {
   return (
     <TableRow>
+      <TableCell className="text-base-content text-center">
+        <div onClick={() => handleStarClick({ name: data.walletAddress, contractAddress: data.walletAddress })} className="cursor-pointer">
+          {isTokenInWatchlist({ name: data.walletAddress, contractAddress: data.walletAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+        </div>
+      </TableCell>
       {layout.rank && (
         <TableCell className={`text-base-content text-center`}>{data.rank}</TableCell>
       )}
@@ -543,7 +562,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
       )}
       {layout.avgHoldingTime && (
         <TableCell className={`text-base-content text-center whitespace-nowrap `}           >
-          {Math.ceil(data.avgHoldingTime) || 0} D
+          {Math.ceil(data.avgHoldingTime!) || 0} D
         </TableCell>
       )}
       {layout.nftActivity && (
@@ -593,7 +612,7 @@ const Record = ({ data, layout }: { data: any; layout: any }) => {
           className={`text-base-content whitespace-nowrap min-w-[200px] max-w-[200px]`}
         >
           <div>
-          {data.totalScore}
+            {data.totalScore}
             {/* <TotalScore value={data.totalScore} /> */}
           </div>
         </TableCell>
