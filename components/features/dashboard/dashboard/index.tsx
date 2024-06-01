@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Overview } from "./components/overview";
-import { RecentSales } from "./components/recent-sales";
+import { Watchlist } from "./components/recent-sales";
 import ProfileWallet from "../profile-wallet";
 import { useAccount } from "wagmi";
 import { useMutation } from "@tanstack/react-query";
@@ -117,7 +117,7 @@ export default function ProfileDashboard() {
                     iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
                     classNames="col-span-3"
                   >
-                    <RecentSales />
+                    <Watchlist />
                   </DashboardCard>
                 </div>
               </div>
@@ -170,7 +170,7 @@ function NoData() {
           iconPath="M22 12h-4l-3 9L9 3l-3 9H2"
           classNames="col-span-3"
         >
-          <RecentSales />
+          <Watchlist />
         </DashboardCard>
       </div>
     </div>
