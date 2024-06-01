@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Overview } from "./components/overview";
-import { Watchlist } from "./components/recent-sales";
+import { Watchlist } from "./components/dashboard-watchlist";
 import ProfileWallet from "../profile-wallet";
 import { useAccount } from "wagmi";
 import { useMutation } from "@tanstack/react-query";

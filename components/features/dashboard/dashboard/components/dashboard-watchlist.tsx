@@ -1,21 +1,34 @@
 'use client'
 import React from 'react';
-import { useWatchlistStore } from "@/store"; // Adjust the import path as necessary
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { imageUrl } from '@/utils/imageUrl';
+import { useQuery } from "@tanstack/react-query";
+import { getImages } from '@/services/http/image.http';
+import { useWatchlistStore } from '@/store';
 
 export function Watchlist() {
-  // Fetch watchlist items from the store
   const watchlist = useWatchlistStore(state => state.watchlist);
+
+  const { isLoading, error, data: images } = useQuery({
+    queryKey: ['images'],
+    queryFn: () => getImages().then((data) => data.imageUrls),
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading images.</div>;
+  }
 
   return (
     <div className="space-y-8">
-      {watchlist.map((item, index) => (
-        // Use index as a fallback key if id is undefined
+      {watchlist.map((item) => (
         <div key={item.contractAddress} className="flex items-center">
           <Avatar className="h-9 w-9">
             <AvatarImage
-              src={imageUrl(item.contractAddress, [])}
+              src={imageUrl(item.contractAddress, images!)}
               alt={item.contractAddress || 'N/A'}
             />
             <AvatarFallback>
@@ -23,11 +36,9 @@ export function Watchlist() {
             </AvatarFallback>
           </Avatar>
           <div className="ml-4 space-y-1">
-            {/* Display the token symbol or 'Unknown' if undefined */}
             <p className="text-sm font-medium leading-none">
-              {item.contractAddress || 'Unknown'}
+              {item.name || 'Unknown'}
             </p>
-            {/* Safe access to website URL with a default message */}
             <p className="text-sm text-muted-foreground">
               {item.contractAddress || 'No URL provided'}
             </p>

@@ -18,7 +18,6 @@ import { useState } from "react";
 import { getTrends } from "@/services/http/trends.http";
 import useTokenChainStore from "@/store/tokenChains";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { minifyContract } from "@/utils/truncate";
 import Copy from "@/components/ui/copy";
 import Link from "next/link";
