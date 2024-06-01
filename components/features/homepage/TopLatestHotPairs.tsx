@@ -1,21 +1,14 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-    Section,
-    SectionHeader,
-    SectionTitle,
-    SectionDescription,
-    SectionContent,
-} from "@/components/layout/Section";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Section, SectionHeader, SectionTitle, SectionDescription, SectionContent } from "@/components/layout/Section";
 import { HotPairs } from "@/types/hotpair.type";
 import { ILatestToken, LatestIToken } from "@/types/latestToke.type";
 import { useQuery } from "@tanstack/react-query";
 import { getAverageRank } from "@/services/http/averagerank.http";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getLatestTokens } from "@/services/http/latestTokens.http";
-// import { getNonEthData } from "@/services/http/nonEthData.http"; // Import the new API function
 import { useState } from "react";
 import { ImageType } from "@/types/Image.type";
 import { minifyContract, minifyTokenName } from "@/utils/truncate";
@@ -34,11 +27,13 @@ import { formatCash } from "@/utils/numbers";
 import clsx from "clsx";
 import Link from "next/link";
 import { AnimationControls, motion, useAnimation } from "framer-motion";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 
 dayjs.extend(relativeTime);
 
 interface Props {
-    images: ImageType[]
+    images: ImageType[];
 }
 
 export function TopLatestHotPairs({ images }: Props) {
@@ -75,10 +70,25 @@ export function TopLatestHotPairs({ images }: Props) {
         },
     );
 
+    const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
+
     const handleClick = async (refreshFun: Function, animationControl: AnimationControls) => {
         await animationControl.start({ rotate: 360, transition: { duration: 1 } });
         animationControl.set({ rotate: 0 });
-        refreshFun()
+        refreshFun();
+    };
+
+    const handleStarClick = (token: IWatchlistItem) => {
+        const isInWatchlist = watchlist.some(w => w.contractAddress === token.contractAddress);
+        if (isInWatchlist) {
+            removeFromWatchlist(token.contractAddress);
+        } else {
+            addToWatchlist(token);
+        }
+    };
+
+    const isTokenInWatchlist = (token: IWatchlistItem) => {
+        return watchlist.some((w: IWatchlistItem) => w.contractAddress === token.contractAddress);
     };
 
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
@@ -99,7 +109,7 @@ export function TopLatestHotPairs({ images }: Props) {
                             <CardTitle className="flex items-center justify-between cursor-pointer">
                                 <span>Top Hot Pairs</span>
                                 <Button size="icon" variant='outline' onClick={() => handleClick(averageRankRefetch, control1)}>
-                                    <motion.div animate={control1} >
+                                    <motion.div animate={control1}>
                                         <UpdateIcon />
                                     </motion.div>
                                 </Button>
@@ -125,7 +135,10 @@ export function TopLatestHotPairs({ images }: Props) {
                                         .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
                                         .map((token: HotPairs, id: number) => (
                                             <div key={id} className="flex items-center">
-                                                <Avatar className="h-9 w-9">
+                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
+                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                                                </div>
+                                                <Avatar className="h-9 w-9 ml-4">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
@@ -160,7 +173,7 @@ export function TopLatestHotPairs({ images }: Props) {
                             <CardTitle className="flex items-center justify-between cursor-pointer">
                                 <span>Latest Hot Pairs</span>
                                 <Button size="icon" variant='outline' onClick={() => handleClick(latestTokenRefetch, control2)}>
-                                    <motion.div animate={control2} >
+                                    <motion.div animate={control2}>
                                         <UpdateIcon />
                                     </motion.div>
                                 </Button>
@@ -186,7 +199,10 @@ export function TopLatestHotPairs({ images }: Props) {
                                         .slice(latestTokenPage * 10, (latestTokenPage + 1) * 10)
                                         .map((token: LatestIToken, id: number) => (
                                             <div key={id} className="flex items-center">
-                                                <Avatar className="h-9 w-9">
+                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
+                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                                                </div>
+                                                <Avatar className="h-9 w-9 ml-4">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />
                                                     <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
                                                 </Avatar>
@@ -309,7 +325,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         </Table>
                     </ScrollArea>
                 }
-            </SectionContent >
-        </Section >
+            </SectionContent>
+        </Section>
     )
 }

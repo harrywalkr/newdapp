@@ -1,12 +1,16 @@
 // Import persist from zustand middleware
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { IToken } from "@/types/token.type";
+
+export interface IWatchlistItem {
+  name: string;
+  contractAddress: string;
+}
 
 interface WatchlistState {
-  watchlist: IToken[];
-  addToWatchlist: (token: IToken) => void;
-  removeFromWatchlist: (tokenId: string) => void;
+  watchlist: IWatchlistItem[];
+  addToWatchlist: (token: IWatchlistItem) => void;
+  removeFromWatchlist: (contractAddress: string) => void;
 }
 
 const useWatchlistStore = create(
@@ -17,24 +21,23 @@ const useWatchlistStore = create(
       addToWatchlist: (token) => {
         const { watchlist } = get();
         if (
-          token.data &&
-          !watchlist.some((w) => w.data && w.data[0].id === token.data![0].id)
+          !watchlist.some((w) => w.contractAddress === token.contractAddress)
         ) {
           set({ watchlist: [...watchlist, token] });
         }
       },
 
-      removeFromWatchlist: (tokenId) => {
+      removeFromWatchlist: (contractAddress) => {
         const { watchlist } = get();
         set({
           watchlist: watchlist.filter(
-            (token) => token.data && token.data[0].id !== tokenId
+            (token) => token.contractAddress !== contractAddress
           ),
         });
       },
     }),
     {
-      name: "watchlist-storage", // unique name of the store in local storage
+      name: "watchlist-storage",
       storage: {
         getItem: (name) => {
           const item = localStorage.getItem(name);
