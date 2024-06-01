@@ -7,7 +7,7 @@ import { RecentSales } from "./components/recent-sales";
 import ProfileWallet from "../profile-wallet";
 import { useAccount } from "wagmi";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getWalletSummary } from "@/services/http/wallets.http";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";

@@ -12,7 +12,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
-                supported_resolutions: ["1D", "1W", "1M"],
+                supported_resolutions: ["10", "15", "30", '60', '240'] as ResolutionString[],
                 supports_search: false,
                 supports_group_request: false,
                 supports_marks: false,
@@ -31,7 +31,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                     has_daily: true,
                     has_weekly_and_monthly: true,
                     type: 'crypto',
-                    supported_resolutions: ["1D", "1W", "1M"] as ResolutionString[],
+                    supported_resolutions: ["10", "15", "30", '60', '240'] as ResolutionString[],
                     pricescale: 100000000,
                     ticker: symbolName,
                     description: 'Description of the symbol',
