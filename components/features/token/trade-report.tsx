@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { DextradeByToken} from "@/types/trade-report.type";
+import { DextradeByToken } from "@/types/trade-report.type";
 import { useState } from "react";
 import { separate3digits } from "@/utils/numbers";
 import PriceFormatter from "@/utils/PriceFormatter";
@@ -147,7 +147,8 @@ const Record = ({ data }: { data: DextradeByToken }) => {
             <TableCell className="text-base-content max-w-[400px]">
                 {
                     data.Trade?.priceInEth &&
-                    <PriceFormatter value={parseFloat(data.Trade.priceInEth.toString())} />
+                    // <PriceFormatter value={parseFloat(data.Trade.priceInEth.toString())} />
+                    <PriceFormatter value={data.Trade.priceInEth} />
                 }
             </TableCell>
 
