@@ -11,7 +11,7 @@ interface Props {
 
 export default function TokenSecurityOldShit({ token, tokenAddress }: Props) {
   return (
-    <div className="flex flex-col gap-16 mt-5">
+    <div className="flex flex-col mt-5">
       <TokenSecurityMeasureLine token={token} tokenAddress={tokenAddress} />
       <TokenSecurityBox tokenAddress={tokenAddress} />
       <TokenSecurityCallActivity tokenAddress={tokenAddress} />

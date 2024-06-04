@@ -1,7 +1,6 @@
 'use client';
 import { useTokenChainStore } from '@/store';
 import clsx from 'clsx';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface SourceCodeControl {
@@ -102,7 +101,6 @@ const Record = ({
 }
 
 export default function TokenSecurityBox({ tokenAddress }: Props) {
-  const params = useParams();
   const [data, setData] = useState<TokenSecurityData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isBoxTransparent, setIsBoxTransparent] = useState<'openSource' | 'proxy' | null>(null);
@@ -161,7 +159,7 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
 
   return (
     <div
-      className={`py-4 px-4 lg:px-16 rounded-md ${data.sourceCodeControl.is_open_source === 'no'
+      className={`px-4 lg:px-16 rounded-md ${data.sourceCodeControl.is_open_source === 'no'
         ? '/30'
         : data.sourceCodeControl.isProxy === 'yes'
           ? 'bg-red-300'

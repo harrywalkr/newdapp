@@ -113,7 +113,7 @@ export default function TokenSecurityCallActivity({ tokenAddress }: Props) {
     );
 
   return (
-    <div>
+    <div className='mt-24'>
       <h2 className="text-lg font-semibold mb-2">Smart Contract Call Activity</h2>
       <div className="overflow-x-auto">
         <Table className="table table-pin-rows table-pin-cols rounded-lg overflow-hidden">
