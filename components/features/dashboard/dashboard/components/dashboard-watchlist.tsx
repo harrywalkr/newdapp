@@ -5,6 +5,7 @@ import { imageUrl } from '@/utils/imageUrl';
 import { useQuery } from "@tanstack/react-query";
 import { getImages } from '@/services/http/image.http';
 import { useWatchlistStore } from '@/store';
+import { minifyContract, minifyTokenName } from '@/utils/truncate';
 
 export function Watchlist() {
   const watchlist = useWatchlistStore(state => state.watchlist);
@@ -37,10 +38,10 @@ export function Watchlist() {
           </Avatar>
           <div className="ml-4 space-y-1">
             <p className="text-sm font-medium leading-none">
-              {item.name || 'Unknown'}
+              {item.name ? minifyTokenName(item.name) : 'Unknown'}
             </p>
             <p className="text-sm text-muted-foreground">
-              {item.contractAddress || 'No URL provided'}
+              {item.contractAddress ? minifyContract(item.contractAddress) : 'No URL provided'}
             </p>
           </div>
         </div>

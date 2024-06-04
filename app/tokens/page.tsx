@@ -37,10 +37,7 @@ export default function Token() {
                         <TabsContent value="password">Token scoring and vuln</TabsContent>
                     </Tabs>
                 </CardContent>
-
             </Card>
-
         </div>
-
     )
 }

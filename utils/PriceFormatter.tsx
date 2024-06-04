@@ -26,10 +26,32 @@ export default function PriceFormatter({ value, dollarSign, className }: PriceFo
     return `0.0${formattedExponential}`;
   };
 
+  // Extract parts for very small numbers
+  const getFormattedParts = (num: number) => {
+    const [leading, exponential] = num.toExponential(2).split("e");
+    const formattedExponential = `${leading}e${parseInt(exponential)}`;
+    return {
+      leadingPart: `0.0`,
+      subPart: parseInt(exponential).toString(),
+      trailingPart: formattedExponential.replace(".", "").split("e")[0]
+    };
+  };
+
+  const formattedValue = formatValue(parsedValue);
+  const isSmallNumber = parsedValue !== 0 && parsedValue <= 0.0001;
+  const { leadingPart, subPart, trailingPart } = isSmallNumber ? getFormattedParts(parsedValue) : { leadingPart: '', subPart: '', trailingPart: '' };
+
   return (
-    <div className={clsx("flex items-center gap-2", className)}>
+    <div className={clsx("flex items-center gap-[2.75rem]", className)}>
       {dollarSign && <span>$</span>}
-      {formatValue(parsedValue)}
+      {!isSmallNumber && formattedValue}
+      {isSmallNumber && (
+        <>
+          <span>{leadingPart}</span>
+          <sub>{subPart}</sub>
+          <span>{trailingPart}</span>
+        </>
+      )}
     </div>
   );
 }
