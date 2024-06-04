@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -54,8 +55,8 @@ export default function HolderCompare({ tokenAddress }: Props) {
         >
           <IoSearchSharp className="text-xl text-base-100" />
         </button>
-        <input
-          className="input input-bordered join-item w-full py-4"
+        <Input
+          className="border border-muted-foreground"
           placeholder="Enter Token Contract"
           value={form}
           onChange={(e) => setForm(e.target.value)}
