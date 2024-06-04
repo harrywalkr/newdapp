@@ -147,16 +147,15 @@ const Addresses = ({ value, address, haveLine }: { value: number; address: strin
   }, [copied]);
 
   return (
-    <div className="relative flex items-start justify-start gap-2">
+    <div className="relative flex items-start justify-between gap-2">
       {haveLine && <div className="absolute w-[1px] h-[22px] /70 left-[66px] top-[20px] hidden sm:block"></div>}
       <div className="w-[50px]">{value + 1}</div>
-      <div className="rounded-full /70 p-[8px] z-10"></div>
       <div className="flex items-center gap-2">
         <span className="text-base-content/80 hidden sm:block">{address}</span>
         <span className="text-base-content/80 text-lg block sm:hidden">{minifyContract(address)}</span>
-        <div className="tooltip tooltip-right" data-tip={copied ? "Copied" : "Copy Address"}>
-          <FiCopy onClick={handleCopyAddress(address)} className="cursor-pointer text-lg" />
-        </div>
+      </div>
+      <div className="tooltip tooltip-right" data-tip={copied ? "Copied" : "Copy Address"}>
+        <FiCopy onClick={handleCopyAddress(address)} className="cursor-pointer text-lg" />
       </div>
     </div>
   );
