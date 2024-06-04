@@ -1,5 +1,5 @@
 import { minifyContract } from "@/utils/truncate";
-import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 
@@ -18,29 +18,29 @@ interface Props {
   tokenAddress: string
 }
 
+const fetchTokenHolders = async (network: string, id: string, from: number, to: number) => {
+  const toDate = new Date();
+  const fromDate = new Date();
+  fromDate.setDate(fromDate.getDate() - 6);
+  const response = await fetch(
+    `https://onchain.dextrading.com/rangeholders?network=${network}&till=${toDate.toISOString().split("T")[0]}&limit=20&token=${id}&minAmount=${from}&maxAmount=${to}`
+  );
+  const data = await response.json();
+  return data.data.EVM.TokenHolders;
+};
 
-export default function TokenHolders({tokenAddress}: Props) {
-  const params = useParams();
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Holder[]>([]);
+export default function TokenHolders({ tokenAddress }: Props) {
   const [form, setForm] = useState<FormState>({ from: 0, to: 1000000 });
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    const to = new Date();
-    const from = new Date();
-    from.setDate(from.getDate() - 6);
-
-    fetch(
-      `https://onchain.dextrading.com/rangeholders?network=eth&till=${to.toISOString().split("T")[0]}&limit=20&token=${params.id}&minAmount=${form.from}&maxAmount=${form.to}`,
-    )
-      .then((response) => response.json())
-      .then((json) => setData(json.data.EVM.TokenHolders))
-      .catch((error) => console.error("Error fetching token holders:", error))
-      .finally(() => setLoading(false));
-  }, [form.from, form.to, params.id]);
+  const { data, isLoading, error } = useQuery(
+    {
+      queryKey:
+        ['tokenHolders', tokenAddress, form.from, form.to],
+      queryFn:
+        () => fetchTokenHolders('eth', tokenAddress, form.from, form.to),
+    }
+  );
 
   const handleSelectChange = (key: keyof FormState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     setForm({ ...form, [key]: parseInt(event.target.value) });
@@ -79,34 +79,32 @@ export default function TokenHolders({tokenAddress}: Props) {
           </select>
         </label>
       </div>
-      {loading ? (
+      {isLoading ? (
         <div className="w-full flex justify-center items-center h-[150px]">
-          <span className="loading loading-bars loading-md"></span>
+          loading ...
+        </div>
+      ) : error ? (
+        <div className="w-full flex justify-center items-center h-[150px]">
+          <span>Error loading token holders</span>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 xl:hidden gap-3 lg:pl-[60px]">
-            {(showMore ? data : data.slice(0, 10)).map((d, idx, arr) => (
-              <Addresses key={idx} value={idx} address={d.Holder.Address} haveLine={idx !== arr.length - 1} />
+          <div className="grid grid-cols-2 items-start justify-start xl:hidden gap-3 lg:pl-[60px]">
+            {data && (showMore ? data : data.slice(0, 10)).map((data: any, id: number) => (
+              <div key={id} className="">
+                <Addresses key={id} value={id} address={data.Holder.Address} haveLine={id !== data.length - 1} />
+              </div>
             ))}
           </div>
           <div className="xl:grid hidden grid-cols-2 gap-3 lg:pl-[60px]">
-            {(showMore ? data : data.slice(0, 10)).map((d, idx, arr) => (
-              <Addresses
-                key={idx}
-                value={idx}
-                address={d.Holder.Address}
-                haveLine={idx !== arr.length - 1 && idx !== arr.length - 2}
-              />
+            {data && (showMore ? data : data.slice(0, 10)).map((data: any, id: number) => (
+              <Addresses key={id} value={id} address={data.Holder.Address} haveLine={id !== data.length - 1 && id !== data.length - 2} />
             ))}
           </div>
         </>
       )}
-      {data.length > 10 && (
-        <div
-          className="absolute flex justify-center items-center w-full bg-gradient-to-t from-base-300 to-base-300/50 py-4"
-          style={{ bottom: "-10px", left: 0, right: 0 }}
-        >
+      {data && data.length > 10 && (
+        <div className="absolute flex justify-center items-center w-full bg-gradient-to-t from-base-300 to-base-300/50 py-4" style={{ bottom: "-10px", left: 0, right: 0 }}>
           <button onClick={() => setShowMore(!showMore)} className="btn btn-neutral btn-block lg:btn-wide btn-sm self-center">
             {showMore ? "Show Less" : "Show More"}
           </button>
@@ -134,9 +132,9 @@ const Addresses = ({ value, address, haveLine }: { value: number; address: strin
   }, [copied]);
 
   return (
-    <div className="relative flex items-center gap-2">
+    <div className="relative flex items-start justify-start gap-2">
       {haveLine && <div className="absolute w-[1px] h-[22px] /70 left-[66px] top-[20px] hidden sm:block"></div>}
-      <div className="w-[50px] text-right">{value + 1}</div>
+      <div className="w-[50px]">{value + 1}</div>
       <div className="rounded-full /70 p-[8px] z-10"></div>
       <div className="flex items-center gap-2">
         <span className="text-base-content/80 hidden sm:block">{address}</span>

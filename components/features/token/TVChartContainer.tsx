@@ -52,6 +52,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                     volume: bar.volume
                 }))
                     .filter(bar => {
+                        console.log('periodParams.from', periodParams.from)
                         return bar.time >= periodParams.from * 1000 && bar.time < periodParams.to * 1000;
                     })
                     .sort((a, b) => a.time - b.time);
