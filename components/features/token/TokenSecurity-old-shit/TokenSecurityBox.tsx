@@ -59,27 +59,47 @@ const Record = ({
   title: string;
   color: 'bg-green-300/70' | 'bg-red-300/70';
   transparent: 'openSource' | 'proxy' | null;
-}) => (
+}) => {
 
-  <p
-    className={clsx('p-4 rounded-sm min-w-[110px] w-[120px] h-[80px] flex items-center justify-center break-all text-sm', {
-      'bg-red-300': transparent === 'proxy',
-      'bg-gray-200': transparent === 'openSource',
-      [color]: !transparent
-    })}
-  >
-    {/* <span
-      className={`text-center text-xs break-words ${transparent === 'proxy'
-        ? 'text-base-content/70'
-        : transparent === 'openSource'
-          ? 'text-base-content/80'
-          : 'text-base-content/80'
-        }`}
-    > */}
-    {title}
-    {/* </span> */}
-  </p >
-);
+
+  const renderTitle = (title: string) => {
+    const titles: { [key: string]: string } = {
+      is_open_source: 'Open Source',
+      isProxy: 'Proxy',
+      externalCall: 'External Call',
+      isHoneypot: 'Honey Pot',
+      honeypot_with_same_creator: 'Honey Pot With Same Creator',
+      isMintable: 'Minitable',
+      isBlacklisted: 'Blacklisted',
+      isWhitelisted: 'Whitelisted',
+      isAntiWhale: 'AntiWhale',
+      cannotBuy: 'Cannot Buy',
+      cannotSellAll: 'Cannot Sell All',
+      tradingCooldown: 'Trading Cool down',
+      transfer_pausable: 'Transfer Pausable',
+      hiddenOwner: 'Hidden Owner',
+      canTakeBackOwnership: 'Can Take Back Ownership',
+      personalSlippageModifiable: 'Personal Slippage Modifiable',
+      ownerChangeBalance: 'Owner Change Balance',
+      slippage_modifiable: 'Slippage Modifiable',
+      gas_abuse: 'Gas Abuse'
+    }
+    return titles[title]
+  }
+
+  return (
+
+    <p
+      className={clsx('p-4 rounded-sm min-w-[110px] w-[120px] h-[80px] flex items-center justify-center text-sm', {
+        'bg-red-300': transparent === 'proxy',
+        'bg-gray-200': transparent === 'openSource',
+        [color]: !transparent
+      })}
+    >
+      {renderTitle(title)}
+    </p >
+  );
+}
 
 export default function TokenSecurityBox({ tokenAddress }: Props) {
   const params = useParams();
