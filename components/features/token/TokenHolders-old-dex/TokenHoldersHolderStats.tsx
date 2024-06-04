@@ -200,7 +200,7 @@ export const RateLeft = ({ value, title }: { value: number; title: string }) => 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className={`w-[100px] sm:text-right font-medium sm:font-normal ${isHovered ? 'text-black' : ''}`}>
+        <div className={`w-[100px] sm:text-right font-medium sm:font-normal`}>
           {title.replaceAll("_", " ")}
         </div>
         <div
@@ -220,11 +220,11 @@ export const RateLeft = ({ value, title }: { value: number; title: string }) => 
         />
       </div>
       {/* Display state label above and to the right on hover */}
-      {isHovered && (
-        <div className="absolute  right-0 text-sm text-black mt-[-28px] mr-[8px] ">
+      {/* {isHovered && ( */}
+        <div className="absolute  right-0 text-sm  mt-[-28px] mr-[8px] ">
           {stateLabel}
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 };
@@ -263,10 +263,10 @@ export const RateRight = ({
         <div className="w-[50px] text-right">{value === 0 ? "<1" : value}%</div>
         <div className="rounded-full /70 p-[8px] z-10"></div>
         <div className="flex items-center gap-2">
-          <span className="text-base-content/80 hidden sm:block">
+          <span className=" hidden sm:block">
             {address}
           </span>
-          <span className="text-base-content/80 text-lg block sm:hidden">
+          <span className=" text-lg block sm:hidden">
             {minifyContract(address)}
           </span>
           <div
