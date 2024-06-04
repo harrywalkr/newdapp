@@ -12,7 +12,6 @@ interface Props {
 }
 
 export default function TokenSecurityMeasureLine({ token, tokenAddress }: Props) {
-  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>({});
   const [safe, setSafe] = useState("");
@@ -79,13 +78,13 @@ export default function TokenSecurityMeasureLine({ token, tokenAddress }: Props)
       {
         token?.FunctionCallsData?.malFunc?.uniqueNames &&
         token.FunctionCallsData.malFunc?.similarNames &&
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-8 ">
           {token.FunctionCallsData.malFunc?.count ? (
             <div className="bg-base-200/50 p-4 rounded-lg">
               <h3 className="text-xl font-semibold text-error text-center mb-3">
                 {token.FunctionCallsData.malFunc?.count} Malicious Functions
               </h3>
-              <ul className="text-error font-medium list-disc pl-4">
+              <ul className="text-error font-medium list-disc pl-4 text-red-400">
                 {[
                   ...token.FunctionCallsData.malFunc?.uniqueNames,
                   ...token.FunctionCallsData.malFunc?.similarNames,
@@ -122,7 +121,7 @@ export default function TokenSecurityMeasureLine({ token, tokenAddress }: Props)
 
 const Success = () => (
   <div className={`relative bg-success/40 rounded-full w-[80px] h-[80px]`}>
-    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-success font-medium">
+    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-success font-medium text-green-300">
       Contract is Safe
     </span>
     <AiOutlineSafety className="text-4xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-success" />
@@ -130,7 +129,7 @@ const Success = () => (
 );
 const Warning = () => (
   <div className={`relative bg-warning/40 rounded-full w-[80px] h-[80px]`}>
-    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-warning font-medium">
+    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-warning font-medium text-yellow-300">
       Contract Safe but Can Change
     </span>
     <IoWarningOutline className="text-4xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-warning" />
@@ -138,7 +137,7 @@ const Warning = () => (
 );
 const Error = () => (
   <div className={`relative bg-error/40 rounded-full w-[80px] h-[80px]`}>
-    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-error font-medium">
+    <span className="absolute top-[90px] text-center whitespace-nowrap text-xl right-1/2 translate-x-1/2 text-error font-medium text-red-400">
       Contract is not Safe
     </span>
     <GiDeathSkull className="text-4xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-error" />
