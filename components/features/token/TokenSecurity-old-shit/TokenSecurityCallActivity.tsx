@@ -48,7 +48,7 @@ const Record = ({ data, idx }: { data: SmartContractCall; idx: number }) => {
           <div className="flex gap-2">
             <div>Internal</div>
             <div
-              className="bg-gray-300 p-2 rounded-md h-4"
+              className="bg-gray-600 p-2 rounded-md h-4"
               style={{ width: `${(internal / sum) * 100}%` }}
             ></div>
             <div className="whitespace-nowrap">{internal} times</div>
