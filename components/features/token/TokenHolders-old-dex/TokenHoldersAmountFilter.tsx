@@ -1,3 +1,4 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { minifyContract } from "@/utils/truncate";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -49,34 +50,48 @@ export default function TokenHolders({ tokenAddress }: Props) {
   return (
     <div className="relative xl:max-w-[1200px] xl:mx-auto xl:min-w-[1200px] border border-base-content/50 rounded-lg p-4 pb-16 overflow-hidden">
       <h2 className="text-2xl font-bold text-center sm:text-left">Amount Filter</h2>
-      <div className="flex items-center gap-3 lg:pl-[60px] flex-wrap sm:flex-nowrap mb-5">
-        <label className="form-control w-full">
+      <div className="flex items-center gap-3 lg:pl-[60px] flex-wrap sm:flex-nowrap mb-5 mt-5">
+        <label className="form-control w-full flex items-center justify-start gap-2">
           <div className="label">
             <span className="label-text">From</span>
           </div>
-          <select className="w-full select select-bordered" value={form.from} onChange={handleSelectChange("from")}>
-            <option value={0}>{"<1K"}</option>
-            <option value={2000}>2K</option>
-            <option value={3000}>3K</option>
-            <option value={5000}>5K</option>
-            <option value={10000}>10K</option>
-            <option value={100000}>100K</option>
-            <option value={1000000}>1M</option>
-          </select>
+          <Select
+            onValueChange={() => handleSelectChange("from")} defaultValue={form.from.toString()}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select starting date" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='0'>&gt;1k</SelectItem>
+              <SelectItem value='2000'>2K</SelectItem>
+              <SelectItem value='3000'>3K</SelectItem>
+              <SelectItem value='5000'>5K</SelectItem>
+              <SelectItem value='10000'>10K</SelectItem>
+              <SelectItem value='100000'>100K</SelectItem>
+              <SelectItem value='1000000'>1M</SelectItem>
+            </SelectContent>
+          </Select>
         </label>
-        <label className="form-control w-full">
+        <label className="form-control w-full flex items-center justify-start gap-2">
           <div className="label">
             <span className="label-text">To</span>
           </div>
-          <select className="w-full select select-bordered" value={form.to} onChange={handleSelectChange("to")}>
-            <option value={0}>{"<1K"}</option>
-            <option value={2000}>2K</option>
-            <option value={3000}>3K</option>
-            <option value={5000}>5K</option>
-            <option value={10000}>10K</option>
-            <option value={100000}>100K</option>
-            <option value={1000000}>1M</option>
-          </select>
+          <Select
+            onValueChange={() => handleSelectChange("to")} defaultValue={form.to.toString()}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select starting date" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='0'>&gt;1k</SelectItem>
+              <SelectItem value='2000'>2K</SelectItem>
+              <SelectItem value='3000'>3K</SelectItem>
+              <SelectItem value='5000'>5K</SelectItem>
+              <SelectItem value='10000'>10K</SelectItem>
+              <SelectItem value='100000'>100K</SelectItem>
+              <SelectItem value='1000000'>1M</SelectItem>
+            </SelectContent>
+          </Select>
         </label>
       </div>
       {isLoading ? (

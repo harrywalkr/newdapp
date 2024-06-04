@@ -32,7 +32,7 @@ export default function PriceFormatter({ value, dollarSign, className }: PriceFo
     const formattedExponential = `${leading}e${parseInt(exponential)}`;
     return {
       leadingPart: `0.0`,
-      subPart: parseInt(exponential).toString(),
+      subPart: parseInt(exponential).toString().substring(1),
       trailingPart: formattedExponential.replace(".", "").split("e")[0]
     };
   };
@@ -40,6 +40,8 @@ export default function PriceFormatter({ value, dollarSign, className }: PriceFo
   const formattedValue = formatValue(parsedValue);
   const isSmallNumber = parsedValue !== 0 && parsedValue <= 0.0001;
   const { leadingPart, subPart, trailingPart } = isSmallNumber ? getFormattedParts(parsedValue) : { leadingPart: '', subPart: '', trailingPart: '' };
+
+  console.log(leadingPart, subPart, trailingPart)
 
   return (
     <div className={clsx("flex items-center gap-[2.75rem]", className)}>

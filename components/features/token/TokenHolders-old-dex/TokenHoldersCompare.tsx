@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { minifyContract } from "@/utils/truncate";
 import { useParams } from "next/navigation";
@@ -49,12 +50,13 @@ export default function HolderCompare({ tokenAddress }: Props) {
         Holder Compare
       </h2>
       <div className="relative w-full mb-5 mt-2">
-        <button
+        <Button
+          size='icon'
           className="absolute top-[4px] right-[4px] rounded-md flex justify-center items-center bg-gradient-to-r from-base-content/70 to-base-content/40 w-[40px] h-[40px] z-10"
           onClick={handleSearch}
         >
-          <IoSearchSharp className="text-xl text-base-100" />
-        </button>
+          <IoSearchSharp className="text-xl" />
+        </Button>
         <Input
           className="border border-muted-foreground"
           placeholder="Enter Token Contract"
