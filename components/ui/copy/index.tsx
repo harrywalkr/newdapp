@@ -7,12 +7,13 @@ import Link from 'next/link';
 type Props = {
     className?: string;
     href?: string;
+    target?: 'blank';
 } & (
         { text: string; value?: string } |
         { text?: string; value: string }
     );
 
-export default function Copy({ text, value, className, href }: Props) {
+export default function Copy({ text, value, className, href, target }: Props) {
     const [copied, setCopied] = useState<boolean>(false);
     const contectRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +43,7 @@ export default function Copy({ text, value, className, href }: Props) {
         <div className="relative content flex items-center justify-start gap-2">
             <div ref={contectRef}>
                 {href ? (
-                    <Link href={href} passHref>
+                    <Link href={href} target={target} passHref>
                         {content}
                     </Link>
                 ) : content}

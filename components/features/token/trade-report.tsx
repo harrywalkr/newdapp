@@ -155,11 +155,10 @@ const Record = ({ data }: { data: DextradeByToken }) => {
                 <div className="flex items-center text-info gap-2">
                     {
                         data.maker &&
-                        <Copy value={data.maker} text={minifyContract(data.maker)} />
+                        <Copy href={`https://etherscan.io/address/${data.maker}`} target="blank" value={data.maker} text={minifyContract(data.maker)} />
                     }
                 </div>
             </TableCell>
-
             <TableCell className="flex items-center gap-3 w-24">
                 {
                     data.Transaction?.Hash &&
@@ -185,3 +184,6 @@ const Record = ({ data }: { data: DextradeByToken }) => {
 
     );
 };
+
+
+// FIXME: Add pagination to this table
