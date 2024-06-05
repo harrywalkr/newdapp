@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useQuery } from '@tanstack/react-query';
-import { getAllPosts, findPostsByCategory } from '@/services/http/blog/post.http';
-import { getAllCategories } from '@/services/http/blog/category.http';
+import { getAllPosts, findPostsByCategory } from '@/services/http/academy/post.http';
+import { getAllCategories } from '@/services/http/academy/category.http';
 import { IPost, PostEndpoint } from '@/types/post.type';
 import { ICategory } from '@/types/category.type';
 import clsx from 'clsx';
@@ -43,7 +43,7 @@ interface Props {
 }
 
 
-export default function BlogHomepage(props: Props) {
+export default function AcademyHomepage(props: Props) {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
