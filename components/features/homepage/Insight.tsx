@@ -1,5 +1,6 @@
 'use client'
 import { Section, SectionContent, SectionDescription, SectionHeader, SectionTitle } from '@/components/layout/Section';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -72,15 +73,20 @@ export default function Insight({ wallets }: Props) {
                         </CardHeader>
                         <CardContent>
                             {
-                                wallets.map((wallet: IWallet) => (
-                                    <div key={wallet.walletAddress} className='flex items-center justify-between mb-4'>
-                                        <Copy className='text-muted-foreground'
-                                            href={`/wallet/${wallet.walletAddress}`}
-                                            text={minifyContract(wallet.walletAddress)}
-                                            value={wallet.walletAddress} />
-                                        <span className={clsx('text-base-content whitespace-nowrap', wallet.netProfit > 0 ? "text-green-300" : "text-red-300")}>
-                                            {separate3digits(wallet.netProfit.toFixed(2))}
-                                        </span>
+                                wallets.map((wallet: IWallet, i) => (
+                                    <div key={wallet.walletAddress} className='flex items-start justify-between mb-4'>
+                                        <Avatar >
+                                            <AvatarFallback>{i + 1}</AvatarFallback>
+                                        </Avatar>
+                                        <div className='flex flex-col items-start justify-center gap-2'>
+                                            <Copy className='text-muted-foreground'
+                                                href={`/wallet/${wallet.walletAddress}`}
+                                                text={minifyContract(wallet.walletAddress)}
+                                                value={wallet.walletAddress} />
+                                            <span className={clsx('text-base-content whitespace-nowrap', wallet.netProfit > 0 ? "text-green-300" : "text-red-300")}>
+                                                {separate3digits(wallet.netProfit.toFixed(2))}
+                                            </span>
+                                        </div>
                                         <span>{Math.ceil(wallet.winRate / 10)}/10</span>
                                     </div>)
                                 )
