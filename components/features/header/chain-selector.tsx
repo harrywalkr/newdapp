@@ -45,13 +45,17 @@ export default function ChainSelector() {
       <DrawerFooter>
         {availableChains.map(chain => (
           <Button key={chain.id} variant="secondary"
+            className="flex items-center justify-center gap-3"
             onClick={() => {
               setSelectedChain(chain.id);
               setIsOpen(!isOpen)
             }}>
-            {chain.name}
+            <span>
+              {chain.name}
+            </span>
             <Image
               src={`/networks/${chain.icon}`}
+              // src={`/networks/ETH.png`}
               height={20}
               width={20}
               alt={chain.name}

@@ -28,7 +28,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "eth",
       name: "Ethereum",
       symbol: "eth",
-      icon: "/ETH.png",
+      icon: "ETH.png",
       url: "eth",
     },
     {
@@ -36,7 +36,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "bnb",
       name: "Binance Smart Chain",
       symbol: "bsc",
-      icon: "/BSC.png",
+      icon: "BSC.png",
       url: "bsc",
     },
     // {
@@ -52,7 +52,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "weth",
       name: "Arbitrum",
       symbol: "arbitrum",
-      icon: "/ARB.png",
+      icon: "ARB.png",
       url: "arbitrum",
     },
     {
@@ -60,7 +60,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "weth",
       name: "Optimism",
       symbol: "optimism",
-      icon: "/OPT.png",
+      icon: "OPT.png",
       url: "optimism",
     },
     {
@@ -68,7 +68,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "weth",
       name: "Base",
       symbol: "base",
-      icon: "/BASE.png",
+      icon: "BASE.png",
       url: "base",
     },
     {
@@ -76,7 +76,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
       nativeTokenName: "sol",
       name: "Solana",
       symbol: "solana",
-      icon: "/SOL.png",
+      icon: "SOL.png",
       url: "sol",
     },
   ],
@@ -85,7 +85,7 @@ const useTokenChainStore = create<TokenChainState>((set, get) => ({
     nativeTokenName: "eth",
     name: "Ethereum",
     symbol: "eth",
-    icon: "/ETH.png",
+    icon: "ETH.png",
     url: "eth",
   },
 
