@@ -230,9 +230,6 @@ export const RateLeft = ({ value, title }: { value: number; title: string }) => 
 };
 
 
-
-
-
 export const RateRight = ({
   value,
   address,

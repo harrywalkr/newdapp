@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isPaidMember } from "@/services/auth.service";
+import { useTokenChainStore } from "@/store";
 
 interface Prop {
   initTopWallets: WalletType[];
@@ -473,6 +474,8 @@ export default function Wallet({ initTopWallets }: Prop) {
 }
 
 const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: WalletType; layout: any; handleStarClick: (wallet: IWatchlistItem) => void; isTokenInWatchlist: (wallet: IWatchlistItem) => boolean }) => {
+  const { selectedChain } = useTokenChainStore();
+
   return (
     <TableRow>
       <TableCell className="text-base-content text-center">
@@ -528,30 +531,33 @@ const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: W
           <div className="flex items-center gap-2">
             <div className="flex space-x-2 items-center">
               <div className="flex flex-col gap-2">
-                <span
-                  className={
-                    data.firstTopTokenHolder.tokenName && "gradient-text"
-                  }
-                >
-                  {data.firstTopTokenHolder.tokenName
-                    ? data.firstTopTokenHolder.tokenName !== "-"
-                      ? data.firstTopTokenHolder.tokenName
-                      : "-"
-                    : data.HotTokenHolders[0]?.tokenName || "-"}
-                </span>
               </div>
               {data.firstTopTokenHolder.tokenName
                 ? data.firstTopTokenHolder.tokenName !== "-" &&
                 data.firstTopTokenHolder["Currency Address"] && (
                   <Copy
-                    text=""
+                    text={
+                      data.firstTopTokenHolder.tokenName
+                        ? data.firstTopTokenHolder.tokenName !== "-"
+                          ? data.firstTopTokenHolder.tokenName
+                          : "-"
+                        : data.HotTokenHolders[0]?.tokenName || "-"
+                    }
                     value={data.firstTopTokenHolder["Currency Address"]}
+                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${data.firstTopTokenHolder["Currency Address"]}`}
                   />
                 )
                 : data.HotTokenHolders[0]?.tokenName &&
                 data.HotTokenHolders[0]?.["Currency Address"] && (
                   <Copy
-                    text=""
+                    text={
+                      data.firstTopTokenHolder.tokenName
+                        ? data.firstTopTokenHolder.tokenName !== "-"
+                          ? data.firstTopTokenHolder.tokenName
+                          : "-"
+                        : data.HotTokenHolders[0]?.tokenName || "-"
+                    }
+                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${data.HotTokenHolders[0]["Currency Address"]}`}
                     value={data.HotTokenHolders[0]["Currency Address"]}
                   />
                 )}
