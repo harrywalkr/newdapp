@@ -92,11 +92,12 @@ export default function Insight({ wallets }: Props) {
                             <CardTitle>Ai Trend Detector</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {ai?.importantTokens.map((item: string) => (
-                                <div key={item} className='mb-2 pb-2 border-b'>
-                                    {item}
-                                </div>)
-                            )}
+                            <span>
+                                {ai!.trend}
+                            </span>
+                            <div className='mt-3 text-muted-foreground'>
+                                {ai!.categoryTrend}
+                            </div>
                         </CardContent>
                     </Card>
                     <Card className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
