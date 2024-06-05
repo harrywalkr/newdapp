@@ -5,16 +5,16 @@ import MobileMenu from "../features/header/mobile-menu";
 import { Spotlight } from "../features/header/spotlight";
 import ConnectWalletButton from "../features/header/Connnet-wallet";
 import ChainSelector from "../features/header/chain-selector";
-import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { LiaRobotSolid } from "react-icons/lia";
 import Link from "next/link";
 import ChainInfo from "../features/header/chain-info";
+import clsx from "clsx";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   return (
     <header
-      className={cn(
+      className={clsx(
         "fixed top-0 right-0 left-0 max-w-screen-2xl mx-auto z-40 px-5 2xl:px-0 py-5 bg-background flex flex-col items-center justify-center gap-4 flex-shrink-0 flex-grow",
         className
       )}
