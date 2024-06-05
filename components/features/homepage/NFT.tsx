@@ -69,6 +69,13 @@ const Record = ({ data, id }: { data: any; id: number }) => {
       <TableCell className="text-center p-4">{id}</TableCell>
       <TableCell >
         <Link
+          target="_blank"
+          href={`https://opensea.io/assets/ethereum/${data.Trade.Buy.Currency.SmartContract}`}
+          rel="noopener noreferrer"
+        >
+          {minifyTokenName(data.Trade.Buy.Currency.Symbol)}
+        </Link>
+        <Link
           href={`https://opensea.io/assets/ethereum/${data.Trade.Buy.Currency.SmartContract}`}
           target="_blank"
           rel="noopener noreferrer"
