@@ -17,7 +17,7 @@ async function getData(): Promise<PaymentType[]> {
 }
 
 interface Props {
-  initTopWallets: WalletType[];
+  initTopWallets: IWallet[];
 }
 
 export default function TableExample({initTopWallets}: Props) {

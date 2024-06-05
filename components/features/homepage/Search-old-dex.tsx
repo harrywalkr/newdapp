@@ -5,15 +5,15 @@ import { IWallet} from "@/types/Wallet.type";
 import { Input } from "@/components/ui/input";
 
 interface Props {
-    wallet: WalletType[];
-    onSearch: (wallet: WalletType[]) => void;
+    wallet: IWallet[];
+    onSearch: (wallet: IWallet[]) => void;
 }
 function Search({ wallet, onSearch }: Props) {
     const [searchTerm, setsearchTerm] = useState("");
 
     const handleSearch = (input: string): void => {
         setsearchTerm(input);
-        const searchResults = wallet.filter((item: WalletType) => {
+        const searchResults = wallet.filter((item: IWallet) => {
             let regexString = "";
             input.split("").forEach((char) => (regexString += char + ".*"));
             const rgx = new RegExp(regexString, "i");

@@ -22,8 +22,8 @@ interface Prop {
   setLayout: any;
   filters: { [key: string]: FilterType };
   setFilters: (filter: { [key: string]: FilterType }) => void;
-  wallet: WalletType[];
-  onSearch: (wallet: WalletType[]) => void;
+  wallet: IWallet[];
+  onSearch: (wallet: IWallet[]) => void;
 }
 
 export default function WalletsFilter({

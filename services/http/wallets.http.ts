@@ -9,8 +9,8 @@ import { IWallet} from "@/types/Wallet.type";
 
 export const getWallets = (
   options: AxiosRequestConfig
-): Promise<WalletType[]> =>
-  fetchData<WalletType[]>(
+): Promise<IWallet[]> =>
+  fetchData<IWallet[]>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/valuable_wallets/`,
     options
   );
