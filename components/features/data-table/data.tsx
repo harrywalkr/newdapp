@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { PaymentType } from "./schema";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { WalletType } from "@/types/Wallet.type";
+import { IWallet} from "@/types/Wallet.type";
 
 async function getData(): Promise<PaymentType[]> {
   const res = await fetch(

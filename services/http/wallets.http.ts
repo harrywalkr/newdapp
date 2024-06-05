@@ -5,7 +5,7 @@ import { WalletStatType } from "@/types/wallet-stat.type";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
 import { SwapType } from "@/types/swap.type";
 import formatDate, { getPastDate } from "@/utils/date";
-import { WalletType } from "@/types/Wallet.type";
+import { IWallet} from "@/types/Wallet.type";
 
 export const getWallets = (
   options: AxiosRequestConfig

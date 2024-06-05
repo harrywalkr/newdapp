@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
-import { WalletType } from "@/types/Wallet.type";
+import { IWallet} from "@/types/Wallet.type";
 import { Input } from "@/components/ui/input";
 
 interface Props {

@@ -7,7 +7,7 @@ import {
   SectionDescription,
   SectionContent,
 } from "@/components/layout/Section";
-import { WalletType } from "@/types/Wallet.type";
+import { IWallet} from "@/types/Wallet.type";
 import { useEffect, useState } from "react";
 import TopWalletsFilter from "../wallet/WalletsFilter";
 import { initTopWalletFilters, topWalletFiltersEnum, topWalletLayouts } from "@/types/topwallet.type";
@@ -33,7 +33,7 @@ import { isPaidMember } from "@/services/auth.service";
 import { useTokenChainStore } from "@/store";
 
 interface Prop {
-  initTopWallets: WalletType[];
+  initTopWallets: IWallet[];
 }
 
 export default function Wallet({ initTopWallets }: Prop) {
@@ -72,27 +72,27 @@ export default function Wallet({ initTopWallets }: Prop) {
   const handlePrev = () => setPage((prev) => prev - 1);
 
   useEffect(() => {
-    let cloneFiltered: WalletType[] = [...wallets];
+    let cloneFiltered: IWallet[] = [...wallets];
     Object.keys(filters).forEach((item: string) => {
       if (item === "rank" && filters.rank.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             +i.rank >= filters.rank.value[0]! &&
             +i.rank <= filters.rank.value[1]!
         );
       } else if (item === "label" && filters.label.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) => i.buyAmountLabel === filters.label.value
+          (i: IWallet) => i.buyAmountLabel === filters.label.value
         );
       } else if (item === "pnl" && filters.pnl.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             +i.netProfit.toFixed(2) >= filters.pnl.value[0]! &&
             +i.netProfit.toFixed(2) <= filters.pnl.value[1]!
         );
       } else if (item === "winRate" && filters.winRate.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             Math.ceil(i.winRate / 10) >= filters.winRate.value[0]! &&
             Math.ceil(i.winRate / 10) <= filters.winRate.value[1]!
         );
@@ -101,7 +101,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         filters.dayActive.value !== undefined
       ) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             i.dayActive >= filters.dayActive.value[0]! &&
             i.dayActive <= filters.dayActive.value[1]!
         );
@@ -109,7 +109,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         item === "avgHoldingTime" &&
         filters.avgHoldingTime.value !== undefined
       ) {
-        cloneFiltered = cloneFiltered.filter((i: WalletType) => {
+        cloneFiltered = cloneFiltered.filter((i: IWallet) => {
           if (!i.avgHoldingTime) return true;
           return (
             +i.avgHoldingTime?.toFixed() >= filters.avgHoldingTime.value[0]! &&
@@ -130,17 +130,17 @@ export default function Wallet({ initTopWallets }: Prop) {
         filters.totalScore.value !== undefined
       ) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             i.totalScore >= filters.totalScore.value[0]! &&
             i.totalScore <= filters.totalScore.value[1]!
         );
       } else if (item === "age" && filters.age.value !== undefined) {
         cloneFiltered = cloneFiltered.filter(
-          (i: WalletType) =>
+          (i: IWallet) =>
             i.age >= filters.age.value[0]! && i.age <= filters.age.value[1]!
         );
       } else if (item === "TotalFee" && filters.TotalFee.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter((i: WalletType) => {
+        cloneFiltered = cloneFiltered.filter((i: IWallet) => {
           return (
             +i.TotalFee?.toFixed() >= filters.TotalFee.value[0]! &&
             +i.TotalFee?.toFixed() <= filters.TotalFee.value[1]!
@@ -176,7 +176,7 @@ export default function Wallet({ initTopWallets }: Prop) {
         setFiltered(cloneFiltered);
         break;
       case "SwapTime":
-        cloneFiltered = cloneFiltered.sort((a: WalletType, b: WalletType) => {
+        cloneFiltered = cloneFiltered.sort((a: IWallet, b: IWallet) => {
           if (sort[key] === true) {
             updateSort(key, false);
             if (!b.SwapTime[0] || !a.SwapTime[0]) return 0;
@@ -473,7 +473,7 @@ export default function Wallet({ initTopWallets }: Prop) {
   );
 }
 
-const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: WalletType; layout: any; handleStarClick: (wallet: IWatchlistItem) => void; isTokenInWatchlist: (wallet: IWatchlistItem) => boolean }) => {
+const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: IWallet; layout: any; handleStarClick: (wallet: IWatchlistItem) => void; isTokenInWatchlist: (wallet: IWatchlistItem) => boolean }) => {
   const { selectedChain } = useTokenChainStore();
 
   return (

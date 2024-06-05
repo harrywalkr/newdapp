@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { WalletType } from "@/types/Wallet.type";
+import { IWallet} from "@/types/Wallet.type";
 import { FilterType, initTopWalletFilters } from "@/types/topwallet.type";
 import { BiFilterAlt } from "react-icons/bi";
 import Filter from "../homepage/Filter-old-dex";

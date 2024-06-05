@@ -1,5 +1,5 @@
 import { SpotlightSearchType } from "@/types/spotlight.type";
-import { IToken } from "@/types/token.type";
+import { IAI, IToken } from "@/types/token.type";
 import { fetchData } from "./axios.config";
 import { AxiosRequestConfig } from "axios";
 import { TradeReportType } from "@/types/trade-report.type";
@@ -29,6 +29,9 @@ export const getToken = (
     options
   );
 
+export const getAi = (options?: AxiosRequestConfig): Promise<IAI> =>
+  fetchData<IAI>(`${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ai`, options);
+
 export const getTradeReport = (
   options: AxiosRequestConfig
 ): Promise<TradeReportType> =>
@@ -51,9 +54,7 @@ export const getChainData = (
     options
   );
 
-export const getDataFeed = (
-  options?: AxiosRequestConfig
-): Promise<IDatafeed> =>
+export const getDataFeed = (options?: AxiosRequestConfig): Promise<IDatafeed> =>
   fetchData<IDatafeed>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ohlcv?&timeframe=day&aggregate=1`,
     options

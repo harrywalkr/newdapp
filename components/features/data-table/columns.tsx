@@ -7,12 +7,12 @@ import { statuses } from "./filters"
 import { DataTableRowActions } from "./data-table-row-actions"
 import { PaymentType } from "./schema"
 import { Icons } from "@/components/ui/icon"
-import { WalletType } from "@/types/Wallet.type"
+import { IWallet } from "@/types/Wallet.type"
 import Copy from "@/components/ui/copy"
 import { minifyContract } from "@/utils/truncate"
 import Link from "next/link"
 
-export const columns: ColumnDef<WalletType>[] = [
+export const columns: ColumnDef<IWallet>[] = [
   // {
   //   id: "select",
   //   header: ({ table }) => (

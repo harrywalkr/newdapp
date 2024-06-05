@@ -524,3 +524,10 @@ export interface ScoreData {
   totalScore?: number;
   riskLevel?: string;
 }
+
+
+export interface IAI {
+  trend: string
+  categoryTrend: string
+  importantTokens: string[]
+}
