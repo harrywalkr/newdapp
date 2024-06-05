@@ -74,7 +74,10 @@ export default function Insight({ wallets }: Props) {
                             {
                                 wallets.map((wallet: IWallet) => (
                                     <div key={wallet.walletAddress} className='flex items-center justify-between mb-4'>
-                                        <Copy className='text-muted-foreground' text={minifyContract(wallet.walletAddress)} value={wallet.walletAddress} />
+                                        <Copy className='text-muted-foreground'
+                                            href={`/wallet/${wallet.walletAddress}`}
+                                            text={minifyContract(wallet.walletAddress)}
+                                            value={wallet.walletAddress} />
                                         <span className={clsx('text-base-content whitespace-nowrap', wallet.netProfit > 0 ? "text-green-300" : "text-red-300")}>
                                             {separate3digits(wallet.netProfit.toFixed(2))}
                                         </span>
