@@ -33,7 +33,7 @@ export default function Insight({ wallets }: Props) {
 
     if (error) return <div>Failed to load ai trends, please try again.</div>;
     if (isLoading) return <Section>
-        <SectionHeader variant={'vertical'}>
+        <SectionHeader variant='vertical'>
             <SectionTitle>Insights & Analytics</SectionTitle>
             <SectionDescription>
                 Transform data into actionable intelligence for smarter decisions and strategic growth.
@@ -58,15 +58,15 @@ export default function Insight({ wallets }: Props) {
     </Section>
 
     return (
-        <Section>
-            <SectionHeader>
+        <Section variant='vertical'>
+            <SectionHeader variant='vertical'>
                 <SectionTitle>Insight & Analytics</SectionTitle>
                 <SectionDescription>
                     Transform data into actionable intelligence for smarter decisions and strategic growth.
                 </SectionDescription>
             </SectionHeader>
-            <SectionContent>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <SectionContent variant='vertical'>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                     <Card className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
                         <CardHeader>
                             <CardTitle>Smart Money</CardTitle>

@@ -50,7 +50,6 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                         return bar.time >= periodParams.from * 1000 && bar.time < periodParams.to * 1000;
                     })
                     .sort((a, b) => a.time - b.time);
-
                 if (bars.length) {
                     onResult(bars, { noData: false });
                 } else {
