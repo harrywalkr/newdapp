@@ -189,7 +189,8 @@ export function Spotlight() {
                                 item.relationships.base_token.data.id.split(
                                   "_"
                                 )[1]
-                              ) &&
+                              ) != undefined
+                                &&
                                 images && (
                                   <Image
                                     width={40}
@@ -217,7 +218,6 @@ export function Spotlight() {
                           <TableCell>
                             {
                               item?.attributes?.base_token_price_usd &&
-
                               PriceFormatter({
                                 value: + item.attributes.base_token_price_usd,
                               })}
