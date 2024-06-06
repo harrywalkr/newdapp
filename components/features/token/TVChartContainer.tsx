@@ -6,7 +6,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
-                supported_resolutions: ["10", "15", "30", '60', '240'] as ResolutionString[],
+                supported_resolutions: ["10", "15", "30", '60', '240', '480', '720', '1440', '10080', '43800', '131400', '525601'] as ResolutionString[],
                 supports_search: false,
                 supports_group_request: false,
                 supports_marks: false,
@@ -25,7 +25,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                     has_daily: true,
                     has_weekly_and_monthly: true,
                     type: 'crypto',
-                    supported_resolutions: ["10", "15", "30", '60', '240'] as ResolutionString[],
+                    supported_resolutions: ["10", "15", "30", '60', '240', '480', '720', '1440', '10080', '43800', '131400', '525601'] as ResolutionString[],
                     pricescale: 100000000,
                     ticker: symbolName,
                     description: 'Description of the symbol',
@@ -47,7 +47,7 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                 }))
                     .filter(bar => {
                         console.log('periodParams.from', periodParams.from)
-                        return bar.time >= periodParams.from * 1000 && bar.time < periodParams.to * 1000;
+                        return bar.time >= periodParams.from * 1000 && bar.time <= periodParams.to * 1000;
                     })
                     .sort((a, b) => a.time - b.time);
                 if (bars.length) {

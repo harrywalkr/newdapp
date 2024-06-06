@@ -95,14 +95,14 @@ export function TopLatestHotPairs({ images }: Props) {
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
 
     return (
-        <Section>
-            <SectionHeader>
+        <Section variant='vertical'>
+            <SectionHeader variant='vertical'>
                 <SectionTitle>Top & Latest Hot Pairs</SectionTitle>
                 <SectionDescription>
                     The most active and recently trending cryptocurrency pairs in real-time.
                 </SectionDescription>
             </SectionHeader>
-            <SectionContent className="flex flex-col md:flex-row items-stretch justify-between gap-5">
+            <SectionContent variant='vertical' className="flex flex-col md:flex-row items-stretch justify-between gap-5">
                 {selectedChain.symbol === 'eth' ? <>
                     <Card className="w-full">
                         <CardHeader>
