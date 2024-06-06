@@ -9,15 +9,6 @@ export const metadata = {
 
 export default function Profile() {
   return (
-    <>
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content="Profile, Dashboard, User Information" />
-        FIXME: your name must be the users name
-        <meta name="author" content="Your Name" />
-      </Head>
-      <ProfileDashboard />
-    </>
+    <ProfileDashboard />
   );
 }
