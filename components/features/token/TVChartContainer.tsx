@@ -3,12 +3,6 @@ import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionSt
 import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
 
 const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
-    var periodParams = {
-        from: 1668639600000,
-        to: 1668675540000,
-        countBack: 301,
-        firstDataRequest: true,
-    };
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
@@ -94,12 +88,12 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
 
 interface Props {
     chartOptions: Partial<ChartingLibraryWidgetOptions>,
-    ohlcvData: IOhlcvData[]
+    ohlcvData: IOhlcvData[],
+    theme: 'dark' | 'light'
 }
 
-export const TVChartContainer = ({ chartOptions, ohlcvData }: Props) => {
-    const chartContainerRef =
-        useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+export const TVChartContainer = ({ chartOptions, ohlcvData, theme }: Props) => {
+    const chartContainerRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
     useEffect(() => {
         if (chartContainerRef.current) {
@@ -119,8 +113,8 @@ export const TVChartContainer = ({ chartOptions, ohlcvData }: Props) => {
                 user_id: chartOptions.user_id,
                 fullscreen: chartOptions.fullscreen,
                 autosize: chartOptions.autosize,
-                theme: 'dark',
                 timezone: 'Etc/UTC',
+                theme: theme || 'dark',
             };
 
             const tvWidget = new TradingViewWidget(widgetOptions);
@@ -133,7 +127,7 @@ export const TVChartContainer = ({ chartOptions, ohlcvData }: Props) => {
                 tvWidget.remove();
             };
         }
-    }, [chartOptions, ohlcvData]);
+    }, [chartOptions, ohlcvData, theme]);
 
     return <div ref={chartContainerRef} className='h-80 md:h-96' />;
 };

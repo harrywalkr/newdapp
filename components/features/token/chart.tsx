@@ -1,14 +1,15 @@
-'use client'
+'use client';
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import { useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import {
   ChartingLibraryWidgetOptions,
   ResolutionString,
 } from "@/public/static/charting_library";
 import { IDatafeed, IOhlcvData } from "@/types/datafeed.type";
 import { getDataFeed } from "@/services/http/token.http";
-import { cex } from "@/types/token.type";
 import { useQuery } from "@tanstack/react-query";
 
 const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
@@ -24,8 +25,8 @@ const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
 };
 
 interface Props {
-  network: string
-  tokenAddress: string
+  network: string;
+  tokenAddress: string;
 }
 
 const TVChartContainer = dynamic(() => import("@/components/features/token/TVChartContainer").then(mod => mod.TVChartContainer), {
@@ -55,6 +56,8 @@ export default function Chart({ tokenAddress, network }: Props) {
       .sort((a, b) => a.time - b.time)
   }
 
+  const { theme } = useTheme();
+
   return (
     <>
       <Script
@@ -64,7 +67,14 @@ export default function Chart({ tokenAddress, network }: Props) {
       />
       {isSuccess && getOhlcvData(iDatafeed) && getOhlcvData(iDatafeed).length > 0 &&
         <div className='h-80 md:h-96 w-full my-6 md:my-7'>
-          <TVChartContainer chartOptions={{ ...defaultWidgetProps, symbol: iDatafeed.meta.base.name + '/' + iDatafeed.meta.quote.symbol }} ohlcvData={getOhlcvData(iDatafeed)} />
+          <TVChartContainer
+            chartOptions={{
+              ...defaultWidgetProps,
+              symbol: iDatafeed.meta.base.name + '/' + iDatafeed.meta.quote.symbol
+            }}
+            ohlcvData={getOhlcvData(iDatafeed)}
+            theme={theme === 'dark' ? 'dark' : 'light'}
+          />
         </div>
       }
     </>
