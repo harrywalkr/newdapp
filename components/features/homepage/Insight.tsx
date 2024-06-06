@@ -33,7 +33,7 @@ export default function Insight({ wallets }: Props) {
 
     if (error) return <div>Failed to load ai trends, please try again.</div>;
     if (isLoading) return <Section>
-        <SectionHeader>
+        <SectionHeader variant={'vertical'}>
             <SectionTitle>Insights & Analytics</SectionTitle>
             <SectionDescription>
                 Transform data into actionable intelligence for smarter decisions and strategic growth.

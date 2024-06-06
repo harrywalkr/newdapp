@@ -56,6 +56,6 @@ export const getChainData = (
 
 export const getDataFeed = (options?: AxiosRequestConfig): Promise<IDatafeed> =>
   fetchData<IDatafeed>(
-    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ohlcv?&timeframe=day&aggregate=1`,
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ohlcv?&timeframe=minute&aggregate=5`,
     options
   );
