@@ -289,6 +289,7 @@ export interface TransactionMetrics {
 export interface LatestTransaction {
   time: string;
   details: Details;
+  Currency: string;
 }
 
 export interface Details {
@@ -333,6 +334,7 @@ export interface Timestamp {
 export interface FirstTransaction {
   time: string;
   details: Details2;
+  Currency: string;
 }
 
 export interface Details2 {

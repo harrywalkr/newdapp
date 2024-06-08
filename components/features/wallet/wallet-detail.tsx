@@ -52,12 +52,12 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
               <IoIosSwap />
               <span className='ml-1'>Swaps</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline">
+            {/* <TabsTrigger value="timeline">
               <IoMdTime />
               <span className='ml-1'>
                 Timeline
               </span>
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="transactions">
               <TbTransactionBitcoin />
               <span className='ml-1'>Transactions</span>
@@ -74,9 +74,9 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
           <TabsContent value="summary" className='mt-5'>
             <WalletSummaryComponent walletSummary={walletSummary} />
           </TabsContent>
-          <TabsContent value="timeline" className='mt-5'>
+          {/* <TabsContent value="timeline" className='mt-5'>
             <CustomizedTimeline />
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="scoring" className='mt-5 flex flex-col gap-5'>
             {walletSummary.totalScore != undefined && (
               <KeyValue

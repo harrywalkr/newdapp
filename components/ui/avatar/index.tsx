@@ -4,6 +4,7 @@ import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 const Avatar = React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -19,6 +20,34 @@ const Avatar = React.forwardRef<
     />
 ))
 Avatar.displayName = AvatarPrimitive.Root.displayName
+
+interface PlaceholderProps
+    extends React.HTMLAttributes<HTMLDivElement> {
+}
+
+const AvatarPlaceholder = React.forwardRef<HTMLDivElement, PlaceholderProps>(
+    ({ className, ...props }, ref) => (
+        <div
+            className={cn(
+                "relative flex items-center justify-center h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-muted",
+                className
+            )}
+            {...props}
+        >
+            <Image
+                height={26}
+                width={26}
+                alt="placeholder image"
+                src='/logo.svg'
+                className="grayscale opacity-30"
+            />
+        </div>
+    )
+);
+
+AvatarPlaceholder.displayName = "AvatarPlaceholder";
+
+
 
 const AvatarImage = React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Image>,
@@ -47,4 +76,4 @@ const AvatarFallback = React.forwardRef<
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarImage, AvatarFallback, AvatarPlaceholder }
