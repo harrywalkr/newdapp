@@ -12,8 +12,7 @@ export default function WalletTimelineActivity({ walletSummary }: { walletSummar
         {/* First Activity Pin */}
         <div className="absolute w-3 h-3 bg-gray-700 rounded-full z-20" style={{ bottom: -5, left: 0 }}>
           <div className="absolute text-xs flex flex-col items-center justify-center w-20 text-info" style={{ bottom: "15px", left: -30 }}>
-            <span className="whitespace-nowrap">{firstTransaction?.Currency}</span>
-            <span className="text-info/70">{firstTransaction?.time.split("T")[0]}</span>
+            <span className="text-info/70">{firstTransaction?.time.slice(0,10)}</span>
           </div>
           <div className="absolute text-sm flex flex-col items-center justify-center" style={{ top: "15px", left: -30 }}>
             <span className="whitespace-nowrap">First Activity</span>
@@ -36,8 +35,8 @@ export default function WalletTimelineActivity({ walletSummary }: { walletSummar
         {/* Last Activity Pin */}
         <div className="absolute w-3 h-3 bg-gray-700 rounded-full z-20" style={{ bottom: -5, right: 0 }}>
           <div className="absolute text-xs flex flex-col items-center justify-center w-20 text-info" style={{ bottom: "15px", right: -30 }}>
-            <span className="whitespace-nowrap">{latestTransaction?.Currency}</span>
-            <span className="text-info/70">{latestTransaction?.time.split("T")[0]}</span>
+            {/* <span className="text-info/70">{latestTransaction?.time.split("T")[0]}</span> */}
+            <span className="text-info/70">{latestTransaction?.time.slice(0,10)}</span>
           </div>
           <div className="absolute text-sm flex flex-col items-center justify-center" style={{ top: "15px", right: -30 }}>
             <span className="whitespace-nowrap">Last Activity</span>
