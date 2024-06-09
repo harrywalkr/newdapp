@@ -233,7 +233,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         </CardFooter>
                     </Card>
                 </> :
-                    <ScrollArea className="w-full rounded-md pb-4">
+                    <ScrollArea className="w-full rounded-md">
                         <ScrollBar orientation="horizontal" />
                         <Table>
                             <TableHeader>

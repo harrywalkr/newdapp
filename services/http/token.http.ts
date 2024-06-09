@@ -5,6 +5,7 @@ import { AxiosRequestConfig } from "axios";
 import { TradeReportType } from "@/types/trade-report.type";
 import { IDatafeed } from "@/types/datafeed.type";
 import { IchainInfo } from "@/types/chain-info.type";
+import { IStrength } from "@/types/strength-ratio.type";
 
 export const spotlightSearch = (
   options: AxiosRequestConfig
@@ -31,6 +32,14 @@ export const getToken = (
 
 export const getAi = (options?: AxiosRequestConfig): Promise<IAI> =>
   fetchData<IAI>(`${process.env.NEXT_PUBLIC_BASE_URL_ONE}/ai`, options);
+
+export const getStrengthRatio = (
+  options?: AxiosRequestConfig
+): Promise<IStrength> =>
+  fetchData<IStrength>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/strengthRatio`,
+    options
+  );
 
 export const getTradeReport = (
   options: AxiosRequestConfig

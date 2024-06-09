@@ -37,7 +37,7 @@ export default function WalletOverviewChart({ walletSummary }: Props) {
     }
 
     return (
-        <div className='w-96 h-full'>
+        <div className='w-full h-full'>
             <Select onValueChange={value => setSortBy(value as 'month' | 'week' | 'year')}>
                 <SelectTrigger>
                     <SelectValue placeholder="Sort By" />

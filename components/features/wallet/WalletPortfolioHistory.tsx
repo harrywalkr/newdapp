@@ -1,0 +1,162 @@
+"use client";
+import PriceFormatter from "@/utils/PriceFormatter";
+import { separate3digits } from "@/utils/numbers";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import Copy from "@/components/ui/copy";
+import { minifyContract } from "@/utils/truncate";
+import { ImageType } from "@/types/Image.type";
+import { Balance } from "@/types/swap.type";
+
+interface WalletPortfolioHistoryProps {
+    images: ImageType[];
+    walletSwaps: Balance[];
+}
+
+interface RecordProps {
+    data: any;
+    images: { imageUrl: string }[];
+    id: number;
+}
+
+export default function WalletPortfolioHistory({ images, walletSwaps }: WalletPortfolioHistoryProps) {
+    return (
+        <div className="mt-8">
+            <Table>
+                <TableCaption>Your Wallet Portfolio History</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        {["Rank", "Symbol", "Type", "Balance", "Price", "Buy Amount (USD)", "Entry Price", "Sell Amount (USD)", "Current Value", "Live P&L"].map((header) => (
+                            <TableHead key={header} className="text-center">{header}</TableHead>
+                        ))}
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {walletSwaps?.map((item, idx) => (
+                        <Record key={idx} id={idx} data={item} images={images} />
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
+    );
+}
+
+const Record = ({ data, images, id }: RecordProps) => {
+    const [image, setImage] = useState<string>("");
+
+    const type = useMemo(() => {
+        switch (data.balanceType) {
+            case "notClosedPositions":
+                return "Open";
+            case "partiallyClosedPositions":
+                return "Partially Closed";
+            default:
+                return "Closed";
+        }
+    }, [data.balanceType]);
+
+    useEffect(() => {
+        if (image) return;
+        const matchedImage = images.find((img) => img.imageUrl.includes(data["Currency Address"]));
+        if (matchedImage) {
+            setImage(matchedImage.imageUrl);
+        }
+    }, [images, data["Currency Address"], image]);
+
+    const watchInit = useMemo(() => {
+        const watches = JSON.parse(localStorage.getItem("WATCH") || "[]");
+        return watches.some((watchItem: any) => watchItem.name === data.tokenName);
+    }, [data.tokenName]);
+
+    const [watch, setWatch] = useState(watchInit);
+
+    useEffect(() => {
+        const id = setInterval(() => {
+            const watches = JSON.parse(localStorage.getItem("WATCH") || "[]");
+            setWatch(watches.some((w: any) => w.name === data.tokenName));
+        }, 1000);
+
+        return () => {
+            clearInterval(id);
+        };
+    }, [data.tokenName]);
+
+    const handleSaveToken = () => {
+        const watches = JSON.parse(localStorage.getItem("WATCH") || "[]");
+        const index = watches.findIndex((watchItem: any) => watchItem.name === data.tokenName);
+
+        if (index === -1) {
+            watches.push({ name: data.tokenName });
+        } else {
+            watches.splice(index, 1);
+        }
+
+        localStorage.setItem("WATCH", JSON.stringify(watches));
+        setWatch(index === -1);
+    };
+
+    const baseContentClass = "text-center";
+
+    return (
+        <TableRow>
+            <TableCell className={baseContentClass}>
+                <div className="flex justify-center items-center gap-2">
+                    <span>{id}</span>
+                    {!watch ? (
+                        <AiOutlineStar className="cursor-pointer" size={20} onClick={handleSaveToken} />
+                    ) : (
+                        <AiFillStar className="cursor-pointer" size={20} onClick={handleSaveToken} />
+                    )}
+                </div>
+            </TableCell>
+            <TableCell>
+                <div className="flex items-center gap-2">
+                    <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                            {image ? (
+                                <Image
+                                    width={48}
+                                    height={48}
+                                    src={image}
+                                    alt={data.tokenName}
+                                    style={{ opacity: image ? 1 : 0.3 }}
+                                />
+                            ) : (
+                                <div className="flex justify-center items-center w-12 h-12 font-bold text-base border border-base-content rounded-full">
+                                    {data.tokenName.charAt(0)}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex space-x-2 items-center">
+                        {/* <div className="flex flex-col gap-2">
+                            <span className="font-medium">{minifyTokenName(data.tokenName)}</span>
+                            <span className="opacity-40">{minifyContract(data["Currency Address"])}</span>
+                        </div> */}
+                        <Copy text={minifyContract(data["Currency Address"])} value={data["Currency Address"]} />
+                    </div>
+                </div>
+            </TableCell>
+            <TableCell className={`${baseContentClass} p-2 rounded-lg ${type === "Open" || type === "Closed" ? "bg-success/80" : "bg-success/60"} text-base-100 max-w-[150px] whitespace-nowrap`}>
+                {type}
+            </TableCell>
+            <TableCell className={baseContentClass}>{separate3digits(data.Balance.toFixed(2))}</TableCell>
+            <TableCell className={baseContentClass}><PriceFormatter value={data.tokenPrice || 0} /></TableCell>
+            <TableCell className={baseContentClass}>${separate3digits(data["Buy Amount (USD)"].toFixed(2))}</TableCell>
+            <TableCell className={baseContentClass}><PriceFormatter value={data["Entry Price"] || 0} /></TableCell>
+            <TableCell className={baseContentClass}>${separate3digits(data["Sell Amount (USD)"].toFixed(2))}</TableCell>
+            <TableCell className={baseContentClass}><PriceFormatter value={data.currentValue || 0} /></TableCell>
+            <TableCell className={`${baseContentClass} ${data.Profit > 0 ? "text-success" : "text-error"}`}>${separate3digits(data.Profit.toFixed(2))}</TableCell>
+        </TableRow>
+    );
+};

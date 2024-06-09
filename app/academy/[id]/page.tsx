@@ -23,12 +23,12 @@ export default async function page({ params }: Props) {
     <article className=''>
       <h1>{post.title}</h1>
       <Image
-       src={process.env.NEXT_PUBLIC_BLOG_URL + '/uploads/' + post.img}
-       alt={post.title} 
-       width={700}
-       height={500}
-       className='w-full max-h-96 object-cover'
-       />
+        src={process.env.NEXT_PUBLIC_BLOG_URL + '/uploads/' + post.img}
+        alt={post.title}
+        width={700}
+        height={500}
+        className='w-full max-h-96 object-cover'
+      />
       <p className='mt-3'>Author: {post.author}</p>
       <div className='mt-8' dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
       <div className='mt-8' dangerouslySetInnerHTML={{ __html: post.contentHtml }} />

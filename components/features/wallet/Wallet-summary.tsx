@@ -28,18 +28,7 @@ export default function WalletSummary({ walletSummary }: Props) {
                 </CardHeader>
                 <CardContent>
                     <ul className='flex flex-col gap-2'>
-                        {walletSummary.highestProfit != undefined &&
-                            <li>
-                                <KeyValue
-                                    stretch
-                                    title="Top Profit"
-                                    value={minifyTokenName(walletSummary.highestProfit[1]) + ' : $' + separate3digits(walletSummary.highestProfit[0]?.toFixed(2))}
-                                    valueIcon={<Copy value={walletSummary.highestProfit[2]} />}
-                                    variant="default"
-                                />
-
-                            </li>
-                        }
+                    
                         {
                             walletSummary.lowestProfit != undefined &&
                             <li>
@@ -76,22 +65,7 @@ export default function WalletSummary({ walletSummary }: Props) {
                                 />
                             </li>
                         }
-                        {
-                            walletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
-                            <li>
-                                <KeyValue
-                                    stretch
-                                    symbol='dollar'
-                                    title="Avg P&L"
-                                    value={
-                                        separate3digits(
-                                            walletSummary.overallAverageHoldingTimeAndProfit.Profit?.toFixed(2)
-                                        )
-                                    }
-                                    variant="default"
-                                />
-                            </li>
-                        }
+                        
                         <li>
                             <KeyValue
                                 stretch
@@ -179,7 +153,7 @@ export default function WalletSummary({ walletSummary }: Props) {
                 </CardContent>
             </Card>
 
-            <Card className="border border-muted w-full">
+            {/* <Card className="border border-muted w-full">
                 <CardHeader>
                     <CardTitle>Financial Transfers</CardTitle>
                     <CardDescription>Overview of deposits and withdrawals</CardDescription>
@@ -233,7 +207,7 @@ export default function WalletSummary({ walletSummary }: Props) {
                         }
                     </ul>
                 </CardContent>
-            </Card>
+            </Card> */}
 
             <Card className="border border-muted w-full">
                 <CardHeader>
