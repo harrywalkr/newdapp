@@ -24,7 +24,7 @@ import { ImageType } from "@/types/Image.type";
 import { getImages } from "@/services/http/image.http";
 import { useMounted } from "@/utils/useMounted";
 import Image from "next/image";
-import { minifyContract, truncate } from "@/utils/truncate";
+import { minifyContract, minifyTokenName, truncate } from "@/utils/truncate";
 import PriceFormatter from "@/utils/PriceFormatter";
 import formatDate, { convertIsoToDate } from "@/utils/date";
 import Loading from "@/components/common/Loading";
@@ -269,13 +269,13 @@ export function Spotlight() {
             </div>
           )}
           <Separator />
-          <div className="px-4 pb-4 flex flex-col md:flex-row items-start justify-start gap-6 md:gap-12">
+          <div className=" px-4 pb-4 flex flex-col md:flex-row items-start justify-start gap-6 md:gap-12">
             {get("previousSearches") != null && (
               <>
                 <h4>
                   Previous searches:
                 </h4>
-                <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <ul className=" grid grid-cols-2 md:grid-cols-3 gap-3">
                   {(get("previousSearches") as (SpotlightSearchType | IToken)[]).map((item) => (
                     <li
                       key={(item as SpotlightSearchType).subject?.address || (item as IToken).data?.[0]?.id}
@@ -283,17 +283,19 @@ export function Spotlight() {
                       onClick={() => {
                         if ((item as SpotlightSearchType).subject?.address) {
                           router.push(`/wallet/${(item as SpotlightSearchType).subject.address}`);
+                          setOpen(!open)
                         } else {
                           router.push(
                             `/tokens/${(item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]}`
                           );
+                          setOpen(!open)
                         }
                       }}
                     >
                       {(item as SpotlightSearchType).subject?.address ? (
-                        <p>{truncate((item as SpotlightSearchType).subject.address, 15)}</p>
+                        <p>{minifyContract((item as SpotlightSearchType).subject.address)}</p>
                       ) : (
-                        <div className="flex items-center justify-start gap-1 md:gap-2">
+                        <div className="flex items-center justify-start gap-1 w-full md:gap-2">
                           {imageUrl(
                             (item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
                           ) != undefined && (
@@ -308,8 +310,8 @@ export function Spotlight() {
                               />
                             )}
                           {
-                            (item as Daum)?.attributes?.name != undefined &&
-                            <p>{truncate((item as Daum).attributes!.name!, 15)}</p>
+                            (item as IToken).data![0].attributes?.name != undefined &&
+                            <p>{minifyTokenName((item as IToken).data![0].attributes!.name)}</p>
                           }
                         </div>
                       )}
