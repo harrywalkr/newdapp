@@ -121,7 +121,7 @@ export default function Insight({ wallets }: Props) {
             return (
                 <div className="custom-tooltip">
                     <p>{`Date: ${payload[0].payload.timestamp}`}</p>
-                    <p>{`Strength: ${payload[0].value}`}</p>
+                    <p>{`Strength: ${payload[0].value.toFixed(2)}`}</p>
                 </div>
             );
         }
