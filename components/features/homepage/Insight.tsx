@@ -103,7 +103,8 @@ export default function Insight({ wallets }: Props) {
     const off = gradientOffset();
 
     const renderCustomDot = (props: any) => {
-        const { cx, cy, value } = props;
+        const { cx, cy, value, index } = props;
+        const isLastPoint = index === formattedData.length - 1;
         return (
             <circle
                 cx={cx}
@@ -112,6 +113,7 @@ export default function Insight({ wallets }: Props) {
                 stroke={value >= 0 ? '#86efac' : '#ef4444'}
                 strokeWidth={1}
                 fill={value >= 0 ? '#86efac' : '#ef4444'}
+                className={clsx({ blink: isLastPoint })}
             />
         );
     };
@@ -128,7 +130,6 @@ export default function Insight({ wallets }: Props) {
 
         return null;
     };
-
 
     return (
         <Section variant="vertical">
@@ -187,9 +188,9 @@ export default function Insight({ wallets }: Props) {
                         <CardHeader>
                             <CardTitle>Strength Analysis</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent >
                             <ResponsiveContainer width="100%" height={100}>
-                                <LineChart data={formattedData}>
+                                <LineChart data={formattedData} >
                                     <defs>
                                         <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                                             <stop offset={off} stopColor="#86efac" />
