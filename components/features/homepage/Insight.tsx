@@ -161,7 +161,7 @@ export default function Insight({ wallets }: Props) {
                                             <span
                                                 className={clsx(
                                                     'text-base-content whitespace-nowrap leading-none',
-                                                    wallet.netProfit > 0 ? 'text-green-300' : 'text-red-300'
+                                                    wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
                                                 )}
                                             >
                                                 {separate3digits(wallet.netProfit.toFixed(2))}

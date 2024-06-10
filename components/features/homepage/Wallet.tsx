@@ -510,7 +510,7 @@ const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: I
       )}
       {layout.pnl && (
         <TableCell
-          className={`text-base-content whitespace-nowrap ${data.netProfit > 0 ? "text-green-300" : "text-red-300"
+          className={`text-base-content whitespace-nowrap ${data.netProfit > 0 ? "text-success" : "text-red-300"
             }`}
         >
           ${separate3digits(data.netProfit.toFixed(2))}

@@ -54,6 +54,7 @@ const config = {
         },
         skeleton: "hsl(var(--skeleton))",
         brand: "hsl(var(--brand))",
+        success: "hsl(var(--success))",
       },
       borderRadius: {
         lg: "var(--radius)",
