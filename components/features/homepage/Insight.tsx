@@ -144,9 +144,7 @@ export default function Insight({ wallets }: Props) {
                                     data={strengthRatio?.history.map((entry: any) => ({
                                         ...entry.data.base,
                                         timestamp: new Date(entry.timestamp).toLocaleDateString(),
-                                    }))}
-                                //   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                                >
+                                    }))}     >
                                     <Tooltip />
                                     <Line type="monotone" dataKey="marketStrength" stroke="#8884d8" />
                                 </LineChart>
