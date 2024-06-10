@@ -14,6 +14,8 @@ export default async function Home() {
   const wallets = await getWallets({});
   const nfts = await getTopNFTs();
 
+  console.log('hello hello hello', wallets)
+
   return (
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-16">
       <Insight wallets={wallets.splice(0, 3)} />
