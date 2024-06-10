@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -82,6 +82,54 @@ export default function Insight({ wallets }: Props) {
             </Section>
         );
 
+    const formattedData = strengthRatio?.history.map((entry: History) => ({
+        timestamp: new Date(entry.timestamp).toLocaleDateString(),
+        averageMarketStrength: entry.averageMarketStrength,
+    }));
+
+    const gradientOffset = () => {
+        if (!formattedData) return 0;
+        const dataMax = Math.max(...formattedData.map(d => d.averageMarketStrength!));
+        const dataMin = Math.min(...formattedData.map(d => d.averageMarketStrength!));
+        if (dataMax <= 0) {
+            return 0;
+        } else if (dataMin >= 0) {
+            return 1;
+        } else {
+            return dataMax / (dataMax - dataMin);
+        }
+    };
+
+    const off = gradientOffset();
+
+    const renderCustomDot = (props: any) => {
+        const { cx, cy, value } = props;
+        return (
+            <circle
+                cx={cx}
+                cy={cy}
+                r={3}
+                stroke={value >= 0 ? '#86efac' : '#ef4444'}
+                strokeWidth={1}
+                fill={value >= 0 ? '#86efac' : '#ef4444'}
+            />
+        );
+    };
+
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    <p>{`Date: ${payload[0].payload.timestamp}`}</p>
+                    <p>{`Strength: ${payload[0].value}`}</p>
+                </div>
+            );
+        }
+
+        return null;
+    };
+
+
     return (
         <Section variant="vertical">
             <SectionHeader variant="vertical">
@@ -141,19 +189,26 @@ export default function Insight({ wallets }: Props) {
                         </CardHeader>
                         <CardContent>
                             <ResponsiveContainer width="100%" height={100}>
-                                <LineChart
-                                    data={strengthRatio?.history.map((entry: History) => ({
-                                        timestamp: new Date(entry.timestamp).toLocaleDateString(),
-                                        averageMarketStrength: entry.averageMarketStrength?.toFixed(2),
-                                    }))}
-                                >
-                                    <Tooltip />
-                                    <Line type="monotone" dataKey="averageMarketStrength" stroke="#8884d8" />
+                                <LineChart data={formattedData}>
+                                    <defs>
+                                        <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset={off} stopColor="#86efac" />
+                                            <stop offset={off} stopColor="#ef4444" />
+                                        </linearGradient>
+                                    </defs>
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="averageMarketStrength"
+                                        stroke="url(#splitColor)"
+                                        strokeWidth={1}
+                                        dot={renderCustomDot}
+                                    />
                                 </LineChart>
                             </ResponsiveContainer>
                             {
-                                strengthRatio?.averageMarketStrength != undefined &&
-                                <div className="text-muted-foreground mt-5">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
+                                strengthRatio?.averageMarketStrength !== undefined &&
+                                <div className="text-muted-foreground mt-7">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
                             }
                         </CardContent>
                     </Card>
