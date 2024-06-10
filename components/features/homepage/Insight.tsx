@@ -28,6 +28,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import { History } from '@/types/strength-ratio.type';
 
 interface Props {
     wallets: IWallet[];
@@ -141,17 +142,18 @@ export default function Insight({ wallets }: Props) {
                         <CardContent>
                             <ResponsiveContainer width="100%" height={100}>
                                 <LineChart
-                                    data={strengthRatio?.history.map((entry: any) => ({
-                                        ...entry.data.base,
+                                    data={strengthRatio?.history.map((entry: History) => ({
                                         timestamp: new Date(entry.timestamp).toLocaleDateString(),
-                                    }))}     >
+                                        averageMarketStrength: entry.averageMarketStrength?.toFixed(2),
+                                    }))}
+                                >
                                     <Tooltip />
-                                    <Line type="monotone" dataKey="marketStrength" stroke="#8884d8" />
+                                    <Line type="monotone" dataKey="averageMarketStrength" stroke="#8884d8" />
                                 </LineChart>
                             </ResponsiveContainer>
                             {
                                 strengthRatio?.averageMarketStrength != undefined &&
-                                <div className="text-muted-foreground">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
+                                <div className="text-muted-foreground mt-5">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
                             }
                         </CardContent>
                     </Card>
