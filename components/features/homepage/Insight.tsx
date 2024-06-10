@@ -25,8 +25,8 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
+    Label,
 } from 'recharts';
 import { History } from '@/types/strength-ratio.type';
 
@@ -104,7 +104,7 @@ export default function Insight({ wallets }: Props) {
 
     const renderCustomDot = (props: any) => {
         const { cx, cy, value, index } = props;
-        const isLastPoint = index === formattedData.length - 1;
+        const isLastPoint = index === formattedData!.length - 1;
         return (
             <circle
                 cx={cx}
@@ -131,6 +131,15 @@ export default function Insight({ wallets }: Props) {
         return null;
     };
 
+    const CustomYAxisTick = (props: any) => {
+        const { x, y, payload } = props;
+        return (
+            <text x={x} y={y} fill="rgba(0, 0, 0, 0.5)" textAnchor="end" dominantBaseline="middle">
+                {payload.value}
+            </text>
+        );
+    };
+    
     return (
         <Section variant="vertical">
             <SectionHeader variant="vertical">
@@ -188,15 +197,20 @@ export default function Insight({ wallets }: Props) {
                         <CardHeader>
                             <CardTitle>Strength Analysis</CardTitle>
                         </CardHeader>
-                        <CardContent >
+                        <CardContent>
                             <ResponsiveContainer width="100%" height={100}>
-                                <LineChart data={formattedData} >
+                                <LineChart data={formattedData}>
                                     <defs>
                                         <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                                             <stop offset={off} stopColor="#86efac" />
                                             <stop offset={off} stopColor="#ef4444" />
                                         </linearGradient>
                                     </defs>
+                                    <YAxis
+                                        interval={2}
+                                        tickFormatter={(value) => value.toFixed(2)}
+                                        tick={CustomYAxisTick}
+                                    />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Line
                                         type="monotone"
