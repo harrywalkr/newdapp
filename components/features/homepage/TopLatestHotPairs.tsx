@@ -39,6 +39,7 @@ interface Props {
 export function TopLatestHotPairs({ images }: Props) {
     const [averageRankPage, setAverageRankPage] = useState(0);
     const [latestTokenPage, setLatestTokenPage] = useState(0);
+    const [nonEthDataPage, setNonEthDataPage] = useState(0);
     const { selectedChain } = useTokenChainStore();
     const control1 = useAnimation();
     const control2 = useAnimation();
@@ -93,6 +94,7 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
+    const maxNonEthDataPage = nonEthData ? Math.ceil(nonEthData.data.length / 10) - 1 : 0;
 
     return (
         <Section variant='vertical'>
@@ -254,75 +256,85 @@ export function TopLatestHotPairs({ images }: Props) {
                                         </TableCell>
                                     </TableRow>
                                     :
-                                    nonEthData!.data!.map((token, index: number) => (
-                                        <TableRow key={index}>
-                                            <TableCell className="font-medium break-words">
-                                                {
-                                                    token?.attributes?.address != undefined &&
-                                                    token.attributes.name != undefined &&
-                                                    <div key={index} className="flex items-center">
-                                                        <Avatar className="h-9 w-9">
-                                                            <AvatarImage src={imageUrl(token.attributes.address, images)} alt="Avatar" />
-                                                            <AvatarFallback>{token.attributes.address.charAt(0)}</AvatarFallback>
-                                                        </Avatar>
-                                                        <div className="ml-4 space-y-1">
-                                                            <Link
-                                                                href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
-                                                                className="text-sm">
-                                                                {token.attributes.name.split('/')[0]}
-                                                            </Link>
-                                                            <Copy className="text-sm text-muted-foreground leading-none"
-                                                                text={minifyContract(token.attributes.address)}
-                                                                value={token.attributes.address}
-                                                                href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
-                                                            />
+                                    nonEthData!.data!
+                                        .slice(nonEthDataPage * 10, (nonEthDataPage + 1) * 10)
+                                        .map((token, index: number) => (
+                                            <TableRow key={index}>
+                                                <TableCell className="font-medium break-words">
+                                                    {
+                                                        token?.attributes?.address != undefined &&
+                                                        token.attributes.name != undefined &&
+                                                        <div key={index} className="flex items-center">
+                                                            <Avatar className="h-9 w-9">
+                                                                <AvatarImage src={imageUrl(token.attributes.address, images)} alt="Avatar" />
+                                                                <AvatarFallback>{token.attributes.address.charAt(0)}</AvatarFallback>
+                                                            </Avatar>
+                                                            <div className="ml-4 space-y-1">
+                                                                <Link
+                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
+                                                                    className="text-sm">
+                                                                    {token.attributes.name.split('/')[0]}
+                                                                </Link>
+                                                                <Copy className="text-sm text-muted-foreground leading-none"
+                                                                    text={minifyContract(token.attributes.address)}
+                                                                    value={token.attributes.address}
+                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                }
-                                            </TableCell>
-                                            <TableCell >
-                                                {
-                                                    token?.attributes?.price_change_percentage?.h24 != undefined &&
-                                                    <span
-                                                        className={clsx({
-                                                            'text-green-300': +token.attributes.price_change_percentage.h24 > 0,
-                                                            'text-red-300': +token.attributes.price_change_percentage.h24 < 0,
-                                                        })}
-                                                    >
-                                                        {token.attributes.price_change_percentage.h24}
-                                                    </span>
-                                                }
-                                            </TableCell>
-                                            <TableCell className="break-words">
-                                                {
-                                                    token?.attributes?.base_token_price_usd &&
-                                                    <PriceFormatter dollarSign value={token.attributes?.base_token_price_usd} />
+                                                    }
+                                                </TableCell>
+                                                <TableCell >
+                                                    {
+                                                        token?.attributes?.price_change_percentage?.h24 != undefined &&
+                                                        <span
+                                                            className={clsx({
+                                                                'text-green-300': +token.attributes.price_change_percentage.h24 > 0,
+                                                                'text-red-300': +token.attributes.price_change_percentage.h24 < 0,
+                                                            })}
+                                                        >
+                                                            {token.attributes.price_change_percentage.h24}
+                                                        </span>
+                                                    }
+                                                </TableCell>
+                                                <TableCell className="break-words">
+                                                    {
+                                                        token?.attributes?.base_token_price_usd &&
+                                                        <PriceFormatter dollarSign value={token.attributes?.base_token_price_usd} />
 
-                                                }
-                                            </TableCell>
-                                            <TableCell className="break-words">
-                                                {
-                                                    token?.attributes?.reserve_in_usd != undefined &&
-                                                    formatCash(+token.attributes.reserve_in_usd)
-                                                }
-                                            </TableCell>
-                                            <TableCell className="break-words">
-                                                {
-                                                    token?.attributes?.volume_usd?.h24 != undefined &&
-                                                    formatCash(+token?.attributes?.volume_usd?.h24)
-                                                }
-                                            </TableCell>
-                                            <TableCell className="break-words">
-                                                {
-                                                    token?.attributes?.pool_created_at != undefined &&
-                                                    dayjs().to(token.attributes?.pool_created_at)
-                                                }
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                                    }
+                                                </TableCell>
+                                                <TableCell className="break-words">
+                                                    {
+                                                        token?.attributes?.reserve_in_usd != undefined &&
+                                                        formatCash(+token.attributes.reserve_in_usd)
+                                                    }
+                                                </TableCell>
+                                                <TableCell className="break-words">
+                                                    {
+                                                        token?.attributes?.volume_usd?.h24 != undefined &&
+                                                        formatCash(+token?.attributes?.volume_usd?.h24)
+                                                    }
+                                                </TableCell>
+                                                <TableCell className="break-words">
+                                                    {
+                                                        token?.attributes?.pool_created_at != undefined &&
+                                                        dayjs().to(token.attributes?.pool_created_at)
+                                                    }
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                             </TableBody>
                         </Table>
+                        <div className="flex items-center justify-end gap-2 mt-4">
+                            <Button variant='outline' size='icon' disabled={nonEthDataPage <= 0} onClick={() => setNonEthDataPage(nonEthDataPage - 1)}>
+                                <ChevronLeftIcon />
+                            </Button>
+                            <Button variant='outline' size='icon' disabled={nonEthDataPage >= maxNonEthDataPage} onClick={() => setNonEthDataPage(nonEthDataPage + 1)}>
+                                <ChevronRightIcon />
+                            </Button>
+                        </div>
                     </ScrollArea>
                 }
             </SectionContent>
