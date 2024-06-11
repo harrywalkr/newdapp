@@ -94,7 +94,7 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
-    const maxNonEthDataPage = nonEthData ? Math.ceil(nonEthData.data.length / 10) - 1 : 0;
+    const maxNonEthDataPage = nonEthData ? Math.ceil(nonEthData.data!.length / 10) - 1 : 0;
 
     return (
         <Section variant='vertical'>
@@ -235,7 +235,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         </CardFooter>
                     </Card>
                 </> :
-                    <ScrollArea className="w-full rounded-md">
+                    <ScrollArea className="w-full rounded-md h-full">
                         <ScrollBar orientation="horizontal" />
                         <Table>
                             <TableHeader>
@@ -262,6 +262,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                             <TableRow key={index}>
                                                 <TableCell className="font-medium break-words">
                                                     {
+                                                        token.relationships?.base_token?.data?.id?.split('_')[1] != undefined &&
                                                         token?.attributes?.address != undefined &&
                                                         token.attributes.name != undefined &&
                                                         <div key={index} className="flex items-center">
@@ -276,8 +277,8 @@ export function TopLatestHotPairs({ images }: Props) {
                                                                     {token.attributes.name.split('/')[0]}
                                                                 </Link>
                                                                 <Copy className="text-sm text-muted-foreground leading-none"
-                                                                    text={minifyContract(token.attributes.address)}
-                                                                    value={token.attributes.address}
+                                                                    text={minifyContract(token.relationships.base_token.data.id.split('_')[1])}
+                                                                    value={token.relationships.base_token.data.id.split('_')[1]}
                                                                     href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
                                                                 />
                                                             </div>
