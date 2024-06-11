@@ -2,8 +2,8 @@ import React from 'react';
 import TradeReport from './trade-report';
 import Chart from './chart';
 import { IToken } from '@/types/token.type';
-import clsx from 'clsx';
 import Tradingview from './Tradingview';
+import { KeyValue } from '@/components/ui/key-value';
 
 interface Props {
     token: IToken;
@@ -16,41 +16,33 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
         <div className='flex flex-col items-start justify-center gap-4'>
             {token?.data && token?.data.length > 0 ? (
                 <>
-                    {token?.ScoreData?.riskLevel && (
-                        <div className='whitespace-nowrap'>
-                            {'Risk level: '}
-                            <h2
-                                className={clsx('text-sm inline text-center', token!.ScoreData!.riskLevel === "High Risk" ? "text-red-500" : "text-green-400")}
-                            >
-                                {token!.ScoreData!.riskLevel}
-                            </h2>
-                        </div>
+                    {token?.ScoreData?.riskLevel != undefined && (
+                        <KeyValue
+                            title="Risk level"
+                            value={token!.ScoreData!.riskLevel}
+                            variant={token!.ScoreData!.riskLevel === "High Risk" ? "bad" : "good"}
+                        />
                     )}
-                    {token?.BalancesData?.numberOfAddresses && (
-                        <div className='whitespace-nowrap'>
-                            {'Total holders: '}
-                            <h2
-                                className={clsx('text-sm inline text-center', token!.BalancesData!.numberOfAddresses! > 10 ? "text-green-400" : "text-red-500")}
-                            >
-                                {token?.BalancesData?.numberOfAddresses}
-                            </h2>
-                        </div>
+                    {token?.BalancesData?.numberOfAddresses != undefined && (
+                        <KeyValue
+                            title="Total holders"
+                            value={token?.BalancesData?.numberOfAddresses}
+                            variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
+                        />
                     )}
-                    {token?.BalancesData?.numberOfAddresses && (
-                        <div className='whitespace-nowrap'>
-                            {'Contract security: '}
-                            <h2 className={clsx('text-sm inline text-center', "text-green-400")}>
-                                safe
-                            </h2>
-                        </div>
+                    {token?.BalancesData?.numberOfAddresses != undefined && (
+                        <KeyValue
+                            title="Contract security"
+                            value="safe"
+                            variant="good"
+                        />
                     )}
-                    {token?.BalancesData?.numberOfAddresses && (
-                        <div className='whitespace-nowrap'>
-                            {'Launch date: '}
-                            <h2 className={clsx('text-sm inline text-center text-muted-foreground')}>
-                                2021
-                            </h2>
-                        </div>
+                    {token?.BalancesData?.numberOfAddresses != undefined && (
+                        <KeyValue
+                            title="Launch date"
+                            value="2021"
+                            variant="default"
+                        />
                     )}
                 </>
             ) : (
@@ -67,7 +59,7 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
             ) : (
                 <>
                     {token!.data![0]?.id?.split("_")[1] != undefined && (
-                        <Chart tokenAddress={token!.data![0]?.id?.split("_")[1]} network={network} />
+                        <Chart tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
                     )}
                 </>
             )}
