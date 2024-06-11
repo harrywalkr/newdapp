@@ -81,10 +81,10 @@ export default function TradeReport({ tokenAddress }: Props) {
                         Type
                     </TableHead>
                     <TableHead className=" text-base-100">
-                        {tradeReport && tradeReport[0].Trade?.Currency?.Symbol ? tradeReport[0].Trade.Currency.Symbol : "-"}
+                        {tradeReport && tradeReport[0]?.Trade?.Currency?.Symbol ? tradeReport[0].Trade.Currency.Symbol : "-"}
                     </TableHead>
                     <TableHead className=" text-base-100">
-                        {tradeReport && tradeReport[0].Trade?.Side?.Currency?.Symbol && tradeReport[0].Trade.Side.Currency.Symbol}
+                        {tradeReport && tradeReport[0]?.Trade?.Side?.Currency?.Symbol && tradeReport[0].Trade.Side.Currency.Symbol}
                     </TableHead>
                     <TableHead className=" text-base-100">
                         Price

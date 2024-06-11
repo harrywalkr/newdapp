@@ -263,16 +263,15 @@ export function TopLatestHotPairs({ images }: Props) {
                                                 <TableCell className="font-medium break-words">
                                                     {
                                                         token.relationships?.base_token?.data?.id?.split('_')[1] != undefined &&
-                                                        token?.attributes?.address != undefined &&
-                                                        token.attributes.name != undefined &&
+                                                        token.attributes?.name != undefined &&
                                                         <div key={index} className="flex items-center">
                                                             <Avatar className="h-9 w-9">
-                                                                <AvatarImage src={imageUrl(token.attributes.address, images)} alt="Avatar" />
-                                                                <AvatarFallback>{token.attributes.address.charAt(0)}</AvatarFallback>
+                                                                <AvatarImage src={imageUrl(token.relationships.base_token.data.id.split('_')[1], images)} alt="Avatar" />
+                                                                <AvatarFallback>{token.relationships.base_token.data.id.split('_')[1].charAt(0)}</AvatarFallback>
                                                             </Avatar>
                                                             <div className="ml-4 space-y-1">
                                                                 <Link
-                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
+                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.relationships.base_token.data.id.split('_')[1]}`}
                                                                     className="text-sm">
                                                                     {token.attributes.name.split('/')[0]}
                                                                 </Link>
