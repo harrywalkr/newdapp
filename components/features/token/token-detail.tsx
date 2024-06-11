@@ -22,7 +22,6 @@ import { KeyValue } from '@/components/ui/key-value'
 
 interface Props {
   token: IToken,
-  logo: ImageType,
   network: string,
   tokenAddress: string,
 }

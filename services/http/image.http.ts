@@ -12,9 +12,10 @@ export const getImages = (
 
 export const getLogo = (
   tokenAddress: string,
+  network?: string,
   options?: AxiosRequestConfig
 ): Promise<ImageType> =>
   fetchData<ImageType>(
-    `${process.env.NEXT_PUBLIC_BASE_URL_TWO}/${tokenAddress}/logo`,
+    `${process.env.NEXT_PUBLIC_BASE_URL_TWO}/${tokenAddress}/logo/${network}`,
     options
   );

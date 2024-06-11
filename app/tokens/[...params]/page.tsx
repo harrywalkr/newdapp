@@ -43,8 +43,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Token({ params }: Props) {
-    // FIXME: no 500 when image is non-existant
-    const logo = await getLogo(params.params[1]);
     const searchedToken = await searchToken({
         params: {
             currencyAddress: params.params[1],
@@ -61,8 +59,8 @@ export default async function Token({ params }: Props) {
 
     return (
         <div className="flex flex-col gap-6 items-center justify-center w-full" >
-            <TokenOverview token={mergedToken} logo={logo} tokenAddress={params.params[1]} />
-            <TokenDetail token={mergedToken} logo={logo} tokenAddress={params.params[1]} network={params.params[0]} />
+            <TokenOverview token={mergedToken}  tokenAddress={params.params[1]} network={params.params[0]} />
+            <TokenDetail token={mergedToken} tokenAddress={params.params[1]} network={params.params[0]} />
         </div >
     )
 }

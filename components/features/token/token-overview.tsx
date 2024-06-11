@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
@@ -12,25 +13,41 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import SocialMedia from './social-media';
+import { useTokenChainStore } from '@/store';
+import { useQuery } from '@tanstack/react-query';
+import { getLogo } from '@/services/http/image.http';
 dayjs.extend(relativeTime);
 
 interface Props {
     tokenAddress: string,
     token: IToken,
-    logo: ImageType
+    network: string
 }
 
-export default function TokenOverview({ token, logo }: Props) {
+export default function TokenOverview({ token, tokenAddress, network }: Props) {
+
+    const { data: logo, isLoading: logoLoading, error: logoError } = useQuery({
+        queryKey: ['logo', tokenAddress, network],
+        queryFn: () => getLogo(tokenAddress, network),
+        enabled: !!tokenAddress && !!network,
+    });
+
     return (
         <Card className="w-full">
             <CardContent className="pt-6 flex items-stretch justify-between h-full">
                 <div className="left flex flex-col gap-5">
                     <div className="top flex items-center justify-start gap-5">
                         <Avatar className="h-14 w-14">
-                            <AvatarImage
-                                src={logo.imageUrl}
-                                alt={token?.data?.[0]?.attributes?.name || ''}
-                            />
+                            {logoLoading ? (
+                                <AvatarFallback>Loading...</AvatarFallback>
+                            ) : logoError ? (
+                                <AvatarFallback>Error</AvatarFallback>
+                            ) : (
+                                <AvatarImage
+                                    src={logo?.imageUrl}
+                                    alt={token?.data?.[0]?.attributes?.name || ''}
+                                />
+                            )}
                             <AvatarFallback>{token?.data?.[0]?.attributes?.name?.charAt(0) || "N/A"}</AvatarFallback>
                         </Avatar>
                         <div className='flex flex-col items-start justify-center gap-2'>
