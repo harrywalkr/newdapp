@@ -134,7 +134,7 @@ export default function Insight({ wallets }: Props) {
     const CustomYAxisTick = (props: any) => {
         const { x, y, payload } = props;
         return (
-            <text x={x} y={y} fill="rgba(0, 0, 0, 0.5)" textAnchor="end" dominantBaseline="middle">
+            <text x={x} y={y} textAnchor="end" className='text-muted-foreground' dominantBaseline="middle">
                 {payload.value}
             </text>
         );
