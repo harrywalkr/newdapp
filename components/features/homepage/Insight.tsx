@@ -109,7 +109,7 @@ export default function Insight({ wallets }: Props) {
             <circle
                 cx={cx}
                 cy={cy}
-                r={3}
+                r={0}
                 stroke={value >= 0 ? '#86efac' : '#ef4444'}
                 strokeWidth={1}
                 fill={value >= 0 ? '#86efac' : '#ef4444'}
