@@ -8,13 +8,12 @@ import { getLatestTokens } from "@/services/http/latestTokens.http";
 import { getTopNFTs } from "@/services/http/nft.http";
 import Insight from "@/components/features/homepage/Insight";
 
+export const revalidate = 0;
+
 export default async function Home() {
-  //   // cache: 'no-store' //FIXME: stop cache for this page
   const images = await getImages();
   const wallets = await getWallets();
   const nfts = await getTopNFTs();
-
-  console.log('wallet', wallets)
 
   return (
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-16">

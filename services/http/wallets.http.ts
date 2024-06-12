@@ -5,14 +5,18 @@ import { WalletStatType } from "@/types/wallet-stat.type";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
 import { SwapType } from "@/types/swap.type";
 import formatDate, { getPastDate } from "@/utils/date";
-import { IWallet} from "@/types/Wallet.type";
+import { IWallet } from "@/types/Wallet.type";
 
-export const getWallets = (
-  options?: AxiosRequestConfig
-): Promise<IWallet[]> =>
+export const getWallets = (options?: AxiosRequestConfig): Promise<IWallet[]> =>
   fetchData<IWallet[]>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/valuable_wallets/`,
-    options
+    {
+      ...options,
+      headers: {
+        ...options?.headers,
+        "Cache-Control": "no-store", 
+      },
+    }
   );
 
 export const getWalletSummary = (
