@@ -79,7 +79,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
           </Tabs>
         </CardContent>
       </Card>
-      
+
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Statistical</CardTitle>
@@ -102,7 +102,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
                 <span className='ml-1'>Pnl Trade Count</span>
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="Pnl Trades" className='mt-5'>
+            <TabsContent value="Pnl Trades" className='mt-5 w-full'>
               <WalletStatisticalPnLTrades walletAddress={walletAddress} />
             </TabsContent>
             <TabsContent value="Pnl History" className='mt-5'>

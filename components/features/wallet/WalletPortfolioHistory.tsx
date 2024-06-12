@@ -17,6 +17,9 @@ import Copy from "@/components/ui/copy";
 import { minifyContract } from "@/utils/truncate";
 import { ImageType } from "@/types/Image.type";
 import { Balance } from "@/types/swap.type";
+import { Button } from "@/components/ui/button";
+import { ChevronLeftIcon, ChevronRightIcon, UpdateIcon } from "@radix-ui/react-icons";
+
 
 interface WalletPortfolioHistoryProps {
     images: ImageType[];
@@ -30,10 +33,31 @@ interface RecordProps {
 }
 
 export default function WalletPortfolioHistory({ images, walletSwaps }: WalletPortfolioHistoryProps) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(10);
+
+    const totalPages = Math.ceil(walletSwaps.length / recordsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const currentRecords = walletSwaps.slice(
+        (currentPage - 1) * recordsPerPage,
+        currentPage * recordsPerPage
+    );
+
     return (
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col items-end justify-center">
             <Table>
-                <TableCaption>Your Wallet Portfolio History</TableCaption>
                 <TableHeader>
                     <TableRow>
                         {["Rank", "Symbol", "Type", "Balance", "Price", "Buy Amount (USD)", "Entry Price", "Sell Amount (USD)", "Current Value", "Live P&L"].map((header) => (
@@ -42,11 +66,25 @@ export default function WalletPortfolioHistory({ images, walletSwaps }: WalletPo
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {walletSwaps?.map((item, idx) => (
-                        <Record key={idx} id={idx} data={item} images={images} />
+                    {currentRecords?.map((item, idx) => (
+                        <Record key={idx} id={idx + (currentPage - 1) * recordsPerPage} data={item} images={images} />
                     ))}
                 </TableBody>
             </Table>
+            <div className="flex justify-center gap-2 mt-4">
+                <Button variant='outline' size='icon'
+                    disabled={currentPage === 1}
+                    onClick={handlePrevPage}
+                >
+                    <ChevronLeftIcon />
+                </Button>
+                <Button variant='outline' size='icon'
+                    disabled={currentPage === totalPages}
+                    onClick={handleNextPage}
+                >
+                    <ChevronRightIcon />
+                </Button>
+            </div>
         </div>
     );
 }
@@ -139,10 +177,6 @@ const Record = ({ data, images, id }: RecordProps) => {
                         </div>
                     </div>
                     <div className="flex space-x-2 items-center">
-                        {/* <div className="flex flex-col gap-2">
-                            <span className="font-medium">{minifyTokenName(data.tokenName)}</span>
-                            <span className="opacity-40">{minifyContract(data["Currency Address"])}</span>
-                        </div> */}
                         <Copy text={minifyContract(data["Currency Address"])} value={data["Currency Address"]} />
                     </div>
                 </div>

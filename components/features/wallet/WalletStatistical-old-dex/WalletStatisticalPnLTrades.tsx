@@ -127,30 +127,25 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
   if (!trades.datasets || !profits.datasets) return;
 
   return (
-    <div className="mt-10 w-full min-h-[300px] overflow-hidden flex flex-col justify-center items-center gap-5">
+    <div className="mt-10 w-full min-h-[300px] overflow-hidden flex flex-col justify-center items-center gap-5 ">
       {loading ? (
         <span className="loading loading-bars loading-md"></span>
       ) : (
-        <div className="">
-          <div>
-            <Chart
-              type="bar"
-              data={trades}
-              className="w-full"
-              width={1248}
-              height={chartHeight}
-            />
-          </div>
-          <div className="h-2"></div>
-          <div>
-            <Chart
-              type="line"
-              data={profits}
-              className="w-full"
-              width={1248}
-              height={chartHeight}
-            />
-          </div>
+        <div className="w-full">
+          <Chart
+            type="bar"
+            data={trades}
+            className="w-full"
+            width={1248}
+            height={chartHeight}
+          />
+          <Chart
+            type="line"
+            data={profits}
+            className="w-full"
+            width={1248}
+            height={chartHeight}
+          />
         </div>
       )}
     </div>
