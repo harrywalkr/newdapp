@@ -11,10 +11,10 @@ import Insight from "@/components/features/homepage/Insight";
 export default async function Home() {
   //   // cache: 'no-store' //FIXME: stop cache for this page
   const images = await getImages();
-  const wallets = await getWallets({});
+  const wallets = await getWallets();
   const nfts = await getTopNFTs();
 
-  console.log('hello hello hello', wallets)
+  console.log('wallet', wallets)
 
   return (
     <div className="flex flex-col w-full gap-11 md:gap-11 lg:gap-16">
