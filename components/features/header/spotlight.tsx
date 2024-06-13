@@ -34,6 +34,10 @@ import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { formatCash } from "@/utils/numbers";
 import ChainImage from "@/utils/ChainImage";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -243,9 +247,9 @@ export function Spotlight() {
                             {item.relationships?.dex?.data?.type && item.relationships.dex.data.type}
                           </TableCell>
                           <TableCell>
-                            {item.attributes?.pool_created_at && formatDate(
-                              convertIsoToDate(item.attributes.pool_created_at)
-                            )}
+                            {item.attributes?.pool_created_at &&
+                              dayjs().to(item.attributes.pool_created_at)
+                            }
                           </TableCell>
                         </TableRow>
                       ))}
