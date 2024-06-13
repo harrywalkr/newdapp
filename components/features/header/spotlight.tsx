@@ -33,6 +33,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { formatCash } from "@/utils/numbers";
+import ChainImage from "@/utils/ChainImage";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -186,27 +187,27 @@ export function Spotlight() {
                         >
                           <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
                             <div className="w-10 h-10">
-                              {item.relationships?.base_token?.data?.id && imageUrl(
-                                item.relationships.base_token.data.id.split(
-                                  "_"
-                                )[1]
-                              ) != undefined
-                                &&
-                                images && (
-                                  <Image
-                                    loading="eager"
-                                    width={40}
-                                    height={40}
-                                    src={
-                                      imageUrl(
-                                        item.relationships.base_token.data.id.split(
-                                          "_"
-                                        )[1]
-                                      )!
-                                    }
-                                    alt=""
-                                  />
-                                )}
+                              {item.relationships?.base_token?.data?.id &&
+                                imageUrl(
+                                  item.relationships.base_token.data.id.split(
+                                    "_"
+                                  )[1]
+                                ) != undefined &&
+                                images ? (
+                                <Image
+                                  loading="eager"
+                                  width={40}
+                                  height={40}
+                                  src={
+                                    imageUrl(
+                                      item.relationships.base_token.data.id.split(
+                                        "_"
+                                      )[1]
+                                    )!
+                                  }
+                                  alt=""
+                                />
+                              ) : <ChainImage chainName={item.id!.split("_")[0]}/>}
                             </div>
                             <div className="flex flex-col items-start justify-center gap-1">
                               <div className="whitespace-nowrap">
