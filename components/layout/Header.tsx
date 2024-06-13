@@ -41,22 +41,22 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </Link>
         <Spotlight />
         <ul className="hidden lg:flex items-center justify-center gap-10">
-          <li>
+          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/watchlist'>
               Watchlist
             </Link>
           </li>
-          <li>
+          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/academy'>
               Academy
             </Link>
           </li>
-          <li>
+          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/pricing'>
               Premium
             </Link>
           </li>
-          <li>
+          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/dashboard'>
               Dashboard
             </Link>
