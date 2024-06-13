@@ -132,11 +132,11 @@ export function TopLatestHotPairs({ images }: Props) {
                                     ))}
                                 </ul>
                                 :
-                                <div className="space-y-8">
+                                <div>
                                     {averageRank!
                                         .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
                                         .map((token: HotPairs, id: number) => (
-                                            <div key={id} className="flex items-center">
+                                            <div key={id} className="flex items-center hover:bg-muted/50 py-4">
                                                 <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
                                                     {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
@@ -196,11 +196,11 @@ export function TopLatestHotPairs({ images }: Props) {
                                     ))}
                                 </ul>
                                 :
-                                <div className="space-y-8">
+                                <div>
                                     {latestTokens!
                                         .slice(latestTokenPage * 10, (latestTokenPage + 1) * 10)
                                         .map((token: LatestIToken, id: number) => (
-                                            <div key={id} className="flex items-center">
+                                            <div key={id} className="flex items-center py-4 hover:bg-muted/50">
                                                 <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
                                                     {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
