@@ -207,7 +207,7 @@ export function Spotlight() {
                                   }
                                   alt=""
                                 />
-                              ) : <ChainImage chainName={item.id!.split("_")[0]}/>}
+                              ) : <ChainImage chainName={item.id!.split("_")[0]} />}
                             </div>
                             <div className="flex flex-col items-start justify-center gap-1">
                               <div className="whitespace-nowrap">
@@ -222,7 +222,7 @@ export function Spotlight() {
                             {
                               item?.attributes?.base_token_price_usd &&
                               PriceFormatter({
-                                value: + item.attributes.base_token_price_usd,
+                                value: (+item.attributes.base_token_price_usd).toFixed(4),
                               })}
                           </TableCell>
                           <TableCell>
@@ -235,12 +235,9 @@ export function Spotlight() {
                             }
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
-                            {item.attributes?.volume_usd?.h24 && PriceFormatter({
-                              value: parseInt(
-                                item.attributes.volume_usd.h24
-                              ).toFixed(2),
-                              dollarSign: true,
-                            })}
+                            {item.attributes?.volume_usd?.h24 &&
+                              `$${formatCash(+item.attributes.volume_usd.h24)}`
+                            }
                           </TableCell>
                           <TableCell>
                             {item.relationships?.dex?.data?.type && item.relationships.dex.data.type}
