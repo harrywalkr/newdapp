@@ -32,6 +32,7 @@ import { IoWalletOutline } from "react-icons/io5";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
+import { formatCash } from "@/utils/numbers";
 
 export function Spotlight() {
   const [open, setOpen] = useState(false);
@@ -227,11 +228,10 @@ export function Spotlight() {
                             {item.attributes?.price_change_percentage?.h24 && item.attributes.price_change_percentage.h24}%
                           </TableCell>
                           <TableCell>
-                            {item.attributes?.reserve_in_usd && PriceFormatter({
-                              value: parseInt(
-                                item.attributes.reserve_in_usd
-                              ).toFixed(2),
-                            })}
+                            {
+                              item.attributes?.reserve_in_usd != undefined &&
+                              `$${formatCash(+item.attributes.reserve_in_usd)}`
+                            }
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             {item.attributes?.volume_usd?.h24 && PriceFormatter({
