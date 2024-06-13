@@ -48,7 +48,7 @@ const KeyValue = forwardRef<HTMLDivElement, KeyValueProps>(({
             ref={ref}
             {...props}
         >
-            <div className='font-bold flex items-center gap-1'>
+            <div className='flex items-center gap-1'>
                 {titleIcon}
                 <div className='flex flex-col'>
                     <h2 className='whitespace-nowrap'>

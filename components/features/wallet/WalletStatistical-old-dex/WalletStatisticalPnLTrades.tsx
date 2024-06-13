@@ -1,3 +1,4 @@
+'use client'
 import { chartHeight } from "@/utils/animation";
 import {
   BarController,

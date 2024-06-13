@@ -1,3 +1,4 @@
+'use client'
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { formatCash, separate3digits } from '@/utils/numbers';
@@ -51,15 +52,17 @@ export default function WalletPortfolio({ walletAddress, walletSummary }: Props)
         ],
     };
 
-    if (walletSwapsLoading || imagesLoading) return <div>Loading...</div>;
+    if (walletSwapsLoading || imagesLoading) return <div className='w-full flex-1'>Loading...</div>;
     if (walletSwapsError || imagesError) return <div>Error loading data</div>;
 
     return (
-        <div className="wallet-portfolio mt-5">
+        <div className="wallet-portfolio p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="balance-display">
                     <span className="text-lg font-bold">Total Balance: ${formatCash(walletSummary.CurrentBalance!)}</span>
-                    <Pie data={totalScore} width={200} height={200} />
+                    <div className='w-60 h-60'>
+                        <Pie data={totalScore} height={200} width={200} />
+                    </div>
                 </div>
                 <div className="flex flex-col gap-1">
                     <span className="text-lg font-bold">Partially Closed</span>
