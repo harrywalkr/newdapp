@@ -40,7 +40,7 @@ interface Props {
 
 export default function WalletDetail({ walletSummary, walletAddress, dateRange, walletBalance }: Props) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
       <Card className="w-full">
         <CardContent className="mt-5 overflow-hidden relative">
           <Tabs defaultValue="Token Balance" className='w-full no-scrollbar'>

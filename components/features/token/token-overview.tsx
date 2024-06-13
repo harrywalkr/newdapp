@@ -138,7 +138,7 @@ function BuySellTaxes({ token }: { token: IToken }) {
             {token.SecurityData?.tokenSecurity?.details?.sell_tax != undefined ? (
                 <KeyValue
                     title="Sell tax"
-                    value={`${+token!.SecurityData!.tokenSecurity!.details!.sell_tax! * 100}%`}
+                    value={`${+(+token!.SecurityData!.tokenSecurity!.details!.sell_tax!).toFixed(2) * 100}%`}
                     variant="bad"
                 />
             ) : (
