@@ -73,9 +73,6 @@ const StrengthAnalysis: React.FC = () => {
 
     return (
         <div className="strength-analysis">
-            <div className="header">
-                <h2 className="title">Strength Analysis</h2>
-            </div>
             <div className="content">
                 <ResponsiveContainer width="100%" height={100}>
                     <LineChart data={formattedData}>
