@@ -84,7 +84,7 @@ export default function Insight({ wallets }: Props) {
                         <CardContent>
                             {wallets.map((wallet, i) => (
                                 <React.Fragment key={wallet.walletAddress}>
-                                    <div className="flex items-start justify-between hover:bg-muted/50 hover:cursor-pointer py-3">
+                                    <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
                                         <Avatar>
                                             <AvatarFallback>{i + 1}</AvatarFallback>
                                         </Avatar>

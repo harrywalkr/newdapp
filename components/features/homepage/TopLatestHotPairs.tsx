@@ -29,6 +29,8 @@ import Link from "next/link";
 import { AnimationControls, motion, useAnimation } from "framer-motion";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
+import { stopPropagation } from "@/utils/stopPropagation";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 
@@ -41,6 +43,7 @@ export function TopLatestHotPairs({ images }: Props) {
     const [latestTokenPage, setLatestTokenPage] = useState(0);
     const [nonEthDataPage, setNonEthDataPage] = useState(0);
     const { selectedChain } = useTokenChainStore();
+    const router = useRouter()
     const control1 = useAnimation();
     const control2 = useAnimation();
 
@@ -136,8 +139,12 @@ export function TopLatestHotPairs({ images }: Props) {
                                     {averageRank!
                                         .slice(averageRankPage * 10, (averageRankPage + 1) * 10)
                                         .map((token: HotPairs, id: number) => (
-                                            <div key={id} className="flex items-center hover:bg-muted/50 py-4">
-                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
+                                            <div
+                                                key={id}
+                                                className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
+                                                onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
+                                            >
+                                                <div onClick={(e) => { stopPropagation(e); handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress }) }} className="cursor-pointer">
                                                     {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
                                                 <Avatar className="h-9 w-9 ml-4">
@@ -200,7 +207,11 @@ export function TopLatestHotPairs({ images }: Props) {
                                     {latestTokens!
                                         .slice(latestTokenPage * 10, (latestTokenPage + 1) * 10)
                                         .map((token: LatestIToken, id: number) => (
-                                            <div key={id} className="flex items-center py-4 hover:bg-muted/50">
+                                            <div
+                                                key={id}
+                                                className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
+                                                onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
+                                            >
                                                 <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
                                                     {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>

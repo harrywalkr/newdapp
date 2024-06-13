@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import Link from 'next/link';
+import { stopPropagation } from "@/utils/stopPropagation";
 
 type Props = {
     className?: string;
@@ -50,7 +51,7 @@ export default function Copy({ text, value, className, href, target }: Props) {
             </div>
             <div
                 className="cursor-pointer text-sm"
-                onClick={() => handleCopyAddress(value ? value : text!)}
+                onClick={(e) => { stopPropagation(e); handleCopyAddress(value ? value : text!) }}
             >
                 <FiCopy
                 />
