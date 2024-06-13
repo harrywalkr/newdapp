@@ -193,6 +193,7 @@ export function Spotlight() {
                                 &&
                                 images && (
                                   <Image
+                                    loading="eager"
                                     width={40}
                                     height={40}
                                     src={
@@ -300,6 +301,7 @@ export function Spotlight() {
                             (item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
                           ) != undefined && (
                               <Image
+                                loading="eager"
                                 className="w-8 h-8 md:w-9 md:h-9"
                                 width={20}
                                 height={20}
