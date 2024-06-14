@@ -43,10 +43,9 @@ interface Props {
 
 export default function WalletDetail({ walletSummary, walletAddress, dateRange, walletBalance }: Props) {
   return (
-    // <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
     <Card className="w-full">
-      <CardContent className="mt-5 overflow-hidden relative">
-        <Tabs defaultValue="Overview" className='w-full h-[1850px] no-scrollbar'>
+      <CardContent className="mt-5 overflow-hidden relative overflow-hidden">
+        <Tabs defaultValue="Overview" className='w-full no-scrollbar'>
           <TabsList className='bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start'>
             <TabsTrigger value="Overview">
               <MdChecklist />
@@ -69,7 +68,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
           </TabsList>
           <TabsContent value="Overview" className='mt-5 h-full flex flex-col md:flex-row items-start justify-between gap-4'>
             <WalletOverview walletSummary={walletSummary} />
-            <Separator orientation="vertical" />
+            <Separator orientation="vertical" flex />
             <div>
               <Card className="border-none w-full ">
                 <CardHeader>
