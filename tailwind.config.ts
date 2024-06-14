@@ -53,7 +53,7 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         skeleton: "hsl(var(--skeleton))",
-        brand: "hsl(var(--brand))",
+        brand: "hsl(var(--brand), <alpha-value>)",
         success: "hsl(var(--success))",
       },
       borderRadius: {
