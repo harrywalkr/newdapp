@@ -43,7 +43,7 @@ export default function WalletCaseScore({
                 data={data}
                 cx={100}
                 cy={100}
-                innerRadius={57}
+                innerRadius={58}
                 outerRadius={65}
                 fill="#8884d8"
                 paddingAngle={5}

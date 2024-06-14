@@ -88,7 +88,7 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
 
     return (
         <div>
-            <div className="flex flex-wrap">
+            {/* <div className="flex flex-wrap">
                 {walletSummary.Top20HotTokenHolders && renderTokenNames(walletSummary.Top20HotTokenHolders, true)}
                 {walletSummary.Top20HotTokenHolders && walletSummary.Top20HotTokenHolders.length > 2 && !showAll && (
                     <span
@@ -108,7 +108,7 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
                         ...
                     </span>
                 )}
-            </div>
+            </div> */}
             <div className="mt-4">
                 <PieChart width={300} height={300}>
 
