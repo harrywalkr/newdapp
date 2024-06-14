@@ -21,6 +21,7 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         queryKey:
             ['walletSummary', walletAddress, dateRange],
         queryFn:
+            // FIXME: combine dateRange & getWalletParams
             () => getWalletSummary(walletAddress, { params: dateRange || {} }),
         initialData: initialWalletSummary,
         enabled: !!dateRange,

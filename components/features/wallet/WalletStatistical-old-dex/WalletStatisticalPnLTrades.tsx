@@ -29,7 +29,6 @@ ChartJS.register(
 );
 
 export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAddress: string }) {
-  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [trades, setTrades] = useState<any>({});
   const [profits, setProfits] = useState<any>({});

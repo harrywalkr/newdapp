@@ -1,23 +1,11 @@
-"use client";
+'use client';
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 type CaseScoreProps = {
   title: string;
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
+  data: { name: string; value: number; color: string }[];
   score: number;
   loading: boolean;
   tooltipText: string;
@@ -36,7 +24,7 @@ export default function WalletCaseScore({
 }: CaseScoreProps) {
   return (
     <div className="flex flex-col max-w-xs items-center">
-      <h2 className="font-medium text-lg text-center flex items-center space-x-1">
+      <div className="font-medium text-lg text-center flex items-center space-x-1">
         <span>
           {title}
           {!loading && `(${score})`}
@@ -44,13 +32,29 @@ export default function WalletCaseScore({
         <div className="tooltip tooltip-bottom" data-tip={tooltipText}>
           <AiOutlineInfoCircle className="text-xl cursor-pointer" />
         </div>
-      </h2>
+      </div>
       <div className="w-[200px] h-[200px] overflow-hidden flex justify-center items-center relative">
         {loading ? (
-          <span className="loading loading-bars loading-md"></span>
+          <span className="loading loading-bars loading-md">loading ...</span>
         ) : (
           <>
-            <Doughnut data={data} className="w-[200px] h-[200px]" />
+            <PieChart width={200} height={200}>
+              <Pie
+                data={data}
+                cx={100}
+                cy={100}
+                innerRadius={57}
+                outerRadius={65}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
             <p className="absolute text-lg opacity-70 font-bold">{score}</p>
           </>
         )}
