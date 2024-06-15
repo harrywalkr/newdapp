@@ -21,14 +21,13 @@ interface Props {
 export default function WalletOverviewChart({ walletSummary }: Props) {
     const [sortBy, setSortBy] = useState<'month' | 'week' | 'year'>('month');
 
-    // This function will now return the total profits based on the sortBy state
     const getProfitData = (): { name: string, totalProfit: number }[] => {
-        const profits = walletSummary.totalProfits[sortBy];
+        const profits = walletSummary.totalProfits ? walletSummary.totalProfits[sortBy] : {};
         const profitData = Object.entries(profits).map(([period, totalProfit]) => ({
             name: period,
             totalProfit: totalProfit as number,
         }));
-        return profitData.reverse(); // Reverse the array to display the data backward
+        return profitData.reverse();
     };
 
     const data = getProfitData();
