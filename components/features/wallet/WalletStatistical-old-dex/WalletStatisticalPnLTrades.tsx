@@ -1,5 +1,5 @@
-'use client'
-import { chartHeight } from "@/utils/animation";
+'use client';
+import { Chart } from 'react-chartjs-2';
 import {
   BarController,
   BarElement,
@@ -11,10 +11,9 @@ import {
   LinearScale,
   PointElement,
   Tooltip,
-} from "chart.js";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Chart } from "react-chartjs-2";
+} from 'chart.js';
+import { getWalletSwaps } from '@/services/http/wallets.http';
+import { useQuery } from '@tanstack/react-query';
 
 ChartJS.register(
   LinearScale,
@@ -29,125 +28,86 @@ ChartJS.register(
 );
 
 export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAddress: string }) {
-  const [loading, setLoading] = useState(true);
-  const [trades, setTrades] = useState<any>({});
-  const [profits, setProfits] = useState<any>({});
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['walletSwaps', walletAddress],
+    queryFn: () => getWalletSwaps({ params: { address: walletAddress } })
+  })
 
-  useEffect(() => {
-    fetch(`https://onchain.dextrading.com/api/swaps?address=${walletAddress}`)
-      .then((data) => data.json())
-      .then((json) => {
-        const rawData = json.swapWallet;
-        const data = rawData
-          .map((dd: any) => {
-            let bt = [];
-            let st = [];
-            bt = dd["Buy Times"];
-            st = dd["Sell Times"];
-            return {
-              ...dd,
-              buyTime: bt,
-              sellTime: st,
-            };
-          })
-          .map((dd: any) => {
-            const times = [
-              ...dd.buyTime.map((d: any) => d.time),
-              ...dd.sellTime.map((d: any) => d.time),
-            ];
-            return {
-              ...dd,
-              TTime: times[0],
-            };
-          });
-        const ddd = data.sort((a: any, b: any) => {
-          const aTime = new Date(a.TTime).getTime();
-          const bTime = new Date(b.TTime).getTime();
+  if (isLoading) {
+    return <span className="loading loading-bars loading-md">loading ...</span>;
+  }
 
-          return aTime > bTime ? -1 : aTime < bTime ? 1 : 0;
-        });
-        const labels: string[] = ddd.map((j: any) => j["tokenName"]);
-        setTrades({
-          labels,
-          datasets: [
-            {
-              type: "bar" as const,
-              label: "Buy Amount (USD)",
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.5)",
-              fill: true,
-              tension: 0.4,
-              cubicInterpolationMode: "monotone",
-              pointRadius: 3,
-              pointHoverRadius: 10,
-              data: ddd.map((d: any) =>
-                d["Buy Amount (USD)"]
-              ),
-            },
-            {
-              type: "bar" as const,
-              label: "Sell Amount (USD)",
-              borderColor: "rgb(255, 99, 132)",
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-              fill: true,
-              tension: 0.4,
-              cubicInterpolationMode: "monotone",
-              pointRadius: 3,
-              pointHoverRadius: 10,
-              data: ddd.map((d: any) =>
-                d["Sell Amount (USD)"]
-              ),
-            },
-          ],
-        });
-        setProfits({
-          labels,
-          datasets: [
-            {
-              type: "line" as const,
-              label: "Profit (USD)",
-              borderColor: "rgb(54, 211, 153)",
-              backgroundColor: "rgba(54, 211, 153, 0.5)",
-              tension: 0.4,
-              cubicInterpolationMode: "monotone",
-              pointRadius: 3,
-              pointHoverRadius: 10,
-              borderWidth: 2,
-              fill: false,
-              data: ddd.map((d: any) =>
-                d["Profit"]
-              ),
-            },
-          ],
-        });
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  if (error || !data) {
+    return <span>Error loading data</span>;
+  }
 
-  if (!trades.datasets || !profits.datasets) return;
+  const rawData = data.swapWallet;
+  const processedData = rawData
+    .map((dd: any) => {
+      const buyTimes = dd['Buy Times'];
+      const sellTimes = dd['Sell Times'];
+      return {
+        ...dd,
+        buyTime: buyTimes,
+        sellTime: sellTimes,
+      };
+    })
+    .map((dd: any) => {
+      const times = [...dd.buyTime.map((d: any) => d.time), ...dd.sellTime.map((d: any) => d.time)];
+      return {
+        ...dd,
+        TTime: times[0],
+      };
+    });
+
+  const sortedData = processedData.sort((a: any, b: any) => {
+    const aTime = new Date(a.TTime).getTime();
+    const bTime = new Date(b.TTime).getTime();
+    return aTime > bTime ? -1 : aTime < bTime ? 1 : 0;
+  });
+
+  const labels = sortedData.map((item: any) => item['tokenName']);
+  const buyAmounts = sortedData.map((item: any) => item['Buy Amount (USD)']);
+  const sellAmounts = sortedData.map((item: any) => item['Sell Amount (USD)']);
+  const profits = sortedData.map((item: any) => item['Profit']);
+
+  const tradesData = {
+    labels,
+    datasets: [
+      {
+        type: 'bar' as const,
+        label: 'Buy Amount (USD)',
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        data: buyAmounts,
+      },
+      {
+        type: 'bar' as const,
+        label: 'Sell Amount (USD)',
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        data: sellAmounts,
+      },
+    ],
+  };
+
+  const profitsData = {
+    labels,
+    datasets: [
+      {
+        type: 'line' as const,
+        label: 'Profit (USD)',
+        borderColor: 'rgb(54, 211, 153)',
+        backgroundColor: 'rgba(54, 211, 153, 0.5)',
+        data: profits,
+      },
+    ],
+  };
 
   return (
-    <div className="mt-10 w-full min-h-[300px] overflow-hidden flex flex-col justify-center items-center gap-5 ">
-      {loading ? (
-        <span className="loading loading-bars loading-md"></span>
-      ) : (
-        <div className="w-full">
-          <Chart
-            type="bar"
-            data={trades}
-            className="w-full"
-            width={1248}
-            height={chartHeight}
-          />
-          <Chart
-            type="line"
-            data={profits}
-            className="w-full"
-            width={1248}
-            height={chartHeight}
-          />
-        </div>
-      )}
-    </div>
+      <div className="w-full">
+        <Chart type="bar" data={tradesData} className="w-full" />
+        <Chart type="line" data={profitsData} className="w-full" />
+      </div>
   );
 }

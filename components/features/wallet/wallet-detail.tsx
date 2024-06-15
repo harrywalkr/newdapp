@@ -44,7 +44,7 @@ interface Props {
 export default function WalletDetail({ walletSummary, walletAddress, dateRange, walletBalance }: Props) {
   return (
     <Card className="w-full">
-      <CardContent className="mt-5 overflow-hidden relative overflow-hidden">
+      <CardContent className="mt-5 overflow-hidden relative">
         <Tabs defaultValue="Overview" className='w-full no-scrollbar'>
           <TabsList className='bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start'>
             <TabsTrigger value="Overview">
@@ -69,13 +69,13 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
           <TabsContent value="Overview" className='mt-5 h-full flex flex-col md:flex-row items-start justify-between gap-4'>
             <WalletOverview walletSummary={walletSummary} />
             <Separator orientation="vertical" flex />
-            <div>
+            <div className="w-full">
               <Card className="border-none w-full ">
                 <CardHeader>
                   <CardTitle>Statistics</CardTitle>
                   <CardDescription>Analyze Data from traders with high quality</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent >
                   <WalletStatisticalPnLTrades walletAddress={walletAddress} />
                 </CardContent>
               </Card>

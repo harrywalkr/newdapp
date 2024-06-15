@@ -1,24 +1,24 @@
 'use client'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Copy from '@/components/ui/copy'
-import { KeyValue } from '@/components/ui/key-value'
-import { WalletBalanceType } from '@/types/wallet-balance.type'
-import { WalletSummaryType } from '@/types/wallet-summary.type'
-import { separate3digits } from '@/utils/numbers'
-import { minifyContract, minifyTokenName } from '@/utils/truncate'
-import React from 'react'
-import { BiCoin } from 'react-icons/bi'
-import { FaRankingStar } from 'react-icons/fa6'
-import { IoMoonOutline, IoReceiptOutline, IoSunnyOutline } from 'react-icons/io5'
-import { MdAttachMoney, MdOutlineScoreboard } from 'react-icons/md'
-import { TbSunMoon } from 'react-icons/tb'
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Copy from '@/components/ui/copy';
+import { KeyValue } from '@/components/ui/key-value';
+import { WalletBalanceType } from '@/types/wallet-balance.type';
+import { WalletSummaryType } from '@/types/wallet-summary.type';
+import { separate3digits } from '@/utils/numbers';
+import { minifyContract, minifyTokenName } from '@/utils/truncate';
+import { BiCoin } from 'react-icons/bi';
+import { FaRankingStar } from 'react-icons/fa6';
+import { IoMoonOutline, IoReceiptOutline, IoSunnyOutline } from 'react-icons/io5';
+import { MdAttachMoney, MdOutlineScoreboard } from 'react-icons/md';
+import { TbSunMoon } from 'react-icons/tb';
 import { IoIosWine } from "react-icons/io";
-import { DatePickerWithRange } from './DatePickerWithRange'
-import { AvatarPlaceholder } from '@/components/ui/avatar'
-import WalletTimelineActivity from './WalletTimelineActivity'
-import { Progress } from '@/components/ui/progress'
-import WalletOverviewChart from './WalletOverviewChart'
-import { useMedia } from 'react-use'
+import WalletTimelineActivity from './WalletTimelineActivity';
+import { Progress } from '@/components/ui/progress';
+import WalletOverviewChart from './WalletOverviewChart';
+import { useMedia } from 'react-use';
+import { AvatarPlaceholder } from '@/components/ui/avatar';
+import { DatePicker } from '@/components/ui/date-picker';
 
 interface Props {
     walletAddress: string;
@@ -30,8 +30,26 @@ interface Props {
 // FIXME: Add hover card tooltip for more info and redirect to blog
 export default function WalletOverview({ walletAddress, initialWalletSummary, walletBalance, onDateChange }: Props) {
     const isDesktop = useMedia('(min-width: 1024px)');
-    const isMobile = useMedia('(max-width: 767px)');
+    const [fromDate, setFromDate] = useState<Date>();
+    const [toDate, setToDate] = useState<Date>();
 
+    const handleDateChange = () => {
+        console.log('hello hello helllo hello')
+        if (fromDate && toDate) {
+            console.log({
+                from: fromDate.toISOString().split('T')[0],
+                till: toDate.toISOString().split('T')[0],
+            })
+            onDateChange({
+                from: fromDate.toISOString().split('T')[0],
+                till: toDate.toISOString().split('T')[0],
+            });
+        }
+    };
+
+    React.useEffect(() => {
+        handleDateChange();
+    }, [fromDate, toDate]);
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
@@ -44,17 +62,20 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         <div className='left flex items-start justify-start gap-4'>
                             <AvatarPlaceholder />
                             <div>
-                                <Copy className='text-sm' text={isDesktop ? walletAddress : minifyContract(walletAddress)} value={walletAddress} />
+                                <div className='text-sm hidden md:block'>
+                                    <Copy text={walletAddress} value={walletAddress} />
+                                </div>
+                                <div className='text-sm block md:hidden'>
+                                    <Copy text={minifyContract(walletAddress)} value={walletAddress} />
+                                </div>
                                 <div className='flex items-center justify-start gap-3'>
-                                    {
-                                        initialWalletSummary?.transactionMetrics?.walletAge != undefined &&
+                                    {initialWalletSummary?.transactionMetrics?.walletAge != undefined &&
                                         <KeyValue
                                             title='Age'
                                             value={initialWalletSummary.transactionMetrics.walletAge + ' Days'}
                                             variant='default' />
                                     }
-                                    {
-                                        initialWalletSummary.totalScore &&
+                                    {initialWalletSummary.totalScore &&
                                         <KeyValue
                                             title='Score'
                                             titleIcon={<MdOutlineScoreboard />}
@@ -66,8 +87,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                             </div>
                         </div>
                         <div className="right mt-3 md:mt-0">
-                            {
-                                initialWalletSummary.holdingTimeLabel != undefined &&
+                            {initialWalletSummary.holdingTimeLabel != undefined &&
                                 <div>{initialWalletSummary.holdingTimeLabel}</div>
                             }
                         </div>
@@ -83,8 +103,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                 </CardHeader>
                 <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-10'>
                     <div className="left flex flex-col gap-2">
-                        {
-                            initialWalletSummary.netProfit != undefined &&
+                        {initialWalletSummary.netProfit != undefined &&
                             <KeyValue
                                 title='Net Profit'
                                 value={
@@ -96,15 +115,13 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                         : "bad"
                                 } />
                         }
-                        {
-                            initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
+                        {initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
                             <KeyValue
                                 title='Avg Holding Time'
                                 value={initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime}
                                 variant='default' />
                         }
-                        {
-                            initialWalletSummary?.highestProfit && initialWalletSummary.highestProfit[1] != undefined &&
+                        {initialWalletSummary?.highestProfit && initialWalletSummary.highestProfit[1] != undefined &&
                             initialWalletSummary.highestProfit[0] != undefined &&
                             <KeyValue
                                 stretch
@@ -114,8 +131,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                 variant="default"
                             />
                         }
-                        {
-                            initialWalletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
+                        {initialWalletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
                             <KeyValue
                                 stretch
                                 symbol='dollar'
@@ -128,24 +144,23 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                 variant="default"
                             />
                         }
-                        {
-                            initialWalletSummary.winRate != undefined &&
-                            <div >
-                                {
-                                    initialWalletSummary.winRate != undefined &&
-                                    <KeyValue
-                                        title='Winrate'
-                                        className='mt-1'
-                                        titleIcon={<IoIosWine />}
-                                        value={(+initialWalletSummary.winRate / 10).toFixed(2)}
-                                        variant='default' />
-                                }
+                        {initialWalletSummary.winRate != undefined &&
+                            <div>
+                                <KeyValue
+                                    title='Winrate'
+                                    className='mt-1'
+                                    titleIcon={<IoIosWine />}
+                                    value={(+initialWalletSummary.winRate / 10).toFixed(2)}
+                                    variant='default' />
                                 <Progress className='mt-2' value={+initialWalletSummary.winRate} />
-
                             </div>
-
                         }
-
+                        <div className="mt-4">
+                            <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
+                        </div>
+                        <div className="mt-4">
+                            <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
+                        </div>
                     </div>
                     <div className="right h-32 my-10 md:mt-0 w-full">
                         <WalletOverviewChart walletSummary={initialWalletSummary} />
@@ -153,7 +168,6 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                     </div>
                 </CardContent>
             </Card>
-
         </div>
-    )
+    );
 }

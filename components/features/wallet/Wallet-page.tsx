@@ -16,33 +16,37 @@ interface Props {
 
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance }) => {
     const [dateRange, setDateRange] = useState<{ from: string, till: string } | null>(null);
+    const [walletParams, setWalletParams] = useState<{ limit?: number; from?: string; till?: string }>({});
 
     const { data: walletSummary, refetch: refetchSummary } = useQuery({
-        queryKey:
-            ['walletSummary', walletAddress, dateRange],
-        queryFn:
-            // FIXME: combine dateRange & getWalletParams
-            () => getWalletSummary(walletAddress, { params: dateRange || {} }),
+        queryKey: ['walletSummary', walletAddress, dateRange, walletParams],
+        queryFn: () => getWalletSummary(walletAddress, { params: { ...dateRange, ...walletParams } }),
         initialData: initialWalletSummary,
         enabled: !!dateRange,
     });
 
     const { data: walletBalance } = useQuery({
-        queryKey:
-            ['walletBalance', walletAddress],
-        queryFn:
-            () => getWalletBalance(walletAddress),
+        queryKey: ['walletBalance', walletAddress],
+        queryFn: () => getWalletBalance(walletAddress),
         initialData: initialWalletBalance,
-    }
-    );
+    });
+
+    useEffect(() => {
+        const fetchWalletParams = async () => {
+            const params = await getWalletParams(walletAddress, "ethereum"); // Use network as needed
+            setWalletParams(params);
+        };
+
+        fetchWalletParams();
+    }, [walletAddress]);
 
     useEffect(() => {
         if (dateRange) {
             refetchSummary();
         }
-    }, [dateRange, refetchSummary]);
+    }, [dateRange, refetchSummary, walletParams]);
 
-    const handleDateChange = async (newDateRange: { from: string, till: string }) => {
+    const handleDateChange = (newDateRange: { from: string, till: string }) => {
         setDateRange(newDateRange);
     };
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 
@@ -20,14 +21,25 @@ export default function WalletCaseScore({
   loading,
   tooltipText,
   caseLabel,
-  caseLabelColor,
+  caseLabelColor = 'bg-base-content/80',
 }: CaseScoreProps) {
+  // Ensure the component only renders on the client side
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Render nothing on the server-side
+  }
+
   return (
     <div className="flex flex-col max-w-xs items-center">
       <div className="font-medium text-lg text-center flex items-center space-x-1">
         <span>
           {title}
-          {!loading && `(${score})`}
+          {!loading && ` (${score})`}
         </span>
         <div className="tooltip tooltip-bottom" data-tip={tooltipText}>
           <AiOutlineInfoCircle className="text-xl cursor-pointer" />
@@ -59,7 +71,7 @@ export default function WalletCaseScore({
           </>
         )}
       </div>
-      <div className={`h-min flex justify-center gap-1 ${caseLabelColor || 'bg-base-content/80'} p-2 rounded-md px-4 mt-5`}>
+      <div className={`h-min flex justify-center gap-1 ${caseLabelColor} p-2 rounded-md px-4 mt-5`}>
         <span className="font-medium whitespace-nowrap text-base-100">
           {caseLabel}
         </span>
