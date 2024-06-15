@@ -156,7 +156,7 @@ const Record = ({ data }: { data: DextradeByToken }) => {
                 <div className="flex items-center text-info gap-2">
                     {
                         data.maker &&
-                        <Copy href={`https://etherscan.io/address/${data.maker}`} target="blank" value={data.maker} text={minifyContract(data.maker)} />
+                        <Copy href={`https://etherscan.io/address/${data.maker}`} target="_blank" value={data.maker} text={minifyContract(data.maker)} />
                     }
                 </div>
             </TableCell>
