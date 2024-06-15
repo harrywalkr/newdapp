@@ -19,29 +19,19 @@ interface Props {
 }
 
 export default function WalletOverviewChart({ walletSummary }: Props) {
-    const [sortBy, setSortBy] = useState<'month' | 'week' | 'year'>('month')
+    const [sortBy, setSortBy] = useState<'month' | 'week' | 'year'>('month');
 
-    const convertWallet = (sortBy: 'month' | 'week' | 'year'): any[] => {
-        const summary: WalletSummaryType = walletSummary;
-        const totalBuySellTimes = summary.totalBuySellTimes || { month: {}, week: {}, year: {} };
-        const totalBuyAmounts = summary.totalBuyAmounts || { month: {}, week: {}, year: {} };
-        const totalSellAmounts = summary.totalSellAmounts || { month: {}, week: {}, year: {} };
+    // This function will now return the total profits based on the sortBy state
+    const getProfitData = (): { name: string, totalProfit: number }[] => {
+        const profits = walletSummary.totalProfits[sortBy];
+        const profitData = Object.entries(profits).map(([period, totalProfit]) => ({
+            name: period,
+            totalProfit: totalProfit as number,
+        }));
+        return profitData.reverse(); // Reverse the array to display the data backward
+    };
 
-        return Object.keys(totalBuySellTimes[sortBy] || {}).map((item: string, index) => {
-            return {
-                name: index,
-                totalBuyAmounts: totalBuyAmounts[sortBy][item] || 0,
-                totalSellAmounts: totalSellAmounts[sortBy][item] || 0,
-                totalBuySellTimes: totalBuySellTimes[sortBy][item] || 0,
-            }
-        });
-    }
-
-    const data = convertWallet(sortBy);
-    const isDataPresent = data.length > 0;
-    const firstTotalBuyAmount = isDataPresent ? data[0].totalBuyAmounts : 0;
-    const lastTotalSellAmount = isDataPresent ? data[data.length - 1].totalSellAmounts : 0;
-    const isBuyAmountLess = firstTotalBuyAmount < lastTotalSellAmount;
+    const data = getProfitData();
 
     return (
         <div className='w-full h-full'>
@@ -68,9 +58,11 @@ export default function WalletOverviewChart({ walletSummary }: Props) {
                         </linearGradient>
                     </defs>
                     <Tooltip />
-                    <Area type="monotone" dataKey="totalBuyAmounts" stackId="1"
-                        stroke={isBuyAmountLess ? '#4ade80' : '#ef4444'}
-                        fill={isBuyAmountLess ? 'url(#success)' : 'url(#error)'}
+                    <Area
+                        type="monotone"
+                        dataKey="totalProfit"
+                        stroke="#82ca9d"
+                        fill="url(#success)"
                     />
                 </AreaChart>
             </ResponsiveContainer>

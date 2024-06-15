@@ -34,12 +34,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
     const [toDate, setToDate] = useState<Date>();
 
     const handleDateChange = () => {
-        console.log('hello hello helllo hello')
         if (fromDate && toDate) {
-            console.log({
-                from: fromDate.toISOString().split('T')[0],
-                till: toDate.toISOString().split('T')[0],
-            })
             onDateChange({
                 from: fromDate.toISOString().split('T')[0],
                 till: toDate.toISOString().split('T')[0],
@@ -101,8 +96,8 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                 <CardHeader>
                     <CardTitle>Overview</CardTitle>
                 </CardHeader>
-                <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-10'>
-                    <div className="left flex flex-col gap-2">
+                <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-5'>
+                    <div className="left flex flex-1 flex-col gap-2">
                         {initialWalletSummary.netProfit != undefined &&
                             <KeyValue
                                 title='Net Profit'
@@ -124,7 +119,6 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         {initialWalletSummary?.highestProfit && initialWalletSummary.highestProfit[1] != undefined &&
                             initialWalletSummary.highestProfit[0] != undefined &&
                             <KeyValue
-                                stretch
                                 title="Highest Profit"
                                 value={minifyTokenName(initialWalletSummary.highestProfit[1]) + ' : $' + separate3digits(initialWalletSummary.highestProfit[0]?.toFixed(2))}
                                 valueIcon={<Copy value={initialWalletSummary.highestProfit[2]} />}
@@ -133,7 +127,6 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         }
                         {initialWalletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
                             <KeyValue
-                                stretch
                                 symbol='dollar'
                                 title="Avg P&L"
                                 value={
@@ -155,16 +148,13 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                 <Progress className='mt-2' value={+initialWalletSummary.winRate} />
                             </div>
                         }
-                        <div className="mt-4">
+                        <div className="mt-4 flex items-center justify-start gap-4">
                             <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
-                        </div>
-                        <div className="mt-4">
                             <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
                         </div>
                     </div>
-                    <div className="right h-32 my-10 md:mt-0 w-full">
+                    <div className="right h-32 flex-1 my-10 md:mt-0 w-full ">
                         <WalletOverviewChart walletSummary={initialWalletSummary} />
-                        <div className="bottom"></div>
                     </div>
                 </CardContent>
             </Card>
