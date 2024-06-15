@@ -15,14 +15,14 @@ import {
 
 interface DatePickerProps {
   label: string;
-  selectedDate: Date | undefined;
+  selectedDate?: Date;
   onSelect: (date: Date) => void;
 }
-
 export function DatePicker({ label, selectedDate, onSelect }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
-  const handleSelect = (date: Date) => {
+  const handleSelect = (date?: Date) => {
+    if (date == undefined) return
     onSelect(date);
     setOpen(false);
   };
