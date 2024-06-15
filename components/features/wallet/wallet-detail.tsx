@@ -34,6 +34,7 @@ import WalletOverview from "./WalletOverview2";
 import { Separator } from "@/components/ui/separator";
 import WalletScoring from "./WalletScoring/WalletScoring";
 import TopRatedTokens from "./TopRatedTokens";
+import WalletPortfolio from "./TokenBalance";
 interface Props {
   walletAddress: string;
   walletSummary: WalletSummaryType;
@@ -52,6 +53,10 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
               <span className='ml-1'>
                 Overview
               </span>
+            </TabsTrigger>
+            <TabsTrigger value="Portfolio">
+              <IoIosSwap />
+              <span className='ml-1'>Portfolio</span>
             </TabsTrigger>
             <TabsTrigger value="Trade History">
               <IoIosSwap />
@@ -98,6 +103,9 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
               </Card>
             </div>
             {/* <TokenBalance walletAddress={walletAddress} walletSummary={walletSummary} /> */}
+          </TabsContent>
+          <TabsContent value="Portfolio" className='mt-5'>
+            <WalletPortfolio walletSummary={walletSummary} walletAddress={walletAddress}/>
           </TabsContent>
           <TabsContent value="Trade History" className='mt-5'>
             <WalletSwaps walletAddress={walletAddress} dateRange={dateRange} />
