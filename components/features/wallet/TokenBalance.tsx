@@ -12,6 +12,8 @@ import { minifyTokenName, minifyContract } from '@/utils/truncate';
 import Copy from '@/components/ui/copy';
 import { ImageType } from '@/types/Image.type';
 import WalletPortfolioHistory from './WalletPortfolioHistory';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -56,30 +58,41 @@ export default function WalletPortfolio({ walletAddress, walletSummary }: Props)
     if (walletSwapsError || imagesError) return <div>Error loading data</div>;
 
     return (
-        <div className="wallet-portfolio p-6">
+        <div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="balance-display">
-                    <span className="text-lg font-bold">Total Balance: ${formatCash(walletSummary.CurrentBalance!)}</span>
-                    <div className='w-60 h-60'>
-                        <Pie data={totalScore} height={200} width={200} />
-                    </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <span className="text-lg font-bold">Partially Closed</span>
-                    <div className="flex flex-col gap-2">
+                <Card className='border-none'>
+                    <CardHeader>
+                        <CardTitle>Partially Closed</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         {walletSwaps!.partiallyClosedPositions.slice(0, 3).map((pcp, idx) => (
                             <ClosedTokenCard key={idx} images={images!} token={pcp} />
                         ))}
-                    </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <span className="text-lg font-bold">Open</span>
-                    <div className="flex flex-col gap-2">
+                    </CardContent>
+                </Card>
+                <Card className='border-none'>
+                    <CardHeader>
+                        <CardTitle>Open</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         {walletSwaps!.notClosedPositions.slice(0, 3).map((pcp, idx) => (
                             <OpenTokenCard key={idx} images={images!} token={pcp} />
                         ))}
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
+                <Card className='border-none'>
+                    <CardHeader>
+                        <CardTitle>Balance Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent className='flex items-start justify-start gap-2'>
+                        <div className='w-60 h-60'>
+                            <Pie data={totalScore} height={200} width={200} />
+                        </div>
+                        <div>
+                            <h3>Total Balance: ${formatCash(walletSummary.CurrentBalance!)}</h3>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
             <WalletPortfolioHistory walletSwaps={walletSwaps!.balance} images={images!} />
         </div>
@@ -107,35 +120,17 @@ const ClosedTokenCard: React.FC<PartialTokenCardProps> = ({ images, token }) => 
     }, [images, token['Currency Address']]);
 
     return (
-        <div className="bg-base-200 p-2 pr-4 rounded-xl">
-            <div className="flex items-center gap-2">
-                <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                        {image ? (
-                            <Image
-                                width={48}
-                                height={48}
-                                src={image}
-                                alt={token.tokenName}
-                                className="rounded-full"
-                            />
-                        ) : (
-                            <div className="flex justify-center items-center w-12 h-12 font-bold text-base border border-base-content rounded-full">
-                                {token.tokenName.charAt(0)}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                    <span className="font-medium">{minifyTokenName(token.tokenName)}</span>
-                    <div className="flex items-center gap-2">
-                        <span className="opacity-40">{minifyContract(token['Currency Address'])}</span>
-                        <Copy value={token['Currency Address']} />
-                    </div>
-                </div>
-                <div className="font-medium ml-auto">
-                    ${separate3digits(token['Buy Amount (USD)'].toFixed(2))}
-                </div>
+        <div className="flex items-center gap-4 mb-5">
+            <Avatar>
+                <AvatarImage src={image} alt={token.tokenName} />
+                <AvatarFallback>{token.tokenName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col ">
+                <span className="font-medium">{minifyTokenName(token.tokenName)}</span>
+                <Copy className='text-muted-foreground' text={minifyContract(token['Currency Address'])} value={token['Currency Address']} />
+            </div>
+            <div className="font-medium ml-auto">
+                ${separate3digits(token['Buy Amount (USD)'].toFixed(2))}
             </div>
         </div>
     );
@@ -160,35 +155,14 @@ const OpenTokenCard: React.FC<OpenTokenCardProps> = ({ images, token }) => {
     }, [images, token, image]);
 
     return (
-        <div className="bg-base-200 p-2 pr-4 rounded-xl">
-            <div className="flex items-center gap-2">
-                <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                        {image ? (
-                            <Image
-                                width={48}
-                                height={48}
-                                src={image}
-                                alt={token[0].tokenName}
-                                className="rounded-full"
-                            />
-                        ) : (
-                            <div className="flex justify-center items-center w-12 h-12 font-bold text-base border border-base-content rounded-full">
-                                {token[0]?.tokenName != undefined && token[0].tokenName.charAt(0)}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                    <span className="font-medium">{minifyTokenName(token[0].tokenName)}</span>
-                    <div className="flex items-center gap-2">
-                        <span className="opacity-40">{minifyContract(token[1]['Currency Address'])}</span>
-                        <Copy text={token[1]['Currency Address']} />
-                    </div>
-                </div>
-                <div className="font-medium ml-auto">
-                    ${separate3digits(token[1]['Buy Amount (USD)'].toFixed(2))}
-                </div>
+        <div className="flex items-center gap-4 mb-5">
+            <Avatar>
+                <AvatarImage src={image} alt={token[0]?.tokenName} />
+                <AvatarFallback>{token[0]?.tokenName != undefined && token[0].tokenName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <Copy className='text-muted-foreground' text={minifyContract(token[1]['Currency Address'])} value={token[1]['Currency Address']} />
+            <div className="font-medium ml-auto">
+                ${separate3digits(token[1]['Buy Amount (USD)'].toFixed(2))}
             </div>
         </div>
     );

@@ -16,8 +16,17 @@ import { getImages } from '@/services/http/image.http';
 import { SwapType } from '@/types/swap.type';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
 
 dayjs.extend(relativeTime);
 
@@ -105,7 +114,7 @@ export default function WalletTransaction({ dateRange, walletAddress }: Props) {
   return (
     <ScrollArea className="h-96 w-full rounded-md border">
       <ScrollBar orientation="horizontal" />
-      <div className="grid grid-cols-1 gap-5">
+      {/* <div className="grid grid-cols-1 gap-5">
         {walletSwapsQuery.data && sortedSwaps(walletSwapsQuery.data as SwapType).map((swap, id) => {
           if (!swap.type) return null;
           if (swap.type.includes('swap')) {
@@ -114,7 +123,7 @@ export default function WalletTransaction({ dateRange, walletAddress }: Props) {
                 image={swap.type?.includes("swap")
                   ? imageUrl(swap.description?.sentTokenAddress)
                   : swap.currency?.symbol}
-              />;
+              />
               <Separator className="my-2" />
             </div>
           } else {
@@ -128,7 +137,30 @@ export default function WalletTransaction({ dateRange, walletAddress }: Props) {
             </div>
           }
         })}
-      </div>
+      </div> */}
+
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Transaction</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead>Activity</TableHead>
+            <TableHead>Action</TableHead>
+            <TableHead>Gas Fee</TableHead>
+            <TableHead>Swap Value</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell>Paid</TableCell>
+            <TableCell>Credit Card</TableCell>
+            <TableCell className="text-right">$250.00</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
+
     </ScrollArea>
 
   );

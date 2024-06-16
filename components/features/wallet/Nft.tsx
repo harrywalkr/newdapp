@@ -6,6 +6,9 @@ import Image from "next/image";
 import { isPaidMember } from '@/services/auth.service';
 import Copy from "@/components/ui/copy";
 import { minifyContract } from "@/utils/truncate";
+import Paywall from "@/components/common/Paywall";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 dayjs.extend(relativeTime);
 
@@ -28,7 +31,6 @@ export default function WalletNFTHolding({ walletAddress }: Props) {
     const [showMore, setShowMore] = useState(false);
     const [paidMember, setPaidMember] = useState(false);
     const [loadingPaidMember, setLoadingPaidMember] = useState(true);
-    const router = useRouter();
 
     useEffect(() => {
         isPaidMember().then((result) => {
@@ -72,12 +74,11 @@ export default function WalletNFTHolding({ walletAddress }: Props) {
     }
 
     if (!paidMember) {
-        return <div className="w-full h-[350px] flex justify-center items-center">You need to be a paid member to view this content.</div>;
+        return <Paywall />
     }
 
     return (
         <div className="relative flex flex-col gap-5 mt-5">
-            <h2 className="text-2xl font-bold">NFT Holdings</h2>
             {NFTs.length ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                     {(showMore ? NFTs : NFTs.slice(0, 6)).map((nftGroup, idx) => (
@@ -88,17 +89,9 @@ export default function WalletNFTHolding({ walletAddress }: Props) {
                 <p className="px-4 font-medium text-lg opacity-50">No Activity in NFT</p>
             )}
             {!showMore && NFTs.length > 6 && (
-                <div
-                    className="absolute flex justify-center items-center w-full bg-gradient-to-t from-base-300 to-base-300/50 py-8"
-                    style={{ bottom: "-10px", left: 0, right: 0 }}
-                >
-                    <button
-                        onClick={() => setShowMore(true)}
-                        className="btn btn-neutral btn-block lg:btn-wide self-center"
-                    >
-                        Show More
-                    </button>
-                </div>
+                <Button onClick={() => setShowMore(true)}>
+                    Show More
+                </Button>
             )}
         </div>
     );
@@ -111,36 +104,22 @@ const Card = ({ nft }: { nft: NFT[] }) => {
         <div className="bg-base-200/70 p-4 rounded-lg gap-5 min-w-[200px] shadow-lg">
             <div className="flex flex-col gap-5">
                 <h2 className="text-xl font-medium">{nft[0].Currency.Name || "-"}</h2>
-                <div className="flex flex-wrap gap-2">
-                    {nft.slice(0, 4).map((n, idx) => (
-                        <div key={idx} className="avatar">
-                            <div className="mask mask-squircle w-16 h-16">
-                                {n.ImageURLFromMetadata ? (
-                                    <Image
-                                        width={56}
-                                        height={56}
-                                        src={n.ImageURLFromMetadata}
-                                        alt={n.Currency.Name}
-                                        className="rounded-full"
-                                    />
-                                ) : (
-                                    <div className="flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full opacity-30">
-                                        {n.Currency.Name.charAt(0) || "-"}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                <div className="flex items-center gap-2">
+                    {nft.slice(0, 4).map((n, id) => (
+                        <Avatar key={id}>
+                            <AvatarImage
+                                src={n.ImageURLFromMetadata}
+                                alt={n.Currency.Name}
+                            />
+                            <AvatarFallback>{n.Currency.Name.charAt(0) || "-"}</AvatarFallback>
+                        </Avatar>
                     ))}
+
                     {count > 4 && (
-                        <div className="relative -l-12 flex justify-center items-center w-16 h-16 font-medium text-sm border border-base-content rounded-full opacity-30 bg-base-100">
-                            <span className="text-center whitespace-nowrap">+{count - 4} Item</span>
-                        </div>
+                            <span className="text-center whitespace-nowrap text-muted-foreground">+{count - 4} Item</span>
                     )}
                 </div>
-                <div className="flex space-x-2 items-center">
-                    <h3 className="text-md font-medium opacity-40">{minifyContract(nft[0].Currency.SmartContract)}</h3>
-                    <Copy text={nft[0].Currency.SmartContract} />
-                </div>
+                <Copy value={nft[0].Currency.SmartContract} text={minifyContract(nft[0].Currency.SmartContract)} />
             </div>
         </div>
     );

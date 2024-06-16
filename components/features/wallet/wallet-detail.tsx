@@ -2,33 +2,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WalletBalanceType } from '@/types/wallet-balance.type';
 import { WalletSummaryType } from '@/types/wallet-summary.type';
 import { FaRankingStar } from 'react-icons/fa6';
-import { IoShieldHalfOutline } from 'react-icons/io5';
 import { MdChecklist } from 'react-icons/md';
-import { RiExchangeDollarFill, RiNftLine } from 'react-icons/ri';
-import CustomizedTimeline from './Timeline';
+import { RiNftLine } from 'react-icons/ri';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import WalletSummaryComponent from "./Wallet-summary";
-import { IoMdTime } from "react-icons/io";
-import DoughnutChart from "@/components/ui/Doughnut";
-import { Progress } from "@/components/ui/progress";
-import { KeyValue } from "@/components/ui/key-value";
 import { IoIosSwap } from "react-icons/io";
 import WalletSwaps from "./Wallet-swaps";
-import { TbTransactionBitcoin } from "react-icons/tb";
-import WalletTransactions from "./Wallet-transactions";
-import { GoGraph } from "react-icons/go";
-import WalletStatistical from "./WalletStatistical-old-dex/WalletStatistical";
-import RenderConditionalComponent from "@/components/common/RenderConditionalComponent";
-import { isPaidMember } from "@/services/auth.service";
-import Paywall from "@/components/common/Paywall";
 import WalletTransactionOldShit from "./WalletTransaction-old-shit";
-import Nft from "./Nft";
-import Statistical from "./statistical";
-import TokenBalance from "./TokenBalance";
 import WalletStatisticalPnLTrades from "./WalletStatistical-old-dex/WalletStatisticalPnLTrades";
-import WalletStatisticalPnLHistory from "./WalletStatistical-old-dex/WalletStatisticalPnLHistory";
-import WalletStatisticalPercentageHistory from "./WalletStatistical-old-dex/WalletStatisticalPercentageHistory";
-import WalletStatisticalTradeCounts from "./WalletStatistical-old-dex/WalletStatisticalTradeCounts";
 import WalletNFTHolding from "./Nft";
 import WalletOverview from "./WalletOverview2";
 import { Separator } from "@/components/ui/separator";
@@ -102,10 +82,9 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
                 </CardContent>
               </Card>
             </div>
-            {/* <TokenBalance walletAddress={walletAddress} walletSummary={walletSummary} /> */}
           </TabsContent>
           <TabsContent value="Portfolio" className='mt-5'>
-            <WalletPortfolio walletSummary={walletSummary} walletAddress={walletAddress}/>
+            <WalletPortfolio walletSummary={walletSummary} walletAddress={walletAddress} />
           </TabsContent>
           <TabsContent value="Trade History" className='mt-5'>
             <WalletSwaps walletAddress={walletAddress} dateRange={dateRange} />
@@ -113,52 +92,11 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
           <TabsContent value="NFT Balance" className='mt-5'>
             <WalletNFTHolding walletAddress={walletAddress} />
           </TabsContent>
-          <TabsContent value="transactions" className='mt-5'>
+          <TabsContent value="Transactions" className='mt-5'>
             <WalletTransactionOldShit walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
-
-    // <Card className="w-full">
-    //   <CardHeader>
-    //     <CardTitle>Statistical</CardTitle>
-    //   </CardHeader>
-    //   <CardContent className="mt-5 overflow-hidden relative">
-    //     <Tabs defaultValue="Pnl Trades" className='w-full no-scrollbar'>
-    //       <TabsList className='bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start'>
-    //         <TabsTrigger value="Pnl Trades">
-    //           <MdChecklist />
-    //           <span className='ml-1'>
-    //             Pnl Trades
-    //           </span>
-    //         </TabsTrigger>
-    //         <TabsTrigger value="Pnl History">
-    //           <FaRankingStar />
-    //           <span className='ml-1'>Pnl History</span>
-    //         </TabsTrigger>
-    //         <TabsTrigger value="Pnl Trade Count">
-    //           <IoIosSwap />
-    //           <span className='ml-1'>Pnl Trade Count</span>
-    //         </TabsTrigger>
-    //       </TabsList>
-    //       <TabsContent value="Pnl Trades" className='mt-5 w-full'>
-    //         <WalletStatisticalPnLTrades walletAddress={walletAddress} />
-    //       </TabsContent>
-    //       <TabsContent value="Pnl History" className='mt-5'>
-    //         <div className="w-full lg:col-span-2">
-    //           <WalletStatisticalPnLHistory walletInfo={walletSummary} />
-    //         </div>
-    //         <div className="w-full lg:col-span-2 mt-5">
-    //           <WalletStatisticalPercentageHistory walletInfo={walletSummary} />
-    //         </div>
-    //       </TabsContent>
-    //       <TabsContent value="Pnl Trade Count" className='mt-5'>
-    //         <WalletStatisticalTradeCounts walletInfo={walletSummary} />
-    //       </TabsContent>
-    //     </Tabs>
-    //   </CardContent>
-    // </Card> 
-    // </div>
   );
 }
