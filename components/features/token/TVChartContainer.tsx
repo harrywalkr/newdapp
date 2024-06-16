@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionString, LanguageCode, IBasicDataFeed, IDatafeedQuotesApi } from "@/public/static/charting_library";
 import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
+import { cn } from '@/lib/utils';
 
 const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
     return {
@@ -88,10 +89,11 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
 interface Props {
     chartOptions: Partial<ChartingLibraryWidgetOptions>,
     ohlcvData: IOhlcvData[],
+    className?: string,
     theme: 'dark' | 'light'
 }
 
-export const TVChartContainer = ({ chartOptions, ohlcvData, theme }: Props) => {
+export const TVChartContainer = ({ chartOptions, ohlcvData, theme, className }: Props) => {
     const chartContainerRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
     useEffect(() => {
@@ -128,5 +130,5 @@ export const TVChartContainer = ({ chartOptions, ohlcvData, theme }: Props) => {
         }
     }, [chartOptions, ohlcvData, theme]);
 
-    return <div ref={chartContainerRef} className='h-80 md:h-96' />;
+    return <div ref={chartContainerRef} className={cn('w-full', className)} />;
 };

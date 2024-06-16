@@ -51,17 +51,17 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
             {token?.TickersData?.cex !== undefined &&
                 token?.TickersData?.cex?.length > 0 &&
                 token?.TickersData?.cex[0]?.market?.name !== undefined ? (
-                <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-96 md:h-[30rem] rounded-lg overflow-hidden">
+                <div id="tradingviewcontainer" className="my-6 md:my-7 w-full h-[600px] rounded-lg overflow-hidden">
                     <Tradingview
                         symbol={`${token.TickersData.cex[0].market.name}:${token.TickersData.cex[0].base}${token.TickersData.cex[0].target}`}
                     />
                 </div>
             ) : (
-                <>
+                <div className='w-full'>
                     {token!.data![0]?.id?.split("_")[1] != undefined && (
-                        <Chart tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
+                        <Chart className="h-[600px]" tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
                     )}
-                </>
+                </div>
             )}
             <TradeReport tokenAddress={tokenAddress} />
         </div>

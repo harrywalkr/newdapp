@@ -27,13 +27,14 @@ const defaultWidgetProps: Partial<ChartingLibraryWidgetOptions> = {
 interface Props {
   network: string;
   tokenAddress: string;
+  className?: string
 }
 
 const TVChartContainer = dynamic(() => import("@/components/features/token/TVChartContainer").then(mod => mod.TVChartContainer), {
   ssr: false,
 });
 
-export default function Chart({ tokenAddress, network }: Props) {
+export default function Chart({ tokenAddress, network, className }: Props) {
   const { data: iDatafeed, isSuccess } = useQuery<IDatafeed>(
     {
       queryKey: ['ohlcvData'],
@@ -66,8 +67,9 @@ export default function Chart({ tokenAddress, network }: Props) {
         onLoad={() => console.log('chart script loaded')}
       />
       {isSuccess && getOhlcvData(iDatafeed) && getOhlcvData(iDatafeed).length > 0 &&
-        <div className='h-80 md:h-96 w-full my-6 md:my-7'>
+        <div className='h-full w-full my-6 md:my-7'>
           <TVChartContainer
+            className={className}
             chartOptions={{
               ...defaultWidgetProps,
               symbol: iDatafeed.meta.base.name + '/' + iDatafeed.meta.quote.symbol
