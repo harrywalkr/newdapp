@@ -1,7 +1,8 @@
 'use client'
+import { isPaidMember } from "@/services/auth.service";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaLock } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
@@ -20,8 +21,16 @@ export default function CardOldDex({
   isCardOpen,
 }: CardProps) {
   const [isOpen, setIsOpen] = useState(isCardOpen || false);
-  const router = useRouter()
+  const [isPaid, setIsPaid] = useState(false);
+  const router = useRouter();
 
+  useEffect(() => {
+    const checkMembershipStatus = async () => {
+      const paidMember = await isPaidMember();
+      setIsPaid(paidMember);
+    };
+    checkMembershipStatus();
+  }, []);
 
   return (
     <div
@@ -50,7 +59,7 @@ export default function CardOldDex({
                   onClick={() => setIsOpen(true)}
                 /> : <>
                   {
-                    title === 'rank' ?
+                    title === 'rank' || isPaid ?
                       <FiChevronDown
                         className="cursor-pointer"
                         onClick={() => setIsOpen(true)}

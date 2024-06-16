@@ -9,13 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { IWallet} from "@/types/Wallet.type";
+import { IWallet } from "@/types/Wallet.type";
 import { FilterType, initTopWalletFilters } from "@/types/topwallet.type";
 import { BiFilterAlt } from "react-icons/bi";
 import Filter from "../homepage/Filter-old-dex";
 import { GrPowerReset } from "react-icons/gr";
 import { Button } from "@/components/ui/button";
 import Search from "../homepage/Search-old-dex";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Prop {
   layout: any;
@@ -65,7 +66,7 @@ export default function WalletsFilter({
       <div>
         <div className="flex items-center justify-start gap-6 mb-5">
           <Search wallet={wallet} onSearch={onSearch} />
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog open={isOpen} onOpenChange={setIsOpen} >
             <DialogTrigger className="">
               <div className="flex items-center justify-center gap-2">
                 <BiFilterAlt />
@@ -74,23 +75,25 @@ export default function WalletsFilter({
                 </span>
               </div>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="h-4/6 max-h-screen">
               <DialogHeader>
                 <DialogTitle>Top Wallets Filters</DialogTitle>
                 <DialogDescription>
                   Apply Filters to the top wallet and find out what makes them tick
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-4">
-                {Object.keys(initTopWalletFilters).map((key: string) => (
-                  <Filter
-                    key={key}
-                    filter={initTopWalletFilters[key]}
-                    updateLocalFilters={updateLocalFilter}
-                    resetFilter={resetFilter}
-                  />
-                ))}
-              </div>
+              <ScrollArea className="h-full">
+                <div className="mt-4">
+                  {Object.keys(initTopWalletFilters).map((key: string) => (
+                    <Filter
+                      key={key}
+                      filter={initTopWalletFilters[key]}
+                      updateLocalFilters={updateLocalFilter}
+                      resetFilter={resetFilter}
+                    />
+                  ))}
+                </div>
+              </ScrollArea>
               <div className="flex gap-3 items-center justify-end mt-4">
                 <Button
                   variant='outline'

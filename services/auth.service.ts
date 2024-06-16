@@ -1,33 +1,11 @@
 import { AxiosRequestConfig } from "axios";
 import { fetchData } from "./http/axios.config";
 
-// export async function isPaidMember(): Promise<boolean> {
-//   const key = localStorage.getItem("LICENSE_KEY");
-//   if (!key) {
-//     return false;
-//   } else {
-//     verifyKey(key)
-//       .then((data) => {
-//         console.log("hello", data);
-//         if (data === "OK") return true;
-//         return false;
-//       })
-//       .catch((error: Error) => {
-//         console.error("Error fetching key:", error.message);
-//         return false;
-//       });
-//     // FIXME: refactor this code
-//     return false;
-//   }
-//   // FIXME: Backend must implement checkMembership api
-// }
-
 export async function isPaidMember(): Promise<boolean> {
   const key = localStorage.getItem("LICENSE_KEY");
   if (!key) {
     return false;
   }
-
   try {
     const data = await verifyKey(key);
     return data === "OK";
