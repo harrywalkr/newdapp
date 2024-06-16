@@ -145,6 +145,7 @@ export function Spotlight() {
                 <div
                   className="cursor-pointer px-3 flex items-center gap-3 pb-4"
                   onClick={() => {
+                    setOpen(!open)
                     addToLocalStorage(wallet);
                     router.push(`/wallet/${wallet.subject.address}`);
                   }}
