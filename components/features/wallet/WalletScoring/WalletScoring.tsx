@@ -75,13 +75,13 @@ export default function WalletScoring({ walletSummary }: Props) {
             tooltipText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quos neque consequuntur dolorem suscipit mollitia obcaecati nulla iste possimus provident facilis eveniet fugiat amet aperiam, eum porro ratione nostrum quisquam."
           />
         )}
-        {walletSummary.DextraderScore && walletSummary.DextraderScore.length > 0 && (
+        {walletSummary.DextraderScore != undefined && (
           <WalletCaseScore
             title="DexTrader"
             caseLabel={walletSummary.details || ''}
             caseLabelColor="bg-warning/80"
             data={DEXTraderData}
-            score={walletSummary.DextraderScore[0]}
+            score={walletSummary.DextraderScore}
             loading={false}
             tooltipText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quos neque consequuntur dolorem suscipit mollitia obcaecati nulla iste possimus provident facilis eveniet fugiat amet aperiam, eum porro ratione nostrum quisquam."
           />

@@ -62,7 +62,7 @@ export interface WalletSummaryType {
   HotTokenHolders?: HotTokenHolder[];
   Top20HotTokenHolders?: any[];
   TotalFee?: number;
-  DextraderScore?: number[];
+  DextraderScore?: number;
   averagePercentageyearly?: number;
   labelTrader?: "Day Trader" | "Night Trader";
   timestamp?: number;
