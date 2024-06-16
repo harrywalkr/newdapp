@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getWalletSwaps } from '@/services/http/wallets.http';
 import { useQueries } from '@tanstack/react-query';
@@ -22,6 +23,9 @@ import Copy from '@/components/ui/copy';
 import React from 'react';
 import { useWatchlistStore } from '@/store';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { Button } from '@/components/ui/button'; // Make sure this import is correct
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+
 
 interface Props {
     walletAddress: string;
@@ -32,6 +36,9 @@ interface Props {
 
 export default function WalletSwaps({ dateRange, walletAddress }: Props) {
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10; // Adjust this value to the desired number of items per page
+
     const [walletSwapsQuery, imagesQuery] = useQueries({
         queries: [
             {
@@ -52,12 +59,9 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
     });
 
     const handleWatchlistToggle = (token: SwapWallet) => {
-        // FIXME: ask mehdi to uniform all types. wallets and tokens and everything else
         const isInWatchlist = watchlist.some((item: any) => item.id === token.tokenName);
-        // FIXME: fix the next line as well
-        // isInWatchlist ? removeFromWatchlist(token.tokenName) : addToWatchlist(token);
+        isInWatchlist ? removeFromWatchlist(token.tokenName) : addToWatchlist({ name: token.tokenName, contractAddress: token["Currency Address"] });
     };
-
 
     if (walletSwapsQuery.isLoading || imagesQuery.isLoading) {
         return <div className='flex flex-col gap-3'>
@@ -73,54 +77,71 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
         </div>;
     }
 
+    const paginatedData = walletSwapsQuery.data?.swapWallet.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const maxPage = Math.ceil((walletSwapsQuery.data?.swapWallet.length || 0) / itemsPerPage) - 1;
+
     return (
-        <Table>
-            <TableCaption>Summary of Token Transactions</TableCaption>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className="whitespace-nowrap">Rank</TableHead>
-                    <TableHead className="whitespace-nowrap">Token</TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Buy Amount (USD)
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Sell Amount (USD)
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Profit
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Entry Price
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Exit Price
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Buy Times
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Sell Times
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Current Value
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Live P&L
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Price
-                    </TableHead>
-                    <TableHead className="whitespace-nowrap">
-                        Status
-                    </TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {walletSwapsQuery.data?.swapWallet?.map((swap, index) => (
-                    <MemoizedRecord key={index} id={index + 1} data={swap} images={imagesQuery.data!} handleWatchlistToggle={handleWatchlistToggle} />
-                ))}
-            </TableBody>
-        </Table>
+        <>
+            <Table>
+                <TableCaption>Summary of Token Transactions</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="whitespace-nowrap">Rank</TableHead>
+                        <TableHead className="whitespace-nowrap">Token</TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Buy Amount (USD)
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Sell Amount (USD)
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Profit
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Entry Price
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Exit Price
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Buy Times
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Sell Times
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Current Value
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Live P&L
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Price
+                        </TableHead>
+                        <TableHead className="whitespace-nowrap">
+                            Status
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {paginatedData?.map((swap, index) => (
+                        <MemoizedRecord key={index} id={index + 1 + currentPage * itemsPerPage} data={swap} images={imagesQuery.data!} handleWatchlistToggle={handleWatchlistToggle} />
+                    ))}
+                </TableBody>
+            </Table>
+            <div className="flex justify-end gap-2 mt-4">
+                <Button variant='outline' size='icon' disabled={currentPage <= 0} onClick={() => setCurrentPage(currentPage - 1)}>
+                    <ChevronLeftIcon />
+                </Button>
+                <Button variant='outline' size='icon' disabled={currentPage >= maxPage} onClick={() => setCurrentPage(currentPage + 1)}>
+                    <ChevronRightIcon />
+                </Button>
+            </div>
+        </>
     );
 }
 
@@ -138,11 +159,6 @@ const Record = ({
     const buyAmount = parseFloat(data["Buy Amount (USD)"].toString());
     const sellAmount = parseFloat(data["Sell Amount (USD)"].toString());
     const profitAmount = parseFloat(data["Profit"].toString());
-    // FIXME: fix this line as well
-    // const isInWatchlist = useWatchlistStore(state => state.watchlist.some(item => item.id === token.id));
-
-
-
 
     const imageUrl = (address?: string): string | undefined => {
         if (!address) return undefined;
@@ -160,7 +176,6 @@ const Record = ({
             <TableCell className="flex justify-center gap-2">
                 <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
-                        {/* FIXME: use shadcn/avatar instead of this mess */}
                         {imageUrl(data["Currency Address"]) != undefined ? (
                             <Image
                                 width={40}
