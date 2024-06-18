@@ -31,7 +31,7 @@ export default function WalletScoring({ walletSummary }: Props) {
   );
 
   const DEXTraderData = useMemo(
-    () => chartData(walletSummary.DextraderScore?.[0] || 0, 400, 'rgba(0, 0, 0, 0.8)'),
+    () => chartData((Array.isArray(walletSummary.DextraderScore) && walletSummary.DextraderScore[0] !== undefined) ? walletSummary.DextraderScore[0] : 0, 400, 'rgba(0, 0, 0, 0.8)'),
     [walletSummary.DextraderScore]
   );
 
