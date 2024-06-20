@@ -22,6 +22,7 @@ import Renounce from './Renounce';
 import { CiLock } from 'react-icons/ci';
 import { Progress } from '@/components/ui/progress';
 import CustomPieChart from './CustomPieChart';
+import TransactionStats from './TransactionStats';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -200,7 +201,6 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                         }
                         <Liquidity token={token} />
                         <HolderInterest token={token} />
-
                     </div>
                     <div className='left '>
                         {

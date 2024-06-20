@@ -109,6 +109,7 @@ export interface PriceChangePercentage {
 }
 
 export interface Transactions {
+  [key: string]: any;
   m5?: M5;
   m15?: M15;
   m30?: M30;
@@ -164,6 +165,7 @@ export interface H24 {
 }
 
 export interface VolumeUsd {
+  [key: string]: any;
   m5?: string;
   h1?: string;
   h6?: string;
@@ -525,9 +527,8 @@ export interface ScoreData {
   riskLevel?: string;
 }
 
-
 export interface IAI {
-  trend: string
-  categoryTrend: string
-  importantTokens: string[]
+  trend: string;
+  categoryTrend: string;
+  importantTokens: string[];
 }

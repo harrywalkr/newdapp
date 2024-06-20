@@ -4,6 +4,7 @@ import Chart from './chart';
 import { IToken } from '@/types/token.type';
 import Tradingview from './Tradingview';
 import { KeyValue } from '@/components/ui/key-value';
+import TransactionStats from './TransactionStats';
 
 interface Props {
     token: IToken;
@@ -14,37 +15,39 @@ interface Props {
 export default function TokenSummary({ token, tokenAddress, network }: Props) {
     return (
         <div className='flex flex-col items-start justify-center gap-4'>
+
             {token?.data && token?.data.length > 0 ? (
-                <>
-                    {token?.ScoreData?.riskLevel != undefined && (
-                        <KeyValue
-                            title="Risk level"
-                            value={token!.ScoreData!.riskLevel}
-                            variant={token!.ScoreData!.riskLevel === "High Risk" ? "bad" : "good"}
-                        />
-                    )}
-                    {token?.BalancesData?.numberOfAddresses != undefined && (
-                        <KeyValue
-                            title="Total holders"
-                            value={token?.BalancesData?.numberOfAddresses}
-                            variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
-                        />
-                    )}
-                    {token?.BalancesData?.numberOfAddresses != undefined && (
-                        <KeyValue
-                            title="Contract security"
-                            value="safe"
-                            variant="good"
-                        />
-                    )}
-                    {token?.BalancesData?.numberOfAddresses != undefined && (
-                        <KeyValue
-                            title="Launch date"
-                            value="2021"
-                            variant="default"
-                        />
-                    )}
-                </>
+                <TransactionStats token={token} />
+                // <>
+                //     {token?.ScoreData?.riskLevel != undefined && (
+                //         <KeyValue
+                //             title="Risk level"
+                //             value={token!.ScoreData!.riskLevel}
+                //             variant={token!.ScoreData!.riskLevel === "High Risk" ? "bad" : "good"}
+                //         />
+                //     )}
+                //     {token?.BalancesData?.numberOfAddresses != undefined && (
+                //         <KeyValue
+                //             title="Total holders"
+                //             value={token?.BalancesData?.numberOfAddresses}
+                //             variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
+                //         />
+                //     )}
+                //     {token?.BalancesData?.numberOfAddresses != undefined && (
+                //         <KeyValue
+                //             title="Contract security"
+                //             value="safe"
+                //             variant="good"
+                //         />
+                //     )}
+                //     {token?.BalancesData?.numberOfAddresses != undefined && (
+                //         <KeyValue
+                //             title="Launch date"
+                //             value="2021"
+                //             variant="default"
+                //         />
+                //     )}
+                // </>
             ) : (
                 <p>Data is not available :(</p>
             )}
