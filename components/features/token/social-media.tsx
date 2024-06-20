@@ -14,45 +14,46 @@ interface Props {
 
 export default function SocialMedia({ token }: Props) {
     return (
-        <div className="top flex flex-col items-end justify-center gap-2">
+        <div className="top flex  items-end justify-center gap-1">
 
-            <Button size='icon' variant='outline'>
-                <StarIcon />
-            </Button>
             {token?.TokenMedia?.Token_Discord != undefined && (
                 <Button
-                    variant='link'
-                    size='icon'
+                    className='rounded-full text-xs'
+                    variant='outline'
                     onClick={() => window.open(token.TokenMedia!.Token_Discord, "_blank")}
                 >
                     <FaDiscord />
+                    <span className='ml-2'>Discord</span>
                 </Button>
             )}
             {token?.TokenMedia?.Token_Website && (
                 <Button
-                    variant="link"
-                    size='icon'
+                    className='rounded-full text-xs'
+                    variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Website, "_blank")}
                 >
                     <IoEarth />
+                    <span className='ml-2'>Website</span>
                 </Button>
             )}
             {token?.TokenMedia?.Token_Telegram && (
                 <Button
-                    variant="link"
-                    size='icon'
+                    className='rounded-full text-xs'
+                    variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Telegram, "_blank")}
                 >
                     <BiLogoTelegram />
+                    <span className='ml-2'>Telegram</span>
                 </Button>
             )}
             {token?.TokenMedia?.Token_Twitter && (
                 <Button
-                    variant="link"
-                    size='icon'
+                    className='rounded-full text-xs'
+                    variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Twitter, "_blank")}
                 >
                     <RiTwitterXFill />
+                    <span className='ml-2'>Twitter</span>
                 </Button>
             )}
 

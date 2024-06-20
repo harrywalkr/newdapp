@@ -50,7 +50,6 @@ export default async function Token({ params }: Props) {
     });
     const token = await getToken(
         params.params[1],
-        //FIXME: backend must return empty or null with the proper status code not 500 :|
         {
             params: { network: params.params[0] }
         });
