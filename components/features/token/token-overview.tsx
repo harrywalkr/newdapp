@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { ImageType } from '@/types/Image.type';
 import { IToken } from '@/types/token.type';
@@ -20,6 +20,8 @@ import { StarIcon } from '@radix-ui/react-icons';
 import ChainImage from '@/utils/ChainImage';
 import Renounce from './Renounce';
 import { CiLock } from 'react-icons/ci';
+import { Progress } from '@/components/ui/progress';
+import CustomPieChart from './CustomPieChart';
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -37,7 +39,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
     });
 
     return (
-        <div className='flex flex-col items-stretch justify-stretch md:flex-row gap-4 w-full'>
+        <div className='flex flex-col items-stretch justify-stretch lg:flex-row gap-4 w-full'>
             <Card className="w-full flex-1">
                 <CardContent className="pt-6 flex items-stretch justify-between h-full">
                     <div className="left flex flex-col gap-5">
@@ -100,7 +102,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                         </div>
                     </div>
                     <div className='right flex flex-col items-start justify-between gap-2'>
-                        <div  className='flex flex-col items-start justify-center gap-2'>
+                        <div className='flex flex-col items-start justify-center gap-2'>
                             {token?.data?.[0]?.attributes?.base_token_price_usd != undefined ? (
                                 <div>
                                     <span className='text-muted-foreground'>Price</span>
@@ -109,7 +111,6 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                             ) : (
                                 <p>No price available</p>
                             )}
-                            {/* <Timestamp token={token} /> */}
                             <PriceChange token={token} />
                             <BuySellTaxes token={token} />
                         </div>
@@ -122,7 +123,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                     </div>
                 </CardContent>
             </Card>
-            <Card className="w-full flex-1">
+            {/* <Card className="w-full flex-1">
                 <CardContent className="pt-6 flex items-stretch justify-between h-full">
                     <div className="left flex flex-col gap-5">
                         <div className="top flex items-center justify-start gap-5">
@@ -179,6 +180,33 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                             )}
                             <Timestamp token={token} />
                         </div>
+                    </div>
+                </CardContent>
+            </Card> */}
+            <Card className="w-full flex-1">
+                <CardHeader>
+                    <CardTitle>
+                        Overview
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="flex items-start justify-between w-full h-full gap-4">
+                    <div className='right flex flex-col gap-2'>
+                        {
+                            token?.timestamp != undefined &&
+                            <KeyValue
+                                title="Age"
+                                value={dayjs().to(token.timestamp)}
+                            />
+                        }
+                        <Liquidity token={token} />
+                        <HolderInterest token={token} />
+
+                    </div>
+                    <div className='left '>
+                        {
+                            token.ScoreData?.totalScore != undefined &&
+                            <CustomPieChart title="Total Score" totalScore={token.ScoreData.totalScore} maxScore={1600} />
+                        }
                     </div>
                 </CardContent>
             </Card>
@@ -242,11 +270,14 @@ function BuySellTaxes({ token }: { token: IToken }) {
 function HolderInterest({ token }: { token: IToken }) {
     return (
         token?.BalancesData?.numberOfAddresses != undefined ? (
-            <KeyValue
-                title="Holder interest"
-                value={token?.BalancesData?.numberOfAddresses}
-                variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
-            />
+            <div>
+                <KeyValue
+                    title="Holder interest"
+                    value={token?.BalancesData?.numberOfAddresses}
+                    variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
+                />
+                <Progress className='mt-3' value={token!.BalancesData!.numberOfAddresses!} />
+            </div>
         ) : (
             <p>No holder interest data</p>
         )
