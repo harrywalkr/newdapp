@@ -23,6 +23,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { FaEthereum } from "react-icons/fa";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 dayjs.extend(relativeTime);
 
@@ -70,41 +71,50 @@ export default function TradeReport({ tokenAddress }: Props) {
 
 
     return (
-        <Table className="table-pin-rows table-pin-cols bg-transparent rounded-lg overflow-hidden mt-5">
-            <TableCaption>A list of trading reports.</TableCaption>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className=" text-base-100 w-28">
-                        Time
-                    </TableHead>
-                    <TableHead className=" text-base-100">
-                        Type
-                    </TableHead>
-                    <TableHead className=" text-base-100">
-                        {tradeReport && tradeReport[0]?.Trade?.Currency?.Symbol ? tradeReport[0].Trade.Currency.Symbol : "-"}
-                    </TableHead>
-                    <TableHead className=" text-base-100">
-                        {tradeReport && tradeReport[0]?.Trade?.Side?.Currency?.Symbol && tradeReport[0].Trade.Side.Currency.Symbol}
-                    </TableHead>
-                    <TableHead className=" text-base-100">
-                        Price
-                    </TableHead>
-                    <TableHead className=" text-base-100">
-                        Maker
-                    </TableHead>
-                    <TableHead className=" text-base-100 w-24">
-                        TXN
-                    </TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {
+        <ScrollArea className="h-[600px] w-full rounded-md border p-4">
+            <Table className="table-pin-rows table-pin-cols bg-transparent rounded-lg overflow-hidden mt-5">
+                <TableCaption>A list of trading reports.</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className=" text-base-100 w-28">
+                            Time
+                        </TableHead>
+                        <TableHead className=" text-base-100">
+                            Type
+                        </TableHead>
+                        <TableHead className=" text-base-100">
+                            {tradeReport && tradeReport[0]?.Trade?.Currency?.Symbol ? tradeReport[0].Trade.Currency.Symbol : "-"}
+                        </TableHead>
+                        <TableHead className=" text-base-100">
+                            {tradeReport && tradeReport[0]?.Trade?.Side?.Currency?.Symbol && tradeReport[0].Trade.Side.Currency.Symbol}
+                        </TableHead>
+                        <TableHead className=" text-base-100">
+                            Price
+                        </TableHead>
+                        <TableHead className=" text-base-100">
+                            Maker
+                        </TableHead>
+                        <TableHead className=" text-base-100 w-24">
+                            TXN
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {/* {
                     tradeReport && tradeReport.slice(page * 10, (page + 1) * 10).map((d: any, idx) => (
                         <Record key={idx} data={d} />
                     ))
-                }
-            </TableBody>
-        </Table>
+                } */}
+
+                    {
+                        tradeReport && tradeReport.map((d: any, idx) => (
+                            <Record key={idx} data={d} />
+                        ))
+                    }
+
+                </TableBody>
+            </Table>
+        </ScrollArea>
     );
 };
 
