@@ -11,9 +11,8 @@ interface Props {
 
 export default function TokenMarkets({ token }: Props) {
     return (
-        <div className='flex flex-col items-start justify-center gap-5'>
+        <div className='flex flex-col items-start justify-center gap-10'>
             <div className='flex items-center justify-between w-full'>
-
                 <Renounce
                     active={token.FunctionCallsData?.renounceOwnership?.status === "renounced"}
                     text={token.FunctionCallsData?.renounceOwnership?.Date !== undefined
@@ -30,6 +29,26 @@ export default function TokenMarkets({ token }: Props) {
                     )
                 }
             </div>
+            {
+                token.FunctionCallsData?.malFunc?.count != undefined &&
+                token.FunctionCallsData?.malFunc?.uniqueNames != undefined &&
+                token.FunctionCallsData?.malFunc?.similarNames != undefined &&
+                <div className='flex items-center justify-between w-full gap-5 '>
+                    <h3 className='text-red-400 text-xl whitespace-nowrap'>
+                        {token.FunctionCallsData.malFunc.count} Malicious Functions
+                    </h3>
+                    <ul className='text-red-400 w-full'>
+                        {[
+                            ...token.FunctionCallsData.malFunc.uniqueNames,
+                            ...token.FunctionCallsData.malFunc.similarNames,
+                        ]?.map((un: string, idx: number) => (
+                            <li key={idx} className='inline-block m-2 px-4 py-1 rounded-sm border border-red-400'>
+                                {un}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            }
             <CentralizedExchange token={token} />
             <DecentralizedExchange token={token} />
         </div>
