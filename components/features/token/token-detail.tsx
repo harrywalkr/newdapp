@@ -19,6 +19,9 @@ import Paywall from '@/components/common/Paywall'
 import TokenSecurityOldShit from './TokenSecurity-old-shit/TokenSecurity'
 import TokenHolders from './TokenHolders-old-dex/TokenHolders'
 import { KeyValue } from '@/components/ui/key-value'
+import TokenSecurityMeasureLine from './TokenSecurity-old-shit/TokenSecurityMeasureLine'
+import Renounce from './Renounce'
+import TokenMarkets from './Token-markets'
 
 interface Props {
   token: IToken,
@@ -59,10 +62,7 @@ export default function TokenDetail({ token, tokenAddress, network }: Props) {
             <TokenSummary token={token} tokenAddress={tokenAddress} network={network} />
           </TabsContent>
           <TabsContent value="markets" className='mt-5'>
-            <div className='flex flex-col items-start justify-center gap-5'>
-              <CentralizedExchange token={token} />
-              <DecentralizedExchange token={token} />
-            </div>
+            <TokenMarkets token={token} />
           </TabsContent>
           <TabsContent value="scoring" className='mt-5'>
             {
