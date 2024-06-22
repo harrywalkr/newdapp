@@ -22,6 +22,7 @@ import { KeyValue } from '@/components/ui/key-value'
 import TokenSecurityMeasureLine from './TokenSecurity-old-shit/TokenSecurityMeasureLine'
 import Renounce from './Renounce'
 import TokenMarkets from './Token-markets'
+import TokenScoring from './Token-scoring'
 
 interface Props {
   token: IToken,
@@ -65,46 +66,7 @@ export default function TokenDetail({ token, tokenAddress, network }: Props) {
             <TokenMarkets token={token} tokenAddress={tokenAddress} />
           </TabsContent>
           <TabsContent value="scoring" className='mt-5'>
-            {
-              token?.ScoreData?.score1 != undefined &&
-              token?.ScoreData?.score2 != undefined &&
-              token?.ScoreData?.score3 != undefined &&
-              token?.ScoreData?.score4 != undefined &&
-              <KeyValue
-                title="Total score"
-                value={token?.ScoreData?.score1 + token?.ScoreData?.score2 + token?.ScoreData?.score3 + token?.ScoreData?.score4 + '/' + 1600}
-              />
-            }
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1'>
-              {token?.ScoreData?.score1 !== undefined && (
-                <DoughnutChart
-                  title={'Technical' + ' : ' + token?.ScoreData?.score1}
-                  tooltip="The Entry Point Score indicates the suitability of buying the token based on technical analysis. The score ranges from 0 to 400, where 0 implies that it is not in a good condition for buying, and 400 means it is highly favorable for purchase!"
-                  data={[token?.ScoreData?.score1, 400]}
-                />
-              )}
-              {token?.ScoreData?.score2 !== undefined && (
-                <DoughnutChart
-                  title={'Reliability' + ' : ' + token?.ScoreData?.score2}
-                  tooltip="Reliability Score indicates the risk associated with buying the token. The score ranges from 0 to 400, where 0 implies a high level of risk, and 400 means the token can be considered relatively reliable!"
-                  data={[token?.ScoreData?.score2, 400]}
-                />
-              )}
-              {token?.ScoreData?.score3 !== undefined && (
-                <DoughnutChart
-                  title={'Security' + ' : ' + token?.ScoreData?.score3}
-                  tooltip="The Token Security Score reflects the safety of the token based on smart contract analysis and age. The score ranges from 0 to 400, where 0 implies it is not safe and can be risky, while 400 indicates a high level of security!"
-                  data={[token?.ScoreData?.score3, 400]}
-                />
-              )}
-              {token?.ScoreData?.score4 !== undefined && (
-                <DoughnutChart
-                  title={'Holders' + ' : ' + token?.ScoreData?.score4}
-                  tooltip="The Onchain Analysis Score gauges the suitability of prior onchain engagement, scrutinizing transaction participants and trading acumen. It ranges from 0 (indicating low quality) to 400 (reflecting the highest quality)."
-                  data={[token?.ScoreData?.score4, 400]}
-                />
-              )}
-            </div>
+            <TokenScoring token={token} />
           </TabsContent>
           <TabsContent value="security" className='mt-5'>
             {/* FIXME: contract security must be uncommented and updated to replace the old next line */}
