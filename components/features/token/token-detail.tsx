@@ -62,7 +62,7 @@ export default function TokenDetail({ token, tokenAddress, network }: Props) {
             <TokenSummary token={token} tokenAddress={tokenAddress} network={network} />
           </TabsContent>
           <TabsContent value="markets" className='mt-5'>
-            <TokenMarkets token={token} />
+            <TokenMarkets token={token} tokenAddress={tokenAddress} />
           </TabsContent>
           <TabsContent value="scoring" className='mt-5'>
             {

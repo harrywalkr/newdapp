@@ -4,12 +4,14 @@ import CentralizedExchange from './CentralizedExchange'
 import DecentralizedExchange from './DecentralizedExchange'
 import { IToken } from '@/types/token.type'
 import { Progress } from '@/components/ui/progress'
+import TokenSecurityBox from './TokenSecurity-old-shit/TokenSecurityBox'
 
 interface Props {
-    token: IToken
+    token: IToken,
+    tokenAddress: string
 }
 
-export default function TokenMarkets({ token }: Props) {
+export default function TokenMarkets({ token,tokenAddress }: Props) {
     return (
         <div className='flex flex-col items-start justify-center gap-10'>
             <div className='flex items-center justify-between w-full'>
@@ -49,6 +51,8 @@ export default function TokenMarkets({ token }: Props) {
                     </ul>
                 </div>
             }
+
+            <TokenSecurityBox tokenAddress={tokenAddress} />
             <CentralizedExchange token={token} />
             <DecentralizedExchange token={token} />
         </div>

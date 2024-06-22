@@ -159,14 +159,14 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
 
   return (
     <div
-      className={`px-4 lg:px-16 rounded-md ${data.sourceCodeControl.is_open_source === 'no'
+      className={`rounded-md ${data.sourceCodeControl.is_open_source === 'no'
         ? '/30'
         : data.sourceCodeControl.isProxy === 'yes'
           ? 'bg-red-300'
           : '/10'
         }`}
     >
-      <h2 className="mb-8 mt-4 text-center flex flex-col gap-2 break-words">
+      <h2 className="mb-8 mt-4  flex flex-col gap-2 break-words">
         <span className="text-xl font-semibold">Security Box</span>
         <span className="text-lg font-medium text-base-content/80">
           {data.sourceCodeControl.is_open_source === 'no'
@@ -176,7 +176,7 @@ export default function TokenSecurityBox({ tokenAddress }: Props) {
               : ''}
         </span>
       </h2>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 px-5">
         {renderRecords('Source Code Control', data.sourceCodeControl)}
         {renderRecords('Restriction', data.restriction)}
         {renderRecords('Trading Control', data.tradingControl)}
