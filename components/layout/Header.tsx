@@ -1,3 +1,4 @@
+'use client'
 import React, { HTMLAttributes } from "react";
 import Logo from "../common/Logo";
 import { ThemeToggle } from "../features/header/Toggle-theme";
@@ -10,8 +11,11 @@ import { LiaRobotSolid } from "react-icons/lia";
 import Link from "next/link";
 import ChainInfo from "../features/header/chain-info";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
+  const router = useRouter()
+
   return (
     <header
       className={clsx(
@@ -30,7 +34,12 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           <ChainSelector />
           <ChainInfo />
         </div>
-        <ConnectWalletButton />
+        <div className="flex items-center justify-center gap-3">
+          <ConnectWalletButton />
+          <Button onClick={() => router.push('/pricing')}>
+            Premium
+          </Button>
+        </div>
         <div className="block lg:hidden">
           <ThemeToggle />
         </div>
@@ -51,11 +60,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
               Academy
             </Link>
           </li>
-          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
-            <Link href='/pricing'>
-              Premium
-            </Link>
-          </li>
+
           {/* <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/dashboard'>
               Dashboard
