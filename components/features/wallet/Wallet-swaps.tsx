@@ -58,9 +58,9 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
         ],
     });
 
-    const handleWatchlistToggle = (token: SwapWallet) => {
-        const isInWatchlist = watchlist.some((item: any) => item.id === token.tokenName);
-        isInWatchlist ? removeFromWatchlist(token.tokenName) : addToWatchlist({ name: token.tokenName, contractAddress: token["Currency Address"] });
+    const handleWatchlistToggle = (wallet: SwapWallet) => {
+        const isInWatchlist = watchlist.some((item: any) => item.id === wallet.tokenName);
+        isInWatchlist ? removeFromWatchlist(wallet.tokenName) : addToWatchlist({ name: wallet.tokenName, contractAddress: wallet["Currency Address"], type: 'wallet' });
     };
 
     if (walletSwapsQuery.isLoading || imagesQuery.isLoading) {

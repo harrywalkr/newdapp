@@ -12,34 +12,32 @@ interface RenounceProps {
 
 const Renounce: React.FC<RenounceProps> = ({ active, text, status }) => (
     <div className="flex items-center justify-start gap-5">
-        {
-            status &&
-            <div>
-                {status === "Safe" ? (
-                    <Success />
-                ) : status === "Currently Safe" ? (
-                    <Warning />
-                ) : (
-                    <Error />
-                )}
-            </div>
-        }
         <div>
-
             {status && (
                 <div className="flex items-center gap-4">
                     <div className='flex items-center justify-start gap-2'>
-                        <div
-                            className={clsx(
-                                "px-2 py-1 text-sm rounded-md whitespace-nowrap flex justify-center items-center",
-                                {
-                                    "text-green-700 bg-green-200": status === "Safe",
-                                    "text-orange-500 bg-orange-200": status === "Currently Safe",
-                                    "text-red-700 bg-red-200": status !== "Safe" && status !== "Currently Safe"
-                                }
-                            )}
-                        >
-                            {status}
+                        <div className='flex items-center justify-start gap-1'>
+                            <div>
+                                {status === "Safe" ? (
+                                    <Success />
+                                ) : status === "Currently Safe" ? (
+                                    <Warning />
+                                ) : (
+                                    <Error />
+                                )}
+                            </div>
+                            <div
+                                className={clsx(
+                                    "px-2 py-1 text-sm rounded-md whitespace-nowrap flex justify-center items-center",
+                                    {
+                                        "text-green-700 bg-green-200": status === "Safe",
+                                        "text-orange-500 bg-orange-200": status === "Currently Safe",
+                                        "text-red-700 bg-red-200": status !== "Safe" && status !== "Currently Safe"
+                                    }
+                                )}
+                            >
+                                {status}
+                            </div>
                         </div>
                         <h1
                             className={clsx(
@@ -67,10 +65,10 @@ const Renounce: React.FC<RenounceProps> = ({ active, text, status }) => (
     </div>
 );
 
-const Success = () => <AiOutlineSafety className='w-14 h-14 bg-success rounded-full p-2' />
+const Success = () => <AiOutlineSafety className='w-7 h-7 bg-[#69F0AE] text-gray-700 rounded-full p-[4px]' />
 
-const Warning = () => <IoWarningOutline className='w-14 h-14 bg-orange-400 rounded-full p-2' />
+const Warning = () => <IoWarningOutline className='w-7 h-7 bg-orange-400 text-gray-700 rounded-full p-[4px]' />
 
-const Error = () => <GiDeathSkull className='w-14 h-14 bg-red-500 rounded-full p-2' />
+const Error = () => <GiDeathSkull className='w-7 h-7 bg-red-500 rounded-full text-gray-700 p-[4px]' />
 
 export default Renounce;

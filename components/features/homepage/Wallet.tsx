@@ -270,11 +270,12 @@ export default function Wallet({ initTopWallets }: Prop) {
   };
 
   const handleStarClick = (wallet: IWatchlistItem) => {
-    const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
+    const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.name);
     if (isInWatchlist) {
-      removeFromWatchlist(wallet.contractAddress);
+      removeFromWatchlist(wallet.name);
     } else {
-      addToWatchlist(wallet);
+      // addToWatchlist(wallet);
+      addToWatchlist({ name: wallet.contractAddress, contractAddress: wallet.contractAddress, type: 'wallet' });
     }
   };
 

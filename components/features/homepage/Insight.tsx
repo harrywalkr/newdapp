@@ -85,24 +85,26 @@ export default function Insight({ wallets }: Props) {
                             {wallets.map((wallet, i) => (
                                 <React.Fragment key={wallet.walletAddress}>
                                     <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
-                                        <Avatar>
-                                            <AvatarFallback>{i + 1}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex flex-col items-start justify-center gap-2">
-                                            <Copy
-                                                className="text-muted-foreground"
-                                                href={`/wallet/${wallet.walletAddress}`}
-                                                text={minifyContract(wallet.walletAddress)}
-                                                value={wallet.walletAddress}
-                                            />
-                                            <span
-                                                className={clsx(
-                                                    'text-base-content whitespace-nowrap leading-none',
-                                                    wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
-                                                )}
-                                            >
-                                                {separate3digits(wallet.netProfit.toFixed(2))}
-                                            </span>
+                                        <div className='flex items-center justify-start gap-5'>
+                                            <Avatar>
+                                                <AvatarFallback>{i + 1}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col items-start justify-center gap-2">
+                                                <Copy
+                                                    className="text-muted-foreground"
+                                                    href={`/wallet/${wallet.walletAddress}`}
+                                                    text={minifyContract(wallet.walletAddress)}
+                                                    value={wallet.walletAddress}
+                                                />
+                                                <span
+                                                    className={clsx(
+                                                        'text-base-content whitespace-nowrap leading-none',
+                                                        wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
+                                                    )}
+                                                >
+                                                    {separate3digits(wallet.netProfit.toFixed(2))}
+                                                </span>
+                                            </div>
                                         </div>
                                         <span>{Math.ceil(wallet.winRate / 10)}/10</span>
                                     </div>

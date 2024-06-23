@@ -108,12 +108,12 @@ export default function TokenSecurityCallActivity({ tokenAddress }: Props) {
   if (loading)
     return (
       <div className="w-full h-[350px] flex justify-center items-center">
-        <span className="loading loading-bars loading-md"></span>
+        loading ...
       </div>
     );
 
   return (
-    <div className='mt-24'>
+    <div className='mt-24 w-full'>
       <h2 className="text-lg font-semibold mb-2">Smart Contract Call Activity</h2>
       <div className="overflow-x-auto">
         <Table className="table table-pin-rows table-pin-cols rounded-lg overflow-hidden">

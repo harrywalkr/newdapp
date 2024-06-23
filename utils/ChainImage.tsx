@@ -10,8 +10,8 @@ const ChainImage: React.FC<ChainImageProps> = ({ chainName }) => {
         <Image
             src={`/networks/${chainName.toLowerCase()}.png`}
             alt={`${chainName} logo`}
-            width={40}
-            height={40}
+            width={30}
+            height={30}
             onError={(e) => (e.currentTarget.src = '/chains/default.png')} // Fallback to default image if not found
         />
     );

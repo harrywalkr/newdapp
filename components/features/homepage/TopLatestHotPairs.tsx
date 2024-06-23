@@ -144,8 +144,8 @@ export function TopLatestHotPairs({ images }: Props) {
                                                 className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
                                                 onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
                                             >
-                                                <div onClick={(e) => { stopPropagation(e); handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress }) }} className="cursor-pointer">
-                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                                                <div onClick={(e) => { stopPropagation(e); handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' }) }} className="cursor-pointer">
+                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
                                                 <Avatar className="h-9 w-9 ml-4">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />
@@ -212,8 +212,8 @@ export function TopLatestHotPairs({ images }: Props) {
                                                 className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
                                                 onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
                                             >
-                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress })} className="cursor-pointer">
-                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress, type:'token' })} className="cursor-pointer">
+                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress, type:'token' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
                                                 <Avatar className="h-9 w-9 ml-4">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />

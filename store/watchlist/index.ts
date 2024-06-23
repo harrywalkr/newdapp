@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 export interface IWatchlistItem {
   name: string;
   contractAddress: string;
+  type: "wallet" | "token";
 }
 
 interface WatchlistState {

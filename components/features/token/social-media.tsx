@@ -14,11 +14,11 @@ interface Props {
 
 export default function SocialMedia({ token }: Props) {
     return (
-        <div className="top flex  items-end justify-center gap-1">
+        <div className="top flex items-end justify-center gap-1">
 
             {token?.TokenMedia?.Token_Discord != undefined && (
                 <Button
-                    className='rounded-full text-xs'
+                    className='rounded-full text-xs py-0'
                     variant='outline'
                     onClick={() => window.open(token.TokenMedia!.Token_Discord, "_blank")}
                 >
@@ -28,7 +28,7 @@ export default function SocialMedia({ token }: Props) {
             )}
             {token?.TokenMedia?.Token_Website && (
                 <Button
-                    className='rounded-full text-xs'
+                    className='rounded-full text-xs !px-1 !py-1 !h-auto'
                     variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Website, "_blank")}
                 >
@@ -38,7 +38,7 @@ export default function SocialMedia({ token }: Props) {
             )}
             {token?.TokenMedia?.Token_Telegram && (
                 <Button
-                    className='rounded-full text-xs'
+                    className='rounded-full text-xs !px-1 !py-1 !h-auto'
                     variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Telegram, "_blank")}
                 >
@@ -48,7 +48,7 @@ export default function SocialMedia({ token }: Props) {
             )}
             {token?.TokenMedia?.Token_Twitter && (
                 <Button
-                    className='rounded-full text-xs'
+                    className='rounded-full text-xs !px-1 !py-1 !h-auto'
                     variant="outline"
                     onClick={() => window.open(token.TokenMedia!.Token_Twitter, "_blank")}
                 >
