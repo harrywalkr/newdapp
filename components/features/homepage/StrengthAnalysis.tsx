@@ -74,7 +74,7 @@ const StrengthAnalysis: React.FC = () => {
     return (
         <div className="strength-analysis">
             <div className="content">
-                <ResponsiveContainer width="100%" height={100}>
+                <ResponsiveContainer width="100%" height={150}>
                     <LineChart data={formattedData}>
                         <defs>
                             <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
@@ -83,8 +83,8 @@ const StrengthAnalysis: React.FC = () => {
                             </linearGradient>
                         </defs>
                         <YAxis
-                            ticks={[-1, 0, 1]}
-                            tickFormatter={(value) => value.toFixed(2)}
+                            ticks={[-1.2,-1, 0, 1]}
+                        // tickFormatter={(value) => value.toFixed(2)}
                         />
                         <Tooltip content={<CustomTooltip />} />
                         <Line

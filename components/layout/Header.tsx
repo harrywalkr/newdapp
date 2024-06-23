@@ -12,6 +12,7 @@ import Link from "next/link";
 import ChainInfo from "../features/header/chain-info";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   const router = useRouter()
@@ -28,6 +29,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           <MobileMenu />
           <Link href='/'>
             <Logo />
+            {/* <Image src="/logos/dextrading-logo-1.png" alt="dextrading logo" width={50} height={10} /> */}
           </Link>
         </div>
         <div className="flex items-center justify-start gap-20">
@@ -46,7 +48,9 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
         <Link className="hidden lg:flex" href='/'>
-          <Logo />
+          {/* <Logo /> */}
+          <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={270} height={50} />
+
         </Link>
         <Spotlight />
         <ul className="hidden lg:flex items-center justify-center gap-10">
