@@ -57,11 +57,11 @@ export default function MobileMenu() {
                 Pricing
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href='/dashboard' onClick={() => setIsOpen(!isOpen)}>
                 Dashboard
               </Link>
-            </li>
+            </li> */}
           </ul>
 
         </ScrollArea>

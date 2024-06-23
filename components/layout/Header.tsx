@@ -56,11 +56,11 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
               Premium
             </Link>
           </li>
-          <li className="px-4 py-2 rounded-md hover:bg-muted/50">
+          {/* <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/dashboard'>
               Dashboard
             </Link>
-          </li>
+          </li> */}
         </ul>
         <div className="hidden lg:flex items-center justify-center gap-6">
           <div  >
