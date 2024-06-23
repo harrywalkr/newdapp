@@ -7,7 +7,7 @@ import {
   SectionDescription,
   SectionContent,
 } from "@/components/layout/Section";
-import { IWallet} from "@/types/Wallet.type";
+import { IWallet } from "@/types/Wallet.type";
 import { useEffect, useState } from "react";
 import TopWalletsFilter from "../wallet/WalletsFilter";
 import { initTopWalletFilters, topWalletFiltersEnum, topWalletLayouts } from "@/types/topwallet.type";
@@ -480,8 +480,8 @@ const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: I
   return (
     <TableRow>
       <TableCell className="text-base-content text-center">
-        <div onClick={() => handleStarClick({ name: data.walletAddress, contractAddress: data.walletAddress })} className="cursor-pointer">
-          {isTokenInWatchlist({ name: data.walletAddress, contractAddress: data.walletAddress }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+        <div onClick={() => handleStarClick({ name: data.walletAddress, contractAddress: data.walletAddress, type: 'wallet' })} className="cursor-pointer">
+          {isTokenInWatchlist({ name: data.walletAddress, contractAddress: data.walletAddress, type: 'wallet' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
         </div>
       </TableCell>
       {layout.rank && (
