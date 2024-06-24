@@ -5,18 +5,36 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const fetchData = async <T>(
   url: string,
   options?: AxiosRequestConfig
 ): Promise<T> => {
-  try {
-    const response = await axiosInstance.get<T>(url, options);
-    return response.data;
-  } catch (error: any) {
-    logError("API call failed:", error.message);
-    logError("Error Url is:", url);
-    throw new Error(error.message);
+  const maxRetries = 10;
+  let attempts = 0;
+
+  while (attempts < maxRetries) {
+    try {
+      const response = await axiosInstance.get<T>(url, options);
+      if (response.data && (response.data as any).error === 'server busy') {
+        throw new Error('server busy');
+      }
+      return response.data;
+    } catch (error: any) {
+      attempts++;
+      logError(`API call failed on attempt ${attempts}:`, error.message);
+      logError("Error Url is:", url);
+
+      if (attempts >= maxRetries) {
+        throw new Error('Maximum retries exceeded');
+      }
+
+      await delay(2000 * attempts); // Exponential backoff
+    }
   }
+
+  throw new Error('Maximum retries exceeded');
 };
 
 export const axiosInstance = axios.create({
@@ -26,10 +44,8 @@ export const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Log the full request details for debugging
     log(
       `Sending request to ${config.url} with method ${config.method} and data:`,
       config.data
@@ -37,16 +53,13 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    // Log request error details
     logError("Failed to make request:", error.config);
     return Promise.reject(error);
   }
 );
 
-// Response interceptor
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    // Log response details for successful requests
     log(
       `Received response from ${response.config.url} with status ${response.status}:`,
       response.data
@@ -54,19 +67,14 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Log error details
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       logError(
         `Request to ${error.response.config.url} failed with status ${error.response.status}:`,
         error.response.data
       );
     } else if (error.request) {
-      // The request was made but no response was received
       logError("No response received:", error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
       logError("Error setting up request:", error.message);
     }
 

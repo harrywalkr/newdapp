@@ -1,6 +1,6 @@
 import { Error } from "./error.type";
 
-export interface IToken {
+export interface IToken extends Error {
   data?: Daum[];
   TokenMedia?: TokenMedia;
   isLowLiquidity?: boolean;
