@@ -60,6 +60,25 @@ export default function RootLayout({
           })(window, document, "clarity", "script", "mih91n75t6"); 
         `}
       </Script>
+      <Script id="fresh-local-storage">
+        {`
+    (function(){ 
+      // Check if the date exists in localStorage
+      const cleanupDate = localStorage.getItem('cleanupDate');
+      const today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
+
+      if (!cleanupDate) {
+        // If date is absent, clear localStorage and set the new date
+        localStorage.clear();
+        localStorage.setItem('cleanupDate', today);
+        console.log('LocalStorage was cleared and new date was set.');
+      } else {
+        // If date exists, log that no cleanup was needed
+        console.log('No cleanup needed. Date exists in LocalStorage.');
+      }
+    })(); 
+  `}
+      </Script>
     </html>
   );
 }
