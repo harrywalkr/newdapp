@@ -104,8 +104,8 @@ export function Spotlight() {
 
   const addToLocalStorage = (address: IToken | SpotlightSearchType) => {
     if (!address) return;
-    const previousSearches = (get("previousSearches") as IToken[] | SpotlightSearchType[]) || [];
-    set("previousSearches", [address, ...previousSearches.splice(0, 5)]);
+    const historySearches = (get("historySearches") as IToken[] | SpotlightSearchType[]) || [];
+    set("historySearches", [address, ...historySearches.splice(0, 5)]);
   };
 
   const imageUrl = (address?: string): string | undefined => {
@@ -274,13 +274,13 @@ export function Spotlight() {
           )}
           <Separator />
           <div className=" px-4 pb-4 flex flex-col md:flex-row items-start justify-start gap-6 md:gap-12">
-            {get("previousSearches") != null && (
+            {get("historySearches") != null && (
               <>
                 <h4>
                   Previous searches:
                 </h4>
                 <ul className=" grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(get("previousSearches") as (SpotlightSearchType | IToken)[]).map((item) => (
+                  {(get("historySearches") as (SpotlightSearchType | IToken)[]).map((item) => (
                     <li
                       key={(item as SpotlightSearchType).subject?.address || (item as IToken).data?.[0]?.id}
                       className="cursor-pointer flex items-center justify-center"

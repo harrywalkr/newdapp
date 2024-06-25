@@ -63,6 +63,7 @@ export default function RootLayout({
       <Script id="fresh-local-storage">
         {`
     (function(){ 
+      console.log('checking local storage')
       // Check if the date exists in localStorage
       const cleanupDate = localStorage.getItem('cleanupDate');
       const today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
