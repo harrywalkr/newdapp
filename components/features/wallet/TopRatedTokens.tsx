@@ -23,14 +23,14 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
   useEffect(() => {
     const processDataForPieChart = () => {
       const tokens = walletSummary!.Top20HotTokenHolders!.concat(walletSummary.HotTokenHolders);
-      const totalBalance = tokens.reduce((sum, token) => sum + token.balance, 0);
+      const totalBalance = tokens.reduce((sum, token) => sum + token.currentValue, 0);
 
       return tokens.map((token) => ({
         name: token.tokenName,
-        value: token.balance,
+        value: token.currentValue,
         color: randomColor(),
         pnl: token.currentProfit,
-        ratio: ((token.balance / totalBalance) * 100).toFixed(2) + '%',
+        ratio: ((token.currentValue / totalBalance) * 100),
       }));
     };
 
@@ -41,7 +41,7 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
     <div className="flex items-start justify-start gap-10">
       <PieChart width={300} height={200}>
         <Pie
-          data={processedData}
+          data={processedData.filter(token => token.value !== 0)}
           label={({ name }) => name}
           dataKey="value"
           outerRadius={70}
@@ -62,11 +62,14 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {processedData.map((item, index) => (
+          {processedData.sort((a, b) => b.ratio - a.ratio).map((item, index) => (
             <TableRow key={index}>
-              <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell>{item.ratio}</TableCell>
-              <TableCell>{item.pnl}</TableCell>
+              <TableCell className="font-medium flex items-center justify-start gap-1">
+                <div style={{ backgroundColor: item.color, width: 5, height: 5 }} />
+                {item.name}
+              </TableCell>
+              <TableCell>{item.ratio.toFixed(2) + '%'}</TableCell>
+              <TableCell>{item.pnl.toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
