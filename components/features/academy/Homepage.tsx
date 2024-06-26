@@ -141,7 +141,7 @@ export default function AcademyHomepage(props: Props) {
                                             />
                                         </div>
                                         <Button variant='outline' className='mt-5'
-                                            onClick={() => router.push(`/blog/${post.id.toString()}`)}
+                                            onClick={() => router.push(`/academy/${post.id.toString()}`)}
                                         >Read more &gt;</Button>
                                     </div>
                                 </CardContent>
