@@ -72,13 +72,13 @@ export default function TradeReport({ tokenAddress, network }: Props) {
             <ScrollBar orientation="horizontal" />
             <Table>
                 <TableCaption>A list of trading reports.</TableCaption>
-                <TableHeader className="sticky top-0 bg-muted z-10">
+                <TableHeader className="sticky top-0 bg-background z-10">
                     <TableRow>
-                        <TableHead className="whitespace-nowrap">ID</TableHead>
+                        <TableHead className="whitespace-nowrap">Value (usd)</TableHead>
+                        <TableHead className="whitespace-nowrap">TX Type</TableHead>
                         <TableHead className="whitespace-nowrap">TX Hash</TableHead>
-                        <TableHead className="whitespace-nowrap">Sender</TableHead>
+                        <TableHead className="whitespace-nowrap">Maker</TableHead>
                         <TableHead className="whitespace-nowrap">Receiver</TableHead>
-                        <TableHead className="whitespace-nowrap">Type</TableHead>
                         <TableHead className="whitespace-nowrap">From Token Amount</TableHead>
                         <TableHead className="whitespace-nowrap">To Token Amount</TableHead>
                         <TableHead className="whitespace-nowrap">Price From in USD</TableHead>
@@ -97,13 +97,12 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                     }
                 </TableBody>
             </Table>
-         </ScrollArea>
+        </ScrollArea>
     );
 };
 
 const Record = ({ data }: { data: ITradingItem }) => {
     const {
-        id,
         type,
         attributes: {
             tx_hash,
@@ -114,33 +113,29 @@ const Record = ({ data }: { data: ITradingItem }) => {
             price_from_in_usd,
             price_to_in_usd,
             block_number,
+            kind,
+            volume_in_usd
         }
     } = data;
 
     return (
         <TableRow>
             <TableCell className="capitalize whitespace-nowrap">
-                {minifyContract(id)}
+                {volume_in_usd ?  <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
+            </TableCell>
+            <TableCell className="capitalize whitespace-nowrap">
+                {kind ?? null}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
                 {tx_hash ? <Copy value={tx_hash} text={minifyContract(tx_hash)} /> : 'N/A'}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
-                {tx_from_address ?? 'N/A'}
+                {tx_from_address ? <Copy value={tx_from_address} text={minifyContract(tx_from_address)} /> : 'N/A'}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
                 {from_token_address ?? 'N/A'}
             </TableCell>
-            <TableCell className="capitalize">
-                <div
-                    className={`whitespace-nowrap ${type.includes("buy")
-                        ? "text-green-400"
-                        : "text-red-500"
-                        }`}
-                >
-                    {type}
-                </div>
-            </TableCell>
+            
             <TableCell className="max-w-[400px]">
                 {from_token_amount ? separate3digits(parseFloat(from_token_amount).toFixed(2)) : 'N/A'}
             </TableCell>
