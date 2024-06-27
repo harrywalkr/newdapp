@@ -12,6 +12,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useState } from "react";
 import { separate3digits } from "@/utils/numbers";
 import PriceFormatter from "@/utils/PriceFormatter";
@@ -24,6 +30,7 @@ import { FaEthereum } from "react-icons/fa";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ITradingListResponse, ITradingItem } from "@/types/Tradinglist.type";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 
@@ -102,6 +109,8 @@ export default function TradeReport({ tokenAddress, network, tokenName, tokenAdd
 };
 
 const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: string }) => {
+    const router = useRouter()
+
     const {
         id,
         attributes: {
@@ -123,22 +132,37 @@ const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: stri
         <TableRow>
             <TableCell className="max-w-[400px] whitespace-nowrap">
                 {block_timestamp && format(block_timestamp, 'MMMM d HH:mm:ss')}
-
             </TableCell>
             <TableCell className={`capitalize whitespace-nowrap ${kind === 'sell' ? 'text-red-400' : 'text-success'}`}>
                 {kind ?? null}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
-                {volume_in_usd ? <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
+                {volume_in_usd ? <PriceFormatter value={(+volume_in_usd).toFixed(2)} dollarSign={true} /> : null}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
                 {kind === 'buy' ? <PriceFormatter value={(+price_to_in_usd).toFixed(4)} dollarSign={true} /> : <PriceFormatter value={(+price_from_in_usd).toFixed(4)} dollarSign={true} />}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
-                {kind === 'buy' ? from_token_amount : to_token_amount}
+                {kind === 'buy' ? (+from_token_amount).toFixed(4) : (+to_token_amount).toFixed(4)}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap flex items-center justify-start gap-2">
-                <Image src='/Dextrading-logo3.png' width={20} height={20} alt="dextrading-symbol" />
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Image
+                                src='/Dextrading-logo3.png'
+                                width={20}
+                                height={20}
+                                alt="dextrading-symbol"
+                                onClick={(e) =>{e.stopPropagation();e.preventDefault(); router.push(`/tokens/${id.split('_')[0]}/${tokenAddress}`)}}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Browse in Dextrading</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+
                 {tx_from_address ? <Copy value={tx_from_address}
                     href={`/tokens/${id.split('_')[0]}/${tokenAddress}`}
                     target="_blank" text={minifyContract(tx_from_address)} /> : 'N/A'}
