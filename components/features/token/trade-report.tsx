@@ -21,7 +21,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { FaEthereum } from "react-icons/fa";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ITradingListResponse, ITradingItem } from "@/types/Tradinglist.type";
 
 dayjs.extend(relativeTime);
@@ -69,6 +69,7 @@ export default function TradeReport({ tokenAddress, network }: Props) {
 
     return (
         <ScrollArea className="h-[600px] w-full rounded-md border p-4">
+            <ScrollBar orientation="horizontal" />
             <Table className="table-pin-rows table-pin-cols bg-transparent rounded-lg overflow-hidden mt-5">
                 <TableCaption>A list of trading reports.</TableCaption>
                 <TableHeader>
@@ -83,7 +84,7 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                         <TableHead className="whitespace-nowrap">Price From in USD</TableHead>
                         <TableHead className="whitespace-nowrap">Price To in USD</TableHead>
                         <TableHead className="whitespace-nowrap">Block Number</TableHead>
-                        <TableHead className="whitespace-nowrap">TXN</TableHead>
+                        <TableHead className="whitespace-nowrap w-96">TXN</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -118,21 +119,21 @@ const Record = ({ data }: { data: ITradingItem }) => {
 
     return (
         <TableRow>
-            <TableCell className="text-center capitalize whitespace-nowrap">
-                {id}
+            <TableCell className="capitalize whitespace-nowrap">
+                {minifyContract(id)}
             </TableCell>
-            <TableCell className="text-center capitalize whitespace-nowrap">
-                {tx_hash ?? 'N/A'}
+            <TableCell className="capitalize whitespace-nowrap">
+                {tx_hash ? <Copy value={tx_hash} text={minifyContract(tx_hash)} /> : 'N/A'}
             </TableCell>
-            <TableCell className="text-center capitalize whitespace-nowrap">
+            <TableCell className="capitalize whitespace-nowrap">
                 {tx_from_address ?? 'N/A'}
             </TableCell>
-            <TableCell className="text-center capitalize whitespace-nowrap">
+            <TableCell className="capitalize whitespace-nowrap">
                 {from_token_address ?? 'N/A'}
             </TableCell>
-            <TableCell className="text-base-content w-[150px] capitalize">
+            <TableCell className="capitalize">
                 <div
-                    className={`text-center whitespace-nowrap ${type.includes("buy")
+                    className={`whitespace-nowrap ${type.includes("buy")
                         ? "text-green-400"
                         : "text-red-500"
                         }`}
@@ -140,22 +141,22 @@ const Record = ({ data }: { data: ITradingItem }) => {
                     {type}
                 </div>
             </TableCell>
-            <TableCell className="text-base-content max-w-[400px]">
+            <TableCell className="max-w-[400px]">
                 {from_token_amount ? separate3digits(parseFloat(from_token_amount).toFixed(2)) : 'N/A'}
             </TableCell>
-            <TableCell className="text-base-content max-w-[400px]">
+            <TableCell className="max-w-[400px]">
                 {to_token_amount ? separate3digits(parseFloat(to_token_amount).toFixed(2)) : 'N/A'}
             </TableCell>
-            <TableCell className="text-base-content max-w-[400px]">
+            <TableCell className="max-w-[400px]">
                 {price_from_in_usd ? <PriceFormatter value={parseFloat(price_from_in_usd)} /> : 'N/A'}
             </TableCell>
-            <TableCell className="text-base-content max-w-[400px]">
+            <TableCell className="max-w-[400px]">
                 {price_to_in_usd ? <PriceFormatter value={parseFloat(price_to_in_usd)} /> : 'N/A'}
             </TableCell>
-            <TableCell className="text-center capitalize whitespace-nowrap">
+            <TableCell className="capitalize whitespace-nowrap">
                 {block_number ?? 'N/A'}
             </TableCell>
-            <TableCell className="flex items-center gap-3 w-24">
+            <TableCell className="flex items-center gap-3">
                 <a
                     href={`https://etherscan.io/tx/${tx_hash}`}
                     target="_blank"
