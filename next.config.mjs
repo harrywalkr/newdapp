@@ -10,16 +10,23 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // {
+      //   hostname: 'api.dextrading.com',
+      // },
       {
         protocol: "https",
         hostname: "**",
         port: "",
-        pathname: "**", 
+        pathname: "**",
       },
     ],
+    // FIXME: next must be updated for this to be supported. old package still depends on this older nextjs
+    // FIXME: remove pravatar from domain later
     domains: [
       "api.dextrading.com",
-      "blog.dextrading.com", 
+      "https://api.dextrading.com",
+      "https://blog.dextrading.com",
+      "95.81.93.198",
       "i.pravatar.cc",
     ],
   },

@@ -23,7 +23,7 @@ export default async function page({ params }: Props) {
     <article className=''>
       <h1>{post.title}</h1>
       <Image
-        src={process.env.NEXT_PUBLIC_BLOG_URL + '/uploads/' + post.img}
+        src={process.env.NEXT_PUBLIC_BLOG_URL + '/' + post.img}
         alt={post.title}
         width={700}
         height={500}

@@ -113,7 +113,7 @@ export default function AcademyHomepage(props: Props) {
                                     })}
                                 >
                                     <Image
-                                        src={`${process.env.NEXT_PUBLIC_BLOG_URL}/uploads/${post.img}`}
+                                        src={`${process.env.NEXT_PUBLIC_BLOG_URL}/${post.img}`}
                                         alt={post.title} //FIXME: add image alt tag to backend entity
                                         width={500}
                                         height={400}
