@@ -70,9 +70,9 @@ export default function TradeReport({ tokenAddress, network }: Props) {
     return (
         <ScrollArea className="h-[600px] w-full rounded-md border p-4">
             <ScrollBar orientation="horizontal" />
-            <Table className="table-pin-rows table-pin-cols bg-transparent rounded-lg overflow-hidden mt-5">
+            <Table>
                 <TableCaption>A list of trading reports.</TableCaption>
-                <TableHeader>
+                <TableHeader className="sticky top-0 bg-muted z-10">
                     <TableRow>
                         <TableHead className="whitespace-nowrap">ID</TableHead>
                         <TableHead className="whitespace-nowrap">TX Hash</TableHead>
@@ -97,7 +97,7 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                     }
                 </TableBody>
             </Table>
-        </ScrollArea>
+         </ScrollArea>
     );
 };
 
