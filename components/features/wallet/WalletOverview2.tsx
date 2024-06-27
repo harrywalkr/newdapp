@@ -57,25 +57,25 @@ export default function WalletOverview({ walletSummary }: Props) {
                                 </li>
                             }
                             {
-                                walletSummary.highestLoss != undefined &&
+                                walletSummary.lowestLoss != undefined &&
                                 <li>
                                     <KeyValue
                                         stretch
                                         title="Max Loss"
-                                        value={minifyTokenName(walletSummary.highestLoss[1]) + ' : $' + separate3digits(walletSummary.highestLoss[0]?.toFixed(2))}
-                                        valueIcon={<Copy value={walletSummary.highestLoss[2]} />}
+                                        value={minifyTokenName(walletSummary.lowestLoss[1]) + ' : $' + separate3digits(walletSummary.lowestLoss[0]?.toFixed(2))}
+                                        valueIcon={<Copy value={walletSummary.lowestLoss[2]} />}
                                         variant="default"
                                     />
                                 </li>
                             }
                             {
-                                walletSummary.lowestLoss != undefined &&
+                                walletSummary.highestLoss != undefined &&
                                 <li>
                                     <KeyValue
                                         stretch
                                         title="Min Loss"
-                                        value={minifyTokenName(walletSummary.lowestLoss[1]) + ' : $' + separate3digits(walletSummary.lowestLoss[0]?.toFixed(2))}
-                                        valueIcon={<Copy value={walletSummary.lowestLoss[2]} />}
+                                        value={minifyTokenName(walletSummary.highestLoss[1]) + ' : $' + separate3digits(walletSummary.highestLoss[0]?.toFixed(2))}
+                                        valueIcon={<Copy value={walletSummary.highestLoss[2]} />}
                                         variant="default"
                                     />
                                 </li>

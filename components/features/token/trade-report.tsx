@@ -23,15 +23,18 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { FaEthereum } from "react-icons/fa";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ITradingListResponse, ITradingItem } from "@/types/Tradinglist.type";
+import { format } from "date-fns";
 
 dayjs.extend(relativeTime);
 
 interface Props {
     tokenAddress: string,
+    tokenAddress2: string,
     network: string,
+    tokenName: string
 }
 
-export default function TradeReport({ tokenAddress, network }: Props) {
+export default function TradeReport({ tokenAddress, network, tokenName, tokenAddress2 }: Props) {
     const [page, setPage] = useState(0);
     const handleNext = () => setPage((prev) => prev + 1);
     const handlePrev = () => setPage((prev) => prev - 1);
@@ -74,19 +77,14 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                 <TableCaption>A list of trading reports.</TableCaption>
                 <TableHeader className="sticky top-0 bg-background z-10">
                     <TableRow>
-                        <TableHead className="whitespace-nowrap">Value (usd)</TableHead>
-                        <TableHead className="whitespace-nowrap">TX Type</TableHead>
-                        <TableHead className="whitespace-nowrap">TX Hash</TableHead>
-                        <TableHead className="whitespace-nowrap">Maker</TableHead>
-                        <TableHead className="whitespace-nowrap">Receiver</TableHead>
                         <TableHead className="whitespace-nowrap">Date</TableHead>
-                        <TableHead className="whitespace-nowrap">Price</TableHead>
-                        <TableHead className="whitespace-nowrap">From Token Amount</TableHead>
-                        <TableHead className="whitespace-nowrap">To Token Amount</TableHead>
-                        <TableHead className="whitespace-nowrap">Price From in USD</TableHead>
-                        <TableHead className="whitespace-nowrap">Price To in USD</TableHead>
-                        <TableHead className="whitespace-nowrap">Block Number</TableHead>
-                        <TableHead className="whitespace-nowrap w-96">TXN</TableHead>
+                        <TableHead className="whitespace-nowrap">TX Type</TableHead>
+                        <TableHead className="whitespace-nowrap">Value (usd)</TableHead>
+                        <TableHead className="whitespace-nowrap">{tokenName.split('/')[0]} Price</TableHead>
+                        <TableHead className="whitespace-nowrap">{tokenName.split('/')[1]} Amount</TableHead>
+                        <TableHead className="whitespace-nowrap">Maker</TableHead>
+                        <TableHead className="whitespace-nowrap">TX Hash</TableHead>
+
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -94,7 +92,7 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                         tradeReport &&
                         tradeReport.data.length > 0 &&
                         tradeReport.data.map((d: ITradingItem, idx: number) => (
-                            <Record key={idx} data={d} />
+                            <Record key={idx} data={d} tokenAddress={tokenAddress2} />
                         ))
                     }
                 </TableBody>
@@ -103,9 +101,9 @@ export default function TradeReport({ tokenAddress, network }: Props) {
     );
 };
 
-const Record = ({ data }: { data: ITradingItem }) => {
+const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: string }) => {
     const {
-        type,
+        id,
         attributes: {
             tx_hash,
             tx_from_address,
@@ -123,50 +121,41 @@ const Record = ({ data }: { data: ITradingItem }) => {
 
     return (
         <TableRow>
-            <TableCell className="capitalize whitespace-nowrap">
-                {volume_in_usd ? <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
+            <TableCell className="max-w-[400px] whitespace-nowrap">
+                {block_timestamp && format(block_timestamp, 'MMMM d HH:mm:ss')}
+
             </TableCell>
-            <TableCell className="capitalize whitespace-nowrap">
+            <TableCell className={`capitalize whitespace-nowrap ${kind === 'sell' ? 'text-red-400' : 'text-success'}`}>
                 {kind ?? null}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
-                {tx_hash ? <Copy value={tx_hash} text={minifyContract(tx_hash)} /> : 'N/A'}
-            </TableCell>
-            <TableCell className="capitalize whitespace-nowrap">
-                {tx_from_address ? <Copy value={tx_from_address} text={minifyContract(tx_from_address)} /> : 'N/A'}
-            </TableCell>
-            <TableCell className="capitalize whitespace-nowrap">
-                {from_token_address ?? 'N/A'}
+                {volume_in_usd ? <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
-                {block_timestamp && dayjs().to(block_timestamp)}
+                {kind === 'buy' ? <PriceFormatter value={(+price_to_in_usd).toFixed(4)} dollarSign={true} /> : <PriceFormatter value={(+price_from_in_usd).toFixed(4)} dollarSign={true} />}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
-                {kind === 'buy' ? <PriceFormatter value={price_from_in_usd} dollarSign={true} />  : <PriceFormatter value={price_to_in_usd} dollarSign={true} /> }
+                {kind === 'buy' ? from_token_amount : to_token_amount}
             </TableCell>
-            <TableCell className="max-w-[400px]">
-                {from_token_amount ? separate3digits(parseFloat(from_token_amount).toFixed(2)) : 'N/A'}
-            </TableCell>
-            <TableCell className="max-w-[400px]">
-                {to_token_amount ? separate3digits(parseFloat(to_token_amount).toFixed(2)) : 'N/A'}
-            </TableCell>
-            <TableCell className="max-w-[400px]">
-                {price_from_in_usd ? <PriceFormatter value={parseFloat(price_from_in_usd)} /> : 'N/A'}
-            </TableCell>
-            <TableCell className="max-w-[400px]">
-                {price_to_in_usd ? <PriceFormatter value={parseFloat(price_to_in_usd)} /> : 'N/A'}
+            <TableCell className="capitalize whitespace-nowrap flex items-center justify-start gap-2">
+                <Image src='/Dextrading-logo3.png' width={20} height={20} alt="dextrading-symbol" />
+                {tx_from_address ? <Copy value={tx_from_address}
+                    href={`/tokens/${id.split('_')[0]}/${tokenAddress}`}
+                    target="_blank" text={minifyContract(tx_from_address)} /> : 'N/A'}
+                {/* add network */}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
-                {block_number ?? 'N/A'}
-            </TableCell>
-            <TableCell className="flex items-center gap-3">
-                <a
-                    href={`https://etherscan.io/tx/${tx_hash}`}
-                    target="_blank"
-                >
-                    <FaEthereum className="text-3xl cursor-pointer text-base-content" />
-                </a>
-                <Copy href={`https://etherscan.io/address/${tx_from_address}`} target="_blank" value={tx_from_address} text={minifyContract(tx_from_address)} />
+                {tx_hash ? <div className="flex items-center gap-2">
+
+                    <a
+                        href={`https://etherscan.io/tx/${tx_hash}`}
+                        target="_blank"
+                    >
+                        <FaEthereum className="text-3xl cursor-pointer text-base-content" />
+                    </a>
+                    <Copy href={`https://etherscan.io/address/${tx_hash}`} target="_blank" value={tx_hash} text={minifyContract(tx_hash)} />
+                </div>
+                    : 'N/A'}
             </TableCell>
         </TableRow>
     );

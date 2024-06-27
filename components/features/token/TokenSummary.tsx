@@ -66,7 +66,10 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
                     )}
                 </div>
             )}
-            <TradeReport tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
+            {
+                token.data && token.data[0].attributes?.name != undefined &&
+                <TradeReport tokenAddress={token!.data![0]?.id!.split("_")[1]} tokenAddress2={tokenAddress} tokenName={token!.data![0].attributes!.name} network={network} />
+            }
         </div>
     );
 }
