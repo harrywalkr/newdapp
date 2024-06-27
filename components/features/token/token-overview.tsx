@@ -199,10 +199,11 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                 <CardContent className="flex items-start justify-between w-full h-full gap-4">
                     <div className='right flex flex-col gap-2'>
                         {
-                            token?.timestamp != undefined &&
+                            token.data != undefined &&
+                             token.data[0]?.attributes?.pool_created_at != undefined &&
                             <KeyValue
                                 title="Age"
-                                value={dayjs().to(token.timestamp)}
+                                value={dayjs().to(token.data[0].attributes?.pool_created_at)}
                             />
                         }
                         <Liquidity token={token} />
