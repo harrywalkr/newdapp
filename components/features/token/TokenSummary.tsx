@@ -66,7 +66,7 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
                     )}
                 </div>
             )}
-            <TradeReport tokenAddress={tokenAddress} />
+            <TradeReport tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
         </div>
     );
 }

@@ -1,11 +1,12 @@
 'use client'
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Logo() {
   return (
     <motion.span
-      whileHover={{  }}
+      whileHover={{}}
       whileTap={{
         scale: 0.9,
         // rotate: -90,
@@ -13,7 +14,7 @@ export default function Logo() {
         // FIXME: add hover spotlight effect on logo
       }}
       className="flex items-center justify-center gap-2">
-      <div className="w-8 h-8 md:w-10 md:h-10">
+      {/* <div className="w-8 h-8 md:w-10 md:h-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={'100%'}
@@ -52,8 +53,9 @@ export default function Logo() {
             />
           </g>
         </svg>
-      </div>
-      <p className="text-accent-foreground text-lg font-semibold md:text-xl lg:text-[1.35rem]">Dextrading</p>
+      </div> */}
+      <Image src='/dextrading-logo.svg' alt="Dextrading logo" width={30} height={30} />
+      <p className="text-accent-foreground text-lg font-semibold md:text-lg lg:text-xl">DexTrading</p>
     </motion.span>
   );
 }

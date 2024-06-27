@@ -48,8 +48,8 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
       </div>
       <div className="w-full flex items-center justify-center relative gap-10">
         <Link className="hidden lg:flex" href='/'>
-          {/* <Logo /> */}
-          <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={270} height={50} />
+          <Logo />
+          {/* <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={270} height={50} /> */}
 
         </Link>
         <Spotlight />

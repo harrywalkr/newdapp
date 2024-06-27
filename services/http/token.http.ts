@@ -6,6 +6,7 @@ import { TradeReportType } from "@/types/trade-report.type";
 import { IDatafeed } from "@/types/datafeed.type";
 import { IchainInfo } from "@/types/chain-info.type";
 import { IStrength } from "@/types/strength-ratio.type";
+import { ITradingListResponse } from "@/types/Tradinglist.type";
 
 export const spotlightSearch = (
   options: AxiosRequestConfig
@@ -18,6 +19,13 @@ export const spotlightSearch = (
 export const searchToken = (options: AxiosRequestConfig): Promise<IToken> =>
   fetchData<IToken>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/idsearch`,
+    options
+  );
+
+export const getTradingList = (options: AxiosRequestConfig): Promise<ITradingListResponse> =>
+  fetchData<ITradingListResponse>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/tradinglist`,
+    // tradinglist?address=0xe2c845369bdeb94d34bd6f98e33388aef499cd0e&network=eth
     options
   );
 
