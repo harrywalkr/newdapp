@@ -79,6 +79,8 @@ export default function TradeReport({ tokenAddress, network }: Props) {
                         <TableHead className="whitespace-nowrap">TX Hash</TableHead>
                         <TableHead className="whitespace-nowrap">Maker</TableHead>
                         <TableHead className="whitespace-nowrap">Receiver</TableHead>
+                        <TableHead className="whitespace-nowrap">Date</TableHead>
+                        <TableHead className="whitespace-nowrap">Price</TableHead>
                         <TableHead className="whitespace-nowrap">From Token Amount</TableHead>
                         <TableHead className="whitespace-nowrap">To Token Amount</TableHead>
                         <TableHead className="whitespace-nowrap">Price From in USD</TableHead>
@@ -114,6 +116,7 @@ const Record = ({ data }: { data: ITradingItem }) => {
             price_to_in_usd,
             block_number,
             kind,
+            block_timestamp,
             volume_in_usd
         }
     } = data;
@@ -121,7 +124,7 @@ const Record = ({ data }: { data: ITradingItem }) => {
     return (
         <TableRow>
             <TableCell className="capitalize whitespace-nowrap">
-                {volume_in_usd ?  <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
+                {volume_in_usd ? <PriceFormatter value={volume_in_usd} dollarSign={true} /> : null}
             </TableCell>
             <TableCell className="capitalize whitespace-nowrap">
                 {kind ?? null}
@@ -135,7 +138,12 @@ const Record = ({ data }: { data: ITradingItem }) => {
             <TableCell className="capitalize whitespace-nowrap">
                 {from_token_address ?? 'N/A'}
             </TableCell>
-            
+            <TableCell className="max-w-[400px] whitespace-nowrap">
+                {block_timestamp && dayjs().to(block_timestamp)}
+            </TableCell>
+            <TableCell className="max-w-[400px] whitespace-nowrap">
+                {kind === 'buy' ? <PriceFormatter value={price_from_in_usd} dollarSign={true} />  : <PriceFormatter value={price_to_in_usd} dollarSign={true} /> }
+            </TableCell>
             <TableCell className="max-w-[400px]">
                 {from_token_amount ? separate3digits(parseFloat(from_token_amount).toFixed(2)) : 'N/A'}
             </TableCell>
