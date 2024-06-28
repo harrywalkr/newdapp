@@ -12,7 +12,10 @@ export const Footer = () => {
             className="font-bold text-xl flex items-center space-x-2 font-['Fira_Code']"
           >
             {/* <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={170} height={15} /> */}
-            DexTrading
+            <span className="text-brand2">
+              Dex
+            </span>
+            Trading
           </a>
           <p className="max-w-52 mt-3 text-muted-foreground text-base leading-5">Empowering crypto traders uncover investment opportunities.</p>
         </div>
@@ -51,7 +54,7 @@ export const Footer = () => {
         <h3>
           &copy; {new Date().getFullYear()} DexTrading. All rights reserved.
         </h3>
-       
+
       </section>
     </footer>
   );
