@@ -154,7 +154,11 @@ const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: stri
                                 width={20}
                                 height={20}
                                 alt="dextrading-symbol"
-                                onClick={(e) =>{e.stopPropagation();e.preventDefault(); router.push(`/tokens/${id.split('_')[0]}/${tokenAddress}`)}}
+                                // onClick={(e) =>{e.stopPropagation();e.preventDefault(); router.push(`/wallet/${id.split('_')[0]}/${tokenAddress}`)}}
+                                onClick={(e) => {
+                                    e.stopPropagation(); e.preventDefault();
+                                    if (tx_from_address) router.push(`/wallet/${tx_from_address}`)
+                                }}
                             />
                         </TooltipTrigger>
                         <TooltipContent>
@@ -164,7 +168,7 @@ const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: stri
                 </TooltipProvider>
 
                 {tx_from_address ? <Copy value={tx_from_address}
-                    href={`/tokens/${id.split('_')[0]}/${tokenAddress}`}
+                    href={`/wallet/${tx_from_address}`}
                     target="_blank" text={minifyContract(tx_from_address)} /> : 'N/A'}
                 {/* add network */}
             </TableCell>
