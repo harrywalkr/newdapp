@@ -140,7 +140,7 @@ const Record = ({ data, tokenAddress }: { data: ITradingItem, tokenAddress: stri
                 {volume_in_usd ? <PriceFormatter value={(+volume_in_usd).toFixed(2)} dollarSign={true} /> : null}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
-                {kind === 'buy' ? <PriceFormatter value={(+price_to_in_usd).toFixed(4)} dollarSign={true} /> : <PriceFormatter value={(+price_from_in_usd).toFixed(4)} dollarSign={true} />}
+                {kind === 'buy' ? <PriceFormatter value={(+price_to_in_usd)} dollarSign={true} /> : <PriceFormatter value={(+price_from_in_usd)} dollarSign={true} />}
             </TableCell>
             <TableCell className="max-w-[400px] whitespace-nowrap">
                 {kind === 'buy' ? (+from_token_amount).toFixed(4) : (+to_token_amount).toFixed(4)}
