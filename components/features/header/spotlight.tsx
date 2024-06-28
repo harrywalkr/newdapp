@@ -227,7 +227,7 @@ export function Spotlight() {
                             {
                               item?.attributes?.base_token_price_usd &&
                               PriceFormatter({
-                                value: (+item.attributes.base_token_price_usd).toFixed(4),
+                                value: (+item.attributes.base_token_price_usd),
                               })}
                           </TableCell>
                           <TableCell>
@@ -245,9 +245,9 @@ export function Spotlight() {
                             }
                           </TableCell>
                           <TableCell>
-                            {item.relationships?.dex?.data?.type && item.relationships.dex.data.type}
+                            {item.relationships?.dex?.data?.id && item.relationships.dex.data.id}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="whitespace-nowrap">
                             {item.attributes?.pool_created_at &&
                               dayjs().to(item.attributes.pool_created_at)
                             }

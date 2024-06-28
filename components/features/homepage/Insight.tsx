@@ -8,7 +8,7 @@ import {
     SectionHeader,
     SectionTitle,
 } from '@/components/layout/Section';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarPlaceholder } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { Separator } from '@/components/ui/separator';
@@ -19,6 +19,10 @@ import { separate3digits } from '@/utils/numbers';
 import { minifyContract } from '@/utils/truncate';
 import clsx from 'clsx';
 import StrengthAnalysis from './StrengthAnalysis';
+import { KeyValue } from '@/components/ui/key-value';
+import { RiMedal2Fill } from 'react-icons/ri';
+import { Progress } from '@/components/ui/progress';
+import { FaSackDollar } from 'react-icons/fa6';
 
 
 interface Props {
@@ -79,16 +83,14 @@ export default function Insight({ wallets }: Props) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Smart Money</CardTitle>
+                            <CardTitle>Trending Traders</CardTitle>
                         </CardHeader>
                         <CardContent>
                             {wallets.map((wallet, i) => (
                                 <React.Fragment key={wallet.walletAddress}>
                                     <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
                                         <div className='flex items-center justify-start gap-5'>
-                                            <Avatar>
-                                                <AvatarFallback>{i + 1}</AvatarFallback>
-                                            </Avatar>
+                                            <AvatarPlaceholder />
                                             <div className="flex flex-col items-start justify-center gap-2">
                                                 <Copy
                                                     className="text-muted-foreground"
@@ -96,17 +98,31 @@ export default function Insight({ wallets }: Props) {
                                                     text={minifyContract(wallet.walletAddress)}
                                                     value={wallet.walletAddress}
                                                 />
-                                                <span
-                                                    className={clsx(
-                                                        'text-base-content whitespace-nowrap leading-none',
-                                                        wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
-                                                    )}
-                                                >
-                                                    {separate3digits(wallet.netProfit.toFixed(2))}
-                                                </span>
+                                                <div className='flex items-center justify-start gap-2'>
+                                                    <span className='text-muted-foreground text-sm'>
+                                                        <FaSackDollar />
+                                                    </span>
+                                                    <span
+                                                        className={clsx(
+                                                            'text-base-content font-semibold whitespace-nowrap leading-none',
+                                                            wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
+                                                        )}
+                                                    >
+                                                        +{separate3digits(wallet.netProfit.toFixed(0))}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <span>{Math.ceil(wallet.winRate / 10)}/10</span>
+                                        <div>
+                                            <KeyValue
+                                                title='Winrate'
+                                                titleIcon={<RiMedal2Fill />}
+                                                className='text-sm'
+                                                value={`${Math.ceil(wallet.winRate / 10)}/10`}
+                                                variant='default' />
+                                            <Progress className='mt-2' value={+wallet.winRate} />
+                                        </div>
+
                                     </div>
                                     {i !== wallets.length - 1 && <Separator />}
                                 </React.Fragment>
@@ -123,12 +139,8 @@ export default function Insight({ wallets }: Props) {
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Strength Analysis</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <StrengthAnalysis />
-                        </CardContent>
+                    <StrengthAnalysis />
+                        
                     </Card>
                 </div>
             </SectionContent>

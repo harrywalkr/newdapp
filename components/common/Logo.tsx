@@ -55,7 +55,7 @@ export default function Logo() {
         </svg>
       </div> */}
       <Image src='/dextrading-logo.svg' alt="Dextrading logo" width={30} height={30} />
-      <p className="text-accent-foreground text-lg font-semibold md:text-lg lg:text-xl">DexTrading</p>
+      <p className="text-accent-foreground text-lg font-semibold md:text-lg lg:text-xl font-['Fira_Code']">DexTrading</p>
     </motion.span>
   );
 }

@@ -9,9 +9,10 @@ export const Footer = () => {
         <div className="col-span-full xl:col-span-2">
           <a
             href="/"
-            className="font-bold text-xl flex items-center space-x-2"
+            className="font-bold text-xl flex items-center space-x-2 font-['Fira_Code']"
           >
-            <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={170} height={15} />
+            {/* <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={170} height={15} /> */}
+            DexTrading
           </a>
           <p className="max-w-52 mt-3 text-muted-foreground text-base leading-5">Empowering crypto traders uncover investment opportunities.</p>
         </div>

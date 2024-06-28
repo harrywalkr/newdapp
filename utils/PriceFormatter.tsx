@@ -17,7 +17,7 @@ export default function PriceFormatter({ value, dollarSign, className }: PriceFo
 
     if (num > 0.0001) {
       // For values greater than 0.0001, format as a fixed decimal string
-      return num.toFixed(8).replace(/\.?0+$/, "");
+      return num.toFixed(4).replace(/\.?0+$/, "");
     }
 
     // For very small numbers, use exponential notation and format it
