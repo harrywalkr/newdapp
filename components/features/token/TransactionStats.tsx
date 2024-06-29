@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { IToken } from '@/types/token.type';
 import React, { useState } from 'react';
 import { IoMdTrendingDown } from 'react-icons/io';
@@ -89,21 +90,22 @@ const TransactionStats = ({ token }: Props) => {
                 </div>
             </div>
             <div className="flex gap-2 max-h-[60px] items-center pl-5 col-span-2 lg:col-span-1">
-                <button
-                    className={`btn btn-ghost text-sm ${selectedTime === 'h1' ? 'bg-base-content text-base-100' : ''}`}
-                    onClick={() => setSelectedTime('h1')}
-                >
-                    1h
-                </button>
-                <button
-                    className={`btn btn-ghost text-sm ${selectedTime === 'h24' ? 'bg-base-content text-base-100' : ''}`}
-                    onClick={() => setSelectedTime('h24')}
-                >
-                    24h
-                </button>
-
+                <div className='flex items-center justify-center gap-2'>
+                    <Button
+                        className={`btn btn-ghost text-sm w-20 rounded-md ${selectedTime === 'h24' ? 'bg-muted-foreground' : ''}`}
+                        onClick={() => setSelectedTime('h1')}
+                    >
+                        1h
+                    </Button>
+                    <Button
+                        className={`btn btn-ghost text-sm w-20 rounded-md ${selectedTime === 'h1' ? 'bg-muted-foreground' : ''}`}
+                        onClick={() => setSelectedTime('h24')}
+                    >
+                        24h
+                    </Button>
+                </div>
                 {volumeUSD && (
-                    <div className="bg-[#495577] h-full mx-auto rounded-md px-4 text-lg w-full flex justify-center items-center">
+                    <div className="h-full mx-auto rounded-md px-4 text-lg w-full flex justify-center items-center">
                         <span className="text-center text-white whitespace-nowrap">
                             Volume: {formatCash(+parseFloat(volumeUSD).toFixed(2))}
                         </span>

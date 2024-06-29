@@ -203,28 +203,23 @@ export const RateLeft = ({ value, title }: { value: number; title: string }) => 
         <div className={`w-[100px] sm:text-right font-medium sm:font-normal`}>
           {title.replaceAll("_", " ")}
         </div>
-        <div
+        <div className="flex gap-2 md:gap-5 flex-col items-end justify-end md:flex-row-reverse md:items-center md:justify-center">
+          <div className="text-sm">
+            {stateLabel}
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            title={` ${stateLabel}`}
 
-        ></div>
-        {/* Input range for interactive value change */}
-        <input
-          type="range"
-          min="0"
-          max="100"
-          title={` ${stateLabel}`}
-
-          value={value}
-          className="range ml-16"
-          step="25"
-          readOnly
-        />
-      </div>
-      {/* Display state label above and to the right on hover */}
-      {/* {isHovered && ( */}
-        <div className="absolute  right-0 text-sm  mt-[-28px] mr-[8px] ">
-          {stateLabel}
+            value={value}
+            className="range ml-16"
+            step="25"
+            readOnly
+          />
         </div>
-      {/* )} */}
+      </div>
     </div>
   );
 };

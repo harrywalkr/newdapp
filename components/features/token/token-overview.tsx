@@ -105,14 +105,14 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                         <div className='right flex flex-col items-start justify-between gap-2'>
                             <div className='flex flex-col items-start justify-center gap-2'>
                                 {token?.data?.[0]?.attributes?.base_token_price_usd != undefined ? (
-                                    <div>
+                                    <div className='flex gap-3 items-end justify-center'>
                                         {/* <span className='text-muted-foreground'>Price</span> */}
                                         <PriceFormatter dollarSign className='text-2xl mt-2 font-bold' value={token!.data![0].attributes!.base_token_price_usd!} />
+                                        <PriceChange token={token} />
                                     </div>
                                 ) : (
                                     <p>No price available</p>
                                 )}
-                                <PriceChange token={token} />
                                 <BuySellTaxes token={token} />
                             </div>
 
@@ -126,7 +126,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                                 : `Contract is not Renounced`}
                             status={token?.ScoreData?.status || ''}
                         />
-                        <Button variant='outline'>
+                        <Button variant='outline' className='hidden md:flex'>
                             <span className='mr-2'>
                                 Security Checker
                             </span>
@@ -229,11 +229,25 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
 function PriceChange({ token }: { token: IToken }) {
     return (
         token?.data && token?.data[0]?.attributes?.price_change_percentage?.h24 != undefined ? (
-            <KeyValue
-                title="24hr Change"
-                value={`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
-                variant={+token!.data![0].attributes!.price_change_percentage!.h24! > 0 ? "good" : "bad"}
-            />
+            <div>
+                <div className='hidden md:block'>
+
+                    <KeyValue
+                        title="24hr Change"
+                        value={`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
+                        variant={+token!.data![0].attributes!.price_change_percentage!.h24! > 0 ? "good" : "bad"}
+                    />
+                </div>
+                <div className='block md:hidden'>
+
+                    <KeyValue
+                        title=""
+                        value={`${token!.data![0].attributes!.price_change_percentage!.h24!}%`}
+                        variant={+token!.data![0].attributes!.price_change_percentage!.h24! > 0 ? "good" : "bad"}
+                    />
+                </div>
+
+            </div>
         ) : (
             <p>No 24hr change data</p>
         )

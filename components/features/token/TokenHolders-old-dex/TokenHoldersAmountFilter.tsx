@@ -72,7 +72,7 @@ export default function TokenHolders({ tokenAddress }: Props) {
             </SelectContent>
           </Select>
         </label>
-        <label className="form-control w-full flex items-center justify-start gap-2">
+        <label className="form-control  w-full flex items-center justify-start gap-2">
           <div className="label">
             <span className="label-text">To</span>
           </div>
@@ -104,7 +104,7 @@ export default function TokenHolders({ tokenAddress }: Props) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 items-start justify-start xl:hidden gap-3 lg:pl-[60px]">
+          <div className="grid md:grid-cols-2 grid-cols-1 items-start justify-start xl:hidden gap-3 lg:pl-[60px]">
             {data && (showMore ? data : data.slice(0, 10)).map((data: any, id: number) => (
               <div key={id} className="">
                 <Addresses key={id} value={id} address={data.Holder.Address} haveLine={id !== data.length - 1} />
