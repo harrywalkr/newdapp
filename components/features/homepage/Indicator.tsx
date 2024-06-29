@@ -11,16 +11,28 @@ const Indicator = ({ percentage, marketState }: Props) => {
 
     return (
         <div>
-            <div className="relative flex w-150 h-3 mb-2">
+            <div className="relative flex w-150 h-2 mb-2">
                 <div className="flex w-full h-full rounded-full overflow-hidden">
                     <div className="w-1/3 h-full bg-red-400"></div>
-                    <div className="w-1/3 h-full bg-yellow-300"></div>
+                    <div className="w-1/3 h-full bg-[#b4b4b4]"></div>
                     <div className="w-1/3 h-full bg-green-400"></div>
                 </div>
                 <div
                     className="absolute top-1/2 transform -translate-y-1/2 h-5 rounded-full bg-gray-200 w-3"
                     style={{ left: `${validPercentage}%` }}
-                ></div>
+                >
+                    <span className='whitespace-nowrap absolute transform -translate-y-1/2 w-10'>
+                      Avg Market strength {percentage.toFixed(0)}
+                    </span>
+                </div>
+                {/* <div
+                    className="absolute bottom-5 text-sm"
+                    style={{ left: `${validPercentage}%` }}
+                >
+                    <span >
+                      Avg Market strength {percentage.toFixed(0)}
+                    </span>
+                </div> */}
             </div>
             <div className="flex items-center justify-start">
                 <motion.div

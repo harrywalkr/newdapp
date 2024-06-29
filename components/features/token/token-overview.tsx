@@ -43,7 +43,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
         <div className='flex flex-col items-stretch justify-stretch lg:flex-row gap-4 w-full'>
             <Card className="w-full flex-1">
                 <CardContent >
-                    <div className="pt-6 flex items-stretch justify-between h-full">
+                    <div className="pt-6 flex flex-col md:flex-row items-stretch justify-between h-full">
                         <div className="left flex flex-col gap-5">
                             <div className="top flex items-center justify-start gap-5">
                                 <Avatar className="h-20 w-20">
@@ -75,10 +75,15 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                                             </div>
                                             <div className='flex items-center justify-start gap-1'>
                                                 <div className='flex items-center justify-start gap-1 mr-4'>
-                                                    <ChainImage chainName={token!.data![0].id.split('_')[0]} />
-                                                    <h3 className="m-0 p-0">
+                                                    {/* <ChainImage chainName={token!.data![0].id.split('_')[0]} /> */}
+                                                    {/* <h3 className="m-0 p-0">
                                                         {token!.data![0].id.split('_')[0]}
-                                                    </h3>
+                                                    </h3> */}
+
+                                                    <KeyValue
+                                                        title="chain"
+                                                        value={token!.data![0].id.split('_')[0]}
+                                                    />
                                                 </div>
                                                 <Copy value={token!.data![0]?.id?.split("_")[1]} text={minifyContract(
                                                     token!.data![0].id!.split("_")[1]
@@ -101,7 +106,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                             <div className='flex flex-col items-start justify-center gap-2'>
                                 {token?.data?.[0]?.attributes?.base_token_price_usd != undefined ? (
                                     <div>
-                                        <span className='text-muted-foreground'>Price</span>
+                                        {/* <span className='text-muted-foreground'>Price</span> */}
                                         <PriceFormatter dollarSign className='text-2xl mt-2 font-bold' value={token!.data![0].attributes!.base_token_price_usd!} />
                                     </div>
                                 ) : (
@@ -200,7 +205,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                     <div className='right flex flex-col gap-2'>
                         {
                             token.data != undefined &&
-                             token.data[0]?.attributes?.pool_created_at != undefined &&
+                            token.data[0]?.attributes?.pool_created_at != undefined &&
                             <KeyValue
                                 title="Age"
                                 value={dayjs().to(token.data[0].attributes?.pool_created_at)}
