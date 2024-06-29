@@ -139,8 +139,7 @@ export default function Insight({ wallets }: Props) {
                         </CardContent>
                     </Card>
                     <Card>
-                    <StrengthAnalysis />
-                        
+                        <StrengthAnalysis />
                     </Card>
                 </div>
             </SectionContent>

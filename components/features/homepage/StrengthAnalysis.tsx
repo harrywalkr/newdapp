@@ -1,4 +1,3 @@
-// StrengthAnalysisCard.tsx
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -12,6 +11,7 @@ import clsx from 'clsx';
 import { getStrengthRatio } from '@/services/http/token.http';
 import { History } from '@/types/strength-ratio.type';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Indicator from './Indicator';
 
 const StrengthAnalysis: React.FC = () => {
     const { isLoading, error, data: strengthRatio } = useQuery({
@@ -76,28 +76,37 @@ const StrengthAnalysis: React.FC = () => {
         switch (true) {
             case (avgMarketStrength >= -0.4 && avgMarketStrength < -0.1):
                 return 'Bearish';
-    
+
             case (avgMarketStrength < -0.4):
                 return 'Strongly Bearish';
-    
+
             case (avgMarketStrength >= -0.1 && avgMarketStrength <= 0.1):
                 return 'Neutral';
-    
+
             case (avgMarketStrength > 0.1 && avgMarketStrength <= 0.4):
                 return 'Bullish';
-    
+
             case (avgMarketStrength > 0.4):
                 return 'Strongly Bullish';
-    
+
             default:
                 return 'Unknown';  // This is a fallback in case none of the conditions match
         }
-    }
-    
+    };
+
+    const calculatePercentage = (avgMarketStrength: number) => {
+        const minStrength = -1.2;
+        const maxStrength = 1.2;
+        const clampedStrength = Math.min(maxStrength, Math.max(minStrength, avgMarketStrength));
+        return ((clampedStrength - minStrength) / (maxStrength - minStrength)) * 100;
+    };
+
+    const marketState = strengthRatio?.averageMarketStrength !== undefined ? getMarketState(strengthRatio.averageMarketStrength) : 'Unknown';
+
     return (
         <div>
             <CardHeader>
-                <CardTitle>Market Index ({strengthRatio?.averageMarketStrength != undefined && getMarketState(strengthRatio.averageMarketStrength)})</CardTitle>
+                <CardTitle>Market Index ({marketState})</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="strength-analysis">
@@ -112,7 +121,6 @@ const StrengthAnalysis: React.FC = () => {
                                 </defs>
                                 <YAxis
                                     ticks={[-1.2, -1, 0, 1]}
-                                // tickFormatter={(value) => value.toFixed(2)}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Line
@@ -124,10 +132,14 @@ const StrengthAnalysis: React.FC = () => {
                                 />
                             </LineChart>
                         </ResponsiveContainer>
-                        {
+                        {/* {
                             strengthRatio?.averageMarketStrength !== undefined &&
                             <div className="text-muted-foreground mt-7">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
-                        }
+                        } */}
+                        <div className='mt-5'>
+                            {strengthRatio?.averageMarketStrength !== undefined &&
+                                <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} />}
+                        </div>
                     </div>
                 </div>
             </CardContent>
