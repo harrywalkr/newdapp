@@ -38,7 +38,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
         <div className="flex items-center justify-center gap-3">
           <ConnectWalletButton />
-          <Button onClick={() => router.push('/pricing')}>
+          <Button className="hidden md:block" onClick={() => router.push('/pricing')}>
             Premium
           </Button>
         </div>

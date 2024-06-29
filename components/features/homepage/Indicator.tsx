@@ -21,7 +21,7 @@ const Indicator = ({ percentage, marketState }: Props) => {
                     className="absolute top-1/2 transform -translate-y-1/2 h-5 rounded-full bg-gray-200 w-3"
                     style={{ left: `${validPercentage}%` }}
                 >
-                    <span className='whitespace-nowrap absolute transform -translate-y-1/2 w-10'>
+                    <span className='whitespace-nowrap absolute bottom-5 -left-20'>
                       Avg Market strength {percentage.toFixed(0)}
                     </span>
                 </div>

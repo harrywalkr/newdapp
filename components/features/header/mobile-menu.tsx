@@ -54,7 +54,7 @@ export default function MobileMenu() {
             </li>
             <li>
               <Link href='/pricing' onClick={() => setIsOpen(!isOpen)}>
-                Pricing
+                Premium
               </Link>
             </li>
             {/* <li>
