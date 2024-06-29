@@ -49,7 +49,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
   if (error) return <div>Failed to load trends, please try again.</div>;
   if (isLoading) return <Section>
     <SectionHeader>
-      <SectionTitle>Hot Tokens</SectionTitle>
+      <SectionTitle>Trending Tokens</SectionTitle>
       <SectionDescription>
         Tokens with the most potentionl return on investment. Browse tokens
         for Security & investment value.

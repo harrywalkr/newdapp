@@ -39,6 +39,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 
+type localStorageItem = {
+  name: string, address: string, network?: string
+}
+
 export function Spotlight() {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -102,10 +106,10 @@ export function Spotlight() {
     };
   }, [searchTerm]);
 
-  const addToLocalStorage = (address: IToken | SpotlightSearchType) => {
-    if (!address) return;
-    const historySearches = (get("historySearches") as IToken[] | SpotlightSearchType[]) || [];
-    set("historySearches", [address, ...historySearches.splice(0, 5)]);
+  const addToLocalStorage = (item: localStorageItem) => {
+    if (!item) return;
+    const historySearches = (get("historySearches") as localStorageItem[]) || [];
+    set("historySearches", [item, ...historySearches.splice(0, 5)]);
   };
 
   const imageUrl = (address?: string): string | undefined => {
@@ -146,7 +150,11 @@ export function Spotlight() {
                   className="cursor-pointer px-3 flex items-center gap-3 pb-4"
                   onClick={() => {
                     setOpen(!open)
-                    addToLocalStorage(wallet);
+                    addToLocalStorage({
+                      name: wallet.subject.address,
+                      address: wallet.subject.address,
+                      // network: wallet.network.protocol
+                    });
                     router.push(`/wallet/${wallet.subject.address}`);
                   }}
                 >
@@ -182,7 +190,11 @@ export function Spotlight() {
                           key={item.id}
                           className="cursor-pointer"
                           onClick={() => {
-                            addToLocalStorage(token);
+                            addToLocalStorage({
+                              name: token.data![0].attributes!.name!,
+                              address: token.data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]!,
+                              network: token.data?.[0]?.relationships?.base_token?.data?.id?.split("_")[0]!
+                            });
                             if (item?.relationships?.base_token?.data?.id) {
                               const [baseToken, tokenId] = item.relationships.base_token.data.id.split("_");
                               router.push(`/tokens/${baseToken}/${tokenId}`);
@@ -279,45 +291,35 @@ export function Spotlight() {
                 <h4>
                   Previous searches:
                 </h4>
-                <ul className=" grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(get("historySearches") as (SpotlightSearchType | IToken)[]).map((item) => (
+                <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {(get("historySearches") as localStorageItem[]).map((item) => (
                     <li
-                      key={(item as SpotlightSearchType).subject?.address || (item as IToken).data?.[0]?.id}
+                      key={item.address}
                       className="cursor-pointer flex items-center justify-center"
                       onClick={() => {
-                        if ((item as SpotlightSearchType).subject?.address) {
-                          router.push(`/wallet/${(item as SpotlightSearchType).subject.address}`);
-                          setOpen(!open)
+                        if (item.network === undefined) {
+                          router.push(`/wallet/${item.address}`);
                         } else {
-                          router.push(
-                            `/tokens/${(item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]}`
-                          );
-                          setOpen(!open)
+                          router.push(`/tokens/${item.network}/${item.address}`);
                         }
+                        setOpen(false);
                       }}
                     >
-                      {(item as SpotlightSearchType).subject?.address ? (
-                        <p>{minifyContract((item as SpotlightSearchType).subject.address)}</p>
+                      {item.network === undefined ? (
+                        <p>{minifyContract(item.address)}</p>
                       ) : (
                         <div className="flex items-center justify-start gap-1 w-full md:gap-2">
-                          {imageUrl(
-                            (item as IToken).data?.[0]?.relationships?.base_token?.data?.id?.split("_")[1]
-                          ) != undefined && (
-                              <Image
-                                loading="eager"
-                                className="w-8 h-8 md:w-9 md:h-9"
-                                width={20}
-                                height={20}
-                                src={imageUrl(
-                                  (item as IToken).data![0].relationships?.base_token?.data?.id?.split("_")[1]!
-                                )!}
-                                alt=""
-                              />
-                            )}
-                          {
-                            (item as IToken).data![0].attributes?.name != undefined &&
-                            <p>{minifyTokenName((item as IToken).data![0].attributes!.name)}</p>
-                          }
+                          {imageUrl(item.address) != undefined && (
+                            <Image
+                              loading="eager"
+                              className="w-8 h-8 md:w-9 md:h-9"
+                              width={20}
+                              height={20}
+                              src={imageUrl(item.address)!}
+                              alt=""
+                            />
+                          )}
+                          <p>{minifyTokenName(item.name)}</p>
                         </div>
                       )}
                     </li>
