@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Separator } from "../ui/separator";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
@@ -11,7 +12,6 @@ export const Footer = () => {
             href="/"
             className="font-bold text-xl flex items-center space-x-2 font-['Fira_Code']"
           >
-            {/* <Image src='/logos/dextrading-logo-1.png' alt="Dextrading logo" width={170} height={15} /> */}
             <span className="text-brand2">
               Dex
             </span>
@@ -23,28 +23,26 @@ export const Footer = () => {
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Follow Us</h3>
           {/* Link directly to your social media pages */}
-          <a href="https://github.com/yourusername" className="opacity-60 hover:opacity-100">Github</a>
-          <a href="https://twitter.com/yourusername" className="opacity-60 hover:opacity-100">Twitter</a>
-          <a href="https://dribbble.com/yourusername" className="opacity-60 hover:opacity-100">Dribbble</a>
+          <a href="https://x.com/dextradingapp" className="opacity-60 hover:opacity-100">Twitter</a>
+          <a href="https://t.me/dextrading" className="opacity-60 hover:opacity-100">Telegram</a>
         </div>
 
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Platforms</h3>
-          <a href="/platforms/web" className="opacity-60 hover:opacity-100">Web</a>
-          <a href="/platforms/mobile" className="opacity-60 hover:opacity-100">Mobile</a>
-          <a href="/platforms/desktop" className="opacity-60 hover:opacity-100">Desktop</a>
-        </div>
+          <Link href="/platforms/web" className="opacity-60 hover:opacity-100">Web</Link>
+          <Link href="/platforms/mobile" className="opacity-60 hover:opacity-100">Mobile</Link>
+          <Link href="/platforms/desktop" className="opacity-60 hover:opacity-100">Desktop</Link>
+        </div> */}
 
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">About</h3>
-          <a href="/about/features" className="opacity-60 hover:opacity-100">Features</a>
-          <a href="/about/pricing" className="opacity-60 hover:opacity-100">Pricing</a>
-          <a href="/faq" className="opacity-60 hover:opacity-100">FAQ</a>
+          <Link href="/pricing" className="opacity-60 hover:opacity-100">Pricing</Link>
+          <Link href="/landing-page" className="opacity-60 hover:opacity-100">FAQ</Link>
         </div>
 
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Community</h3>
-          <a href="https://www.youtube.com/channel/yourchannel" className="opacity-60 hover:opacity-100">YouTube</a>
+          <a href="https://www.youtube.com/@dextrading" className="opacity-60 hover:opacity-100">YouTube</a>
           <a href="https://discord.gg/yourdiscord" className="opacity-60 hover:opacity-100">Discord</a>
           <a href="https://twitch.tv/yourtwitch" className="opacity-60 hover:opacity-100">Twitch</a>
         </div>
