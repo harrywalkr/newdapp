@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
     Section,
@@ -8,7 +8,7 @@ import {
     SectionHeader,
     SectionTitle,
 } from '@/components/layout/Section';
-import { Avatar, AvatarFallback, AvatarPlaceholder } from '@/components/ui/avatar';
+import { AvatarPlaceholder } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { Separator } from '@/components/ui/separator';
@@ -23,53 +23,45 @@ import { KeyValue } from '@/components/ui/key-value';
 import { RiMedal2Fill } from 'react-icons/ri';
 import { Progress } from '@/components/ui/progress';
 import { FaSackDollar } from 'react-icons/fa6';
-
+import { useTokenChainStore } from '@/store';
+import { getWallets } from '@/services/http/wallets.http';
 
 interface Props {
     wallets: IWallet[];
 }
 
 export default function Insight({ wallets }: Props) {
+    const { selectedChain } = useTokenChainStore();
+
+    // Query to fetch AI data
     const { isLoading: isAiLoading, error: aiError, data: ai } = useQuery({
         queryKey: ['ai'],
         queryFn: () => getAi(),
         refetchInterval: 300000,
     });
 
-    if (aiError) return <div>Failed to load data, please try again.</div>;
+    const {
+        isLoading: isWalletsLoading,
+        error: walletsError,
+        data: walletsData,
+        refetch: refetchWallets
+    } = useQuery({
+        queryKey: ['wallets', selectedChain.nativeTokenName],
+        queryFn: () => getWallets({
+            headers: {
+                "network": selectedChain.nativeTokenName,
+            },
+        }),
+        initialData: wallets,
+        staleTime: 60000,
+    });
 
-    if (isAiLoading)
-        return (
-            <Section variant="vertical">
-                <SectionHeader variant="vertical">
-                    <SectionTitle>Insights & Analytics</SectionTitle>
-                    <SectionDescription>
-                        Transform data into actionable intelligence for smarter decisions and strategic growth.
-                    </SectionDescription>
-                </SectionHeader>
-                <SectionContent variant="vertical">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                        {Array(3)
-                            .fill(true)
-                            .map((_, id) => (
-                                <Card
-                                    key={id}
-                                    className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4"
-                                >
-                                    <div className="space-y-2">
-                                        <Skeleton className="h-4 w-full" />
-                                        <Skeleton className="h-4 w-[210px]" />
-                                    </div>
-                                    <div className="space-y-2 mt-5">
-                                        <Skeleton className="h-4 w-full" />
-                                        <Skeleton className="h-4 w-[210px]" />
-                                    </div>
-                                </Card>
-                            ))}
-                    </div>
-                </SectionContent>
-            </Section>
-        );
+    // Refetch wallets data when selectedChain changes
+    useEffect(() => {
+        refetchWallets();
+    }, [selectedChain, refetchWallets]);
+
+    if (aiError || walletsError) return <div>Failed to load data, please try again.</div>;
 
     return (
         <Section variant="vertical">
@@ -86,47 +78,59 @@ export default function Insight({ wallets }: Props) {
                             <CardTitle>Trending Traders</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {wallets.map((wallet, i) => (
-                                <React.Fragment key={wallet.walletAddress}>
-                                    <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
-                                        <div className='flex items-center justify-start gap-5'>
-                                            <AvatarPlaceholder />
-                                            <div className="flex flex-col items-start justify-center gap-2">
-                                                <Copy
-                                                    className="text-muted-foreground"
-                                                    href={`/wallet/${wallet.walletAddress}`}
-                                                    text={minifyContract(wallet.walletAddress)}
-                                                    value={wallet.walletAddress}
-                                                />
-                                                <div className='flex items-center justify-start gap-2'>
-                                                    <span className='text-muted-foreground text-sm'>
-                                                        <FaSackDollar />
-                                                    </span>
-                                                    <span
-                                                        className={clsx(
-                                                            'text-base-content font-semibold whitespace-nowrap leading-none',
-                                                            wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
-                                                        )}
-                                                    >
-                                                        +{separate3digits(wallet.netProfit.toFixed(0))}
-                                                    </span>
+                            {
+                                isWalletsLoading ? (
+                                    <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
+                                        <div className="space-y-2">
+                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-[210px]" />
+                                        </div>
+                                        <div className="space-y-2 mt-5">
+                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-[210px]" />
+                                        </div>
+                                    </div>)
+                                    : walletsData.splice(0, 3).map((wallet: IWallet, i: number) => (
+                                        <React.Fragment key={wallet.walletAddress}>
+                                            <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
+                                                <div className='flex items-center justify-start gap-5'>
+                                                    <AvatarPlaceholder />
+                                                    <div className="flex flex-col items-start justify-center gap-2">
+                                                        <Copy
+                                                            className="text-muted-foreground"
+                                                            href={`/wallet/${wallet.walletAddress}`}
+                                                            text={minifyContract(wallet.walletAddress)}
+                                                            value={wallet.walletAddress}
+                                                        />
+                                                        <div className='flex items-center justify-start gap-2'>
+                                                            <span className='text-muted-foreground text-sm'>
+                                                                <FaSackDollar />
+                                                            </span>
+                                                            <span
+                                                                className={clsx(
+                                                                    'text-base-content font-semibold whitespace-nowrap leading-none',
+                                                                    wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
+                                                                )}
+                                                            >
+                                                                +{separate3digits(wallet.netProfit.toFixed(0))}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <KeyValue
-                                                title='Winrate'
-                                                titleIcon={<RiMedal2Fill />}
-                                                className='text-sm'
-                                                value={`${Math.ceil(wallet.winRate / 10)}/10`}
-                                                variant='default' />
-                                            <Progress className='mt-2' value={+wallet.winRate} />
-                                        </div>
+                                                <div>
+                                                    <KeyValue
+                                                        title='Winrate'
+                                                        titleIcon={<RiMedal2Fill />}
+                                                        className='text-sm'
+                                                        value={`${Math.ceil(wallet.winRate / 10)}/10`}
+                                                        variant='default' />
+                                                    <Progress className='mt-2' value={+wallet.winRate} />
+                                                </div>
 
-                                    </div>
-                                    {i !== wallets.length - 1 && <Separator />}
-                                </React.Fragment>
-                            ))}
+                                            </div>
+                                            {i !== walletsData.length - 1 && <Separator />}
+                                        </React.Fragment>
+                                    ))}
                         </CardContent>
                     </Card>
                     <Card>
@@ -134,12 +138,44 @@ export default function Insight({ wallets }: Props) {
                             <CardTitle>Ai Trend Detector</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <span>{ai?.trend}</span>
-                            <div className="mt-5 text-muted-foreground">{ai?.categoryTrend}</div>
+                            {
+                                isAiLoading ? (
+                                    <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
+                                        <div className="space-y-2">
+                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-[210px]" />
+                                        </div>
+                                        <div className="space-y-2 mt-5">
+                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-[210px]" />
+                                        </div>
+                                    </div>)
+                                    :
+                                    <>
+                                        <span>{ai?.trend}</span>
+                                        <div className="mt-5 text-muted-foreground">{ai?.categoryTrend}</div>
+                                    </>
+                            }
                         </CardContent>
                     </Card>
                     <Card>
-                        <StrengthAnalysis />
+                        {
+                            isAiLoading ? (
+                                <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-full" />
+                                        <Skeleton className="h-4 w-[210px]" />
+                                    </div>
+                                    <div className="space-y-2 mt-5">
+                                        <Skeleton className="h-4 w-full" />
+                                        <Skeleton className="h-4 w-[210px]" />
+                                    </div>
+                                </div>)
+                                :
+                                <>
+                                    <StrengthAnalysis />
+                                </>
+                        }
                     </Card>
                 </div>
             </SectionContent>

@@ -1,3 +1,4 @@
+// wallet.tsx
 'use client'
 
 import {
@@ -31,6 +32,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isPaidMember } from "@/services/auth.service";
 import { useTokenChainStore } from "@/store";
+import { getWallets } from "@/services/http/wallets.http";
+import { useQuery } from "@tanstack/react-query";
 
 interface Prop {
   initTopWallets: IWallet[];
@@ -38,9 +41,8 @@ interface Prop {
 
 export default function Wallet({ initTopWallets }: Prop) {
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [wallets, setWallets] = useState(initTopWallets);
-  const [filtered, setFiltered] = useState(initTopWallets);
+  const [wallets, setWallets] = useState<IWallet[]>(initTopWallets);
+  const [filtered, setFiltered] = useState<IWallet[]>(initTopWallets);
   const [maxPage, setMaxPage] = useState(0);
   const router = useRouter();
   const [sort, setSort] = useState<{ [key: string]: boolean }>({
@@ -67,9 +69,27 @@ export default function Wallet({ initTopWallets }: Prop) {
   const [filters, setFilters] = useState(initTopWalletFilters);
 
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
+  const { selectedChain } = useTokenChainStore();
 
-  const handleNext = () => setPage((prev) => prev + 1);
-  const handlePrev = () => setPage((prev) => prev - 1);
+  const { data: walletsData, isLoading } = useQuery({
+    queryKey: ['wallets', selectedChain.nativeTokenName],
+    queryFn: () => getWallets({
+      headers: {
+        "network": selectedChain.nativeTokenName,
+      },
+    }),
+    initialData: initTopWallets,
+  });
+
+  useEffect(() => {
+    if (walletsData) {
+      setWallets(walletsData);
+      setFiltered(walletsData);
+      setMaxPage(Math.ceil(walletsData.length / 10) - 1);
+      setPage(0);
+    }
+  }, [walletsData]);
+
 
   useEffect(() => {
     let cloneFiltered: IWallet[] = [...wallets];
@@ -151,12 +171,12 @@ export default function Wallet({ initTopWallets }: Prop) {
     setFiltered(cloneFiltered as any);
     setMaxPage(Math.ceil(cloneFiltered.length / 10) - 1);
     setPage(0);
-  }, [filters]);
+  }, [filters, wallets]);
 
-  if (loading)
+  if (isLoading)
     return (
       <div className="w-full h-[800px] flex justify-center items-center">
-        <span className="loading loading-bars loading-md"></span>
+        <span className="loading loading-bars loading-md">loading ...</span>
       </div>
     );
 
