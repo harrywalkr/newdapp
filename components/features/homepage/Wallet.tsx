@@ -41,8 +41,6 @@ interface Prop {
 
 export default function Wallet({ initTopWallets }: Prop) {
   const [page, setPage] = useState(1);
-  const [wallets, setWallets] = useState<IWallet[]>(initTopWallets);
-  const [filtered, setFiltered] = useState<IWallet[]>(initTopWallets);
   const [maxPage, setMaxPage] = useState(0);
   const router = useRouter();
   const [sort, setSort] = useState<{ [key: string]: boolean }>({
@@ -67,19 +65,22 @@ export default function Wallet({ initTopWallets }: Prop) {
   });
   const [layout, setLayout] = useState(topWalletLayouts);
   const [filters, setFilters] = useState(initTopWalletFilters);
-
+  
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
   const { selectedChain } = useTokenChainStore();
-
+  
   const { data: walletsData, isLoading } = useQuery({
     queryKey: ['wallets', selectedChain.symbol],
     queryFn: () => getWallets({
-      headers: {
+      params: {
         "network": selectedChain.symbol,
       },
     }),
     initialData: initTopWallets,
   });
+
+  const [wallets, setWallets] = useState<IWallet[]>(walletsData);
+  const [filtered, setFiltered] = useState<IWallet[]>(walletsData);
 
   useEffect(() => {
     if (walletsData) {
@@ -326,7 +327,7 @@ export default function Wallet({ initTopWallets }: Prop) {
           setLayout={setLayout}
           filters={filters}
           setFilters={setFilters}
-          wallet={initTopWallets}
+          wallet={walletsData}
           onSearch={setFiltered}
         />
         <ScrollArea className="w-full rounded-md pb-4">

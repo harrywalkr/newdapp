@@ -11,7 +11,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   const images = await getImages();
-  const wallets = await getWallets({ headers: { network: 'eth' } });
+  const wallets = await getWallets({ params: { network: 'eth' } });
   const nfts = await getTopNFTs();
 
   return (

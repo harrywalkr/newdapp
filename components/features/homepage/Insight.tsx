@@ -48,7 +48,7 @@ export default function Insight({ wallets }: Props) {
     } = useQuery({
         queryKey: ['wallets', selectedChain.symbol],
         queryFn: () => getWallets({
-            headers: {
+            params: {
                 "network": selectedChain.symbol,
             },
         }),
