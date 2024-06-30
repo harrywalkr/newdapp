@@ -13,7 +13,7 @@ import { History } from '@/types/strength-ratio.type';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Indicator from './Indicator';
 
-const StrengthAnalysis: React.FC = () => {
+const StrengthAnalysis = () => {
     const { isLoading, error, data: strengthRatio } = useQuery({
         queryKey: ['strength'],
         queryFn: () => getStrengthRatio(),
@@ -138,7 +138,7 @@ const StrengthAnalysis: React.FC = () => {
                         } */}
                         <div className='mt-5'>
                             {strengthRatio?.averageMarketStrength !== undefined &&
-                                <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} />}
+                                <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} avgMarketStrength={strengthRatio.averageMarketStrength} />}
                         </div>
                     </div>
                 </div>

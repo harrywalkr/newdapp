@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 interface Props {
     percentage: number;
     marketState: string;
+    avgMarketStrength: number
 }
 
-const Indicator = ({ percentage, marketState }: Props) => {
+const Indicator = ({ percentage, marketState, avgMarketStrength }: Props) => {
     const validPercentage = Math.min(100, Math.max(0, percentage));
 
     return (
@@ -22,7 +23,7 @@ const Indicator = ({ percentage, marketState }: Props) => {
                     style={{ left: `${validPercentage}%` }}
                 >
                     <span className='whitespace-nowrap absolute bottom-5 -left-20'>
-                      Avg Market strength {percentage.toFixed(0)}
+                        Avg Market strength {avgMarketStrength.toFixed(2)}
                     </span>
                 </div>
                 {/* <div
