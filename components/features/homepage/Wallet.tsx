@@ -72,10 +72,10 @@ export default function Wallet({ initTopWallets }: Prop) {
   const { selectedChain } = useTokenChainStore();
 
   const { data: walletsData, isLoading } = useQuery({
-    queryKey: ['wallets', selectedChain.nativeTokenName],
+    queryKey: ['wallets', selectedChain.symbol],
     queryFn: () => getWallets({
       headers: {
-        "network": selectedChain.nativeTokenName,
+        "network": selectedChain.symbol,
       },
     }),
     initialData: initTopWallets,

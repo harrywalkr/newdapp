@@ -46,10 +46,10 @@ export default function Insight({ wallets }: Props) {
         data: walletsData,
         refetch: refetchWallets
     } = useQuery({
-        queryKey: ['wallets', selectedChain.nativeTokenName],
+        queryKey: ['wallets', selectedChain.symbol],
         queryFn: () => getWallets({
             headers: {
-                "network": selectedChain.nativeTokenName,
+                "network": selectedChain.symbol,
             },
         }),
         initialData: wallets,
