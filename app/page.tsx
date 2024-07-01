@@ -11,15 +11,16 @@ export const revalidate = 0;
 
 export default async function Home() {
   const images = await getImages();
-  const wallets = await getWallets({ params: { network: 'eth' } });
+  // const wallets = await getWallets({ params: { network: 'eth' } });
   const nfts = await getTopNFTs();
 
   return (
     <div className="flex flex-col w-full gap-10 md:gap-10 lg:gap-14">
-      <Insight wallets={wallets.splice(0, 3)} />
+      <Insight />
       <TrendPairs />
       <TopLatestHotPairs images={images.imageUrls} />
-      <Wallet initTopWallets={wallets} />
+      {/* <Wallet initTopWallets={wallets} /> */}
+      <Wallet />
       {/* FIXME: dex old migrate */}
       {/* <TableExample initTopWallets={wallets} /> */}
       <NFT NFTs={nfts} />

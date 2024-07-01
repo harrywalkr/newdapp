@@ -26,11 +26,9 @@ import { FaSackDollar } from 'react-icons/fa6';
 import { useTokenChainStore } from '@/store';
 import { getWallets } from '@/services/http/wallets.http';
 
-interface Props {
-    wallets: IWallet[];
-}
 
-export default function Insight({ wallets }: Props) {
+
+export default function Insight() {
     const { selectedChain } = useTokenChainStore();
 
     // Query to fetch AI data
@@ -52,7 +50,6 @@ export default function Insight({ wallets }: Props) {
                 "network": selectedChain.symbol,
             },
         }),
-        initialData: wallets,
         staleTime: 60000,
     });
 
@@ -90,7 +87,7 @@ export default function Insight({ wallets }: Props) {
                                             <Skeleton className="h-4 w-[210px]" />
                                         </div>
                                     </div>)
-                                    : walletsData.splice(0, 3).map((wallet: IWallet, i: number) => (
+                                    : walletsData?.slice(0, 3).map((wallet: IWallet, i: number) => (
                                         <React.Fragment key={wallet.walletAddress}>
                                             <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
                                                 <div className='flex items-center justify-start gap-5'>

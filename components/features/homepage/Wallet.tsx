@@ -35,11 +35,11 @@ import { useTokenChainStore } from "@/store";
 import { getWallets } from "@/services/http/wallets.http";
 import { useQuery } from "@tanstack/react-query";
 
-interface Prop {
-  initTopWallets: IWallet[];
-}
+// interface Prop {
+//   initTopWallets: IWallet[];
+// }
 
-export default function Wallet({ initTopWallets }: Prop) {
+export default function Wallet() {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(0);
   const router = useRouter();
@@ -65,22 +65,22 @@ export default function Wallet({ initTopWallets }: Prop) {
   });
   const [layout, setLayout] = useState(topWalletLayouts);
   const [filters, setFilters] = useState(initTopWalletFilters);
-  
+
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
   const { selectedChain } = useTokenChainStore();
-  
-  const { data: walletsData, isLoading } = useQuery({
+
+  const { data: walletsData = [], isLoading } = useQuery({
     queryKey: ['wallets', selectedChain.symbol],
     queryFn: () => getWallets({
       params: {
         "network": selectedChain.symbol,
       },
     }),
-    initialData: initTopWallets,
+    // initialData: initTopWallets,
   });
 
-  const [wallets, setWallets] = useState<IWallet[]>(walletsData);
-  const [filtered, setFiltered] = useState<IWallet[]>(walletsData);
+  const [wallets, setWallets] = useState<IWallet[]>([]);
+  const [filtered, setFiltered] = useState<IWallet[]>([]);
 
   useEffect(() => {
     if (walletsData) {
@@ -93,85 +93,87 @@ export default function Wallet({ initTopWallets }: Prop) {
 
 
   useEffect(() => {
-    let cloneFiltered: IWallet[] = [...wallets];
-    Object.keys(filters).forEach((item: string) => {
-      if (item === "rank" && filters.rank.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            +i.rank >= filters.rank.value[0]! &&
-            +i.rank <= filters.rank.value[1]!
-        );
-      } else if (item === "label" && filters.label.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) => i.buyAmountLabel === filters.label.value
-        );
-      } else if (item === "pnl" && filters.pnl.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            +i.netProfit.toFixed(2) >= filters.pnl.value[0]! &&
-            +i.netProfit.toFixed(2) <= filters.pnl.value[1]!
-        );
-      } else if (item === "winRate" && filters.winRate.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            Math.ceil(i.winRate / 10) >= filters.winRate.value[0]! &&
-            Math.ceil(i.winRate / 10) <= filters.winRate.value[1]!
-        );
-      } else if (
-        item === "dayActive" &&
-        filters.dayActive.value !== undefined
-      ) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            i.dayActive >= filters.dayActive.value[0]! &&
-            i.dayActive <= filters.dayActive.value[1]!
-        );
-      } else if (
-        item === "avgHoldingTime" &&
-        filters.avgHoldingTime.value !== undefined
-      ) {
-        cloneFiltered = cloneFiltered.filter((i: IWallet) => {
-          if (!i.avgHoldingTime) return true;
-          return (
-            +i.avgHoldingTime?.toFixed() >= filters.avgHoldingTime.value[0]! &&
-            +i.avgHoldingTime?.toFixed() <= filters.avgHoldingTime.value[1]!
+    if (wallets) {
+      let cloneFiltered: IWallet[] = [...wallets];
+      Object.keys(filters).forEach((item: string) => {
+        if (item === "rank" && filters.rank.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              +i.rank >= filters.rank.value[0]! &&
+              +i.rank <= filters.rank.value[1]!
           );
-        });
-      } else if (
-        item === "nftActivity" &&
-        filters.nftActivity.value !== undefined
-      ) {
-        cloneFiltered = cloneFiltered.filter(() => {
-          // backend implementation of nft pending
-          if (filters.nftActivity.value === "yes") return true;
-          return false;
-        });
-      } else if (
-        item === "totalScore" &&
-        filters.totalScore.value !== undefined
-      ) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            i.totalScore >= filters.totalScore.value[0]! &&
-            i.totalScore <= filters.totalScore.value[1]!
-        );
-      } else if (item === "age" && filters.age.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter(
-          (i: IWallet) =>
-            i.age >= filters.age.value[0]! && i.age <= filters.age.value[1]!
-        );
-      } else if (item === "TotalFee" && filters.TotalFee.value !== undefined) {
-        cloneFiltered = cloneFiltered.filter((i: IWallet) => {
-          return (
-            +i.TotalFee?.toFixed() >= filters.TotalFee.value[0]! &&
-            +i.TotalFee?.toFixed() <= filters.TotalFee.value[1]!
+        } else if (item === "label" && filters.label.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) => i.buyAmountLabel === filters.label.value
           );
-        });
-      }
-    });
-    setFiltered(cloneFiltered as any);
-    setMaxPage(Math.ceil(cloneFiltered.length / 10) - 1);
-    setPage(0);
+        } else if (item === "pnl" && filters.pnl.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              +i.netProfit.toFixed(2) >= filters.pnl.value[0]! &&
+              +i.netProfit.toFixed(2) <= filters.pnl.value[1]!
+          );
+        } else if (item === "winRate" && filters.winRate.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              Math.ceil(i.winRate / 10) >= filters.winRate.value[0]! &&
+              Math.ceil(i.winRate / 10) <= filters.winRate.value[1]!
+          );
+        } else if (
+          item === "dayActive" &&
+          filters.dayActive.value !== undefined
+        ) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              i.dayActive >= filters.dayActive.value[0]! &&
+              i.dayActive <= filters.dayActive.value[1]!
+          );
+        } else if (
+          item === "avgHoldingTime" &&
+          filters.avgHoldingTime.value !== undefined
+        ) {
+          cloneFiltered = cloneFiltered.filter((i: IWallet) => {
+            if (!i.avgHoldingTime) return true;
+            return (
+              +i.avgHoldingTime?.toFixed() >= filters.avgHoldingTime.value[0]! &&
+              +i.avgHoldingTime?.toFixed() <= filters.avgHoldingTime.value[1]!
+            );
+          });
+        } else if (
+          item === "nftActivity" &&
+          filters.nftActivity.value !== undefined
+        ) {
+          cloneFiltered = cloneFiltered.filter(() => {
+            // backend implementation of nft pending
+            if (filters.nftActivity.value === "yes") return true;
+            return false;
+          });
+        } else if (
+          item === "totalScore" &&
+          filters.totalScore.value !== undefined
+        ) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              i.totalScore >= filters.totalScore.value[0]! &&
+              i.totalScore <= filters.totalScore.value[1]!
+          );
+        } else if (item === "age" && filters.age.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter(
+            (i: IWallet) =>
+              i.age >= filters.age.value[0]! && i.age <= filters.age.value[1]!
+          );
+        } else if (item === "TotalFee" && filters.TotalFee.value !== undefined) {
+          cloneFiltered = cloneFiltered.filter((i: IWallet) => {
+            return (
+              +i.TotalFee?.toFixed() >= filters.TotalFee.value[0]! &&
+              +i.TotalFee?.toFixed() <= filters.TotalFee.value[1]!
+            );
+          });
+        }
+      });
+      setFiltered(cloneFiltered as any);
+      setMaxPage(Math.ceil(cloneFiltered.length / 10) - 1);
+      setPage(0);
+    }
   }, [filters, wallets]);
 
   if (isLoading)
@@ -182,7 +184,7 @@ export default function Wallet({ initTopWallets }: Prop) {
     );
 
   const handleSort = (key: string) => {
-    let cloneFiltered = [...filtered];
+    let cloneFiltered = [...(filtered || [])];
     switch (key) {
       case "pnl":
         cloneFiltered = cloneFiltered.sort((a: any, b: any) => {

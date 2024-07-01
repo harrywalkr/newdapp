@@ -14,9 +14,9 @@ const Indicator = ({ percentage, marketState, avgMarketStrength }: Props) => {
         <div>
             <div className="relative flex w-150 h-2 mb-2">
                 <div className="flex w-full h-full rounded-full overflow-hidden">
-                    <div className="w-1/3 h-full bg-red-400"></div>
-                    <div className="w-1/3 h-full bg-[#b4b4b4]"></div>
-                    <div className="w-1/3 h-full bg-green-400"></div>
+                    <div className="w-2/5 h-full bg-red-400"></div>
+                    <div className="w-1/5 h-full bg-[#b4b4b4]"></div>
+                    <div className="w-2/5 h-full bg-green-400"></div>
                 </div>
                 <div
                     className="absolute top-1/2 transform -translate-y-1/2 h-5 rounded-full bg-gray-200 w-3"

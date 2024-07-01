@@ -90,7 +90,7 @@ const StrengthAnalysis = () => {
                 return 'Strongly Bullish';
 
             default:
-                return 'Unknown';  // This is a fallback in case none of the conditions match
+                return 'Unknown';
         }
     };
 
