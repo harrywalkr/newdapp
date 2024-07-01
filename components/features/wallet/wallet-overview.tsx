@@ -29,14 +29,14 @@ interface Props {
     walletAddress: string;
     initialWalletSummary: WalletSummaryType;
     walletBalance: WalletBalanceType;
-    dateRange: { from: Date, till: Date };
+    dateRange: { from?: Date, till?: Date };
     onDateChange: (newDateRange: { from: Date, till: Date }) => void;
     onChainChange: (chainSymbol: string) => void;
 }
 
 export default function WalletOverview({ walletAddress, initialWalletSummary, walletBalance, onDateChange, onChainChange, dateRange }: Props) {
     const isDesktop = useMedia('(min-width: 1024px)');
-    const [fromDate, setFromDate] = useState<Date>(dateRange.from);
+    const [fromDate, setFromDate] = useState<Date | undefined>(dateRange.from);
     const [toDate, setToDate] = useState<Date>();
 
     const handleDateChange = () => {

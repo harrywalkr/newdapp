@@ -29,9 +29,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 interface Props {
     walletAddress: string;
-    dateRange: {
-        from: Date, till: Date
-    } | null
+    dateRange: { from?: Date, till?: Date }
 }
 
 export default function WalletSwaps({ dateRange, walletAddress }: Props) {

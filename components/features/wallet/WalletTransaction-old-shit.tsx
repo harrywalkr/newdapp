@@ -30,10 +30,7 @@ dayjs.extend(relativeTime);
 
 interface Props {
   walletAddress: string;
-  dateRange: {
-    from: Date;
-    till: Date;
-  } | null;
+  dateRange: { from?: Date, till?: Date };
 }
 
 export default function WalletTransaction({ dateRange, walletAddress }: Props) {

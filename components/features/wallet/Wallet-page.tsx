@@ -16,7 +16,7 @@ interface Props {
 }
 
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance }) => {
-    const [dateRange, setDateRange] = useState<{ from: Date, till: Date }>({ from: new Date(), till: new Date() });
+    const [dateRange, setDateRange] = useState<{ from?: Date, till?: Date }>({});
     const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; till?: Date, network?: string }>({});
     const { selectedChain, availableChains } = useTokenChainStore();
 
