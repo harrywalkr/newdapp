@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
 import { KeyValue } from '@/components/ui/key-value';
@@ -7,44 +7,62 @@ import { WalletBalanceType } from '@/types/wallet-balance.type';
 import { WalletSummaryType } from '@/types/wallet-summary.type';
 import { separate3digits } from '@/utils/numbers';
 import { minifyContract, minifyTokenName } from '@/utils/truncate';
-import { BiCoin } from 'react-icons/bi';
-import { FaRankingStar } from 'react-icons/fa6';
-import { IoMoonOutline, IoReceiptOutline, IoSunnyOutline } from 'react-icons/io5';
-import { MdAttachMoney, MdOutlineScoreboard } from 'react-icons/md';
-import { TbSunMoon } from 'react-icons/tb';
-import { IoIosWine } from "react-icons/io";
-import WalletTimelineActivity from './WalletTimelineActivity';
-import { Progress } from '@/components/ui/progress';
-import WalletOverviewChart from './WalletOverviewChart';
 import { useMedia } from 'react-use';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
 import { DatePicker } from '@/components/ui/date-picker';
+import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import WalletTimelineActivity from './WalletTimelineActivity';
+import WalletOverviewChart from './WalletOverviewChart';
+import { IoIosWine } from 'react-icons/io';
+import { Progress } from '@/components/ui/progress';
+import { MdOutlineScoreboard } from 'react-icons/md';
+import { useTokenChainStore } from '@/store';
 
 interface Props {
     walletAddress: string;
     initialWalletSummary: WalletSummaryType;
     walletBalance: WalletBalanceType;
-    onDateChange: (newDateRange: { from: string, till: string }) => void;
+    dateRange: { from: Date, till: Date };
+    onDateChange: (newDateRange: { from: Date, till: Date }) => void;
+    onChainChange: (chainSymbol: string) => void;
 }
 
-// FIXME: Add hover card tooltip for more info and redirect to blog
-export default function WalletOverview({ walletAddress, initialWalletSummary, walletBalance, onDateChange }: Props) {
+export default function WalletOverview({ walletAddress, initialWalletSummary, walletBalance, onDateChange, onChainChange, dateRange }: Props) {
     const isDesktop = useMedia('(min-width: 1024px)');
-    const [fromDate, setFromDate] = useState<Date>();
+    const [fromDate, setFromDate] = useState<Date>(dateRange.from);
     const [toDate, setToDate] = useState<Date>();
 
     const handleDateChange = () => {
         if (fromDate && toDate) {
             onDateChange({
-                from: fromDate.toISOString().split('T')[0],
-                till: toDate.toISOString().split('T')[0],
+                // from: fromDate.toISOString().split('T')[0],
+                // till: toDate.toISOString().split('T')[0],
+                from: fromDate,
+                till: toDate
             });
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         handleDateChange();
     }, [fromDate, toDate]);
+
+    const { availableChains, setSelectedChain } = useTokenChainStore();
+
+    const handleChainChange = (symbol: string) => {
+        const chain = availableChains.find(chain => chain.symbol === symbol);
+        if (chain) {
+            setSelectedChain(chain.id);
+            onChainChange(chain.symbol);
+        }
+    };
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
@@ -151,6 +169,18 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         <div className="mt-4 flex items-center justify-start gap-4">
                             <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
                             <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
+                            <Select onValueChange={handleChainChange}>
+                                <SelectTrigger className="w-44">
+                                    <SelectValue placeholder="Select Chain" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {availableChains.map((chain) => (
+                                        <SelectItem key={chain.id} value={chain.symbol}>
+                                            {chain.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                     <div className="right h-32 flex-1 my-10 md:mt-0 w-full ">

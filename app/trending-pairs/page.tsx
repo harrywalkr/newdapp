@@ -40,7 +40,7 @@ export default function TableA({ params }: any) {
     error,
     data: trends,
   } = useQuery({
-    queryKey: ["trends", selectedChain.name],
+    queryKey: ["trends", selectedChain.symbol],
     queryFn: () => getTrends(selectedChain.url),
     refetchInterval: 300000,
   });

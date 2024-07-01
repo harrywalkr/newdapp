@@ -19,7 +19,7 @@ interface Props {
   walletAddress: string;
   walletSummary: WalletSummaryType;
   walletBalance: WalletBalanceType;
-  dateRange: { from: string; till: string } | null;
+  dateRange: { from: Date; till: Date } | null;
 }
 
 export default function WalletDetail({ walletSummary, walletAddress, dateRange, walletBalance }: Props) {

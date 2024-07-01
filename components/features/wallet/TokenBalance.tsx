@@ -14,6 +14,7 @@ import { ImageType } from '@/types/Image.type';
 import WalletPortfolioHistory from './WalletPortfolioHistory';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTokenChainStore } from '@/store';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -25,11 +26,12 @@ interface Props {
 
 
 export default function WalletPortfolio({ walletAddress, walletSummary }: Props) {
+    const { selectedChain } = useTokenChainStore();
 
     const { data: walletSwaps, isLoading: walletSwapsLoading, isError: walletSwapsError } = useQuery(
         {
-            queryKey: ['wallet-swaps', walletAddress],
-            queryFn: () => getWalletSwaps({ params: { address: walletAddress } }).then(data => data),
+            queryKey: ['wallet-swaps', walletAddress, selectedChain.symbol],
+            queryFn: () => getWalletSwaps({ params: { address: walletAddress, network: selectedChain.symbol } }).then(data => data),
         }
     );
 

@@ -49,7 +49,7 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const { data: averageRank, isPending: averageRankPending, refetch: averageRankRefetch } = useQuery(
         {
-            queryKey: ['averageRank', selectedChain.name],
+            queryKey: ['averageRank', selectedChain.symbol],
             queryFn: () => getAverageRank(selectedChain.url),
             refetchInterval: 100000,
             enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
@@ -58,7 +58,7 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const { data: latestTokens, isPending: latestTokensPending, refetch: latestTokenRefetch } = useQuery(
         {
-            queryKey: ['latestTokens', selectedChain.name],
+            queryKey: ['latestTokens', selectedChain.symbol],
             queryFn: () => getLatestTokens(selectedChain.url),
             refetchInterval: 100000,
             enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
@@ -67,7 +67,7 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const { data: nonEthData, isPending: nonEthDataPending, refetch: nonEthDataRefetch } = useQuery(
         {
-            queryKey: ['nonEthData', selectedChain.name],
+            queryKey: ['nonEthData', selectedChain.symbol],
             queryFn: () => getTopTrends({ params: { network: selectedChain.symbol, page: 1 } }),
             refetchInterval: 100000,
             enabled: selectedChain.symbol !== 'eth', // Only fetch for non-ETH

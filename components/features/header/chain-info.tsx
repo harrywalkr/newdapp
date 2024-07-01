@@ -14,7 +14,7 @@ export default function ChainInfo() {
         data: chainInfo,
     } = useQuery(
         {
-            queryKey: ["chainData", selectedChain.name],
+            queryKey: ["chainData", selectedChain.symbol],
             queryFn: () => getChainData({
                 params: {
                     network: selectedChain.symbol

@@ -7,6 +7,7 @@ import WalletOverview from '@/components/features/wallet/wallet-overview';
 import WalletDetail from '@/components/features/wallet/wallet-detail';
 import { WalletBalanceType } from '@/types/wallet-balance.type';
 import { WalletSummaryType } from '@/types/wallet-summary.type';
+import { useTokenChainStore } from '@/store';
 
 interface Props {
     walletAddress: string;
@@ -15,39 +16,49 @@ interface Props {
 }
 
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance }) => {
-    const [dateRange, setDateRange] = useState<{ from: string, till: string } | null>(null);
-    const [walletParams, setWalletParams] = useState<{ limit?: number; from?: string; till?: string }>({});
+    const [dateRange, setDateRange] = useState<{ from: Date, till: Date }>({ from: new Date(), till: new Date() });
+    const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; till?: Date, network?: string }>({});
+    const { selectedChain, availableChains } = useTokenChainStore();
 
     const { data: walletSummary, refetch: refetchSummary } = useQuery({
-        queryKey: ['walletSummary', walletAddress, dateRange, walletParams],
-        queryFn: () => getWalletSummary(walletAddress, { params: { ...dateRange, ...walletParams } }),
+        queryKey: ['walletSummary', walletAddress, dateRange, walletParams, selectedChain.symbol],
+        queryFn: () => getWalletSummary(walletAddress, { params: { ...dateRange, ...walletParams, network: selectedChain.symbol } }),
         initialData: initialWalletSummary,
         enabled: !!dateRange,
     });
 
     const { data: walletBalance } = useQuery({
-        queryKey: ['walletBalance', walletAddress],
-        queryFn: () => getWalletBalance(walletAddress),
+        queryKey: ['walletBalance', walletAddress, selectedChain.symbol],
+        queryFn: () => getWalletBalance(walletAddress, { params: { network: selectedChain.symbol } }),
         initialData: initialWalletBalance,
     });
 
     useEffect(() => {
         const fetchWalletParams = async () => {
-            const params = await getWalletParams(walletAddress, "ethereum"); // Use network as needed
+            const params = await getWalletParams(walletAddress, { params: { network: selectedChain.symbol } });
             setWalletParams(params);
+            setDateRange({ from: params.from!, till: params.till! })
         };
-
         fetchWalletParams();
-    }, [walletAddress]);
+    }, [walletAddress, selectedChain]);
 
     useEffect(() => {
+        console.log('hello3')
         if (dateRange) {
+            console.log('hello2')
             refetchSummary();
         }
-    }, [dateRange, refetchSummary, walletParams]);
+    }, [dateRange, refetchSummary, walletParams, selectedChain]);
 
-    const handleDateChange = (newDateRange: { from: string, till: string }) => {
+    const handleDateChange = (newDateRange: { from: Date, till: Date }) => {
         setDateRange(newDateRange);
+    };
+
+    const handleChainChange = (chainSymbol: string) => {
+        const selectedChain = availableChains.find(chain => chain.symbol === chainSymbol);
+        if (selectedChain) {
+            setWalletParams({ ...walletParams, network: chainSymbol });
+        }
     };
 
     if (!walletSummary || !walletBalance) {
@@ -60,7 +71,9 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
                 initialWalletSummary={walletSummary}
                 walletBalance={walletBalance}
                 walletAddress={walletAddress}
+                dateRange={dateRange}
                 onDateChange={handleDateChange}
+                onChainChange={handleChainChange}
             />
             <WalletDetail
                 walletSummary={walletSummary}

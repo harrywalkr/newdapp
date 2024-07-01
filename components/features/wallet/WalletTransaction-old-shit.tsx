@@ -24,27 +24,30 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { minifyContract } from '@/utils/truncate';
+import { useTokenChainStore } from '@/store';
 
 dayjs.extend(relativeTime);
 
 interface Props {
   walletAddress: string;
   dateRange: {
-    from: string;
-    till: string;
+    from: Date;
+    till: Date;
   } | null;
 }
 
 export default function WalletTransaction({ dateRange, walletAddress }: Props) {
+  const { selectedChain } = useTokenChainStore();
   const [walletSwapsQuery, imagesQuery] = useQueries({
     queries: [
       {
-        queryKey: ["wallet-swaps", { dateRange, walletAddress }],
+        queryKey: ["wallet-swaps", { dateRange, walletAddress }, selectedChain.symbol],
         queryFn: () =>
           getWalletSwaps({
             params: {
-              params: dateRange,
-              address: walletAddress
+              ...dateRange,
+              address: walletAddress,
+              network: selectedChain.symbol
             }
           }).then(data => data)
             .catch(error => {

@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import { getWalletSwaps } from '@/services/http/wallets.http';
 import { useQuery } from '@tanstack/react-query';
+import { useTokenChainStore } from '@/store';
 
 ChartJS.register(
   LinearScale,
@@ -28,9 +29,11 @@ ChartJS.register(
 );
 
 export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAddress: string }) {
+  const { selectedChain } = useTokenChainStore();
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['walletSwaps', walletAddress],
-    queryFn: () => getWalletSwaps({ params: { address: walletAddress } })
+    queryKey: ['walletSwaps', walletAddress, selectedChain.symbol],
+    queryFn: () => getWalletSwaps({ params: { address: walletAddress, network: selectedChain.symbol } })
   })
 
   if (isLoading) {
@@ -105,9 +108,9 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
   };
 
   return (
-      <div className="w-full">
-        <Chart type="bar" data={tradesData} className="w-full" />
-        <Chart type="line" data={profitsData} className="w-full" />
-      </div>
+    <div className="w-full">
+      <Chart type="bar" data={tradesData} className="w-full" />
+      <Chart type="line" data={profitsData} className="w-full" />
+    </div>
   );
 }

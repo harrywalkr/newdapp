@@ -39,7 +39,7 @@ export default function TrendPairs() { // FIXME: this component must include tre
     data: trends,
   } = useQuery(
     {
-      queryKey: ["trends", selectedChain.name],
+      queryKey: ["trends", selectedChain.symbol],
       // FIXME: Remove .then(data => data) from the line below
       queryFn: () => getTrends(selectedChain.url).then(data => data),
       refetchInterval: 300000

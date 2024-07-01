@@ -21,7 +21,7 @@ import { ImageType } from '@/types/Image.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import Copy from '@/components/ui/copy';
 import React from 'react';
-import { useWatchlistStore } from '@/store';
+import { useTokenChainStore, useWatchlistStore } from '@/store';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Button } from '@/components/ui/button'; // Make sure this import is correct
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
@@ -30,22 +30,24 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 interface Props {
     walletAddress: string;
     dateRange: {
-        from: string, till: string
+        from: Date, till: Date
     } | null
 }
 
 export default function WalletSwaps({ dateRange, walletAddress }: Props) {
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 10; // Adjust this value to the desired number of items per page
+    const { selectedChain } = useTokenChainStore();
+    const itemsPerPage = 10;
 
     const [walletSwapsQuery, imagesQuery] = useQueries({
         queries: [
             {
-                queryKey: ["wallet-swaps", { dateRange, walletAddress }],
+                queryKey: ["wallet-swaps", { dateRange, walletAddress }, selectedChain.symbol],
                 queryFn: () => getWalletSwaps({
                     params: {
-                        params: dateRange,
+                        ...dateRange,
+                        network: selectedChain.symbol,
                         address: walletAddress
                     }
                 }
