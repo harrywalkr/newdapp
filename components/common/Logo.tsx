@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Logo() {
   return (
-    <motion.span
+    <motion.div
       whileHover={{}}
       whileTap={{
         scale: 0.9,
@@ -14,6 +14,7 @@ export default function Logo() {
         // FIXME: add hover spotlight effect on logo
       }}
       className="flex items-center justify-center gap-2">
+
       {/* <div className="w-8 h-8 md:w-10 md:h-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,8 +55,10 @@ export default function Logo() {
           </g>
         </svg>
       </div> */}
-      <Image src='/dextrading-logo.svg' alt="Dextrading logo" width={30} height={30} />
-      <p className="text-accent-foreground text-lg font-semibold md:text-lg lg:text-xl font-['Fira_Code']">DexTrading</p>
-    </motion.span>
+      <div className="relative w-7 h-7">
+        <Image src='/dextrading-logo.svg' alt="Dextrading logo" layout="fill" objectFit="contain" />
+      </div>
+      <span className="text-accent-foreground text-lg font-semibold md:text-lg lg:text-xl font-['Fira_Code']">DexTrading</span>
+    </motion.div>
   );
 }
