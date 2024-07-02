@@ -6,12 +6,13 @@ import { getWallets } from "@/services/http/wallets.http";
 import { TopLatestHotPairs } from "@/components/features/homepage/TopLatestHotPairs";
 import { getTopNFTs } from "@/services/http/nft.http";
 import Insight from "@/components/features/homepage/Insight";
+import TableExample from "@/components/features/data-table/data";
 
 export const revalidate = 0;
 
 export default async function Home() {
   const images = await getImages();
-  // const wallets = await getWallets({ params: { network: 'eth' } });
+  const wallets = await getWallets({ params: { network: 'eth' } });
   const nfts = await getTopNFTs();
 
   return (
@@ -22,7 +23,7 @@ export default async function Home() {
       {/* <Wallet initTopWallets={wallets} /> */}
       <Wallet />
       {/* FIXME: dex old migrate */}
-      {/* <TableExample initTopWallets={wallets} /> */}
+      <TableExample initTopWallets={wallets} />
       <NFT NFTs={nfts} />
     </div>
   );
