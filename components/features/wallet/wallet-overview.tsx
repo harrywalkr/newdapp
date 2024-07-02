@@ -54,7 +54,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
         handleDateChange();
     }, [fromDate, toDate]);
 
-    const { availableChains, setSelectedChain } = useTokenChainStore();
+    const { availableChains, setSelectedChain, selectedChain } = useTokenChainStore();
 
     const handleChainChange = (symbol: string) => {
         const chain = availableChains.find(chain => chain.symbol === symbol);
@@ -169,7 +169,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                         <div className="mt-4 flex items-center justify-start gap-4">
                             <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
                             <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
-                            <Select onValueChange={handleChainChange}>
+                            <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
                                 <SelectTrigger className="w-44">
                                     <SelectValue placeholder="Select Chain" />
                                 </SelectTrigger>
