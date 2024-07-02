@@ -24,6 +24,7 @@ import { IoIosWine } from 'react-icons/io';
 import { Progress } from '@/components/ui/progress';
 import { MdOutlineScoreboard } from 'react-icons/md';
 import { useTokenChainStore } from '@/store';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface Props {
     walletAddress: string;
@@ -38,12 +39,13 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
     const isDesktop = useMedia('(min-width: 1024px)');
     const [fromDate, setFromDate] = useState<Date | undefined>(dateRange.from);
     const [toDate, setToDate] = useState<Date>();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const handleDateChange = () => {
         if (fromDate && toDate) {
             onDateChange({
-                // from: fromDate.toISOString().split('T')[0],
-                // till: toDate.toISOString().split('T')[0],
                 from: fromDate,
                 till: toDate
             });
@@ -61,6 +63,9 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
         if (chain) {
             setSelectedChain(chain.id);
             onChainChange(chain.symbol);
+            const currentParams = new URLSearchParams(searchParams.toString());
+            currentParams.set('network', chain.symbol);
+            router.push(`${pathname}?${currentParams.toString()}`);
         }
     };
 
@@ -92,7 +97,6 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                         <KeyValue
                                             title='Score'
                                             titleIcon={<MdOutlineScoreboard />}
-                                            // FIXME:what is the total score so I can type 400/2000
                                             value={initialWalletSummary.totalScore}
                                             variant={initialWalletSummary.totalScore > 1000 ? 'good' : 'bad'} />
                                     }

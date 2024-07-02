@@ -8,6 +8,7 @@ import WalletDetail from '@/components/features/wallet/wallet-detail';
 import { WalletBalanceType } from '@/types/wallet-balance.type';
 import { WalletSummaryType } from '@/types/wallet-summary.type';
 import { useTokenChainStore } from '@/store';
+import { useSearchParams } from 'next/navigation';
 
 interface Props {
     walletAddress: string;
@@ -18,7 +19,19 @@ interface Props {
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance }) => {
     const [dateRange, setDateRange] = useState<{ from?: Date, till?: Date }>({});
     const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; till?: Date, network?: string }>({});
-    const { selectedChain, availableChains } = useTokenChainStore();
+    const { selectedChain, availableChains, setSelectedChain } = useTokenChainStore();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const network = searchParams.get('network') || availableChains[0]?.symbol;
+        if (network) {
+            const chain = availableChains.find(chain => chain.symbol === network);
+            if (chain) {
+                setSelectedChain(chain.id);
+                setWalletParams(params => ({ ...params, network }));
+            }
+        }
+    }, [availableChains, searchParams, setSelectedChain]);
 
     const { data: walletSummary, refetch: refetchSummary } = useQuery({
         queryKey: ['walletSummary', walletAddress, dateRange, walletParams, selectedChain.symbol],
@@ -37,15 +50,13 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         const fetchWalletParams = async () => {
             const params = await getWalletParams(walletAddress, { params: { network: selectedChain.symbol } });
             setWalletParams(params);
-            setDateRange({ from: params.from!, till: params.till! })
+            setDateRange({ from: params.from!, till: params.till! });
         };
         fetchWalletParams();
     }, [walletAddress, selectedChain]);
 
     useEffect(() => {
-        console.log('hello3')
         if (dateRange) {
-            console.log('hello2')
             refetchSummary();
         }
     }, [dateRange, refetchSummary, walletParams, selectedChain]);

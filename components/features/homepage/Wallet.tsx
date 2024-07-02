@@ -517,7 +517,7 @@ const Record = ({ data, layout, handleStarClick, isTokenInWatchlist }: { data: I
               <div className="flex flex-col gap-2">
                 <Copy
                   // href={`/wallet/${data.walletAddress}?network=eth`}
-                  href={`/wallet/${data.walletAddress}`}
+                  href={`/wallet/${data.walletAddress}?network=${selectedChain.symbol}`}
                   text={minifyContract(data.walletAddress)}
                   value={data.walletAddress}
                 />
