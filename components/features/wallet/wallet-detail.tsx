@@ -51,7 +51,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
               <span className='ml-1'>Transactions</span>
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="Overview" className='mt-5 h-full flex flex-col md:flex-row items-start justify-between gap-4'>
+          <TabsContent value="Overview" className='mt-5 h-full flex flex-col lg:flex-row items-start justify-between gap-4'>
             <WalletOverview walletSummary={walletSummary} />
             <Separator orientation="vertical" flex />
             <div className="w-full">
