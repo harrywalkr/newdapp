@@ -6,7 +6,7 @@ import { getWallets } from "@/services/http/wallets.http";
 import { TopLatestHotPairs } from "@/components/features/homepage/TopLatestHotPairs";
 import { getTopNFTs } from "@/services/http/nft.http";
 import Insight from "@/components/features/homepage/Insight";
-import Wallets from "@/components/features/data-table/Wallets";
+import Wallets from "@/components/features/homepage/wallets-table";
 
 export const revalidate = 0;
 

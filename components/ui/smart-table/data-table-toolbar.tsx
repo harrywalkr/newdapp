@@ -1,8 +1,6 @@
 import { Input } from "@/components/ui/input"
 import { Table } from "@tanstack/react-table"
 import { DataTableViewOptions } from "./data-table-view-options"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import { statuses } from "./filters"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/ui/icon"
 import { LuSearch } from "react-icons/lu"
@@ -11,11 +9,13 @@ import { ReactNode } from "react"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  searchColumnAccessorKey: string
   children: ReactNode
 }
 
 export function DataTableToolbar<TData>({
   table,
+  searchColumnAccessorKey,
   children
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
@@ -29,15 +29,15 @@ export function DataTableToolbar<TData>({
           </div>
           <Input
             placeholder="Find addresses ..."
-            value={(table.getColumn("walletAddress")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn(searchColumnAccessorKey)?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("walletAddress")?.setFilterValue(event.target.value)
+              table.getColumn(searchColumnAccessorKey)?.setFilterValue(event.target.value)
+              // console.log(table.getColumn(searchColumnAccessorKey))
             }
             className="h-8 !pl-9 w-[150px] lg:w-[250px]"
           />
         </div>
         <div>
-
           {children}
         </div>
         {/* {table.getColumn("status") && (

@@ -29,12 +29,14 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  searchColumnAccessorKey: string
   children: ReactNode
 }
 
-export function DataTable<TData, TValue>({
+export function SmartTable<TData, TValue>({
   columns,
   data,
+  searchColumnAccessorKey,
   children
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -52,6 +54,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
     },
+    enableSorting: true,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -67,8 +70,8 @@ export function DataTable<TData, TValue>({
 
 
   return (
-    <div className="space-y-4">
-      <DataTableToolbar table={table} >
+    <div className="space-y-4 w-full">
+      <DataTableToolbar table={table} searchColumnAccessorKey={searchColumnAccessorKey}>
         {children}
       </DataTableToolbar >
       <div className="rounded-md">
@@ -101,10 +104,7 @@ export function DataTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}
-                        className="py-5"
-
-                      >
+                      <TableCell key={cell.id} className="py-5">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

@@ -19,18 +19,14 @@ import Copy from "@/components/ui/copy";
 import { useTokenChainStore } from "@/store";
 import { ChevronLeftIcon, ChevronRightIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getTopTrends } from "@/services/http/token.http";
-import PriceFormatter from "@/utils/PriceFormatter";
-import { formatCash } from "@/utils/numbers";
-import clsx from "clsx";
-import Link from "next/link";
-import { AnimationControls, motion, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 import { stopPropagation } from "@/utils/stopPropagation";
 import { useRouter } from "next/navigation";
+import NonEthTable from "./notEthTable/nonEthTable";
+import { getTopTrends } from "@/services/http/token.http";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -41,7 +37,6 @@ interface Props {
 export function TopLatestHotPairs({ images }: Props) {
     const [averageRankPage, setAverageRankPage] = useState(0);
     const [latestTokenPage, setLatestTokenPage] = useState(0);
-    const [nonEthDataPage, setNonEthDataPage] = useState(0);
     const { selectedChain } = useTokenChainStore();
     const router = useRouter()
     const control1 = useAnimation();
@@ -97,7 +92,6 @@ export function TopLatestHotPairs({ images }: Props) {
 
     const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
     const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
-    const maxNonEthDataPage = nonEthData ? Math.ceil(nonEthData.data!.length / 10) - 1 : 0;
 
     return (
         <Section variant='vertical'>
@@ -246,107 +240,7 @@ export function TopLatestHotPairs({ images }: Props) {
                         </CardFooter>
                     </Card>
                 </> :
-                    <ScrollArea className="w-full rounded-md h-full">
-                        <ScrollBar orientation="horizontal" />
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px] break-words">Token</TableHead>
-                                    <TableHead className="break-words">24%</TableHead>
-                                    <TableHead className="break-words">Price</TableHead>
-                                    <TableHead className="">Liquidity</TableHead>
-                                    <TableHead className="">24 Volume</TableHead>
-                                    <TableHead className="">Age</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {nonEthDataPending ?
-                                    <TableRow>
-                                        <TableCell colSpan={4} className="text-center">
-                                            <Skeleton className="h-4 w-full" />
-                                        </TableCell>
-                                    </TableRow>
-                                    :
-                                    nonEthData!.data!
-                                        .slice(nonEthDataPage * 10, (nonEthDataPage + 1) * 10)
-                                        .map((token, index: number) => (
-                                            <TableRow key={index}>
-                                                <TableCell className="font-medium break-words">
-                                                    {
-                                                        token.relationships?.base_token?.data?.id?.split('_')[1] != undefined &&
-                                                        token.attributes?.name != undefined &&
-                                                        <div key={index} className="flex items-center">
-                                                            <Avatar className="h-9 w-9">
-                                                                <AvatarImage src={imageUrl(token.relationships.base_token.data.id.split('_')[1], images)} alt="Avatar" />
-                                                                <AvatarFallback>{token.relationships.base_token.data.id.split('_')[1].charAt(0)}</AvatarFallback>
-                                                            </Avatar>
-                                                            <div className="ml-4 space-y-1">
-                                                                <Link
-                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.relationships.base_token.data.id.split('_')[1]}`}
-                                                                    className="text-sm">
-                                                                    {token.attributes.name.split('/')[0]}
-                                                                </Link>
-                                                                <Copy className="text-sm text-muted-foreground leading-none"
-                                                                    text={minifyContract(token.relationships.base_token.data.id.split('_')[1])}
-                                                                    value={token.relationships.base_token.data.id.split('_')[1]}
-                                                                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.attributes.address}`}
-                                                                />
-                                                            </div>
-                                                        </div>
-
-                                                    }
-                                                </TableCell>
-                                                <TableCell >
-                                                    {
-                                                        token?.attributes?.price_change_percentage?.h24 != undefined &&
-                                                        <span
-                                                            className={clsx({
-                                                                'text-green-300': +token.attributes.price_change_percentage.h24 > 0,
-                                                                'text-red-300': +token.attributes.price_change_percentage.h24 < 0,
-                                                            })}
-                                                        >
-                                                            {token.attributes.price_change_percentage.h24}
-                                                        </span>
-                                                    }
-                                                </TableCell>
-                                                <TableCell className="break-words">
-                                                    {
-                                                        token?.attributes?.base_token_price_usd &&
-                                                        <PriceFormatter dollarSign value={token.attributes?.base_token_price_usd} />
-
-                                                    }
-                                                </TableCell>
-                                                <TableCell className="break-words">
-                                                    {
-                                                        token?.attributes?.reserve_in_usd != undefined &&
-                                                        formatCash(+token.attributes.reserve_in_usd)
-                                                    }
-                                                </TableCell>
-                                                <TableCell className="break-words">
-                                                    {
-                                                        token?.attributes?.volume_usd?.h24 != undefined &&
-                                                        formatCash(+token?.attributes?.volume_usd?.h24)
-                                                    }
-                                                </TableCell>
-                                                <TableCell className="break-words">
-                                                    {
-                                                        token?.attributes?.pool_created_at != undefined &&
-                                                        dayjs().to(token.attributes?.pool_created_at)
-                                                    }
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                            </TableBody>
-                        </Table>
-                        <div className="flex items-center justify-end gap-2 mt-4">
-                            <Button variant='outline' size='icon' disabled={nonEthDataPage <= 0} onClick={() => setNonEthDataPage(nonEthDataPage - 1)}>
-                                <ChevronLeftIcon />
-                            </Button>
-                            <Button variant='outline' size='icon' disabled={nonEthDataPage >= maxNonEthDataPage} onClick={() => setNonEthDataPage(nonEthDataPage + 1)}>
-                                <ChevronRightIcon />
-                            </Button>
-                        </div>
-                    </ScrollArea>
+                    <NonEthTable images={images} initNonEthData={nonEthData?.data || []} />
                 }
             </SectionContent>
         </Section>

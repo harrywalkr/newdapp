@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "./data-table";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 import { useTokenChainStore } from "@/store";
 import { HotTokenHolder, IWallet } from "@/types/Wallet.type"
@@ -14,6 +13,7 @@ import { Icons } from "@/components/ui/icon"
 import { AiFillStar, AiOutlineStar } from "react-icons/ai"
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import FilterDialog from './Filter';
+import { SmartTable } from '@/components/ui/smart-table';
 
 interface Props {
   initTopWallets: IWallet[];
@@ -574,7 +574,7 @@ export default function Wallets({ initTopWallets }: Props) {
   );
   return (
     <>
-      <DataTable data={filteredData} columns={columns} >
+      <SmartTable data={filteredData} columns={columns} searchColumnAccessorKey='walletAddress' >
         <FilterDialog
           rankRange={rankRange} setRankRange={setRankRange}
           winRateRange={winRateRange} setWinRateRange={setWinRateRange}
@@ -586,7 +586,7 @@ export default function Wallets({ initTopWallets }: Props) {
           totalScoreRange={totalScoreRange} setTotalScoreRange={setTotalScoreRange}
           totalFeeRange={totalFeeRange} setTotalFeeRange={setTotalFeeRange}
         />
-      </DataTable >
+      </SmartTable >
     </>
   );
 }
