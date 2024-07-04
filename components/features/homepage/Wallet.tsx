@@ -35,9 +35,6 @@ import { useTokenChainStore } from "@/store";
 import { getWallets } from "@/services/http/wallets.http";
 import { useQuery } from "@tanstack/react-query";
 
-// interface Prop {
-//   initTopWallets: IWallet[];
-// }
 
 export default function Wallet() {
   const [page, setPage] = useState(1);

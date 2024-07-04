@@ -41,8 +41,6 @@ export default function PriceFormatter({ value, dollarSign, className }: PriceFo
   const isSmallNumber = parsedValue !== 0 && parsedValue <= 0.0001;
   const { leadingPart, subPart, trailingPart } = isSmallNumber ? getFormattedParts(parsedValue) : { leadingPart: '', subPart: '', trailingPart: '' };
 
-  console.log(leadingPart, subPart, trailingPart)
-
   return (
     <div className={clsx("flex items-center gap-[2.75rem]", className)}>
       {dollarSign && <span>$</span>}

@@ -6,6 +6,7 @@ import { getWallets } from "@/services/http/wallets.http";
 import { TopLatestHotPairs } from "@/components/features/homepage/TopLatestHotPairs";
 import { getTopNFTs } from "@/services/http/nft.http";
 import Insight from "@/components/features/homepage/Insight";
+import Wallets from "@/components/features/homepage/wallets-table";
 
 export const revalidate = 0;
 
@@ -19,10 +20,7 @@ export default async function Home() {
       <Insight />
       <TrendPairs />
       <TopLatestHotPairs images={images.imageUrls} />
-      {/* <Wallet initTopWallets={wallets} /> */}
-      <Wallet />
-      {/* FIXME: dex old migrate */}
-      {/* <TableExample initTopWallets={wallets} /> */}
+      <Wallets />
       <NFT NFTs={nfts} />
     </div>
   );
