@@ -11,8 +11,8 @@ export const metadata = {
 };
 
 export default async function Blog() {
-    const posts = await getAllPosts();
-    const categories = await getAllCategories();
+    // const posts = await getAllPosts();
+    // const categories = await getAllCategories();
 
-    return <AcademyHomepage posts={posts} categories={categories} />;
+    return <AcademyHomepage categories={categories} />;
 }

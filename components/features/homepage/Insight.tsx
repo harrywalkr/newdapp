@@ -25,11 +25,13 @@ import { Progress } from '@/components/ui/progress';
 import { FaSackDollar } from 'react-icons/fa6';
 import { useTokenChainStore } from '@/store';
 import { getWallets } from '@/services/http/wallets.http';
+import { useRouter } from 'next/navigation';
 
 
 
 export default function Insight() {
     const { selectedChain } = useTokenChainStore();
+    const router = useRouter()
 
     // Query to fetch AI data
     const { isLoading: isAiLoading, error: aiError, data: ai } = useQuery({
@@ -70,11 +72,11 @@ export default function Insight() {
             </SectionHeader>
             <SectionContent variant="vertical">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
-                    <Card>
+                    <Card className='col-span-2'>
                         <CardHeader>
                             <CardTitle>Trending Traders</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className='grid grid-cols-2 grid-rows-3 gap-y-2 gap-x-12'>
                             {
                                 isWalletsLoading ? (
                                     <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
@@ -87,9 +89,12 @@ export default function Insight() {
                                             <Skeleton className="h-4 w-[210px]" />
                                         </div>
                                     </div>)
-                                    : walletsData?.slice(0, 3).map((wallet: IWallet, i: number) => (
-                                        <React.Fragment key={wallet.walletAddress}>
-                                            <div className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3">
+                                    : walletsData?.slice(0, 6).map((wallet: IWallet, i: number) => (
+                                        <div key={wallet.walletAddress} >
+                                            <div
+                                                className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3"
+                                                onClick={() => router.push(`/wallet/${wallet.walletAddress}`)}
+                                            >
                                                 <div className='flex items-center justify-start gap-5'>
                                                     <AvatarPlaceholder />
                                                     <div className="flex flex-col items-start justify-center gap-2">
@@ -119,43 +124,18 @@ export default function Insight() {
                                                         title='Winrate'
                                                         titleIcon={<RiMedal2Fill />}
                                                         className='text-sm'
-                                                        value={`${Math.ceil(wallet.winRate / 10)}/10`}
+                                                        value={`${Math.ceil((wallet.winRate / 100) * 100)}%`}
                                                         variant='default' />
                                                     <Progress className='mt-2' value={+wallet.winRate} />
                                                 </div>
-
                                             </div>
-                                            {i !== walletsData.length - 1 && <Separator />}
-                                        </React.Fragment>
+                                            {/* {i !== walletsData.length - 1 && <Separator />} */}
+                                        </div>
                                     ))}
                         </CardContent>
                     </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Ai Trend Detector</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {
-                                isAiLoading ? (
-                                    <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
-                                        <div className="space-y-2">
-                                            <Skeleton className="h-4 w-full" />
-                                            <Skeleton className="h-4 w-[210px]" />
-                                        </div>
-                                        <div className="space-y-2 mt-5">
-                                            <Skeleton className="h-4 w-full" />
-                                            <Skeleton className="h-4 w-[210px]" />
-                                        </div>
-                                    </div>)
-                                    :
-                                    <>
-                                        <span>{ai?.trend}</span>
-                                        <div className="mt-5 text-muted-foreground">{ai?.categoryTrend}</div>
-                                    </>
-                            }
-                        </CardContent>
-                    </Card>
-                    <Card>
+
+                    <Card className='col-span-1'>
                         {
                             isAiLoading ? (
                                 <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
@@ -175,7 +155,32 @@ export default function Insight() {
                         }
                     </Card>
                 </div>
+                <Card className='mt-4'>
+                    <CardHeader>
+                        <CardTitle>Ai Trend Detector</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {
+                            isAiLoading ? (
+                                <div className="w-full relative overflow-hidden flex flex-col justify-center gap-1 p-4">
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-full" />
+                                        <Skeleton className="h-4 w-[210px]" />
+                                    </div>
+                                    <div className="space-y-2 mt-5">
+                                        <Skeleton className="h-4 w-full" />
+                                        <Skeleton className="h-4 w-[210px]" />
+                                    </div>
+                                </div>)
+                                :
+                                <>
+                                    <span>{ai?.trend}</span>
+                                    <div className="mt-5 text-muted-foreground">{ai?.categoryTrend}</div>
+                                </>
+                        }
+                    </CardContent>
+                </Card>
             </SectionContent>
-        </Section>
+        </Section >
     );
 }

@@ -19,6 +19,10 @@ import NonEthFilterDialog from './nonEthTableFilter';
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import { Icons } from "@/components/ui/icon";
+import {
+    ToggleGroup,
+    ToggleGroupItem,
+} from "@/components/ui/toggle-group"
 
 interface Props {
     images: ImageType[];
@@ -247,13 +251,24 @@ export default function NonEthTable({ images, initNonEthData }: Props) {
 
     return (
         <SmartTable data={filteredData} columns={nonEthColumns} searchColumnAccessorKey='token' >
-            <NonEthFilterDialog
-                priceRange={priceRange} setPriceRange={setPriceRange}
-                volumeRange={volumeRange} setVolumeRange={setVolumeRange}
-                liquidityRange={liquidityRange} setLiquidityRange={setLiquidityRange}
-                ageRange={ageRange} setAgeRange={setAgeRange}
-                priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
-            />
+            <div className='flex items-center justify-start gap-3'>
+
+                <NonEthFilterDialog
+                    priceRange={priceRange} setPriceRange={setPriceRange}
+                    volumeRange={volumeRange} setVolumeRange={setVolumeRange}
+                    liquidityRange={liquidityRange} setLiquidityRange={setLiquidityRange}
+                    ageRange={ageRange} setAgeRange={setAgeRange}
+                    priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
+                />
+                <ToggleGroup type="single">
+                    <ToggleGroupItem value="bold" aria-label="Toggle bold">
+                        latest
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="italic" aria-label="Toggle italic">
+                        Trends
+                    </ToggleGroupItem>
+                </ToggleGroup>
+            </div>
         </SmartTable >
     );
 }

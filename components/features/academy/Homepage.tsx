@@ -38,8 +38,8 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetError
 }
 
 interface Props {
-    posts: PostEndpoint,
-    categories: ICategory[]
+    // posts: PostEndpoint,
+    // categories: ICategory[]
 }
 
 
@@ -50,10 +50,9 @@ export default function AcademyHomepage(props: Props) {
     const isDesktop = useMedia('(min-width: 1024px)');
     const isMobile = useMedia('(max-width: 767px)');
 
-    const categoryQuery = useQuery({ initialData: props.categories, queryKey: ['categories'], queryFn: getAllCategories });
+    const categoryQuery = useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
     const postsQuery = useQuery(
         {
-            initialData: props.posts,
             queryKey: ['posts', selectedCategory, currentPage],
             queryFn: () => {
                 if (selectedCategory === 'All') {

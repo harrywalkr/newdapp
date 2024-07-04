@@ -4,15 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import Link from 'next/link';
 import { stopPropagation } from "@/utils/stopPropagation";
+import { Button } from "../button";
 
 type Props = {
     className?: string;
     href?: string;
     target?: '_blank';
 } & (
-    { text: string; value?: string } |
-    { text?: string; value: string }
-);
+        { text: string; value?: string } |
+        { text?: string; value: string }
+    );
 
 export default function Copy({ text, value, className, href, target }: Props) {
     const [copied, setCopied] = useState<boolean>(false);
@@ -56,16 +57,18 @@ export default function Copy({ text, value, className, href, target }: Props) {
                     </Link>
                 ) : content}
             </div>
-            <div
-                className="cursor-pointer text-sm"
+            <Button
+                size='icon'
+                variant='ghost'
+                // className="text-sm"
                 onClick={(e) => { stopPropagation(e); handleCopyAddress(value ? value : text!) }}
             >
                 <FiCopy />
-            </div>
+            </Button>
             {mounted && (
                 <div
                     className="absolute top-2 bg-background rounded-sm shadow-sm p-1 transition-all ease-in-out duration-200"
-                    style={{ left: `${contentRef.current?.clientWidth! + 15}px`, opacity: `${copied ? '1' : '0'}` }}
+                    style={{ left: `${contentRef.current?.clientWidth! + 55}px`, top: '2px', opacity: `${copied ? '1' : '0'}` }}
                 >
                     <p>copied</p>
                 </div>
