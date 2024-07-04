@@ -14,5 +14,5 @@ export default async function Blog() {
     // const posts = await getAllPosts();
     // const categories = await getAllCategories();
 
-    return <AcademyHomepage categories={categories} />;
+    return <AcademyHomepage />;
 }
