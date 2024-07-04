@@ -49,15 +49,15 @@ export default function Wallets() {
   useEffect(() => {
     if (walletsData) {
       setFilteredData(walletsData.filter(wallet =>
-        wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1] &&
-        wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
-        wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
-        wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
-        (label ? wallet.buyAmountLabel === label : true) &&
-        wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
-        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
-        wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
-        wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
+        wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1]&&
+        wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] 
+        // wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] 
+        // wallet.age >= ageRange[0] && wallet.age <= ageRange[1] 
+        // (label ? wallet.buyAmountLabel === label : true) &&
+        // wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
+        // (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
+        // wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
+        // wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
       ));
     }
   }, [walletsData, rankRange, winRateRange, netProfitRange, ageRange, label, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange]);

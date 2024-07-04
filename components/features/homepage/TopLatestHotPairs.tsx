@@ -19,7 +19,7 @@ import Copy from "@/components/ui/copy";
 import { useTokenChainStore } from "@/store";
 import { ChevronLeftIcon, ChevronRightIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { motion, useAnimation } from "framer-motion";
+import { AnimationControls, motion, useAnimation } from "framer-motion";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 import { stopPropagation } from "@/utils/stopPropagation";
