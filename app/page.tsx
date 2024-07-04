@@ -12,7 +12,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   const images = await getImages();
-  const wallets = await getWallets({ params: { network: 'eth' } });
+  // const wallets = await getWallets({ params: { network: 'eth' } });
   const nfts = await getTopNFTs();
 
   return (
@@ -20,10 +20,7 @@ export default async function Home() {
       <Insight />
       <TrendPairs />
       <TopLatestHotPairs images={images.imageUrls} />
-      {/* <Wallet initTopWallets={wallets} /> */}
-      <Wallet />
-      {/* FIXME: dex old migrate */}
-      <Wallets initTopWallets={wallets} />
+      <Wallets />
       <NFT NFTs={nfts} />
     </div>
   );

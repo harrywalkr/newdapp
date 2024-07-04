@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import NonEthTable from "./notEthTable/nonEthTable";
 import { getTopTrends } from "@/services/http/token.http";
 import Link from "next/link";
+import TableLoading from "@/components/layout/Table-loading";
 
 dayjs.extend(relativeTime);
 
@@ -136,7 +137,7 @@ export function TopLatestHotPairs({ images }: Props) {
                                             <div
                                                 key={id}
                                                 className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
-                                                // onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
+                                            // onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
                                             >
                                                 <div onClick={(e) => { stopPropagation(e); handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' }) }} className="cursor-pointer">
                                                     {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
@@ -204,10 +205,10 @@ export function TopLatestHotPairs({ images }: Props) {
                                             <div
                                                 key={id}
                                                 className="flex items-center hover:bg-muted/50 py-4 cursor-pointer"
-                                                // onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
+                                            // onClick={() => router.push(`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`)}
                                             >
-                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress, type:'token' })} className="cursor-pointer">
-                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress, type:'token' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                                                <div onClick={() => handleStarClick({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' })} className="cursor-pointer">
+                                                    {isTokenInWatchlist({ name: token.tokenName, contractAddress: token.contractAddress, type: 'token' }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                                                 </div>
                                                 <Avatar className="h-9 w-9 ml-4">
                                                     <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />
@@ -239,8 +240,11 @@ export function TopLatestHotPairs({ images }: Props) {
                             </Button>
                         </CardFooter>
                     </Card>
-                </> :
-                    <NonEthTable images={images} initNonEthData={nonEthData?.data || []} />
+                </> : <>
+                    {
+                        nonEthDataPending ? <TableLoading /> : <NonEthTable images={images} initNonEthData={nonEthData?.data || []} />
+                    }
+                </>
                 }
             </SectionContent>
         </Section>

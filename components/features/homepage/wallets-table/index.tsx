@@ -1,27 +1,34 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ColumnDef } from "@tanstack/react-table";
+import { useQuery } from "@tanstack/react-query";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 import { useTokenChainStore } from "@/store";
-import { HotTokenHolder, IWallet } from "@/types/Wallet.type"
-import Link from "next/link"
-import Copy from "@/components/ui/copy"
-import { minifyContract } from "@/utils/truncate"
-import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/ui/icon"
-import { AiFillStar, AiOutlineStar } from "react-icons/ai"
+import { getWallets } from "@/services/http/wallets.http";
+import { IWallet, HotTokenHolder } from "@/types/Wallet.type";
+import Copy from "@/components/ui/copy";
+import { minifyContract } from "@/utils/truncate";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icon";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import FilterDialog from './Filter';
 import { SmartTable } from '@/components/ui/smart-table';
+import clsx from 'clsx';
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionDescription,
+  SectionContent,
+} from "@/components/layout/Section";
+import TableLoading from '@/components/layout/Table-loading';
 
-interface Props {
-  initTopWallets: IWallet[];
-}
-
-export default function Wallets({ initTopWallets }: Props) {
+export default function Wallets() {
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
   const { selectedChain } = useTokenChainStore();
+
   const [rankRange, setRankRange] = useState<[number, number]>([0, 100]);
   const [winRateRange, setWinRateRange] = useState<[number, number]>([0, 100]);
   const [netProfitRange, setNetProfitRange] = useState<[number, number]>([0, 100000]);
@@ -32,12 +39,35 @@ export default function Wallets({ initTopWallets }: Props) {
   const [totalScoreRange, setTotalScoreRange] = useState<[number, number]>([0, 2000]);
   const [totalFeeRange, setTotalFeeRange] = useState<[number, number]>([0, 100]);
 
+  const { data: walletsData = [], isLoading } = useQuery({
+    queryKey: ['wallets', selectedChain.symbol],
+    queryFn: () => getWallets({ params: { "network": selectedChain.symbol } }),
+  });
+
+  const [filteredData, setFilteredData] = useState<IWallet[]>(walletsData);
+
+  useEffect(() => {
+    if (walletsData) {
+      setFilteredData(walletsData.filter(wallet =>
+        wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1] &&
+        wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
+        wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
+        wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
+        (label ? wallet.buyAmountLabel === label : true) &&
+        wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
+        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
+        wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
+        wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
+      ));
+    }
+  }, [walletsData, rankRange, winRateRange, netProfitRange, ageRange, label, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange]);
+
   const handleStarClick = (wallet: IWatchlistItem) => {
-    const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.name);
+    const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
     if (isInWatchlist) {
-      removeFromWatchlist(wallet.name);
+      removeFromWatchlist(wallet.contractAddress);
     } else {
-      addToWatchlist({ name: wallet.contractAddress, contractAddress: wallet.contractAddress, type: 'wallet' });
+      addToWatchlist(wallet);
     }
   };
 
@@ -103,17 +133,17 @@ export default function Wallets({ initTopWallets }: Props) {
       accessorKey: 'walletAddress',
       header: 'Wallet Address',
       cell: ({ row }) => (
-        <Link
-          href={`/ wallet / ${row.getValue("walletAddress")
-            } `}
-          className="font-medium link link-hover hover:text-info"
-        >
-          <Copy
-            href={`/ wallet / ${row.getValue("walletAddress")} `}
-            text={minifyContract(row.getValue("walletAddress") as string)}
-            value={row.getValue("walletAddress") as string}
-          />
-        </Link>
+        // <Link
+        //   href={`/wallet/${row.getValue("walletAddress")}`}
+        //   className="font-medium link link-hover hover:text-info"
+        // >
+        <Copy
+          href={`/wallet/${row.getValue("walletAddress")}?network=${selectedChain.symbol}`}
+          // href={`/wallet/${row.getValue("walletAddress")}`}
+          text={minifyContract(row.getValue("walletAddress") as string)}
+          value={row.getValue("walletAddress") as string}
+        />
+        // </Link>
       ),
     },
     {
@@ -179,7 +209,10 @@ export default function Wallets({ initTopWallets }: Props) {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
+        <div className={clsx('px-5', {
+          'text-success': Number(row.getValue('netProfit')) > 0,
+          'text-red-300': Number(row.getValue('netProfit')) <= 0
+        })}>
           {Number(row.getValue('netProfit')).toFixed(2)}
         </div>
       ),
@@ -213,7 +246,7 @@ export default function Wallets({ initTopWallets }: Props) {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5" >
+        <div className="px-5">
           {Number(row.getValue('winRate')).toFixed(0)}
         </div>
       ),
@@ -285,38 +318,36 @@ export default function Wallets({ initTopWallets }: Props) {
         const hotTokenHolders = row.getValue('HotTokenHolders') as HotTokenHolder[];
 
         return (
-          <div className="flex items-center gap-2 px-5">
-            <div className="flex space-x-2 items-center">
-              <div className="flex flex-col gap-2"></div>
-              {firstTopTokenHolder.tokenName
-                ? firstTopTokenHolder.tokenName !== "-" &&
-                firstTopTokenHolder["Currency Address"] && (
-                  <Copy
-                    text={
-                      firstTopTokenHolder.tokenName !== "-"
-                        ? firstTopTokenHolder.tokenName
-                        : "-"
-                    }
-                    value={firstTopTokenHolder["Currency Address"]}
-                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${firstTopTokenHolder["Currency Address"]}`}
-                  />
-                )
-                :
-                hotTokenHolders &&
-                hotTokenHolders.length > 0 &&
-                hotTokenHolders[0]?.tokenName &&
-                hotTokenHolders[0]?.["Currency Address"] && (
-                  <Copy
-                    text={
-                      firstTopTokenHolder.tokenName !== "-"
-                        ? firstTopTokenHolder.tokenName
-                        : "-"
-                    }
-                    href={`/tokens/${selectedChain.symbol.toLowerCase()}/${hotTokenHolders[0]["Currency Address"]}`}
-                    value={hotTokenHolders[0]["Currency Address"]}
-                  />
-                )}
-            </div>
+          <div className="flex space-x-2 items-center gap-2 px-5 text-orange-300">
+            <div className="flex flex-col gap-2"></div>
+            {firstTopTokenHolder.tokenName
+              ? firstTopTokenHolder.tokenName !== "-" &&
+              firstTopTokenHolder["Currency Address"] && (
+                <Copy
+                  text={
+                    firstTopTokenHolder.tokenName !== "-"
+                      ? firstTopTokenHolder.tokenName
+                      : "-"
+                  }
+                  value={firstTopTokenHolder["Currency Address"]}
+                  href={`/tokens/${selectedChain.symbol.toLowerCase()}/${firstTopTokenHolder["Currency Address"]}`}
+                />
+              )
+              :
+              hotTokenHolders &&
+              hotTokenHolders.length > 0 &&
+              hotTokenHolders[0]?.tokenName &&
+              hotTokenHolders[0]?.["Currency Address"] && (
+                <Copy
+                  text={
+                    firstTopTokenHolder.tokenName !== "-"
+                      ? firstTopTokenHolder.tokenName
+                      : "-"
+                  }
+                  href={`/tokens/${selectedChain.symbol.toLowerCase()}/${hotTokenHolders[0]["Currency Address"]}`}
+                  value={hotTokenHolders[0]["Currency Address"]}
+                />
+              )}
           </div>
         );
       },
@@ -559,34 +590,43 @@ export default function Wallets({ initTopWallets }: Props) {
         </div>
       ),
     },
-  ]
+  ];
 
-  const filteredData = initTopWallets.filter(wallet =>
-    wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1] &&
-    wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
-    wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
-    wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
-    (label ? wallet.buyAmountLabel === label : true) &&
-    wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
-    (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
-    wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
-    wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
-  );
+  if (isLoading) return <Section variant={'vertical'}>
+    <SectionHeader variant={'vertical'}>
+      <SectionTitle>Profitable Wallets</SectionTitle>
+      <SectionDescription>
+        Find out more about winner wallets and their trade secrets
+      </SectionDescription>
+    </SectionHeader>
+    <SectionContent variant={'vertical'}>
+      <TableLoading />
+    </SectionContent>
+  </Section>
+
   return (
-    <>
-      <SmartTable data={filteredData} columns={columns} searchColumnAccessorKey='walletAddress' >
-        <FilterDialog
-          rankRange={rankRange} setRankRange={setRankRange}
-          winRateRange={winRateRange} setWinRateRange={setWinRateRange}
-          netProfitRange={netProfitRange} setNetProfitRange={setNetProfitRange}
-          ageRange={ageRange} setAgeRange={setAgeRange}
-          label={label} setLabel={setLabel}
-          dayActiveRange={dayActiveRange} setDayActiveRange={setDayActiveRange}
-          avgHoldingTimeRange={avgHoldingTimeRange} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
-          totalScoreRange={totalScoreRange} setTotalScoreRange={setTotalScoreRange}
-          totalFeeRange={totalFeeRange} setTotalFeeRange={setTotalFeeRange}
-        />
-      </SmartTable >
-    </>
+    <Section variant={'vertical'}>
+      <SectionHeader variant={'vertical'}>
+        <SectionTitle>Profitable Wallets</SectionTitle>
+        <SectionDescription>
+          Find out more about winner wallets and their trade secrets
+        </SectionDescription>
+      </SectionHeader>
+      <SectionContent variant={'vertical'}>
+        <SmartTable data={filteredData} columns={columns} searchColumnAccessorKey='walletAddress' >
+          <FilterDialog
+            rankRange={rankRange} setRankRange={setRankRange}
+            winRateRange={winRateRange} setWinRateRange={setWinRateRange}
+            netProfitRange={netProfitRange} setNetProfitRange={setNetProfitRange}
+            ageRange={ageRange} setAgeRange={setAgeRange}
+            label={label} setLabel={setLabel}
+            dayActiveRange={dayActiveRange} setDayActiveRange={setDayActiveRange}
+            avgHoldingTimeRange={avgHoldingTimeRange} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
+            totalScoreRange={totalScoreRange} setTotalScoreRange={setTotalScoreRange}
+            totalFeeRange={totalFeeRange} setTotalFeeRange={setTotalFeeRange}
+          />
+        </SmartTable >
+      </SectionContent>
+    </Section>
   );
 }
