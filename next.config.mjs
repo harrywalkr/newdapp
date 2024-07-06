@@ -25,6 +25,7 @@ const nextConfig = {
     domains: [
       "api.dextrading.com",
       "https://api.dextrading.com",
+      "https://api.dextrading.com/images",
       "https://blog.dextrading.com",
       "95.81.93.198",
       "i.pravatar.cc",

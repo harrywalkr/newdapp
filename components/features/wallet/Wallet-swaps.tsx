@@ -25,6 +25,7 @@ import { useTokenChainStore, useWatchlistStore } from '@/store';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Button } from '@/components/ui/button'; // Make sure this import is correct
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import TableLoading from '@/components/layout/Table-loading';
 
 
 interface Props {
@@ -64,17 +65,7 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
     };
 
     if (walletSwapsQuery.isLoading || imagesQuery.isLoading) {
-        return <div className='flex flex-col gap-3'>
-            {Array.from({ length: 5 }, (_, i) => (
-                <div key={i} className="flex items-center space-x-4 w-full">
-                    <Skeleton className="h-12 w-12 rounded-full" />
-                    <div className="space-y-2 flex-1">
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-3/5" />
-                    </div>
-                </div>
-            ))}
-        </div>;
+        return <TableLoading />
     }
 
     const paginatedData = walletSwapsQuery.data?.swapWallet.slice(
@@ -177,13 +168,17 @@ const Record = ({
                 <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                         {imageUrl(data["Currency Address"]) != undefined ? (
-                            <Image
-                                width={40}
-                                height={40}
-                                className='rounded-full'
-                                src={imageUrl(data["Currency Address"])!}
-                                alt={data.tokenName}
-                            />
+                            <>
+
+                                <Image
+                                    width={40}
+                                    height={40}
+                                    className='rounded-full'
+                                    src={imageUrl(data["Currency Address"])!}
+                                    alt={data.tokenName}
+                                />
+                                {(imageUrl(data["Currency Address"])!).toString()}
+                            </>
                         ) : (
                             <div className="flex justify-center items-center w-10 h-10 font-bold text-base border border-base-content rounded-full">
                                 {data.tokenName.charAt(0)}
