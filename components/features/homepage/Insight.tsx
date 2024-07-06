@@ -46,10 +46,12 @@ export default function Insight() {
         data: walletsData,
         refetch: refetchWallets
     } = useQuery({
-        queryKey: ['wallets', selectedChain.symbol],
+        queryKey: ['wallets', selectedChain.symbol, 1, 10],
         queryFn: () => getWallets({
             params: {
                 "network": selectedChain.symbol,
+                "page": 1,
+                "limit": 10
             },
         }),
         staleTime: 60000,
