@@ -168,17 +168,13 @@ const Record = ({
                 <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
                         {imageUrl(data["Currency Address"]) != undefined ? (
-                            <>
-
-                                <Image
-                                    width={40}
-                                    height={40}
-                                    className='rounded-full'
-                                    src={imageUrl(data["Currency Address"])!}
-                                    alt={data.tokenName}
-                                />
-                                {(imageUrl(data["Currency Address"])!).toString()}
-                            </>
+                            <Image
+                                width={40}
+                                height={40}
+                                className='rounded-full'
+                                src={imageUrl(data["Currency Address"])!}
+                                alt={data.tokenName}
+                            />
                         ) : (
                             <div className="flex justify-center items-center w-10 h-10 font-bold text-base border border-base-content rounded-full">
                                 {data.tokenName.charAt(0)}
