@@ -22,7 +22,7 @@ const StrengthAnalysis = () => {
     });
 
     if (error) return <div>Failed to load data, please try again.</div>;
-    if (isLoading) return <Loading />
+    if (isLoading) return <Loading times={3} />
 
     const formattedData = strengthRatio?.history.map((entry: History) => ({
         timestamp: new Date(entry.timestamp).toLocaleDateString(),
