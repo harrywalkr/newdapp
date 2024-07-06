@@ -1,7 +1,10 @@
+// components/ui/smart-table.tsx
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
+  Updater,
   VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -25,19 +28,26 @@ import { DataTableToolbar } from "./data-table-toolbar"
 import { ReactNode, useState } from "react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchColumnAccessorKey: string
   children: ReactNode
+  pageCount: number
+  page: number
+  setPage: (page: number) => void
+  setPageSize: (pageSize: number) => void
 }
 
 export function SmartTable<TData, TValue>({
   columns,
   data,
   searchColumnAccessorKey,
-  children
+  children,
+  pageCount,
+  page,
+  setPage,
+  setPageSize
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -45,14 +55,27 @@ export function SmartTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({})
 
 
+  const handlePaginationChange = (updater: Updater<PaginationState>) => {
+    const newState = typeof updater === 'function' ? updater({ pageIndex: page - 1, pageSize: 10 }) : updater;
+    setPage(newState.pageIndex + 1);
+    setPageSize(newState.pageSize);
+  };
+
+
   const table = useReactTable({
     data,
     columns,
+    pageCount,
+    manualPagination: true,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: {
+        pageIndex: page - 1,
+        pageSize: 10,
+      },
     },
     enableSorting: true,
     enableRowSelection: true,
@@ -66,14 +89,14 @@ export function SmartTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
-
+    onPaginationChange: handlePaginationChange
+  });
 
   return (
     <div className="space-y-4 w-full">
       <DataTableToolbar table={table} searchColumnAccessorKey={searchColumnAccessorKey}>
         {children}
-      </DataTableToolbar >
+      </DataTableToolbar>
       <div className="rounded-md">
         <ScrollArea className="w-full rounded-md pb-4">
           <ScrollBar orientation="horizontal" />
@@ -128,6 +151,6 @@ export function SmartTable<TData, TValue>({
         </ScrollArea>
       </div>
       <DataTablePagination table={table} />
-    </div >
+    </div>
   )
 }

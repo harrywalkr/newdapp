@@ -1,3 +1,4 @@
+// components/ui/pagination.tsx
 import { Icons } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -12,11 +13,6 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
-      {/* //FIXME: Figure out table selected items */}
-      {/* <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div> */}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>

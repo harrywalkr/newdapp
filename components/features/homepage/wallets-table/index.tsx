@@ -39,9 +39,12 @@ export default function Wallets() {
   const [totalScoreRange, setTotalScoreRange] = useState<[number, number]>([0, 2000]);
   const [totalFeeRange, setTotalFeeRange] = useState<[number, number]>([0, 100]);
 
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const { data: walletsData = [], isLoading } = useQuery({
-    queryKey: ['wallets', selectedChain.symbol],
-    queryFn: () => getWallets({ params: { "network": selectedChain.symbol } }),
+    queryKey: ['wallets', selectedChain.symbol, page, pageSize],
+    queryFn: () => getWallets({ params: { "network": selectedChain.symbol, page: page, limit: pageSize } }),
   });
 
   const [filteredData, setFilteredData] = useState<IWallet[]>(walletsData);
@@ -52,12 +55,12 @@ export default function Wallets() {
         wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1] &&
         wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
         wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
-        wallet.age >= ageRange[0] && wallet.age <= ageRange[1]&&
+        wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
         (label ? wallet.buyAmountLabel === label : true) &&
         wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
-        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] 
-        // wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
-        // wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
+        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
+        wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
+        wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
       ));
     }
   }, [walletsData, rankRange, winRateRange, netProfitRange, ageRange, label, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange]);
@@ -613,7 +616,15 @@ export default function Wallets() {
         </SectionDescription>
       </SectionHeader>
       <SectionContent variant={'vertical'}>
-        <SmartTable data={filteredData} columns={columns} searchColumnAccessorKey='walletAddress' >
+        <SmartTable
+          data={filteredData}
+          columns={columns}
+          searchColumnAccessorKey='walletAddress'
+          page={page}
+          pageCount={pageSize}
+          setPage={setPage}
+          setPageSize={setPageSize}
+           >
           <FilterDialog
             rankRange={rankRange} setRankRange={setRankRange}
             winRateRange={winRateRange} setWinRateRange={setWinRateRange}
