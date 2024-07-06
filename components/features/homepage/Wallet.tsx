@@ -314,12 +314,12 @@ export default function Wallet() {
 
   return (
     <Section variant={'vertical'}>
-      <SectionHeader variant={'vertical'}>
+      {/* <SectionHeader variant={'vertical'}>
         <SectionTitle>Profitable Wallets</SectionTitle>
         <SectionDescription>
           Find out more about winner wallets and their trade secrets
         </SectionDescription>
-      </SectionHeader>
+      </SectionHeader> */}
       <SectionContent variant={'vertical'}>
         <TopWalletsFilter
           layout={layout}

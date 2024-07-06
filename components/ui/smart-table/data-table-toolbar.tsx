@@ -23,6 +23,8 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
+      <Button variant='secondary'>chain : ETH</Button>
+
         <div className="relative">
           <div className="absolute inset-y-0 left-3 flex items-center text-muted-foreground">
             <LuSearch />

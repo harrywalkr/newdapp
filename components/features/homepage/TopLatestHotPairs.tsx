@@ -24,10 +24,11 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import useWatchlistStore, { IWatchlistItem } from "@/store/watchlist";
 import { stopPropagation } from "@/utils/stopPropagation";
 import { useRouter } from "next/navigation";
-import NonEthTable from "./notEthTable/nonEthTable";
+import NonEthTable from "./notEthTable/TopTokenTable";
 import { getTopTrends } from "@/services/http/token.http";
 import Link from "next/link";
 import TableLoading from "@/components/layout/Table-loading";
+import TopTokenTable from "./notEthTable/TopTokenTable";
 
 dayjs.extend(relativeTime);
 
@@ -38,72 +39,77 @@ interface Props {
 export function TopLatestHotPairs({ images }: Props) {
     const [averageRankPage, setAverageRankPage] = useState(0);
     const [latestTokenPage, setLatestTokenPage] = useState(0);
+
     const { selectedChain } = useTokenChainStore();
     const router = useRouter()
     const control1 = useAnimation();
     const control2 = useAnimation();
 
-    const { data: averageRank, isPending: averageRankPending, refetch: averageRankRefetch } = useQuery(
-        {
-            queryKey: ['averageRank', selectedChain.symbol],
-            queryFn: () => getAverageRank(selectedChain.url),
-            refetchInterval: 100000,
-            enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
-        },
-    );
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
-    const { data: latestTokens, isPending: latestTokensPending, refetch: latestTokenRefetch } = useQuery(
-        {
-            queryKey: ['latestTokens', selectedChain.symbol],
-            queryFn: () => getLatestTokens(selectedChain.url),
-            refetchInterval: 100000,
-            enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
-        },
-    );
+    // const { data: averageRank, isPending: averageRankPending, refetch: averageRankRefetch } = useQuery(
+    //     {
+    //         queryKey: ['averageRank', selectedChain.symbol],
+    //         queryFn: () => getAverageRank(selectedChain.url),
+    //         refetchInterval: 100000,
+    //         enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
+    //     },
+    // );
 
-    const { data: nonEthData, isPending: nonEthDataPending, refetch: nonEthDataRefetch } = useQuery(
+    // const { data: latestTokens, isPending: latestTokensPending, refetch: latestTokenRefetch } = useQuery(
+    //     {
+    //         queryKey: ['latestTokens', selectedChain.symbol],
+    //         queryFn: () => getLatestTokens(selectedChain.url),
+    //         refetchInterval: 100000,
+    //         enabled: selectedChain.symbol === 'eth', // Only fetch for ETH
+    //     },
+    // );
+
+    const { data: topTokens, isPending: topTokensPending } = useQuery(
         {
-            queryKey: ['nonEthData', selectedChain.symbol],
-            queryFn: () => getTopTrends({ params: { network: selectedChain.symbol, page: 1 } }),
+            queryKey: ['topTokens', selectedChain.symbol, page, pageSize],
+            queryFn: () => getTopTrends({ params: { network: selectedChain.symbol, page: page, limit: pageSize } }),
             refetchInterval: 100000,
-            enabled: selectedChain.symbol !== 'eth', // Only fetch for non-ETH
+            // enabled: selectedChain.symbol !== 'eth', // Only fetch for non-ETH
         },
     );
 
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
 
-    const handleClick = async (refreshFun: Function, animationControl: AnimationControls) => {
-        await animationControl.start({ rotate: 360, transition: { duration: 1 } });
-        animationControl.set({ rotate: 0 });
-        refreshFun();
-    };
+    // const handleClick = async (refreshFun: Function, animationControl: AnimationControls) => {
+    //     await animationControl.start({ rotate: 360, transition: { duration: 1 } });
+    //     animationControl.set({ rotate: 0 });
+    //     refreshFun();
+    // };
 
-    const handleStarClick = (token: IWatchlistItem) => {
-        const isInWatchlist = watchlist.some(w => w.contractAddress === token.contractAddress);
-        if (isInWatchlist) {
-            removeFromWatchlist(token.contractAddress);
-        } else {
-            addToWatchlist(token);
-        }
-    };
+    // const handleStarClick = (token: IWatchlistItem) => {
+    //     const isInWatchlist = watchlist.some(w => w.contractAddress === token.contractAddress);
+    //     if (isInWatchlist) {
+    //         removeFromWatchlist(token.contractAddress);
+    //     } else {
+    //         addToWatchlist(token);
+    //     }
+    // };
 
-    const isTokenInWatchlist = (token: IWatchlistItem) => {
-        return watchlist.some((w: IWatchlistItem) => w.contractAddress === token.contractAddress);
-    };
+    // const isTokenInWatchlist = (token: IWatchlistItem) => {
+    //     return watchlist.some((w: IWatchlistItem) => w.contractAddress === token.contractAddress);
+    // };
 
-    const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
-    const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
+    // const maxAverageRankPage = averageRank ? Math.ceil(averageRank.length / 10) - 1 : 0;
+    // const maxLatestTokenPage = latestTokens ? Math.ceil(latestTokens.length / 10) - 1 : 0;
 
     return (
         <Section variant='vertical'>
-            <SectionHeader variant='vertical'>
+            {/* <SectionHeader variant='vertical'>
                 <SectionTitle>Top & Latest Hot Pairs</SectionTitle>
                 <SectionDescription>
                     The most active and recently trending cryptocurrency pairs in real-time.
                 </SectionDescription>
-            </SectionHeader>
+            </SectionHeader> */}
             <SectionContent variant='vertical' className="flex flex-col md:flex-row items-stretch justify-between gap-5">
-                {selectedChain.symbol === 'eth' ? <>
+                {/* 
+                <>
                     <Card className="w-full">
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between cursor-pointer">
@@ -240,12 +246,20 @@ export function TopLatestHotPairs({ images }: Props) {
                             </Button>
                         </CardFooter>
                     </Card>
-                </> : <>
-                    {
-                        nonEthDataPending ? <TableLoading /> : <NonEthTable images={images} initNonEthData={nonEthData?.data || []} />
-                    }
                 </>
-                }
+            */}
+                <div className="w-full">
+                    {
+                        topTokensPending ? <TableLoading /> :
+                            <TopTokenTable
+                                page={page}
+                                pageCount={pageSize}
+                                setPage={setPage}
+                                setPageSize={setPageSize}
+                                images={images} initNonEthData={topTokens?.data || []}
+                            />
+                    }
+                </div>
             </SectionContent>
         </Section>
     )

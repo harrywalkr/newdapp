@@ -60,15 +60,15 @@ export default function Copy({ text, value, className, href, target }: Props) {
             <Button
                 size='icon'
                 variant='ghost'
-                // className="text-sm"
+                className="h-7 w-7 md:h-7 md:w-7"
                 onClick={(e) => { stopPropagation(e); handleCopyAddress(value ? value : text!) }}
             >
                 <FiCopy />
             </Button>
             {mounted && (
                 <div
-                    className="absolute top-2 bg-background rounded-sm shadow-sm p-1 transition-all ease-in-out duration-200"
-                    style={{ left: `${contentRef.current?.clientWidth! + 55}px`, top: '2px', opacity: `${copied ? '1' : '0'}` }}
+                    className="absolute bg-background rounded-sm shadow-sm px-1 py-[3px] transition-all ease-in-out duration-200"
+                    style={{ left: `${contentRef.current?.clientWidth! + 40}px`, top: '1px', opacity: `${copied ? '1' : '0'}` }}
                 >
                     <p>copied</p>
                 </div>

@@ -26,6 +26,8 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Button } from '@/components/ui/button'; // Make sure this import is correct
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import TableLoading from '@/components/layout/Table-loading';
+import { imageUrl } from '@/utils/imageUrl';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 
 interface Props {
@@ -138,7 +140,6 @@ export default function WalletSwaps({ dateRange, walletAddress }: Props) {
 
 const Record = ({
     data,
-    id,
     images,
     handleWatchlistToggle
 }: {
@@ -151,12 +152,6 @@ const Record = ({
     const sellAmount = parseFloat(data["Sell Amount (USD)"].toString());
     const profitAmount = parseFloat(data["Profit"].toString());
 
-    const imageUrl = (address?: string): string | undefined => {
-        if (!address) return undefined;
-        const image = images?.find((image) => image.token === address);
-        return image?.imageUrl;
-    };
-
     return (
         <TableRow>
             <TableCell className="text-center">
@@ -164,22 +159,18 @@ const Record = ({
                     {true ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                 </div>
             </TableCell>
-            <TableCell className="flex justify-center gap-2">
+            <TableCell className="flex justify-start gap-2">
                 <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
-                        {imageUrl(data["Currency Address"]) != undefined ? (
-                            <Image
-                                width={40}
-                                height={40}
-                                className='rounded-full'
-                                src={imageUrl(data["Currency Address"])!}
-                                alt={data.tokenName}
+                        <Avatar>
+                            <AvatarImage
+                                src={imageUrl(data["Currency Address"], images)!}
+                                alt={data.tokenName || 'N/A'}
                             />
-                        ) : (
-                            <div className="flex justify-center items-center w-10 h-10 font-bold text-base border border-base-content rounded-full">
+                            <AvatarFallback>
                                 {data.tokenName.charAt(0)}
-                            </div>
-                        )}
+                            </AvatarFallback>
+                        </Avatar>
                     </div>
                 </div>
                 <div className="flex flex-col items-start justify-center">

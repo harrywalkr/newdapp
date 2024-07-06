@@ -15,7 +15,7 @@ import { useTokenChainStore } from "@/store";
 import { ImageType } from "@/types/Image.type";
 import { SmartTable } from '@/components/ui/smart-table';
 import { Daum } from '@/types/token.type';
-import NonEthFilterDialog from './nonEthTableFilter';
+import NonEthFilterDialog from './TopTokenTableFilter';
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import { Icons } from "@/components/ui/icon";
@@ -27,13 +27,17 @@ import {
 interface Props {
     images: ImageType[];
     initNonEthData: Daum[];
+    page: number,
+    pageCount: number,
+    setPage: (page: number) => void
+    setPageSize: (pageSize: number) => void
 }
 
-export default function NonEthTable({ images, initNonEthData }: Props) {
+export default function TopTokenTable({ images, initNonEthData, setPage, setPageSize, page, pageCount }: Props) {
     const { selectedChain } = useTokenChainStore();
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
-    const [volumeRange, setVolumeRange] = useState<[number, number]>([0, 1000000]);
-    const [liquidityRange, setLiquidityRange] = useState<[number, number]>([0, 1000000]);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 60000]);
+    const [volumeRange, setVolumeRange] = useState<[number, number]>([0, 90000000]);
+    const [liquidityRange, setLiquidityRange] = useState<[number, number]>([0, 200000000]);
     const [ageRange, setAgeRange] = useState<[number, number]>([0, 365]);
     const [priceChange24hRange, setPriceChange24hRange] = useState<[number, number]>([-100, 100]);
 
@@ -60,7 +64,7 @@ export default function NonEthTable({ images, initNonEthData }: Props) {
                             <AvatarImage src={imageUrl(tokenId, images)} alt="Avatar" />
                             <AvatarFallback>{tokenId.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="ml-4 space-y-1">
+                        <div className="ml-4">
                             <Link href={`/tokens/${selectedChain.symbol.toLowerCase()}/${tokenId}`} className="text-sm">
                                 {minifyTokenName(token.attributes?.name?.split('/')[0] || "")}
                             </Link>
@@ -104,8 +108,8 @@ export default function NonEthTable({ images, initNonEthData }: Props) {
             cell: ({ row }) => {
                 const change = row.original.attributes?.price_change_percentage?.h24 || "0";
                 return (
-                    <span className={clsx({ 'text-green-300': +change > 0, 'text-red-300': +change < 0 })}>
-                        {change}
+                    <span className={clsx({ 'text-success': +change > 0, 'text-red-400': +change < 0 })}>
+                        {change}%
                     </span>
                 );
             },
@@ -244,31 +248,38 @@ export default function NonEthTable({ images, initNonEthData }: Props) {
     const filteredData = initNonEthData.filter(token =>
         parseFloat(token.attributes?.base_token_price_usd || "0") >= priceRange[0] && parseFloat(token.attributes?.base_token_price_usd || "0") <= priceRange[1] &&
         parseFloat(token.attributes?.volume_usd?.h24 || "0") >= volumeRange[0] && parseFloat(token.attributes?.volume_usd?.h24 || "0") <= volumeRange[1] &&
-        parseFloat(token.attributes?.reserve_in_usd || "0") >= liquidityRange[0] && parseFloat(token.attributes?.reserve_in_usd || "0") <= liquidityRange[1] &&
-        (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) >= ageRange[0] && (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) <= ageRange[1] &&
-        parseFloat(token.attributes?.price_change_percentage?.h24 || "0") >= priceChange24hRange[0] && parseFloat(token.attributes?.price_change_percentage?.h24 || "0") <= priceChange24hRange[1]
+        parseFloat(token.attributes?.reserve_in_usd || "0") >= liquidityRange[0] && parseFloat(token.attributes?.reserve_in_usd || "0") <= liquidityRange[1] 
+    //     (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) >= ageRange[0] && (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) <= ageRange[1] &&
+    //     parseFloat(token.attributes?.price_change_percentage?.h24 || "0") >= priceChange24hRange[0] && parseFloat(token.attributes?.price_change_percentage?.h24 || "0") <= priceChange24hRange[1]
     );
 
     return (
-        <SmartTable data={filteredData} columns={nonEthColumns} searchColumnAccessorKey='token' >
-            <div className='flex items-center justify-start gap-3'>
-
-                <NonEthFilterDialog
-                    priceRange={priceRange} setPriceRange={setPriceRange}
-                    volumeRange={volumeRange} setVolumeRange={setVolumeRange}
-                    liquidityRange={liquidityRange} setLiquidityRange={setLiquidityRange}
-                    ageRange={ageRange} setAgeRange={setAgeRange}
-                    priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
-                />
-                <ToggleGroup type="single">
+        <SmartTable
+            data={filteredData}
+            columns={nonEthColumns}
+            searchColumnAccessorKey='token'
+            page={page}
+            pageCount={pageCount}
+            setPage={setPage}
+            setPageSize={setPageSize}
+        >
+            {/* <div className='flex items-center justify-start gap-3'> */}
+            <NonEthFilterDialog
+                priceRange={priceRange} setPriceRange={setPriceRange}
+                volumeRange={volumeRange} setVolumeRange={setVolumeRange}
+                liquidityRange={liquidityRange} setLiquidityRange={setLiquidityRange}
+                ageRange={ageRange} setAgeRange={setAgeRange}
+                priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
+            />
+            {/* <ToggleGroup type="single">
                     <ToggleGroupItem value="bold" aria-label="Toggle bold">
                         latest
                     </ToggleGroupItem>
                     <ToggleGroupItem value="italic" aria-label="Toggle italic">
                         Trends
                     </ToggleGroupItem>
-                </ToggleGroup>
-            </div>
+                </ToggleGroup> */}
+            {/* </div> */}
         </SmartTable >
     );
 }

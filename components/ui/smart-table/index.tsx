@@ -101,7 +101,7 @@ export function SmartTable<TData, TValue>({
         <ScrollArea className="w-full rounded-md pb-4">
           <ScrollBar orientation="horizontal" />
           <Table className="bg-card">
-            <TableHeader>
+            <TableHeader >
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -127,7 +127,7 @@ export function SmartTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="py-5">
+                      <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

@@ -28,12 +28,12 @@ interface Props {
 export default function NFT({ NFTs }: Props) {
   return (
     <Section variant={'vertical'}>
-      <SectionHeader variant={'vertical'}>
+      {/* <SectionHeader variant={'vertical'}>
         <SectionTitle>Trending NFTs</SectionTitle>
         <SectionDescription>
           Trending NFTs being actively traded
         </SectionDescription>
-      </SectionHeader>
+      </SectionHeader> */}
       <SectionContent variant={'vertical'}>
         <ScrollArea className="w-full rounded-md pb-4">
           <ScrollBar orientation="horizontal" />

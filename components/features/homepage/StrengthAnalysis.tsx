@@ -12,6 +12,7 @@ import { getStrengthRatio } from '@/services/http/token.http';
 import { History } from '@/types/strength-ratio.type';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Indicator from './Indicator';
+import Loading from '@/components/layout/Loading';
 
 const StrengthAnalysis = () => {
     const { isLoading, error, data: strengthRatio } = useQuery({
@@ -21,7 +22,7 @@ const StrengthAnalysis = () => {
     });
 
     if (error) return <div>Failed to load data, please try again.</div>;
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Loading />
 
     const formattedData = strengthRatio?.history.map((entry: History) => ({
         timestamp: new Date(entry.timestamp).toLocaleDateString(),
@@ -132,11 +133,7 @@ const StrengthAnalysis = () => {
                                 />
                             </LineChart>
                         </ResponsiveContainer>
-                        {/* {
-                            strengthRatio?.averageMarketStrength !== undefined &&
-                            <div className="text-muted-foreground mt-7">Average Market Strength: {strengthRatio.averageMarketStrength.toFixed(2)}</div>
-                        } */}
-                        <div className='mt-5'>
+                        <div className='mt-10'>
                             {strengthRatio?.averageMarketStrength !== undefined &&
                                 <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} avgMarketStrength={strengthRatio.averageMarketStrength} />}
                         </div>

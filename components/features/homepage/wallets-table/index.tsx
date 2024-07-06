@@ -136,17 +136,12 @@ export default function Wallets() {
       accessorKey: 'walletAddress',
       header: 'Wallet Address',
       cell: ({ row }) => (
-        // <Link
-        //   href={`/wallet/${row.getValue("walletAddress")}`}
-        //   className="font-medium link link-hover hover:text-info"
-        // >
         <Copy
           href={`/wallet/${row.getValue("walletAddress")}?network=${selectedChain.symbol}`}
           // href={`/wallet/${row.getValue("walletAddress")}`}
           text={minifyContract(row.getValue("walletAddress") as string)}
           value={row.getValue("walletAddress") as string}
         />
-        // </Link>
       ),
     },
     {
@@ -597,10 +592,10 @@ export default function Wallets() {
 
   if (isLoading) return <Section variant={'vertical'}>
     <SectionHeader variant={'vertical'}>
-      <SectionTitle>Profitable Wallets</SectionTitle>
-      <SectionDescription>
+      {/* <SectionTitle>Profitable Wallets</SectionTitle> */}
+      {/* <SectionDescription>
         Find out more about winner wallets and their trade secrets
-      </SectionDescription>
+      </SectionDescription> */}
     </SectionHeader>
     <SectionContent variant={'vertical'}>
       <TableLoading />
@@ -609,12 +604,12 @@ export default function Wallets() {
 
   return (
     <Section variant={'vertical'}>
-      <SectionHeader variant={'vertical'}>
+      {/* <SectionHeader variant={'vertical'}>
         <SectionTitle>Profitable Wallets</SectionTitle>
         <SectionDescription>
           Find out more about winner wallets and their trade secrets
         </SectionDescription>
-      </SectionHeader>
+      </SectionHeader> */}
       <SectionContent variant={'vertical'}>
         <SmartTable
           data={filteredData}
