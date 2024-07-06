@@ -19,6 +19,7 @@ import { ImageType } from "@/types/Image.type";
 import { Balance } from "@/types/swap.type";
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
 interface WalletPortfolioHistoryProps {
@@ -161,19 +162,15 @@ const Record = ({ data, images, id }: RecordProps) => {
                 <div className="flex items-center gap-2">
                     <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12">
-                            {image ? (
-                                <Image
-                                    width={48}
-                                    height={48}
+                            <Avatar >
+                                <AvatarImage
                                     src={image}
                                     alt={data.tokenName}
-                                    style={{ opacity: image ? 1 : 0.3 }}
                                 />
-                            ) : (
-                                <div className="flex justify-center items-center w-12 h-12 font-bold text-base border border-base-content rounded-full">
+                                <AvatarFallback>
                                     {data.tokenName.charAt(0)}
-                                </div>
-                            )}
+                                </AvatarFallback>
+                            </Avatar>
                         </div>
                     </div>
                     <div className="flex space-x-2 items-center">
