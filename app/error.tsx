@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { postError } from "@/services/http/error.http";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -15,6 +16,7 @@ export default function Error({
   useEffect(() => {
     // Log the error to an error reporting service
     // FIXME: email error to yourself
+    postError({ data: error })
   }, [error]);
 
   return (
