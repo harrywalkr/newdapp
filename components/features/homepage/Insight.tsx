@@ -21,11 +21,11 @@ import Loading from '@/components/layout/Loading';
 export default function Insight() {
     const { selectedChain } = useTokenChainStore();
 
-    const { isLoading: isAiLoading, error: aiError, data: ai } = useQuery({
-        queryKey: ['ai'],
-        queryFn: () => getAi(),
-        refetchInterval: 300000,
-    });
+    // const { isLoading: isAiLoading, error: aiError, data: ai } = useQuery({
+    //     queryKey: ['ai'],
+    //     queryFn: () => getAi(),
+    //     refetchInterval: 300000,
+    // });
 
     if (aiError) return <div>Failed to load data, please try again.</div>;
 
