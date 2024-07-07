@@ -36,6 +36,9 @@ import { formatCash } from "@/utils/numbers";
 import ChainImage from "@/utils/ChainImage";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { imageUrl } from "@/utils/imageUrl";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useQuery } from "@tanstack/react-query";
 dayjs.extend(relativeTime);
 
 
@@ -49,7 +52,6 @@ export function Spotlight() {
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState<SpotlightSearchType>();
   const [token, setToken] = useState<IToken>();
-  const [images, setImages] = useState<ImageType[]>([]);
   const isMounted = useMounted();
   const router = useRouter()
 
@@ -65,9 +67,11 @@ export function Spotlight() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  useEffect(() => {
-    getImages({}).then((data) => setImages(data.imageUrls));
-  }, []);
+  const { isLoading, error, data: images } = useQuery({
+    queryKey: ['images'],
+    queryFn: () => getImages().then((data) => data.imageUrls),
+  });
+
 
   const onInputChange = useDebouncedCallback(
     (value) => {
@@ -110,11 +114,6 @@ export function Spotlight() {
     if (!item) return;
     const historySearches = (get("historySearches") as localStorageItem[]) || [];
     set("historySearches", [item, ...historySearches.splice(0, 5)]);
-  };
-
-  const imageUrl = (address?: string): string | undefined => {
-    const temp = images.find((image) => image.token == address);
-    return temp?.imageUrl;
   };
 
   return (
@@ -204,27 +203,23 @@ export function Spotlight() {
                         >
                           <TableCell className="font-medium flex items-center justify-start gap-4 w-56">
                             <div className="w-10 h-10">
-                              {item.relationships?.base_token?.data?.id &&
-                                imageUrl(
-                                  item.relationships.base_token.data.id.split(
-                                    "_"
-                                  )[1]
-                                ) != undefined &&
-                                images ? (
-                                <Image
-                                  loading="eager"
-                                  width={40}
-                                  height={40}
-                                  src={
-                                    imageUrl(
-                                      item.relationships.base_token.data.id.split(
-                                        "_"
-                                      )[1]
-                                    )!
-                                  }
-                                  alt=""
-                                />
-                              ) : <ChainImage chainName={item.id!.split("_")[0]} />}
+                              {
+                                item.relationships?.base_token?.data?.id && images != undefined ? (
+                                  <Avatar >
+                                    <AvatarImage
+                                      src={
+                                        imageUrl(
+                                          item.relationships.base_token.data.id.split(
+                                            "_"
+                                          )[1],
+                                          images
+                                        )
+                                      }
+                                      alt="token logo"
+                                    />
+                                    <AvatarFallback>{item.attributes?.name && item.attributes.name.charAt(0)}</AvatarFallback>
+                                  </Avatar>
+                                ) : <ChainImage chainName={item.id!.split("_")[0]} />}
                             </div>
                             <div className="flex flex-col items-start justify-center gap-1">
                               <div className="whitespace-nowrap">
@@ -309,15 +304,14 @@ export function Spotlight() {
                         <p>{minifyContract(item.address)}</p>
                       ) : (
                         <div className="flex items-center justify-start gap-1 w-full md:gap-2">
-                          {imageUrl(item.address) != undefined && (
-                            <Image
-                              loading="eager"
-                              className="w-8 h-8 md:w-9 md:h-9"
-                              width={20}
-                              height={20}
-                              src={imageUrl(item.address)!}
-                              alt=""
-                            />
+                          {images && imageUrl(item.address, images) != undefined && (
+                            <Avatar >
+                              <AvatarImage
+                                src={imageUrl(item.address,images)}
+                                alt="token logo"
+                              />
+                              <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
                           )}
                           <p>{minifyTokenName(item.name)}</p>
                         </div>
