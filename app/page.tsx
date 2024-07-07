@@ -15,7 +15,6 @@ export default async function Home() {
 
   return (
     <div
-      //  className="flex flex-col w-full gap-10 md:gap-10 lg:gap-14"
       className="w-full"
     >
       <Insight />
