@@ -10,13 +10,11 @@ import HomepageTabs from "@/components/features/homepage/Homepage-tabs";
 export const revalidate = 0;
 
 export default async function Home() {
-  const images = await getImages();
-  const nfts = await getTopNFTs();
+  // const images = await getImages();
+  // const nfts = await getTopNFTs();
 
   return (
-    <div
-      className="w-full"
-    >
+    <div className="w-full">
       <Insight />
       <HomepageTabs />
       {/* <TopLatestHotPairs images={images.imageUrls} />
