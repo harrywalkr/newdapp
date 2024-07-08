@@ -69,6 +69,7 @@ const NonEthFilterDialog = ({
                         <AccordionTrigger>Price Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={priceRange}
                                 onValueChange={handlePriceRangeChange}
@@ -87,6 +88,7 @@ const NonEthFilterDialog = ({
                         <AccordionTrigger>Volume Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={volumeRange}
                                 onValueChange={handleVolumeRangeChange}
@@ -105,6 +107,7 @@ const NonEthFilterDialog = ({
                         <AccordionTrigger>Liquidity Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={liquidityRange}
                                 onValueChange={handleLiquidityRangeChange}
@@ -123,6 +126,7 @@ const NonEthFilterDialog = ({
                         <AccordionTrigger>Age Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={ageRange}
                                 onValueChange={handleAgeRangeChange}
@@ -141,6 +145,7 @@ const NonEthFilterDialog = ({
                         <AccordionTrigger>24h Price Change Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={priceChange24hRange}
                                 onValueChange={handlePriceChange24hRangeChange}

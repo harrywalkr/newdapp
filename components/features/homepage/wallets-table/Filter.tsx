@@ -107,6 +107,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Rank Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={rankRange}
                                 onValueChange={handleRankChange}
@@ -125,6 +126,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Win Rate Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={winRateRange}
                                 onValueChange={handleWinRateChange}
@@ -143,6 +145,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Net Profit Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={netProfitRange}
                                 onValueChange={handleNetProfitChange}
@@ -161,6 +164,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Age Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={ageRange}
                                 onValueChange={handleAgeChange}
@@ -194,6 +198,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Day Active Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={dayActiveRange}
                                 onValueChange={handleDayActiveChange}
@@ -212,6 +217,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Average Holding Time Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={avgHoldingTimeRange}
                                 onValueChange={handleAvgHoldingTimeChange}
@@ -230,6 +236,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Total Score Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={totalScoreRange}
                                 onValueChange={handleTotalScoreChange}
@@ -248,6 +255,7 @@ const FilterDialog = ({
                         <AccordionTrigger>Total Fee Range</AccordionTrigger>
                         <AccordionContent>
                             <Slider
+                                rangeSlider={true}
                                 className='mt-2'
                                 value={totalFeeRange}
                                 onValueChange={handleTotalFeeChange}
