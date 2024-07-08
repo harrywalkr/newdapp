@@ -47,7 +47,7 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
                                     wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
                                 )}
                             >
-                                +{separate3digits(wallet.netProfit.toFixed(0))}
+                                {separate3digits(wallet.netProfit.toFixed(0))}
                             </span>
                         </div>
                     </div>

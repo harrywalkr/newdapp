@@ -14,10 +14,13 @@ import {
 } from "@/components/ui/carousel"
 import { Button } from '@/components/ui/button';
 import Loading from '@/components/layout/Loading';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 const TrendsCarousel = () => {
     const { selectedChain } = useTokenChainStore();
+    const router = useRouter()
     const { isLoading, error, data: trends } = useQuery({
         queryKey: ["trends", selectedChain.symbol],
         queryFn: () => getTrends(selectedChain.url),
@@ -46,10 +49,16 @@ const TrendsCarousel = () => {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <div className='flex items-center justify-end'>
-                <CarouselPrevious />
-                <CarouselNext />
-            </div>
+                <div className='flex items-center justify-end gap-2'>
+                    <div>
+
+                    <CarouselPrevious />
+                    <CarouselNext />
+                    </div>
+                    <Button variant='outline' onClick={() => router.push('/trending-pairs')}>
+                        Show All
+                    </Button>
+                </div>
 
         </Carousel>
     );

@@ -29,7 +29,6 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
           <MobileMenu />
           <Link href='/'>
             <Logo />
-            {/* <Image src="/logos/dextrading-logo-1.png" alt="dextrading logo" width={50} height={10} /> */}
           </Link>
         </div>
         <div className="flex items-center justify-start gap-20">

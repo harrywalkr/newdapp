@@ -146,6 +146,77 @@ export default function Wallets() {
       ),
     },
     {
+      accessorKey: 'netProfit',
+      header: ({ column }) => {
+        const isSortedAsc = column.getIsSorted() === 'asc';
+        const isSortedDesc = column.getIsSorted() === 'desc';
+
+        const toggleSorting = () => {
+          if (isSortedAsc) {
+            column.toggleSorting(true);
+          } else if (isSortedDesc) {
+            column.clearSorting();
+          } else {
+            column.toggleSorting(false);
+          }
+        };
+
+        return (
+          <Button
+            variant="ghost"
+            onClick={toggleSorting}
+          >
+            P&L
+            {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
+            {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
+            {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className={clsx('px-5', {
+          'text-success': Number(row.getValue('netProfit')) > 0,
+          'text-red-300': Number(row.getValue('netProfit')) <= 0
+        })}>
+          ${Number(row.getValue('netProfit')).toFixed(2)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'totalScore',
+      header: ({ column }) => {
+        const isSortedAsc = column.getIsSorted() === 'asc';
+        const isSortedDesc = column.getIsSorted() === 'desc';
+
+        const toggleSorting = () => {
+          if (isSortedAsc) {
+            column.toggleSorting(true);
+          } else if (isSortedDesc) {
+            column.clearSorting();
+          } else {
+            column.toggleSorting(false);
+          }
+        };
+
+        return (
+          <Button
+            variant="ghost"
+            onClick={toggleSorting}
+          >
+            Total Score
+            {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
+            {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
+            {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="text-center">
+          {row.getValue('totalScore')}
+        </div>
+      ),
+    },
+    {
       accessorKey: 'buyAmountLabel',
       header: ({ column }) => {
         const isSortedAsc = column.getIsSorted() === 'asc';
@@ -179,43 +250,7 @@ export default function Wallets() {
         </div>
       ),
     },
-    {
-      accessorKey: 'netProfit',
-      header: ({ column }) => {
-        const isSortedAsc = column.getIsSorted() === 'asc';
-        const isSortedDesc = column.getIsSorted() === 'desc';
 
-        const toggleSorting = () => {
-          if (isSortedAsc) {
-            column.toggleSorting(true);
-          } else if (isSortedDesc) {
-            column.clearSorting();
-          } else {
-            column.toggleSorting(false);
-          }
-        };
-
-        return (
-          <Button
-            variant="ghost"
-            onClick={toggleSorting}
-          >
-            P&L
-            {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
-            {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
-            {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className={clsx('px-5', {
-          'text-success': Number(row.getValue('netProfit')) > 0,
-          'text-red-300': Number(row.getValue('netProfit')) <= 0
-        })}>
-          {Number(row.getValue('netProfit')).toFixed(2)}
-        </div>
-      ),
-    },
     {
       accessorKey: 'winRate',
       header: ({ column }) => {
@@ -245,45 +280,12 @@ export default function Wallets() {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
-          {Number(row.getValue('winRate')).toFixed(0)}
+        <div className="text-center">
+          {`${Math.ceil((row.getValue('winRate') as number / 100) * 100)}%`}
         </div>
       ),
     },
-    {
-      accessorKey: 'dayActive',
-      header: ({ column }) => {
-        const isSortedAsc = column.getIsSorted() === 'asc';
-        const isSortedDesc = column.getIsSorted() === 'desc';
 
-        const toggleSorting = () => {
-          if (isSortedAsc) {
-            column.toggleSorting(true);
-          } else if (isSortedDesc) {
-            column.clearSorting();
-          } else {
-            column.toggleSorting(false);
-          }
-        };
-
-        return (
-          <Button
-            variant="ghost"
-            onClick={toggleSorting}
-          >
-            Active Days
-            {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
-            {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
-            {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
-          </Button >
-        );
-      },
-      cell: ({ row }) => (
-        <div className="px-5">
-          {row.getValue('dayActive')}
-        </div>
-      ),
-    },
     {
       accessorKey: 'firstTopTokenHolder',
       header: ({ column }) => {
@@ -372,7 +374,7 @@ export default function Wallets() {
             variant="ghost"
             onClick={toggleSorting}
           >
-            Avg Position Duration
+            Avg Pos Duration
             {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
             {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
             {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
@@ -380,7 +382,7 @@ export default function Wallets() {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
+        <div className="px-5 text-center">
           {Math.ceil(row.getValue('avgHoldingTime')) || 0} D
         </div>
       ),
@@ -482,7 +484,7 @@ export default function Wallets() {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
+        <div className="text-center">
           {row.getValue('details') === 'Dex Trader' ? 'yes' : 'no'}
         </div>
       ),
@@ -516,7 +518,7 @@ export default function Wallets() {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
+        <div className="text-center">
           {row.getValue('totalNumofFullyOpenedData')}
         </div>
       ),
@@ -550,13 +552,13 @@ export default function Wallets() {
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
+        <div className="text-center">
           {row.getValue('totalTransactions')}
         </div>
       ),
     },
     {
-      accessorKey: 'totalScore',
+      accessorKey: 'dayActive',
       header: ({ column }) => {
         const isSortedAsc = column.getIsSorted() === 'asc';
         const isSortedDesc = column.getIsSorted() === 'desc';
@@ -576,16 +578,16 @@ export default function Wallets() {
             variant="ghost"
             onClick={toggleSorting}
           >
-            Total Score
+            Active Days
             {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
             {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
             {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
-          </Button>
+          </Button >
         );
       },
       cell: ({ row }) => (
-        <div className="px-5">
-          {row.getValue('totalScore')}
+        <div className="text-center">
+          {row.getValue('dayActive')}
         </div>
       ),
     },
