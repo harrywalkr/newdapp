@@ -39,7 +39,7 @@ const AvatarPlaceholder = React.forwardRef<HTMLDivElement, PlaceholderProps>(
                 width={26}
                 alt="placeholder image"
                 src='/dextrading-logo.png'
-                className="grayscale opacity-30"
+                className="grayscale opacity-30 h-3/5 w-3/5"
             />
         </div>
     )

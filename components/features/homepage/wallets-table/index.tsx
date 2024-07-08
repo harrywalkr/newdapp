@@ -22,6 +22,7 @@ import {
   SectionContent,
 } from "@/components/layout/Section";
 import TableLoading from '@/components/layout/Table-loading';
+import { AvatarPlaceholder } from '@/components/ui/avatar';
 
 export default function Wallets() {
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
@@ -81,7 +82,7 @@ export default function Wallets() {
       accessorKey: 'watchlist',
       header: '',
       cell: ({ row }) => (
-        <div className="px-5 cursor-pointer"
+        <div className="cursor-pointer"
           onClick={() => handleStarClick({
             name: row.getValue("walletAddress") as string,
             contractAddress: row.getValue("walletAddress") as string,
@@ -117,7 +118,7 @@ export default function Wallets() {
             variant="ghost"
             onClick={toggleSorting}
           >
-            Rank
+            #
             {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
             {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
             {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
@@ -134,12 +135,14 @@ export default function Wallets() {
       accessorKey: 'walletAddress',
       header: 'Wallet Address',
       cell: ({ row }) => (
-        <Copy
-          href={`/wallet/${row.getValue("walletAddress")}?network=${selectedChain.symbol}`}
-          // href={`/wallet/${row.getValue("walletAddress")}`}
-          text={minifyContract(row.getValue("walletAddress") as string)}
-          value={row.getValue("walletAddress") as string}
-        />
+        <div className='flex items-center justify-start gap-2'>
+          <AvatarPlaceholder className='w-8 h-8' />
+          <Copy
+            href={`/wallet/${row.getValue("walletAddress")}?network=${selectedChain.symbol}`}
+            text={minifyContract(row.getValue("walletAddress") as string)}
+            value={row.getValue("walletAddress") as string}
+          />
+        </div>
       ),
     },
     {
