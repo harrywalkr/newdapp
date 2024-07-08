@@ -28,7 +28,7 @@ export default function HomepageTabs() {
         <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-10">
             <TabsList className='bg-transparent' >
                 <TabsTrigger value="TopLatestHotPairs" className="text-lg">Top Tokens</TabsTrigger>
-                <TabsTrigger value="Wallets" className="text-lg">Valuable Wallets</TabsTrigger>
+                <TabsTrigger value="Wallets" className="text-lg">Top Wallets</TabsTrigger>
                 <TabsTrigger value="NFTs" className="text-lg">Trending NFTs</TabsTrigger>
             </TabsList>
             <TabsContent value="TopLatestHotPairs" className='mt-5'>
