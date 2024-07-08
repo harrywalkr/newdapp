@@ -10,7 +10,7 @@ import {
 import clsx from 'clsx';
 import { getStrengthRatio } from '@/services/http/token.http';
 import { History } from '@/types/strength-ratio.type';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardContent } from '@/components/ui/card';
 import Indicator from './Indicator';
 import Loading from '@/components/layout/Loading';
 
@@ -105,42 +105,39 @@ const StrengthAnalysis = () => {
     const marketState = strengthRatio?.averageMarketStrength !== undefined ? getMarketState(strengthRatio.averageMarketStrength) : 'Unknown';
 
     return (
-        <div>
-            <CardHeader>
-                <CardTitle>Market Index ({marketState})</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="strength-analysis">
-                    <div className="content">
-                        <ResponsiveContainer width="100%" height={150}>
-                            <LineChart data={formattedData}>
-                                <defs>
-                                    <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset={off} stopColor="#86efac" />
-                                        <stop offset={off} stopColor="#ef4444" />
-                                    </linearGradient>
-                                </defs>
-                                <YAxis
-                                    ticks={[-1.2, -1, 0, 1]}
-                                />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Line
-                                    type="monotone"
-                                    dataKey="averageMarketStrength"
-                                    stroke="url(#splitColor)"
-                                    strokeWidth={1}
-                                    dot={renderCustomDot}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                        <div className='mt-10'>
-                            {strengthRatio?.averageMarketStrength !== undefined &&
-                                <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} avgMarketStrength={strengthRatio.averageMarketStrength} />}
-                        </div>
+
+        <CardContent>
+            <div className="strength-analysis">
+                <div className="content">
+                    <ResponsiveContainer width="100%" height={150}>
+                        <LineChart data={formattedData}>
+                            <defs>
+                                <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset={off} stopColor="#86efac" />
+                                    <stop offset={off} stopColor="#ef4444" />
+                                </linearGradient>
+                            </defs>
+                            <YAxis
+                                ticks={[-1.2, -1, 0, 1]}
+                            />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Line
+                                type="monotone"
+                                dataKey="averageMarketStrength"
+                                stroke="url(#splitColor)"
+                                strokeWidth={1}
+                                dot={renderCustomDot}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                    <div className='mt-10'>
+                        {strengthRatio?.averageMarketStrength !== undefined &&
+                            <Indicator percentage={calculatePercentage(strengthRatio.averageMarketStrength)} marketState={marketState} avgMarketStrength={strengthRatio.averageMarketStrength} />}
                     </div>
                 </div>
-            </CardContent>
-        </div>
+            </div>
+        </CardContent>
+
     );
 };
 

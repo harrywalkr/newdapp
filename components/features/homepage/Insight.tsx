@@ -29,7 +29,7 @@ export default function Insight() {
                 </SectionDescription>
             </SectionHeader>
             <SectionContent variant="vertical">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-14 w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
                     <Card>
                         <CardHeader>
                             <CardTitle>Trending Traders</CardTitle>
@@ -47,6 +47,9 @@ export default function Insight() {
                         </CardContent>
                     </Card>
                     <Card>
+                        <CardHeader>
+                            <CardTitle>Market Index</CardTitle>
+                        </CardHeader>
                         <StrengthAnalysis />
                     </Card>
                 </div>

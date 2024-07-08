@@ -42,7 +42,7 @@ export function Watchlist() {
                   alt={item.contractAddress || 'N/A'}
                 />
                 <AvatarFallback>
-                  {item.contractAddress.substring(0, 2) || 'NA'}
+                  {item.contractAddress?.substring(0, 2) || 'NA'}
                 </AvatarFallback>
               </Avatar>
               <div className="ml-4 space-y-1">

@@ -19,8 +19,6 @@ import clsx from 'clsx';
 import {
   Section,
   SectionHeader,
-  SectionTitle,
-  SectionDescription,
   SectionContent,
 } from "@/components/layout/Section";
 import TableLoading from '@/components/layout/Table-loading';
@@ -56,11 +54,11 @@ export default function Wallets() {
         wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
         wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
         wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
-        (label ? wallet.buyAmountLabel === label : true)
-        // wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
-        // (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
-        // wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
-        // wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
+        (label ? wallet.buyAmountLabel === label : true) &&
+        wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
+        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
+        wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
+        wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
       ));
     }
   }, [walletsData, rankRange, winRateRange, netProfitRange, ageRange, label, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange]);
@@ -592,10 +590,6 @@ export default function Wallets() {
 
   if (isLoading) return <Section variant={'vertical'}>
     <SectionHeader variant={'vertical'}>
-      {/* <SectionTitle>Profitable Wallets</SectionTitle> */}
-      {/* <SectionDescription>
-        Find out more about winner wallets and their trade secrets
-      </SectionDescription> */}
     </SectionHeader>
     <SectionContent variant={'vertical'}>
       <TableLoading />
@@ -604,12 +598,6 @@ export default function Wallets() {
 
   return (
     <Section variant={'vertical'}>
-      {/* <SectionHeader variant={'vertical'}>
-        <SectionTitle>Profitable Wallets</SectionTitle>
-        <SectionDescription>
-          Find out more about winner wallets and their trade secrets
-        </SectionDescription>
-      </SectionHeader> */}
       <SectionContent variant={'vertical'}>
         <SmartTable
           data={filteredData}

@@ -11,7 +11,7 @@ import clsx from "clsx";
 import dayjs from "dayjs";
 import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
-import { useTokenChainStore } from "@/store";
+import { useTokenChainStore, useWatchlistStore } from "@/store";
 import { ImageType } from "@/types/Image.type";
 import { SmartTable } from '@/components/ui/smart-table';
 import { Daum } from '@/types/token.type';
@@ -19,10 +19,8 @@ import NonEthFilterDialog from './TopTokenTableFilter';
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import { Icons } from "@/components/ui/icon";
-import {
-    ToggleGroup,
-    ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { IWatchlistItem } from '@/store/watchlist';
 
 interface Props {
     images: ImageType[];
@@ -34,6 +32,7 @@ interface Props {
 }
 
 export default function TopTokenTable({ images, initNonEthData, setPage, setPageSize, page, pageCount }: Props) {
+    const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
     const { selectedChain } = useTokenChainStore();
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 60000]);
     const [volumeRange, setVolumeRange] = useState<[number, number]>([0, 90000000]);
@@ -47,7 +46,43 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
         return valueA - valueB;
     };
 
-    const nonEthColumns: ColumnDef<Daum>[] = [
+    const handleStarClick = (wallet: IWatchlistItem) => {
+        const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
+        if (isInWatchlist) {
+            removeFromWatchlist(wallet.contractAddress);
+        } else {
+            addToWatchlist(wallet);
+        }
+    };
+
+    const isTokenInWatchlist = (token: IWatchlistItem) => {
+        return watchlist.some((t: IWatchlistItem) => t.contractAddress === token.contractAddress);
+    };
+
+    const columns: ColumnDef<Daum>[] = [
+
+        {
+            accessorKey: 'watchlist',
+            header: '',
+            cell: ({ row }) => {
+                const token = row.original;
+                const tokenId = token.relationships?.base_token?.data?.id?.split('_')[1] || "";
+                return (<div className="px-5 cursor-pointer"
+                    onClick={() => handleStarClick({
+                        name: token.attributes?.name as string,
+                        contractAddress: tokenId,
+                        type: 'token'
+                    })}
+                >
+                    {isTokenInWatchlist({
+                        name: token.attributes?.name as string,
+                        contractAddress: tokenId,
+                        type: 'token'
+                    }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
+                </div>
+                )
+            }
+        },
         {
             accessorKey: 'token',
             accessorFn: row => {
@@ -248,22 +283,21 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
     const filteredData = initNonEthData.filter(token =>
         parseFloat(token.attributes?.base_token_price_usd || "0") >= priceRange[0] && parseFloat(token.attributes?.base_token_price_usd || "0") <= priceRange[1] &&
         parseFloat(token.attributes?.volume_usd?.h24 || "0") >= volumeRange[0] && parseFloat(token.attributes?.volume_usd?.h24 || "0") <= volumeRange[1] &&
-        parseFloat(token.attributes?.reserve_in_usd || "0") >= liquidityRange[0] && parseFloat(token.attributes?.reserve_in_usd || "0") <= liquidityRange[1] 
-    //     (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) >= ageRange[0] && (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) <= ageRange[1] &&
-    //     parseFloat(token.attributes?.price_change_percentage?.h24 || "0") >= priceChange24hRange[0] && parseFloat(token.attributes?.price_change_percentage?.h24 || "0") <= priceChange24hRange[1]
+        parseFloat(token.attributes?.reserve_in_usd || "0") >= liquidityRange[0] && parseFloat(token.attributes?.reserve_in_usd || "0") <= liquidityRange[1] &&
+        (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) >= ageRange[0] && (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) <= ageRange[1] &&
+        parseFloat(token.attributes?.price_change_percentage?.h24 || "0") >= priceChange24hRange[0] && parseFloat(token.attributes?.price_change_percentage?.h24 || "0") <= priceChange24hRange[1]
     );
 
     return (
         <SmartTable
             data={filteredData}
-            columns={nonEthColumns}
+            columns={columns}
             searchColumnAccessorKey='token'
             page={page}
             pageCount={pageCount}
             setPage={setPage}
             setPageSize={setPageSize}
         >
-            {/* <div className='flex items-center justify-start gap-3'> */}
             <NonEthFilterDialog
                 priceRange={priceRange} setPriceRange={setPriceRange}
                 volumeRange={volumeRange} setVolumeRange={setVolumeRange}
@@ -271,15 +305,6 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
                 ageRange={ageRange} setAgeRange={setAgeRange}
                 priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
             />
-            {/* <ToggleGroup type="single">
-                    <ToggleGroupItem value="bold" aria-label="Toggle bold">
-                        latest
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="italic" aria-label="Toggle italic">
-                        Trends
-                    </ToggleGroupItem>
-                </ToggleGroup> */}
-            {/* </div> */}
         </SmartTable >
     );
 }
