@@ -57,6 +57,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
     }, [fromDate, toDate]);
 
     const { availableChains, setSelectedChain, selectedChain } = useTokenChainStore();
+    const currentChain = searchParams.get('network');
 
     const handleChainChange = (symbol: string) => {
         const chain = availableChains.find(chain => chain.symbol === symbol);
@@ -68,6 +69,8 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
             router.push(`${pathname}?${currentParams.toString()}`);
         }
     };
+
+    const filteredChains = currentChain === 'solana' ? availableChains.filter(chain => chain.symbol === 'solana') : availableChains.filter(chain => chain.symbol !== 'solana');
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
@@ -178,7 +181,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                     <SelectValue placeholder="Select Chain" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {availableChains.map((chain) => (
+                                    {filteredChains.map((chain) => (
                                         <SelectItem key={chain.id} value={chain.symbol}>
                                             {chain.name}
                                         </SelectItem>

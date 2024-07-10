@@ -42,14 +42,14 @@ const TrendsCarousel = () => {
         <Carousel>
             <CarouselContent>
                 {chunks.map((chunk, index) => (
-                    <CarouselItem key={index}>
+                    <CarouselItem key={index} className='flex flex-col gap-2'>
                         {chunk.map((token, idx) => (
                             <TrendItem key={idx} token={token} selectedChain={selectedChain} />
                         ))}
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <div className='flex items-center justify-end gap-2'>
+            <div className='flex items-center justify-end gap-2 mt-4'>
                 <div>
                     <CarouselPrevious />
                     <CarouselNext />
@@ -58,7 +58,6 @@ const TrendsCarousel = () => {
                     Show All
                 </Button>
             </div>
-
         </Carousel>
     );
 };

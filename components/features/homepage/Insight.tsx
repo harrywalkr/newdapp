@@ -40,23 +40,23 @@ export default function Insight() {
             <SectionContent variant="vertical">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
                     <Card>
-                        <CardHeader>
+                        <CardHeader className='space-y-0 p-4'>
                             <CardTitle>Trending Traders</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className='!p-4 !pt-0'>
                             <TradersCarousel />
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader>
+                        <CardHeader className='space-y-0 p-4'>
                             <CardTitle>Hot Tokens</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className='!p-4 !pt-0'>
                             <TrendsCarousel />
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader>
+                        <CardHeader className='space-y-0 p-4'>
                             <CardTitle>Market Index</CardTitle>
                         </CardHeader>
                         <StrengthAnalysis />

@@ -25,14 +25,14 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
     return (
         <React.Fragment key={wallet.walletAddress}>
             <div
-                className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-3"
+                className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-1"
                 onClick={() => router.push(`/wallet/${wallet.walletAddress}`)}
             >
                 <div className='flex items-center justify-start gap-5'>
                     <AvatarPlaceholder />
-                    <div className="flex flex-col items-start justify-center gap-2">
+                    <div className="flex flex-col items-start justify-center gap-0">
                         <Copy
-                            className="text-muted-foreground"
+                            className="text-muted-foreground text-sm"
                             href={`/wallet/${wallet.walletAddress}`}
                             text={minifyContract(wallet.walletAddress)}
                             value={wallet.walletAddress}
@@ -43,7 +43,7 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
                             </span>
                             <span
                                 className={clsx(
-                                    'text-base-content font-semibold whitespace-nowrap leading-none',
+                                    'text-base-content text-sm whitespace-nowrap leading-none',
                                     wallet.netProfit > 0 ? 'text-success' : 'text-red-300'
                                 )}
                             >
@@ -62,7 +62,6 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
                     <Progress className='mt-2' value={+wallet.winRate} />
                 </div>
             </div>
-            {/* {index !== total - 1 && <Separator />} */}
         </React.Fragment>
     );
 };

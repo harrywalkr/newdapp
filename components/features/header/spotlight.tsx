@@ -37,6 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ImageType } from "@/types/Image.type";
 import { useTokenChainStore } from "@/store";
+import { getNetworkSymbol } from "@/utils/NetworkSymbol";
 
 dayjs.extend(relativeTime);
 
@@ -214,7 +215,7 @@ const Spotlight = () => {
         </kbd>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 max-w-3xl rounded-md w-[99%] top-[30%] md:top-[40%]">
+        <DialogContent className="p-0 max-w-5xl rounded-md w-[99%] top-[30%] md:top-[40%]">
           <Input
             placeholder="Search for Wallets, Tokens, NFTs ..."
             className="focus-visible:ring-0 h-12 rounded-b-none"
@@ -242,7 +243,7 @@ const Spotlight = () => {
                       address: wallet.subject.address,
                       // network: wallet.network.protocol
                     });
-                    router.push(`/wallet/${wallet.subject.address}`);
+                    router.push(`/wallet/${wallet.subject.address}?network=${getNetworkSymbol(wallet.network.network)}`);
                   }}
                 >
                   <IoWalletOutline className="text-xl" />

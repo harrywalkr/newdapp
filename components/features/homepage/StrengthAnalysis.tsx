@@ -106,10 +106,10 @@ const StrengthAnalysis = () => {
 
     return (
 
-        <CardContent>
+        <CardContent className='!p-4 !pt-0'>
             <div className="strength-analysis">
                 <div className="content">
-                    <ResponsiveContainer width="100%" height={150}>
+                    <ResponsiveContainer >
                         <LineChart data={formattedData}>
                             <defs>
                                 <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">

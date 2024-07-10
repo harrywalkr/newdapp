@@ -48,14 +48,14 @@ const TradersCarousel = () => {
         <Carousel>
             <CarouselContent>
                 {chunks.map((chunk, index) => (
-                    <CarouselItem key={index}>
+                    <CarouselItem key={index} className='flex flex-col gap-3'>
                         {chunk.map((wallet, idx) => (
                             <TrendingTradersItem key={idx} wallet={wallet} index={idx} total={chunk.length} />
                         ))}
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <div className='flex items-center justify-end'>
+            <div className='flex items-center justify-end mt-4'>
                 <CarouselPrevious />
                 <CarouselNext />
             </div>
