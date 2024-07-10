@@ -83,7 +83,7 @@ const useSpotlightSearch = (debouncedSearchTerm: string, network: string): UseQu
       }
 
       const data = await spotlightSearch({
-        params: { address: debouncedSearchTerm, chain: network },
+        params: { address: debouncedSearchTerm },
       });
 
       if (data?.subject?.label?.includes("Wallet")) {
