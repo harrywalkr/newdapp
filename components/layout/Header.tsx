@@ -3,7 +3,7 @@ import React, { HTMLAttributes } from "react";
 import Logo from "../common/Logo";
 import { ThemeToggle } from "../features/header/Toggle-theme";
 import MobileMenu from "../features/header/mobile-menu";
-import { Spotlight } from "../features/header/spotlight";
+import Spotlight from "../features/header/spotlight";
 import ConnectWalletButton from "../features/header/Connnet-wallet";
 import ChainSelector from "../features/header/chain-selector";
 import { Button } from "../ui/button";
@@ -12,7 +12,6 @@ import Link from "next/link";
 import ChainInfo from "../features/header/chain-info";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   const router = useRouter()
@@ -61,7 +60,6 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
               Academy
             </Link>
           </li>
-
           {/* <li className="px-4 py-2 rounded-md hover:bg-muted/50">
             <Link href='/dashboard'>
               Dashboard
