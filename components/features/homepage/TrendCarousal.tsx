@@ -49,16 +49,15 @@ const TrendsCarousel = () => {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-                <div className='flex items-center justify-end gap-2'>
-                    <div>
-
+            <div className='flex items-center justify-end gap-2'>
+                <div>
                     <CarouselPrevious />
                     <CarouselNext />
-                    </div>
-                    <Button variant='outline' onClick={() => router.push('/trending-pairs')}>
-                        Show All
-                    </Button>
                 </div>
+                <Button variant='outline' onClick={() => router.push('/trending-pairs')}>
+                    Show All
+                </Button>
+            </div>
 
         </Carousel>
     );

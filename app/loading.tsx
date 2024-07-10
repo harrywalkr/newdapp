@@ -1,6 +1,6 @@
 'use client'
 import Loading from "@/components/common/Loading";
-import React from "react";
+import React, { useEffect } from "react";
 
 const tips: string[] = [
   'You can find out the reliability of a token in the token section.',
@@ -23,6 +23,11 @@ const tips: string[] = [
 const randomIndex = Math.floor(Math.random() * tips.length);
 
 export default function LoadingOverlay() {
+
+  useEffect(() => {
+    console.log('the route is changing')
+  }, [])
+
 
   return (
     <div
