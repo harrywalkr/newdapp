@@ -36,6 +36,8 @@ import { imageUrl } from "@/utils/imageUrl";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ImageType } from "@/types/Image.type";
+import { useTokenChainStore } from "@/store";
+
 dayjs.extend(relativeTime);
 
 type localStorageItem = {
@@ -62,23 +64,32 @@ type SpotlightSearchResult = {
   data: SpotlightSearchType | IToken
 }
 
-const useSpotlightSearch = (debouncedSearchTerm: string): UseQueryResult<SpotlightSearchResult | undefined, Error> => {
+
+const useSpotlightSearch = (debouncedSearchTerm: string, network: string): UseQueryResult<SpotlightSearchResult | undefined, Error> => {
   return useQuery({
     queryKey: ['spotlightSearch', debouncedSearchTerm],
     queryFn: async (): Promise<SpotlightSearchResult | undefined> => {
       if (!debouncedSearchTerm) return;
-      const data = await spotlightSearch({
-        params: { address: debouncedSearchTerm, chain: 'ETH' },
-      });
-      if (data?.subject?.label?.includes("Wallet")) {
-        return { type: 'wallet', data };
-      }
+
       const tokenData = await searchToken({
         params: {
           currencyAddress: debouncedSearchTerm,
         },
       });
-      return { type: 'token', data: tokenData };
+
+      if (tokenData.data && tokenData.data.length > 0) {
+        return { type: 'token', data: tokenData };
+      }
+
+      const data = await spotlightSearch({
+        params: { address: debouncedSearchTerm, chain: network },
+      });
+
+      if (data?.subject?.label?.includes("Wallet")) {
+        return { type: 'wallet', data };
+      }
+
+      return undefined; // If neither API returns valid data, return undefined
     },
     enabled: !!debouncedSearchTerm,
   });
@@ -139,11 +150,12 @@ const Spotlight = () => {
   const [wallet, setWallet] = useState<SpotlightSearchType | undefined>();
   const [token, setToken] = useState<IToken | undefined>();
   const router = useRouter();
+  const { selectedChain } = useTokenChainStore();
 
   const [debouncedSearchTerm] = useDebounce(searchTerm, 200);
 
   const { isLoading: imagesLoading, error: imagesError, data: images } = useImages();
-  const { data: searchData, refetch: refetchSearchData, error: searchError } = useSpotlightSearch(debouncedSearchTerm);
+  const { data: searchData, refetch: refetchSearchData, error: searchError } = useSpotlightSearch(debouncedSearchTerm, selectedChain.symbol);
 
   useEffect(() => {
     if (searchData) {
