@@ -117,6 +117,7 @@ export default function Wallets() {
           <Button
             variant="ghost"
             onClick={toggleSorting}
+            className='!px-1'
           >
             #
             {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}

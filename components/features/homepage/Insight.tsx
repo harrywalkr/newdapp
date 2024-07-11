@@ -23,7 +23,7 @@ export default function Insight() {
             <SectionHeader variant="vertical">
                 <SectionTitle className='flex items-center justify-center gap-4'>
                     <span>
-                        Insight & Analytics
+                        AI Trend Detector
                     </span>
                     <span>
                         {isAiLoading ? <Skeleton className='w-12 h-2' /> :

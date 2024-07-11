@@ -67,7 +67,7 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
             cell: ({ row }) => {
                 const token = row.original;
                 const tokenId = token.relationships?.base_token?.data?.id?.split('_')[1] || "";
-                return (<div className="cursor-pointer"
+                return (<div className="cursor-pointer flex items-center justify-center"
                     onClick={() => handleStarClick({
                         name: token.attributes?.name as string,
                         contractAddress: tokenId,
