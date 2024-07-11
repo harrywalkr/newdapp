@@ -3,7 +3,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import { HTMLAttributes, forwardRef } from "react";
 
 const sectionVariants = cva(
-  "relative w-full flex gap-6",
+  "relative w-full flex gap-5",
   {
     variants: {
       variant: {
