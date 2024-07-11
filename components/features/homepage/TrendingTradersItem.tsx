@@ -1,4 +1,4 @@
-// TrendingTradersItem.jsx
+'use client'
 import React from 'react';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
 import Copy from '@/components/ui/copy';
@@ -12,6 +12,7 @@ import { separate3digits } from '@/utils/numbers';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { IWallet } from '@/types/Wallet.type';
+import { useTokenChainStore } from '@/store';
 
 interface Props {
     wallet: IWallet
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const TrendingTradersItem = ({ wallet, index, total }: Props) => {
+    const { selectedChain } = useTokenChainStore();
     const router = useRouter();
 
     return (
@@ -33,7 +35,7 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
                     <div className="flex flex-col items-start justify-center gap-0">
                         <Copy
                             className="text-muted-foreground text-sm"
-                            href={`/wallet/${wallet.walletAddress}`}
+                            href={`/wallet/${wallet.walletAddress}?network=${selectedChain.symbol}`}
                             text={minifyContract(wallet.walletAddress)}
                             value={wallet.walletAddress}
                         />
