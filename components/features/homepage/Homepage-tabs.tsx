@@ -25,7 +25,7 @@ export default function HomepageTabs() {
     if (imageErros || nftErros) return <div>Failed to load data, please try again.</div>;
 
     return (
-        <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-10">
+        <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7">
             <TabsList className='bg-transparent' >
                 <TabsTrigger value="TopLatestHotPairs" className="text-lg">Top Tokens</TabsTrigger>
                 <TabsTrigger value="Wallets" className="text-lg">Top Wallets</TabsTrigger>
