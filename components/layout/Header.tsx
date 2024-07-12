@@ -75,7 +75,9 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
               variant="secondary"
               size="icon"
             >
-              <LiaRobotSolid className="text-2xl" />
+              <Link href='/robots'>
+                <LiaRobotSolid className="text-2xl" />
+              </Link>
             </Button>
           </div>
         </div>
