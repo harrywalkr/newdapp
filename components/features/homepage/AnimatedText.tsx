@@ -1,54 +1,51 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-interface AnimatedListProps {
-  words: string[];
-  className?: string
+interface AnimatedTextProps {
+  text: string;
+  className?: string;
 }
 
-const AnimatedText: React.FC<AnimatedListProps> = ({ words, className }) => {
+const AnimatedText: React.FC<AnimatedTextProps> = ({ text, className }) => {
+  const textRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLLIElement>('.menu ul li');
+    if (!textRef.current) return;
 
-    elements.forEach((element) => {
-      const animateText = () => {
-        let iterations = 0;
-        const originalText = element.dataset.value || "";
+    const element = textRef.current;
+    const animateText = () => {
+      let iterations = 0;
+      const originalText = element.dataset.value || "";
 
-        const interval = setInterval(() => {
-          element.innerText = originalText.split("")
-            .map((letter, index) => {
-              if (index < iterations) {
-                return originalText[index];
-              }
-              return letters[Math.floor(Math.random() * 26)];
-            })
-            .join("");
+      const interval = setInterval(() => {
+        element.innerText = originalText.split("")
+          .map((letter, index) => {
+            if (index < iterations) {
+              return originalText[index];
+            }
+            return letters[Math.floor(Math.random() * 26)];
+          })
+          .join("");
 
-          if (iterations >= originalText.length) {
-            clearInterval(interval);
-            setTimeout(animateText, 10000); // Add 10-second delay before repeating the animation
-          }
+        if (iterations >= originalText.length) {
+          clearInterval(interval);
+          setTimeout(animateText, Math.max(10000, originalText.length * 30)); // Ensure at least 10 seconds delay before repeating the animation
+        }
 
-          iterations += 1 / 3; // Reset iterations to loop the animation
-        }, 30);
-      };
+        iterations += 1 / 3;
+      }, 30);
+    };
 
-      animateText();
-    });
-  }, [words]);
+    animateText();
+  }, [text]);
 
   return (
-    <div className={clsx('menu', className)}>
-      <ul>
-        {words.map((word) => (
-          <li key={word} data-value={word}>
-            {word}
-          </li>
-        ))}
-      </ul>
+    <div className={clsx('flex items-center justify-center', className)}>
+      <div ref={textRef} data-value={text}>
+        {text}
+      </div>
     </div>
   );
 };

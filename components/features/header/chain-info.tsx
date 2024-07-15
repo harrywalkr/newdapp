@@ -52,7 +52,10 @@ export default function ChainInfo() {
                 <li >
                     {
                         aiData?.trend &&
-                        <AnimatedText className='text-muted-foreground text-base' words={[aiData.trend]} />
+                        <AnimatedText
+                            className='text-muted-foreground text-base'
+                            text={aiData.trend}
+                        />
                     }
                 </li>
             }

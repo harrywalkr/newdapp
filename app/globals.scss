@@ -207,16 +207,3 @@ span {
 .blink {
   animation: blink 1.5s infinite;
 }
-
-//text animation
-.menu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.menu ul {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
