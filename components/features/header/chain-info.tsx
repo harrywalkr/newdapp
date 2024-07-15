@@ -1,13 +1,14 @@
 'use client'
 import { Skeleton } from '@/components/ui/skeleton';
-import { getChainData } from '@/services/http/token.http';
+import { getAi, getChainData } from '@/services/http/token.http';
 import { useTokenChainStore } from '@/store';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
+import AnimatedText from '../homepage/AnimatedText';
 
 export default function ChainInfo() {
     const { selectedChain } = useTokenChainStore();
-
+    const { data: aiData, isLoading: isAiLoading, isError } = useQuery({ queryKey: ['ai'], queryFn: getAi });
     const {
         isLoading,
         error,
@@ -45,6 +46,14 @@ export default function ChainInfo() {
                     gas : $ {(+chainInfo.data.routeSummary.gasUsd).toFixed(2) + ' '}
                     ({(+chainInfo.data.routeSummary.gasUsd / +chainInfo?.data.routeSummary.amountInUsd).toFixed(5) + ' '}
                     {selectedChain.nativeTokenName})
+                </li>
+            }
+            {isAiLoading ? <Skeleton className='w-12 h-2' /> :
+                <li >
+                    {
+                        aiData?.trend &&
+                        <AnimatedText className='text-muted-foreground text-base' words={[aiData.trend]} />
+                    }
                 </li>
             }
         </ul>

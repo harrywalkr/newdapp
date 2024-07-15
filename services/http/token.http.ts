@@ -7,6 +7,7 @@ import { IDatafeed } from "@/types/datafeed.type";
 import { IchainInfo } from "@/types/chain-info.type";
 import { IStrength } from "@/types/strength-ratio.type";
 import { ITradingListResponse } from "@/types/Tradinglist.type";
+import { ITokenDetail } from "@/types/TokenDetail.type";
 
 export const spotlightSearch = (
   options: AxiosRequestConfig
@@ -22,7 +23,9 @@ export const searchToken = (options: AxiosRequestConfig): Promise<IToken> =>
     options
   );
 
-export const getTradingList = (options: AxiosRequestConfig): Promise<ITradingListResponse> =>
+export const getTradingList = (
+  options: AxiosRequestConfig
+): Promise<ITradingListResponse> =>
   fetchData<ITradingListResponse>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/tradinglist`,
     // tradinglist?address=0xe2c845369bdeb94d34bd6f98e33388aef499cd0e&network=eth
@@ -46,6 +49,14 @@ export const getStrengthRatio = (
 ): Promise<IStrength> =>
   fetchData<IStrength>(
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/strengthRatio`,
+    options
+  );
+
+export const getTokenDetails = (
+  options?: AxiosRequestConfig
+): Promise<ITokenDetail[]> =>
+  fetchData<ITokenDetail[]>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/fetch-token-details`,
     options
   );
 

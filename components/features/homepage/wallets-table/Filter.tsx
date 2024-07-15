@@ -28,6 +28,16 @@ interface Props {
     setTotalScoreRange: (value: [number, number]) => void;
     totalFeeRange: [number, number];
     setTotalFeeRange: (value: [number, number]) => void;
+    defaultRanges: {
+        rankRange: [number, number];
+        winRateRange: [number, number];
+        netProfitRange: [number, number];
+        ageRange: [number, number];
+        dayActiveRange: [number, number];
+        avgHoldingTimeRange: [number, number];
+        totalScoreRange: [number, number];
+        totalFeeRange: [number, number];
+    };
 }
 
 const FilterDialog = ({
@@ -39,7 +49,8 @@ const FilterDialog = ({
     dayActiveRange, setDayActiveRange,
     avgHoldingTimeRange, setAvgHoldingTimeRange,
     totalScoreRange, setTotalScoreRange,
-    totalFeeRange, setTotalFeeRange
+    totalFeeRange, setTotalFeeRange,
+    defaultRanges
 }: Props) => {
     const handleRankChange = (newValue: [number, number]) => {
         setRankRange(newValue);
@@ -78,15 +89,15 @@ const FilterDialog = ({
     };
 
     const resetFilters = () => {
-        setRankRange([0, 100]);
-        setWinRateRange([0, 100]);
-        setNetProfitRange([0, 100000]);
-        setAgeRange([0, 365]);
+        setRankRange(defaultRanges.rankRange);
+        setWinRateRange(defaultRanges.winRateRange);
+        setNetProfitRange(defaultRanges.netProfitRange);
+        setAgeRange(defaultRanges.ageRange);
         setLabel('');
-        setDayActiveRange([0, 365]);
-        setAvgHoldingTimeRange([0, 365]);
-        setTotalScoreRange([0, 2000]);
-        setTotalFeeRange([0, 100]);
+        setDayActiveRange(defaultRanges.dayActiveRange);
+        setAvgHoldingTimeRange(defaultRanges.avgHoldingTimeRange);
+        setTotalScoreRange(defaultRanges.totalScoreRange);
+        setTotalFeeRange(defaultRanges.totalFeeRange);
     };
 
     return (
@@ -111,8 +122,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={rankRange}
                                 onValueChange={handleRankChange}
-                                min={0}
-                                max={100}
+                                min={defaultRanges.rankRange[0]}
+                                max={defaultRanges.rankRange[1]}
                                 step={1}
                                 aria-label="Rank Slider"
                             />
@@ -130,8 +141,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={winRateRange}
                                 onValueChange={handleWinRateChange}
-                                min={0}
-                                max={100}
+                                min={defaultRanges.winRateRange[0]}
+                                max={defaultRanges.winRateRange[1]}
                                 step={1}
                                 aria-label="Win Rate Slider"
                             />
@@ -149,8 +160,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={netProfitRange}
                                 onValueChange={handleNetProfitChange}
-                                min={0}
-                                max={100000}
+                                min={defaultRanges.netProfitRange[0]}
+                                max={defaultRanges.netProfitRange[1]}
                                 step={100}
                                 aria-label="Net Profit Slider"
                             />
@@ -168,8 +179,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={ageRange}
                                 onValueChange={handleAgeChange}
-                                min={0}
-                                max={365}
+                                min={defaultRanges.ageRange[0]}
+                                max={defaultRanges.ageRange[1]}
                                 step={1}
                                 aria-label="Age Slider"
                             />
@@ -202,8 +213,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={dayActiveRange}
                                 onValueChange={handleDayActiveChange}
-                                min={0}
-                                max={365}
+                                min={defaultRanges.dayActiveRange[0]}
+                                max={defaultRanges.dayActiveRange[1]}
                                 step={1}
                                 aria-label="Day Active Slider"
                             />
@@ -221,8 +232,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={avgHoldingTimeRange}
                                 onValueChange={handleAvgHoldingTimeChange}
-                                min={0}
-                                max={365}
+                                min={defaultRanges.avgHoldingTimeRange[0]}
+                                max={defaultRanges.avgHoldingTimeRange[1]}
                                 step={1}
                                 aria-label="Average Holding Time Slider"
                             />
@@ -240,8 +251,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={totalScoreRange}
                                 onValueChange={handleTotalScoreChange}
-                                min={0}
-                                max={2000}
+                                min={defaultRanges.totalScoreRange[0]}
+                                max={defaultRanges.totalScoreRange[1]}
                                 step={10}
                                 aria-label="Total Score Slider"
                             />
@@ -259,8 +270,8 @@ const FilterDialog = ({
                                 className='mt-2'
                                 value={totalFeeRange}
                                 onValueChange={handleTotalFeeChange}
-                                min={0}
-                                max={100}
+                                min={defaultRanges.totalFeeRange[0]}
+                                max={defaultRanges.totalFeeRange[1]}
                                 step={1}
                                 aria-label="Total Fee Slider"
                             />

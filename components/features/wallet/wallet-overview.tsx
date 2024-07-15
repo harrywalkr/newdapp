@@ -122,7 +122,7 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                     <CardTitle>Overview</CardTitle>
                 </CardHeader>
                 <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-5'>
-                    <div className="left flex flex-1 flex-col gap-2">
+                    <div className="left flex flex-1 flex-col gap-2 w-full">
                         {initialWalletSummary.netProfit != undefined &&
                             <KeyValue
                                 title='Net Profit'
@@ -173,11 +173,11 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
                                 <Progress className='mt-2' value={+initialWalletSummary.winRate} />
                             </div>
                         }
-                        <div className="mt-4 flex items-center justify-start gap-4">
+                        <div className="mt-4 flex items-center justify-between gap-1 w-full ">
                             <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
                             <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
                             <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
-                                <SelectTrigger className="w-44">
+                                <SelectTrigger className="sm:w-20 md:w-24">
                                     <SelectValue placeholder="Select Chain" />
                                 </SelectTrigger>
                                 <SelectContent>

@@ -1,5 +1,5 @@
-import Insight from "@/components/features/homepage/Insight";
-import HomepageTabs from "@/components/features/homepage/Homepage-tabs";
+import Insight from "@/components/features/homepage/insight/Insight";
+import HomepageTabs from "@/components/features/homepage/homepage-tabs/Homepage-tabs";
 
 export default async function Home() {
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import TrendingTradersItem from './TrendingTradersItem';
+import TrendingTradersItem from '../TrendingTradersItem';
 import {
     Carousel,
     CarouselContent,

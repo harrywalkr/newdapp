@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import TrendItem from './TrendItem';
+import TrendItem from '../TrendItem';
 import useTokenChainStore, { TokenChain } from '@/store/tokenChains';
 import { useQuery } from '@tanstack/react-query';
 import { getTrends } from "@/services/http/trends.http";

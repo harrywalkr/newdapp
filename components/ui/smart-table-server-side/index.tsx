@@ -39,7 +39,7 @@ interface DataTableProps<TData, TValue> {
   setPageSize: (pageSize: number) => void
 }
 
-export function SmartTable<TData, TValue>({
+export function ServerSideSmartTable<TData, TValue>({
   columns,
   data,
   searchColumnAccessorKey,

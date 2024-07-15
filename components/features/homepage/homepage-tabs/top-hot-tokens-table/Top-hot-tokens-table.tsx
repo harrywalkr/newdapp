@@ -13,34 +13,45 @@ import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
 import { useTokenChainStore, useWatchlistStore } from "@/store";
 import { ImageType } from "@/types/Image.type";
-import { SmartTable } from '@/components/ui/smart-table';
-import { Daum } from '@/types/token.type';
-import NonEthFilterDialog from './TopTokenTableFilter';
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import { Icons } from "@/components/ui/icon";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IWatchlistItem } from '@/store/watchlist';
+import { ITokenDetail } from '@/types/TokenDetail.type';
+import { ClientSideSmartTable } from '@/components/ui/smart-table-client-side';
+import TopHotTokensFilterDialog from './Top-hot-tokens-filter';
 
 interface Props {
     images: ImageType[];
-    initNonEthData: Daum[];
-    page: number,
-    pageCount: number,
-    setPage: (page: number) => void
-    setPageSize: (pageSize: number) => void
+    initTokenData: ITokenDetail[];
 }
 
-export default function TopTokenTable({ images, initNonEthData, setPage, setPageSize, page, pageCount }: Props) {
+const getRange = (data: ITokenDetail[], key: keyof ITokenDetail['attributes']): [number, number] => {
+    const values = data.map(token => parseFloat(token.attributes[key] || "0"));
+    return [Math.min(...values), Math.max(...values)];
+};
+
+const getVolumeRange = (data: ITokenDetail[]): [number, number] => {
+    const values = data.map(token => parseFloat(token.attributes.volume_usd.h24 || "0"));
+    return [Math.min(...values), Math.max(...values)];
+};
+
+export default function TopHotTokensTable({ images, initTokenData }: Props) {
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
     const { selectedChain } = useTokenChainStore();
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 60000]);
-    const [volumeRange, setVolumeRange] = useState<[number, number]>([0, 90000000]);
-    const [liquidityRange, setLiquidityRange] = useState<[number, number]>([0, 200000000]);
-    const [ageRange, setAgeRange] = useState<[number, number]>([0, 365]);
-    const [priceChange24hRange, setPriceChange24hRange] = useState<[number, number]>([-100, 100]);
 
-    const customSorting = (a: Row<Daum>, b: Row<Daum>, getValueFn: (obj: any) => number) => {
+    const priceRange = getRange(initTokenData, 'price_usd');
+    const volumeRange = getVolumeRange(initTokenData);
+    const liquidityRange = getRange(initTokenData, 'total_reserve_in_usd');
+    const priceChange24hRange: [number, number] = [-100, 100]; // Placeholder values, should be updated if real data is available
+
+    const [priceRangeState, setPriceRange] = useState<[number, number]>(priceRange);
+    const [volumeRangeState, setVolumeRange] = useState<[number, number]>(volumeRange);
+    const [liquidityRangeState, setLiquidityRange] = useState<[number, number]>(liquidityRange);
+    const [priceChange24hRangeState, setPriceChange24hRange] = useState<[number, number]>(priceChange24hRange);
+
+    const customSorting = (a: Row<ITokenDetail>, b: Row<ITokenDetail>, getValueFn: (obj: any) => number) => {
         const valueA = getValueFn(a.original);
         const valueB = getValueFn(b.original);
         return valueA - valueB;
@@ -59,24 +70,22 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
         return watchlist.some((t: IWatchlistItem) => t.contractAddress === token.contractAddress);
     };
 
-    const columns: ColumnDef<Daum>[] = [
-
+    const columns: ColumnDef<ITokenDetail>[] = [
         {
             accessorKey: 'watchlist',
             header: '',
             cell: ({ row }) => {
                 const token = row.original;
-                const tokenId = token.relationships?.base_token?.data?.id?.split('_')[1] || "";
                 return (<div className="cursor-pointer flex items-center justify-center"
                     onClick={() => handleStarClick({
-                        name: token.attributes?.name as string,
-                        contractAddress: tokenId,
+                        name: token.tokenName,
+                        contractAddress: token.contractAddress,
                         type: 'token'
                     })}
                 >
                     {isTokenInWatchlist({
-                        name: token.attributes?.name as string,
-                        contractAddress: tokenId,
+                        name: token.tokenName,
+                        contractAddress: token.contractAddress,
                         type: 'token'
                     }) ? <AiFillStar size={20} /> : <AiOutlineStar size={20} />}
                 </div>
@@ -85,27 +94,23 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
         },
         {
             accessorKey: 'token',
-            accessorFn: row => {
-                const tokenId = row.relationships?.base_token?.data?.id?.split('_')[1] || "";
-                return tokenId;
-            },
+            accessorFn: row => row.contractAddress,
             header: 'Token',
             cell: ({ row }) => {
                 const token = row.original;
-                const tokenId = token.relationships?.base_token?.data?.id?.split('_')[1] || "";
                 return (
                     <div className="flex items-center">
                         <Avatar className="h-9 w-9">
-                            <AvatarImage src={imageUrl(tokenId, images)} alt="Avatar" />
-                            <AvatarFallback>{tokenId.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={imageUrl(token.contractAddress, images)} alt="Avatar" />
+                            <AvatarFallback>{token.contractAddress.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="ml-4">
-                            <Link href={`/tokens/${selectedChain.symbol.toLowerCase()}/${tokenId}`} className="text-sm">
-                                {minifyTokenName(token.attributes?.name?.split('/')[0] || "")}
+                            <Link href={`/tokens/${selectedChain.symbol.toLowerCase()}/${token.contractAddress}`} className="text-sm">
+                                {minifyTokenName(token.tokenName)}
                             </Link>
                             <Copy className="text-sm text-muted-foreground leading-none"
-                                text={minifyContract(tokenId)}
-                                value={tokenId}
+                                text={minifyContract(token.contractAddress)}
+                                value={token.contractAddress}
                             />
                         </div>
                     </div>
@@ -141,14 +146,14 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
                 );
             },
             cell: ({ row }) => {
-                const change = row.original.attributes?.price_change_percentage?.h24 || "0";
+                const change = row.original.attributes.price_usd || "0";
                 return (
                     <span className={clsx({ 'text-success': +change > 0, 'text-red-400': +change < 0 })}>
                         {change}%
                     </span>
                 );
             },
-            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes?.price_change_percentage?.h24 || "0")),
+            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes.price_usd || "0")),
         },
         {
             accessorKey: 'price',
@@ -178,8 +183,8 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
                     </Button>
                 );
             },
-            cell: ({ row }) => <PriceFormatter dollarSign value={parseFloat(row.original.attributes?.base_token_price_usd || "0")} />,
-            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes?.base_token_price_usd || "0")),
+            cell: ({ row }) => <PriceFormatter dollarSign value={parseFloat(row.original.attributes.price_usd || "0")} />,
+            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes.price_usd || "0")),
         },
         {
             accessorKey: 'liquidity',
@@ -209,8 +214,8 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
                     </Button>
                 );
             },
-            cell: ({ row }) => formatCash(parseFloat(row.original.attributes?.reserve_in_usd || "0")),
-            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes?.reserve_in_usd || "0")),
+            cell: ({ row }) => formatCash(parseFloat(row.original.attributes.total_reserve_in_usd || "0")),
+            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes.total_reserve_in_usd || "0")),
         },
         {
             accessorKey: 'volume24h',
@@ -240,71 +245,38 @@ export default function TopTokenTable({ images, initNonEthData, setPage, setPage
                     </Button>
                 );
             },
-            cell: ({ row }) => formatCash(parseFloat(row.original.attributes?.volume_usd?.h24 || "0")),
-            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes?.volume_usd?.h24 || "0")),
-        },
-        {
-            accessorKey: 'age',
-            header: ({ column }) => {
-                const isSortedAsc = column.getIsSorted() === 'asc';
-                const isSortedDesc = column.getIsSorted() === 'desc';
-
-                const toggleSorting = () => {
-                    if (isSortedAsc) {
-                        column.toggleSorting(true);
-                    } else if (isSortedDesc) {
-                        column.clearSorting();
-                    } else {
-                        column.toggleSorting(false);
-                    }
-                };
-
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={toggleSorting}
-                    >
-                        Age
-                        {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
-                        {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
-                        {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
-                    </Button>
-                );
-            },
-            cell: ({ row }) => row.original.attributes?.pool_created_at ? dayjs().to(row.original.attributes?.pool_created_at) : "N/A",
-            sortingFn: (a, b) => {
-                const dateA = dayjs(a.original.attributes?.pool_created_at);
-                const dateB = dayjs(b.original.attributes?.pool_created_at);
-                return dateA.isBefore(dateB) ? -1 : 1;
-            },
-        },
+            cell: ({ row }) => formatCash(parseFloat(row.original.attributes.volume_usd.h24 || "0")),
+            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes.volume_usd.h24 || "0")),
+        }
     ];
 
-    const filteredData = initNonEthData.filter(token =>
-        parseFloat(token.attributes?.base_token_price_usd || "0") >= priceRange[0] && parseFloat(token.attributes?.base_token_price_usd || "0") <= priceRange[1] &&
-        parseFloat(token.attributes?.volume_usd?.h24 || "0") >= volumeRange[0] && parseFloat(token.attributes?.volume_usd?.h24 || "0") <= volumeRange[1] &&
-        parseFloat(token.attributes?.reserve_in_usd || "0") >= liquidityRange[0] && parseFloat(token.attributes?.reserve_in_usd || "0") <= liquidityRange[1] &&
-        (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) >= ageRange[0] && (token.attributes?.pool_created_at ? dayjs().diff(token.attributes?.pool_created_at, 'day') : 0) <= ageRange[1] &&
-        parseFloat(token.attributes?.price_change_percentage?.h24 || "0") >= priceChange24hRange[0] && parseFloat(token.attributes?.price_change_percentage?.h24 || "0") <= priceChange24hRange[1]
+    const filteredData = initTokenData.filter(token =>
+        parseFloat(token.attributes.price_usd || "0") >= priceRangeState[0] && parseFloat(token.attributes.price_usd || "0") <= priceRangeState[1] &&
+        parseFloat(token.attributes.volume_usd.h24 || "0") >= volumeRangeState[0] && parseFloat(token.attributes.volume_usd.h24 || "0") <= volumeRangeState[1] &&
+        parseFloat(token.attributes.total_reserve_in_usd || "0") >= liquidityRangeState[0] && parseFloat(token.attributes.total_reserve_in_usd || "0") <= liquidityRangeState[1] &&
+        parseFloat(token.attributes.price_usd || "0") >= priceChange24hRangeState[0] && parseFloat(token.attributes.price_usd || "0") <= priceChange24hRangeState[1]
     );
 
+    const defaultRanges = {
+        price: priceRange,
+        volume: volumeRange,
+        liquidity: liquidityRange,
+        priceChange24h: priceChange24hRange,
+    };
+
     return (
-        <SmartTable
+        <ClientSideSmartTable
             data={filteredData}
             columns={columns}
             searchColumnAccessorKey='token'
-            page={page}
-            pageCount={pageCount}
-            setPage={setPage}
-            setPageSize={setPageSize}
         >
-            <NonEthFilterDialog
-                priceRange={priceRange} setPriceRange={setPriceRange}
-                volumeRange={volumeRange} setVolumeRange={setVolumeRange}
-                liquidityRange={liquidityRange} setLiquidityRange={setLiquidityRange}
-                ageRange={ageRange} setAgeRange={setAgeRange}
-                priceChange24hRange={priceChange24hRange} setPriceChange24hRange={setPriceChange24hRange}
+            <TopHotTokensFilterDialog
+                priceRange={priceRangeState} setPriceRange={setPriceRange}
+                volumeRange={volumeRangeState} setVolumeRange={setVolumeRange}
+                liquidityRange={liquidityRangeState} setLiquidityRange={setLiquidityRange}
+                priceChange24hRange={priceChange24hRangeState} setPriceChange24hRange={setPriceChange24hRange}
+                defaultRanges={defaultRanges}
             />
-        </SmartTable >
+        </ClientSideSmartTable >
     );
 }

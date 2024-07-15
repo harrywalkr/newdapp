@@ -14,7 +14,6 @@ import { Icons } from "@/components/ui/icon";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import FilterDialog from './Filter';
-import { SmartTable } from '@/components/ui/smart-table';
 import clsx from 'clsx';
 import {
   Section,
@@ -23,48 +22,68 @@ import {
 } from "@/components/layout/Section";
 import TableLoading from '@/components/layout/Table-loading';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
+import { ServerSideSmartTable } from '@/components/ui/smart-table-server-side';
+
+const getRange = (data: IWallet[], key: keyof IWallet): [number, number] => {
+  const values = data.map(wallet => Math.floor(Number(wallet[key])));
+  return [Math.floor(Math.min(...values)), Math.ceil(Math.max(...values))];
+};
 
 export default function Wallets() {
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
   const { selectedChain } = useTokenChainStore();
-
-  const [rankRange, setRankRange] = useState<[number, number]>([0, 100]);
-  const [winRateRange, setWinRateRange] = useState<[number, number]>([0, 100]);
-  const [netProfitRange, setNetProfitRange] = useState<[number, number]>([-1000000, 1000000]);
-  const [ageRange, setAgeRange] = useState<[number, number]>([0, 5000]);
-  const [label, setLabel] = useState<string>("");
-  const [dayActiveRange, setDayActiveRange] = useState<[number, number]>([0, 365]);
-  const [avgHoldingTimeRange, setAvgHoldingTimeRange] = useState<[number, number]>([0, 365]);
-  const [totalScoreRange, setTotalScoreRange] = useState<[number, number]>([0, 2000]);
-  const [totalFeeRange, setTotalFeeRange] = useState<[number, number]>([0, 100]);
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState<string>('rank');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const { data: walletsData = [], isLoading } = useQuery({
+  const { data: walletsData, isLoading } = useQuery({
     queryKey: ['wallets', selectedChain.symbol, page, pageSize, sortBy, sortOrder],
     queryFn: () => getWallets({ params: { "network": selectedChain.symbol, page: page, limit: pageSize, sortBy, sortOrder } }),
   });
 
+  const rankRange = getRange(walletsData, 'rank');
+  const winRateRange = getRange(walletsData, 'winRate');
+  const netProfitRange = getRange(walletsData, 'netProfit');
+  const ageRange = getRange(walletsData, 'age');
+  const dayActiveRange = getRange(walletsData, 'dayActive');
+  const avgHoldingTimeRange = getRange(walletsData, 'avgHoldingTime');
+  const totalScoreRange = getRange(walletsData, 'totalScore');
+  const totalFeeRange = getRange(walletsData, 'TotalFee');
+
+  const [rankRangeState, setRankRange] = useState<[number, number]>(rankRange);
+  const [winRateRangeState, setWinRateRange] = useState<[number, number]>(winRateRange);
+  const [netProfitRangeState, setNetProfitRange] = useState<[number, number]>(netProfitRange);
+  const [ageRangeState, setAgeRange] = useState<[number, number]>(ageRange);
+  const [label, setLabel] = useState<string>("");
+  const [dayActiveRangeState, setDayActiveRange] = useState<[number, number]>(dayActiveRange);
+  const [avgHoldingTimeRangeState, setAvgHoldingTimeRange] = useState<[number, number]>(avgHoldingTimeRange);
+  const [totalScoreRangeState, setTotalScoreRange] = useState<[number, number]>(totalScoreRange);
+  const [totalFeeRangeState, setTotalFeeRange] = useState<[number, number]>(totalFeeRange);
+
   const [filteredData, setFilteredData] = useState<IWallet[]>(walletsData);
+
+  useEffect(() => {
+    console.log(winRateRangeState)
+  }, [winRateRangeState])
+
 
   useEffect(() => {
     if (walletsData) {
       setFilteredData(walletsData.filter(wallet =>
-        wallet.rank >= rankRange[0] && wallet.rank <= rankRange[1] &&
-        wallet.winRate >= winRateRange[0] && wallet.winRate <= winRateRange[1] &&
-        wallet.netProfit >= netProfitRange[0] && wallet.netProfit <= netProfitRange[1] &&
-        wallet.age >= ageRange[0] && wallet.age <= ageRange[1] &&
+        wallet.rank >= rankRangeState[0] && wallet.rank <= rankRangeState[1] &&
+        wallet.winRate >= winRateRangeState[0] && wallet.winRate <= winRateRangeState[1] &&
+        wallet.netProfit >= netProfitRangeState[0] && wallet.netProfit <= netProfitRangeState[1] &&
+        wallet.age >= ageRangeState[0] && wallet.age <= ageRangeState[1] &&
         (label ? wallet.buyAmountLabel === label : true) &&
-        wallet.dayActive >= dayActiveRange[0] && wallet.dayActive <= dayActiveRange[1] &&
-        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRange[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRange[1] &&
-        wallet.totalScore >= totalScoreRange[0] && wallet.totalScore <= totalScoreRange[1] &&
-        wallet.TotalFee >= totalFeeRange[0] && wallet.TotalFee <= totalFeeRange[1]
+        wallet.dayActive >= dayActiveRangeState[0] && wallet.dayActive <= dayActiveRangeState[1] &&
+        (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRangeState[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRangeState[1] &&
+        wallet.totalScore >= totalScoreRangeState[0] && wallet.totalScore <= totalScoreRangeState[1] &&
+        wallet.TotalFee >= totalFeeRangeState[0] && wallet.TotalFee <= totalFeeRangeState[1]
       ));
     }
-  }, [walletsData, rankRange, winRateRange, netProfitRange, ageRange, label, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange]);
+  }, [walletsData, rankRangeState, winRateRangeState, netProfitRangeState, ageRangeState, label, dayActiveRangeState, avgHoldingTimeRangeState, totalScoreRangeState, totalFeeRangeState]);
 
   const handleStarClick = (wallet: IWatchlistItem) => {
     const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
@@ -425,10 +444,12 @@ export default function Wallets() {
     </SectionContent>
   </Section>
 
+  console.log(winRateRangeState)
+
   return (
     <Section variant={'vertical'}>
       <SectionContent variant={'vertical'}>
-        <SmartTable
+        <ServerSideSmartTable
           data={filteredData}
           columns={columns}
           searchColumnAccessorKey='walletAddress'
@@ -438,17 +459,18 @@ export default function Wallets() {
           setPageSize={setPageSize}
         >
           <FilterDialog
-            rankRange={rankRange} setRankRange={setRankRange}
-            winRateRange={winRateRange} setWinRateRange={setWinRateRange}
-            netProfitRange={netProfitRange} setNetProfitRange={setNetProfitRange}
-            ageRange={ageRange} setAgeRange={setAgeRange}
+            rankRange={rankRangeState} setRankRange={setRankRange}
+            winRateRange={winRateRangeState} setWinRateRange={setWinRateRange}
+            netProfitRange={netProfitRangeState} setNetProfitRange={setNetProfitRange}
+            ageRange={ageRangeState} setAgeRange={setAgeRange}
             label={label} setLabel={setLabel}
-            dayActiveRange={dayActiveRange} setDayActiveRange={setDayActiveRange}
-            avgHoldingTimeRange={avgHoldingTimeRange} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
-            totalScoreRange={totalScoreRange} setTotalScoreRange={setTotalScoreRange}
-            totalFeeRange={totalFeeRange} setTotalFeeRange={setTotalFeeRange}
+            dayActiveRange={dayActiveRangeState} setDayActiveRange={setDayActiveRange}
+            avgHoldingTimeRange={avgHoldingTimeRangeState} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
+            totalScoreRange={totalScoreRangeState} setTotalScoreRange={setTotalScoreRange}
+            totalFeeRange={totalFeeRangeState} setTotalFeeRange={setTotalFeeRange}
+            defaultRanges={{ rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange }}
           />
-        </SmartTable >
+        </ServerSideSmartTable >
       </SectionContent>
     </Section>
   );
