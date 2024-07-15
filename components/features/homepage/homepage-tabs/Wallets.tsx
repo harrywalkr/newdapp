@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTokenChainStore } from "@/store";
 import { getWallets } from "@/services/http/wallets.http";
 import TableLoading from '@/components/layout/Table-loading';
-import WalletsTable from '../WalletsTable';
+import WalletsTable from './WalletsTable';
 
 export default function Wallets() {
     const { selectedChain } = useTokenChainStore();

@@ -19,7 +19,7 @@ import { Icons } from "@/components/ui/icon";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IWatchlistItem } from '@/store/watchlist';
 import { ITokenDetail } from '@/types/TokenDetail.type';
-import { ClientSideSmartTable } from '@/components/ui/smart-table-client-side';
+import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmartTable';
 import TopHotTokensFilterDialog from './Top-hot-tokens-filter';
 
 interface Props {

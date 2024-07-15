@@ -9,7 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useTokenChainStore } from "@/store";
 import { getTopTrends } from "@/services/http/token.http";
 import TableLoading from "@/components/layout/Table-loading";
-import TopTokenTable from "./homepage-tabs/notEthTable/TopTokenTable";
+import TopTokenTable from "./notEthTable/TopTokenTable";
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -38,7 +38,8 @@ export function TopLatestHotPairs({ images }: Props) {
                         pageCount={pageSize}
                         setPage={setPage}
                         setPageSize={setPageSize}
-                        images={images} initNonEthData={topTokens?.data || []}
+                        images={images}
+                        TopTokenInitData={topTokens?.data || []}
                     />
             }
         </div>

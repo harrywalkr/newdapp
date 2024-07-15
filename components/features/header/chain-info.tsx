@@ -1,10 +1,10 @@
 'use client'
+import CryptographyAnimation from '@/components/ui/CryptographyAnimation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getAi, getChainData } from '@/services/http/token.http';
 import { useTokenChainStore } from '@/store';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
-import AnimatedText from '../homepage/AnimatedText';
 
 export default function ChainInfo() {
     const { selectedChain } = useTokenChainStore();
@@ -52,7 +52,7 @@ export default function ChainInfo() {
                 <li >
                     {
                         aiData?.trend &&
-                        <AnimatedText
+                        <CryptographyAnimation
                             className='text-muted-foreground text-base'
                             text={aiData.trend}
                         />

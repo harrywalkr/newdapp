@@ -22,7 +22,7 @@ import {
 } from "@/components/layout/Section";
 import TableLoading from '@/components/layout/Table-loading';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
-import { ServerSideSmartTable } from '@/components/ui/smart-table-server-side';
+import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 
 const getRange = (data: IWallet[], key: keyof IWallet): [number, number] => {
   const values = data.map(wallet => Math.floor(Number(wallet[key])));

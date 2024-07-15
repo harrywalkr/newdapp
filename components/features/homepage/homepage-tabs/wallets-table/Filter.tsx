@@ -40,7 +40,7 @@ interface Props {
     };
 }
 
-const FilterDialog = ({
+const WalletsFilterDialog = ({
     rankRange, setRankRange,
     winRateRange, setWinRateRange,
     netProfitRange, setNetProfitRange,
@@ -298,4 +298,4 @@ const FilterDialog = ({
     );
 };
 
-export default FilterDialog;
+export default WalletsFilterDialog;

@@ -1,5 +1,4 @@
-// FilterDialog.tsx
-'use client'
+'use client';
 
 import React from 'react';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
@@ -19,14 +18,22 @@ interface Props {
     setAgeRange: (value: [number, number]) => void;
     priceChange24hRange: [number, number];
     setPriceChange24hRange: (value: [number, number]) => void;
+    defaultRanges: {
+        priceRange: [number, number];
+        volumeRange: [number, number];
+        liquidityRange: [number, number];
+        ageRange: [number, number];
+        priceChange24hRange: [number, number];
+    }
 }
 
-const NonEthFilterDialog = ({
+const TopTokenFilterDialog = ({
     priceRange, setPriceRange,
     volumeRange, setVolumeRange,
     liquidityRange, setLiquidityRange,
     ageRange, setAgeRange,
-    priceChange24hRange, setPriceChange24hRange
+    priceChange24hRange, setPriceChange24hRange,
+    defaultRanges
 }: Props) => {
     const handlePriceRangeChange = (newValue: [number, number]) => {
         setPriceRange(newValue);
@@ -49,11 +56,11 @@ const NonEthFilterDialog = ({
     };
 
     const resetFilters = () => {
-        setPriceRange([0, 100]);
-        setVolumeRange([0, 1000000]);
-        setLiquidityRange([0, 1000000]);
-        setAgeRange([0, 365]);
-        setPriceChange24hRange([-100, 100]);
+        setPriceRange(defaultRanges.priceRange);
+        setVolumeRange(defaultRanges.volumeRange);
+        setLiquidityRange(defaultRanges.liquidityRange);
+        setAgeRange(defaultRanges.ageRange);
+        setPriceChange24hRange(defaultRanges.priceChange24hRange);
     };
 
     return (
@@ -73,8 +80,8 @@ const NonEthFilterDialog = ({
                                 className='mt-2'
                                 value={priceRange}
                                 onValueChange={handlePriceRangeChange}
-                                min={0}
-                                max={100}
+                                min={defaultRanges.priceRange[0]}
+                                max={defaultRanges.priceRange[1]}
                                 step={1}
                                 aria-label="Price Slider"
                             />
@@ -92,8 +99,8 @@ const NonEthFilterDialog = ({
                                 className='mt-2'
                                 value={volumeRange}
                                 onValueChange={handleVolumeRangeChange}
-                                min={0}
-                                max={1000000}
+                                min={defaultRanges.volumeRange[0]}
+                                max={defaultRanges.volumeRange[1]}
                                 step={1000}
                                 aria-label="Volume Slider"
                             />
@@ -111,8 +118,8 @@ const NonEthFilterDialog = ({
                                 className='mt-2'
                                 value={liquidityRange}
                                 onValueChange={handleLiquidityRangeChange}
-                                min={0}
-                                max={1000000}
+                                min={defaultRanges.liquidityRange[0]}
+                                max={defaultRanges.liquidityRange[1]}
                                 step={1000}
                                 aria-label="Liquidity Slider"
                             />
@@ -130,8 +137,8 @@ const NonEthFilterDialog = ({
                                 className='mt-2'
                                 value={ageRange}
                                 onValueChange={handleAgeRangeChange}
-                                min={0}
-                                max={365}
+                                min={defaultRanges.ageRange[0]}
+                                max={defaultRanges.ageRange[1]}
                                 step={1}
                                 aria-label="Age Slider"
                             />
@@ -149,8 +156,8 @@ const NonEthFilterDialog = ({
                                 className='mt-2'
                                 value={priceChange24hRange}
                                 onValueChange={handlePriceChange24hRangeChange}
-                                min={-100}
-                                max={100}
+                                min={defaultRanges.priceChange24hRange[0]}
+                                max={defaultRanges.priceChange24hRange[1]}
                                 step={1}
                                 aria-label="Price Change 24h Slider"
                             />
@@ -175,4 +182,4 @@ const NonEthFilterDialog = ({
     );
 };
 
-export default NonEthFilterDialog;
+export default TopTokenFilterDialog;

@@ -11,15 +11,11 @@ import { Icons } from "@/components/ui/icon";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import clsx from 'clsx';
-import {
-    Section,
-    SectionHeader,
-    SectionContent,
-} from "@/components/layout/Section";
 import { AvatarPlaceholder } from '@/components/ui/avatar';
-import { ServerSideSmartTable } from '@/components/ui/smart-table-server-side';
+import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 import { useTokenChainStore } from '@/store';
 import FilterDialog from './wallets-table/Filter';
+import WalletsFilterDialog from './wallets-table/Filter';
 
 const getRange = (data: IWallet[], key: keyof IWallet): [number, number] => {
     const values = data.map(wallet => Math.floor(Number(wallet[key])));
@@ -438,32 +434,28 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
     ];
 
     return (
-        <Section variant={'vertical'}>
-            <SectionContent variant={'vertical'}>
-                <ServerSideSmartTable
-                    data={filteredData}
-                    columns={columns}
-                    searchColumnAccessorKey='walletAddress'
-                    page={page}
-                    pageCount={pageSize}
-                    setPage={setPage}
-                    setPageSize={setPageSize}
-                >
-                    <FilterDialog
-                        rankRange={rankRangeState} setRankRange={setRankRange}
-                        winRateRange={winRateRangeState} setWinRateRange={setWinRateRange}
-                        netProfitRange={netProfitRangeState} setNetProfitRange={setNetProfitRange}
-                        ageRange={ageRangeState} setAgeRange={setAgeRange}
-                        label={label} setLabel={setLabel}
-                        dayActiveRange={dayActiveRangeState} setDayActiveRange={setDayActiveRange}
-                        avgHoldingTimeRange={avgHoldingTimeRangeState} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
-                        totalScoreRange={totalScoreRangeState} setTotalScoreRange={setTotalScoreRange}
-                        totalFeeRange={totalFeeRangeState} setTotalFeeRange={setTotalFeeRange}
-                        defaultRanges={{ rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange }}
-                    />
-                </ServerSideSmartTable >
-            </SectionContent>
-        </Section>
+        <ServerSideSmartTable
+            data={filteredData}
+            columns={columns}
+            searchColumnAccessorKey='walletAddress'
+            page={page}
+            pageCount={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+        >
+            <WalletsFilterDialog
+                rankRange={rankRangeState} setRankRange={setRankRange}
+                winRateRange={winRateRangeState} setWinRateRange={setWinRateRange}
+                netProfitRange={netProfitRangeState} setNetProfitRange={setNetProfitRange}
+                ageRange={ageRangeState} setAgeRange={setAgeRange}
+                label={label} setLabel={setLabel}
+                dayActiveRange={dayActiveRangeState} setDayActiveRange={setDayActiveRange}
+                avgHoldingTimeRange={avgHoldingTimeRangeState} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
+                totalScoreRange={totalScoreRangeState} setTotalScoreRange={setTotalScoreRange}
+                totalFeeRange={totalFeeRangeState} setTotalFeeRange={setTotalFeeRange}
+                defaultRanges={{ rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange }}
+            />
+        </ServerSideSmartTable >
     );
 };
 

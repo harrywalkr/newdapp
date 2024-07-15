@@ -26,14 +26,6 @@ const Indicator = ({ percentage, marketState, avgMarketStrength }: Props) => {
                         Avg Market strength {avgMarketStrength.toFixed(2)}
                     </span>
                 </div>
-                {/* <div
-                    className="absolute bottom-5 text-sm"
-                    style={{ left: `${validPercentage}%` }}
-                >
-                    <span >
-                      Avg Market strength {percentage.toFixed(0)}
-                    </span>
-                </div> */}
             </div>
             <div className="flex items-center justify-start">
                 <motion.div

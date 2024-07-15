@@ -23,10 +23,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { DataTablePagination } from "./pagination"
-import { DataTableToolbar } from "./data-table-toolbar"
 import { ReactNode, useState } from "react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { DataTableToolbar } from "./data-table-toolbar"
+import { DataTablePagination } from "./pagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

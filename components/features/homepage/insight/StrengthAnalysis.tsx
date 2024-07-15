@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { getStrengthRatio } from '@/services/http/token.http';
 import { History } from '@/types/strength-ratio.type';
 import { CardContent } from '@/components/ui/card';
-import Indicator from '../Indicator';
+import Indicator from '../homepage-tabs/MarketStateIndicator';
 import Loading from '@/components/layout/Loading';
 
 const StrengthAnalysis = () => {
