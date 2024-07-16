@@ -16,11 +16,6 @@ import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmar
 import { useTokenChainStore } from '@/store';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 
-const getRange = (data: IWallet[], key: keyof IWallet): [number, number] => {
-    const values = data.map(wallet => Math.floor(Number(wallet[key])));
-    return [Math.floor(Math.min(...values)), Math.ceil(Math.max(...values))];
-};
-
 interface WalletsTableProps {
     walletsData: IWallet[];
     page: number;
@@ -31,6 +26,7 @@ interface WalletsTableProps {
     setSortBy: (sortBy: string) => void;
     sortOrder: 'asc' | 'desc';
     setSortOrder: (sortOrder: 'asc' | 'desc') => void;
+    filters: Filter[];
 }
 
 const WalletsTable: React.FC<WalletsTableProps> = ({
@@ -38,48 +34,18 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
     page, setPage,
     pageSize, setPageSize,
     sortBy, setSortBy,
-    sortOrder, setSortOrder
+    sortOrder, setSortOrder,
+    filters
 }) => {
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
-
-    const rankRange = getRange(walletsData, 'rank');
-    const winRateRange = getRange(walletsData, 'winRate');
-    const netProfitRange = getRange(walletsData, 'netProfit');
-    const ageRange = getRange(walletsData, 'age');
-    const dayActiveRange = getRange(walletsData, 'dayActive');
-    const avgHoldingTimeRange = getRange(walletsData, 'avgHoldingTime');
-    const totalScoreRange = getRange(walletsData, 'totalScore');
-    const totalFeeRange = getRange(walletsData, 'TotalFee');
-
-    const [rankRangeState, setRankRange] = useState<[number, number]>(rankRange);
-    const [winRateRangeState, setWinRateRange] = useState<[number, number]>(winRateRange);
-    const [netProfitRangeState, setNetProfitRange] = useState<[number, number]>(netProfitRange);
-    const [ageRangeState, setAgeRange] = useState<[number, number]>(ageRange);
-    const [label, setLabel] = useState<string>("");
-    const [dayActiveRangeState, setDayActiveRange] = useState<[number, number]>(dayActiveRange);
-    const [avgHoldingTimeRangeState, setAvgHoldingTimeRange] = useState<[number, number]>(avgHoldingTimeRange);
-    const [totalScoreRangeState, setTotalScoreRange] = useState<[number, number]>(totalScoreRange);
-    const [totalFeeRangeState, setTotalFeeRange] = useState<[number, number]>(totalFeeRange);
 
     const { selectedChain } = useTokenChainStore();
 
     const [filteredData, setFilteredData] = useState<IWallet[]>(walletsData);
 
     useEffect(() => {
-        if (walletsData) {
-            setFilteredData(walletsData.filter(wallet =>
-                wallet.rank >= rankRangeState[0] && wallet.rank <= rankRangeState[1] &&
-                wallet.winRate >= winRateRangeState[0] && wallet.winRate <= winRateRangeState[1] &&
-                wallet.netProfit >= netProfitRangeState[0] && wallet.netProfit <= netProfitRangeState[1] &&
-                wallet.age >= ageRangeState[0] && wallet.age <= ageRangeState[1] &&
-                (label ? wallet.buyAmountLabel === label : true) &&
-                wallet.dayActive >= dayActiveRangeState[0] && wallet.dayActive <= dayActiveRangeState[1] &&
-                (wallet.avgHoldingTime ?? 0) >= avgHoldingTimeRangeState[0] && (wallet.avgHoldingTime ?? 0) <= avgHoldingTimeRangeState[1] &&
-                wallet.totalScore >= totalScoreRangeState[0] && wallet.totalScore <= totalScoreRangeState[1] &&
-                wallet.TotalFee >= totalFeeRangeState[0] && wallet.TotalFee <= totalFeeRangeState[1]
-            ));
-        }
-    }, [walletsData, rankRangeState, winRateRangeState, netProfitRangeState, ageRangeState, label, dayActiveRangeState, avgHoldingTimeRangeState, totalScoreRangeState, totalFeeRangeState]);
+        setFilteredData(walletsData);
+    }, [walletsData]);
 
     const handleStarClick = (wallet: IWatchlistItem) => {
         const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
@@ -429,73 +395,6 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
                     {row.getValue('dayActive')}
                 </div>
             ),
-        },
-    ];
-
-    const filters: Filter[] = [
-        {
-            name: 'Rank Range',
-            type: 'range',
-            state: rankRangeState,
-            setState: setRankRange,
-            defaultRange: rankRange,
-        },
-        {
-            name: 'Win Rate Range',
-            type: 'range',
-            state: winRateRangeState,
-            setState: setWinRateRange,
-            defaultRange: winRateRange,
-            premium: true
-        },
-        {
-            name: 'Net Profit Range',
-            type: 'range',
-            state: netProfitRangeState,
-            setState: setNetProfitRange,
-            defaultRange: netProfitRange,
-        },
-        {
-            name: 'Age Range',
-            type: 'range',
-            state: ageRangeState,
-            setState: setAgeRange,
-            defaultRange: ageRange,
-        },
-        {
-            name: 'Label',
-            type: 'dropdown',
-            state: label,
-            setState: setLabel,
-            defaultRange: ['Medium Size', 'Large Size', 'Small Size'],
-        },
-        {
-            name: 'Day Active Range',
-            type: 'range',
-            state: dayActiveRangeState,
-            setState: setDayActiveRange,
-            defaultRange: dayActiveRange,
-        },
-        {
-            name: 'Average Holding Time Range',
-            type: 'range',
-            state: avgHoldingTimeRangeState,
-            setState: setAvgHoldingTimeRange,
-            defaultRange: avgHoldingTimeRange,
-        },
-        {
-            name: 'Total Score Range',
-            type: 'range',
-            state: totalScoreRangeState,
-            setState: setTotalScoreRange,
-            defaultRange: totalScoreRange,
-        },
-        {
-            name: 'Total Fee Range',
-            type: 'range',
-            state: totalFeeRangeState,
-            setState: setTotalFeeRange,
-            defaultRange: totalFeeRange,
         },
     ];
 
