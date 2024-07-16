@@ -1,4 +1,3 @@
-// components/ui/smart-table.tsx
 import {
   ColumnDef,
   ColumnFiltersState,

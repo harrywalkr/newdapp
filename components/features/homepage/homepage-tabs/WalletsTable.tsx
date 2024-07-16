@@ -14,8 +14,7 @@ import clsx from 'clsx';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
 import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 import { useTokenChainStore } from '@/store';
-import FilterDialog from './wallets-table/Filter';
-import WalletsFilterDialog from './wallets-table/Filter';
+import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 
 const getRange = (data: IWallet[], key: keyof IWallet): [number, number] => {
     const values = data.map(wallet => Math.floor(Number(wallet[key])));
@@ -433,6 +432,73 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
         },
     ];
 
+    const filters: Filter[] = [
+        {
+            name: 'Rank Range',
+            type: 'range',
+            state: rankRangeState,
+            setState: setRankRange,
+            defaultRange: rankRange,
+        },
+        {
+            name: 'Win Rate Range',
+            type: 'range',
+            state: winRateRangeState,
+            setState: setWinRateRange,
+            defaultRange: winRateRange,
+            premium: true
+        },
+        {
+            name: 'Net Profit Range',
+            type: 'range',
+            state: netProfitRangeState,
+            setState: setNetProfitRange,
+            defaultRange: netProfitRange,
+        },
+        {
+            name: 'Age Range',
+            type: 'range',
+            state: ageRangeState,
+            setState: setAgeRange,
+            defaultRange: ageRange,
+        },
+        {
+            name: 'Label',
+            type: 'dropdown',
+            state: label,
+            setState: setLabel,
+            defaultRange: ['Medium Size', 'Large Size', 'Small Size'],
+        },
+        {
+            name: 'Day Active Range',
+            type: 'range',
+            state: dayActiveRangeState,
+            setState: setDayActiveRange,
+            defaultRange: dayActiveRange,
+        },
+        {
+            name: 'Average Holding Time Range',
+            type: 'range',
+            state: avgHoldingTimeRangeState,
+            setState: setAvgHoldingTimeRange,
+            defaultRange: avgHoldingTimeRange,
+        },
+        {
+            name: 'Total Score Range',
+            type: 'range',
+            state: totalScoreRangeState,
+            setState: setTotalScoreRange,
+            defaultRange: totalScoreRange,
+        },
+        {
+            name: 'Total Fee Range',
+            type: 'range',
+            state: totalFeeRangeState,
+            setState: setTotalFeeRange,
+            defaultRange: totalFeeRange,
+        },
+    ];
+
     return (
         <ServerSideSmartTable
             data={filteredData}
@@ -443,19 +509,8 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
             setPage={setPage}
             setPageSize={setPageSize}
         >
-            <WalletsFilterDialog
-                rankRange={rankRangeState} setRankRange={setRankRange}
-                winRateRange={winRateRangeState} setWinRateRange={setWinRateRange}
-                netProfitRange={netProfitRangeState} setNetProfitRange={setNetProfitRange}
-                ageRange={ageRangeState} setAgeRange={setAgeRange}
-                label={label} setLabel={setLabel}
-                dayActiveRange={dayActiveRangeState} setDayActiveRange={setDayActiveRange}
-                avgHoldingTimeRange={avgHoldingTimeRangeState} setAvgHoldingTimeRange={setAvgHoldingTimeRange}
-                totalScoreRange={totalScoreRangeState} setTotalScoreRange={setTotalScoreRange}
-                totalFeeRange={totalFeeRangeState} setTotalFeeRange={setTotalFeeRange}
-                defaultRanges={{ rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange }}
-            />
-        </ServerSideSmartTable >
+            <FilterDialog filters={filters} />
+        </ServerSideSmartTable>
     );
 };
 
