@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { ColumnDef, Row } from "@tanstack/react-table";
@@ -20,7 +20,7 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IWatchlistItem } from '@/store/watchlist';
 import { ITokenDetail } from '@/types/TokenDetail.type';
 import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmartTable';
-import TopHotTokensFilterDialog from './Top-hot-tokens-filter';
+import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 
 interface Props {
     images: ImageType[];
@@ -257,12 +257,37 @@ export default function TopHotTokensTable({ images, initTokenData }: Props) {
         parseFloat(token.attributes.price_usd || "0") >= priceChange24hRangeState[0] && parseFloat(token.attributes.price_usd || "0") <= priceChange24hRangeState[1]
     );
 
-    const defaultRanges = {
-        price: priceRange,
-        volume: volumeRange,
-        liquidity: liquidityRange,
-        priceChange24h: priceChange24hRange,
-    };
+    const filters: Filter[] = [
+        {
+            name: 'Price Range',
+            type: 'range',
+            state: priceRangeState,
+            setState: setPriceRange,
+            defaultRange: priceRange,
+        },
+        {
+            name: 'Volume Range',
+            type: 'range',
+            state: volumeRangeState,
+            setState: setVolumeRange,
+            defaultRange: volumeRange,
+            premium: true
+        },
+        {
+            name: 'Liquidity Range',
+            type: 'range',
+            state: liquidityRangeState,
+            setState: setLiquidityRange,
+            defaultRange: liquidityRange,
+        },
+        {
+            name: '24h Price Change Range',
+            type: 'range',
+            state: priceChange24hRangeState,
+            setState: setPriceChange24hRange,
+            defaultRange: priceChange24hRange,
+        },
+    ];
 
     return (
         <ClientSideSmartTable
@@ -270,13 +295,7 @@ export default function TopHotTokensTable({ images, initTokenData }: Props) {
             columns={columns}
             searchColumnAccessorKey='token'
         >
-            <TopHotTokensFilterDialog
-                priceRange={priceRangeState} setPriceRange={setPriceRange}
-                volumeRange={volumeRangeState} setVolumeRange={setVolumeRange}
-                liquidityRange={liquidityRangeState} setLiquidityRange={setLiquidityRange}
-                priceChange24hRange={priceChange24hRangeState} setPriceChange24hRange={setPriceChange24hRange}
-                defaultRanges={defaultRanges}
-            />
+            <FilterDialog filters={filters} />
         </ClientSideSmartTable >
     );
 }
