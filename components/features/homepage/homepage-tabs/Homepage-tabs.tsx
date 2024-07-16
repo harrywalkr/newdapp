@@ -22,8 +22,8 @@ export default function HomepageTabs() {
 
     if (isImagesLoading || isNtfLoading) {
         return (
-            <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7">
-                <TabsList className="bg-transparent">
+            <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7 no-scrollbar">
+                <TabsList className="bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start">
                     <TabsTrigger value="TopLatestHotPairs" className="text-lg">Top Tokens</TabsTrigger>
                     <TabsTrigger value="Wallets" className="text-lg">Top Wallets</TabsTrigger>
                     <TabsTrigger value="NFTs" className="text-lg">Trending NFTs</TabsTrigger>
