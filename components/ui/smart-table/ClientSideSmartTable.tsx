@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/table"
 import { ReactNode, useState } from "react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { DataTableToolbar } from "./data-table-toolbar"
 import { DataTablePagination } from "./pagination"
+import { DataTableToolbarOld } from "./data-table-toolbarOld"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -74,9 +74,9 @@ export function ClientSideSmartTable<TData, TValue>({
 
   return (
     <div className="space-y-4 w-full">
-      <DataTableToolbar table={table} searchColumnAccessorKey={searchColumnAccessorKey}>
+      <DataTableToolbarOld table={table} searchColumnAccessorKey={searchColumnAccessorKey}>
         {children}
-      </DataTableToolbar>
+      </DataTableToolbarOld>
       <div className="rounded-md">
         <ScrollArea className="w-full rounded-md pb-4">
           <ScrollBar orientation="horizontal" />
