@@ -31,7 +31,7 @@ const CryptographyAnimation: React.FC<CryptographyAnimationProps> = ({ text, cla
 
                 if (iterations >= originalText.length) {
                     clearInterval(interval);
-                    setTimeout(animateText, Math.max(10000, originalText.length * 30)); // Ensure at least 10 seconds delay before repeating the animation
+                    setTimeout(animateText, Math.max(20000, originalText.length * 30)); // Animation time
                 }
 
                 iterations += 1 / 3;

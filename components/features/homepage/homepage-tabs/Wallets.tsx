@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useTokenChainStore } from "@/store";
 import { getWallets } from "@/services/http/wallets.http";
-import TableLoading from '@/components/layout/Table-loading';
 import WalletsTable from './WalletsTable';
 import { Filter } from '@/components/ui/smart-table/FilterDialog';
 
@@ -14,8 +13,7 @@ export default function Wallets() {
     const [pageSize, setPageSize] = useState(10);
     const [sortBy, setSortBy] = useState<string>('totalScore');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-
-
+    const [searchValue, setSearchValue] = useState<string>("");
 
     const [rankRange, setRankRange] = useState<[number, number]>([0, 100000]);
     const [winRateRange, setWinRateRange] = useState<[number, number]>([0, 100]);
@@ -27,8 +25,8 @@ export default function Wallets() {
     const [totalScoreRange, setTotalScoreRange] = useState<[number, number]>([0, 1600]);
     const [totalFeeRange, setTotalFeeRange] = useState<[number, number]>([0, 10000]);
 
-    const { data: walletsData, isLoading } = useQuery({
-        queryKey: ['wallets', selectedChain.symbol, page, pageSize, sortBy, sortOrder, rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange],
+    const { data: walletsData = [], isLoading } = useQuery({
+        queryKey: ['wallets', selectedChain.symbol, page, pageSize, sortBy, sortOrder, rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange, searchValue],
         queryFn: () => getWallets({
             params: {
                 network: selectedChain.symbol,
@@ -51,26 +49,11 @@ export default function Wallets() {
                 totalScoreMin: totalScoreRange[0],
                 totalScoreMax: totalScoreRange[1],
                 totalFeeMin: totalFeeRange[0],
-                totalFeeMax: totalFeeRange[1]
+                totalFeeMax: totalFeeRange[1],
+                search: searchValue,
             }
         }),
     });
-
-    if (isLoading) {
-        return (
-            <div>
-                <TableLoading />
-            </div>
-        );
-    }
-
-    if (!walletsData) {
-        return (
-            <div>
-                <p>No data available</p>
-            </div>
-        );
-    }
 
     const filters: Filter[] = [
         {
@@ -78,7 +61,7 @@ export default function Wallets() {
             type: 'range',
             state: rankRange,
             setState: setRankRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 100000],
         },
         {
             name: 'Win Rate Range',
@@ -89,18 +72,18 @@ export default function Wallets() {
             premium: true
         },
         {
-            name: 'Net Profit Range (Million)',
+            name: 'Net Profit Range',
             type: 'range',
             state: netProfitRange,
             setState: setNetProfitRange,
-            defaultRange: [0, 100],
+            defaultRange: [-500000000, 500000000],
         },
         {
             name: 'Age Range',
             type: 'range',
             state: ageRange,
             setState: setAgeRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 10000],
         },
         {
             name: 'Label',
@@ -114,28 +97,28 @@ export default function Wallets() {
             type: 'range',
             state: dayActiveRange,
             setState: setDayActiveRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 10000],
         },
         {
             name: 'Average Holding Time Range',
             type: 'range',
             state: avgHoldingTimeRange,
             setState: setAvgHoldingTimeRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 10000],
         },
         {
             name: 'Total Score Range',
             type: 'range',
             state: totalScoreRange,
             setState: setTotalScoreRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 1600],
         },
         {
             name: 'Total Fee Range',
             type: 'range',
             state: totalFeeRange,
             setState: setTotalFeeRange,
-            defaultRange: [0, 100],
+            defaultRange: [0, 10000],
         },
     ];
 
@@ -147,9 +130,10 @@ export default function Wallets() {
                 pageSize={pageSize} setPageSize={setPageSize}
                 sortBy={sortBy} setSortBy={setSortBy}
                 sortOrder={sortOrder} setSortOrder={setSortOrder}
+                searchValue={searchValue} setSearchValue={setSearchValue}
                 filters={filters}
+                loading={isLoading}
             />
         </div>
     );
 }
-

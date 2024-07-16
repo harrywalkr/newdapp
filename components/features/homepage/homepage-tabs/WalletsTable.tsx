@@ -26,7 +26,10 @@ interface WalletsTableProps {
     setSortBy: (sortBy: string) => void;
     sortOrder: 'asc' | 'desc';
     setSortOrder: (sortOrder: 'asc' | 'desc') => void;
+    searchValue: string;
+    setSearchValue: (value: string) => void;
     filters: Filter[];
+    loading: boolean;
 }
 
 const WalletsTable: React.FC<WalletsTableProps> = ({
@@ -35,17 +38,12 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
     pageSize, setPageSize,
     sortBy, setSortBy,
     sortOrder, setSortOrder,
-    filters
+    searchValue, setSearchValue,
+    filters,
+    loading,
 }) => {
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
-
     const { selectedChain } = useTokenChainStore();
-
-    const [filteredData, setFilteredData] = useState<IWallet[]>(walletsData);
-
-    useEffect(() => {
-        setFilteredData(walletsData);
-    }, [walletsData]);
 
     const handleStarClick = (wallet: IWatchlistItem) => {
         const isInWatchlist = watchlist.some((w: IWatchlistItem) => w.contractAddress === wallet.contractAddress);
@@ -283,7 +281,8 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
             ),
         },
         {
-            accessorKey: 'age',
+            accessorKey:
+                'age',
             header: ({ column }) => (
                 <Button
                     variant="ghost"
@@ -347,7 +346,8 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
                     onClick={() => toggleSorting(column)}
                 >
                     Not Closed
-                    {sortBy === 'notClosedPositions' && sortOrder === 'asc' && <ArrowUpIcon className="ml-2 h-4 w-4" />}
+                    {sortBy === 'notClosedPositions' && sortOrder
+                        === 'asc' && <ArrowUpIcon className="ml-2 h-4 w-4" />}
                     {sortBy === 'notClosedPositions' && sortOrder === 'desc' && <ArrowDownIcon className="ml-2 h-4 w-4" />}
                     {sortBy !== 'notClosedPositions' && <Icons.sort className="ml-2 h-4 w-4" />}
                 </Button>
@@ -400,15 +400,16 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
 
     return (
         <ServerSideSmartTable
-            data={filteredData}
+            data={walletsData}
             columns={columns}
-            searchColumnAccessorKey='walletAddress'
             page={page}
             pageCount={pageSize}
             setPage={setPage}
             setPageSize={setPageSize}
+            setSearchValue={setSearchValue}
+            loading={loading}
         >
-            <FilterDialog filters={filters} deferSetValues={true} />
+            <FilterDialog filters={filters} />
         </ServerSideSmartTable>
     );
 };

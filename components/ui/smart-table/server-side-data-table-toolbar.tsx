@@ -4,30 +4,27 @@ import { DataTableViewOptions } from "./data-table-view-options"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/ui/icon"
 import { LuSearch } from "react-icons/lu"
-import React, { ReactNode, useState } from "react"
 import { useDebounce } from "use-debounce"
+import { ReactNode, useEffect, useState } from "react"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
-  searchColumnAccessorKey: string
   setSearchValue: (value: string) => void
   children: ReactNode
 }
 
 export function ServerDataTableToolbar<TData>({
   table,
-  searchColumnAccessorKey,
   setSearchValue,
   children
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
   const [inputValue, setInputValue] = useState<string>("");
-  const [debouncedValue] = useDebounce(inputValue, 2000);
+  const [debouncedValue] = useDebounce(inputValue, 1000);
 
-  React.useEffect(() => {
-    table.getColumn(searchColumnAccessorKey)?.setFilterValue(debouncedValue);
+  useEffect(() => {
     setSearchValue(debouncedValue);
-  }, [debouncedValue, searchColumnAccessorKey, table, setSearchValue]);
+  }, [debouncedValue]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);

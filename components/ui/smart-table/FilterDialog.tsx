@@ -33,10 +33,9 @@ export type Filter = RangeFilter | DropdownFilter;
 
 interface Props {
     filters: Filter[];
-    deferSetValues?: boolean;
 }
 
-const FilterDialog = ({ filters, deferSetValues = false }: Props) => {
+const FilterDialog = ({ filters }: Props) => {
     const [tempFilters, setTempFilters] = useState(filters.map(filter => ({
         ...filter,
         state: filter.state,
@@ -65,7 +64,7 @@ const FilterDialog = ({ filters, deferSetValues = false }: Props) => {
             ...filter,
             state: filter.defaultRange,
         }));
-        setTempFilters(resetTempFilters);
+        setTempFilters(resetTempFilters as any);
 
         filters.forEach(filter => {
             filter.setState(filter.defaultRange as any);
@@ -129,7 +128,7 @@ const FilterDialog = ({ filters, deferSetValues = false }: Props) => {
                         <span>Reset</span>
                     </Button>
                     <DialogClose asChild>
-                        <Button variant="default" onClick={deferSetValues ? applyFilters : undefined}>Ok</Button>
+                        <Button variant="default" onClick={applyFilters}>Ok</Button>
                     </DialogClose>
                 </div>
             </DialogContent>

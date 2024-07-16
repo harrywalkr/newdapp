@@ -21,6 +21,7 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IWatchlistItem } from '@/store/watchlist';
 import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
+import { ServerSideSmartTableOld } from '@/components/ui/smart-table/ServerSideSmartTableOld';
 
 interface Props {
     images: ImageType[];
@@ -364,7 +365,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
     ];
 
     return (
-        <ServerSideSmartTable
+        <ServerSideSmartTableOld
             data={filteredData}
             columns={columns}
             searchColumnAccessorKey='token'
@@ -374,6 +375,6 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
             setPageSize={setPageSize}
         >
             <FilterDialog filters={filters} />
-        </ServerSideSmartTable >
+        </ServerSideSmartTableOld >
     );
 }

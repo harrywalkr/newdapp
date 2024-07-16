@@ -9,7 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useTokenChainStore } from "@/store";
 import { getTopTrends } from "@/services/http/token.http";
 import TableLoading from "@/components/layout/Table-loading";
-import TopTokenTable from "./notEthTable/TopTokenTable";
+import TopTokenTable from "./TopTokenTable";
 dayjs.extend(relativeTime);
 
 interface Props {
