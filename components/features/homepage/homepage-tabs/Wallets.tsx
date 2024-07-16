@@ -19,7 +19,7 @@ export default function Wallets() {
 
     const [rankRange, setRankRange] = useState<[number, number]>([0, 100000]);
     const [winRateRange, setWinRateRange] = useState<[number, number]>([0, 100]);
-    const [netProfitRange, setNetProfitRange] = useState<[number, number]>([-500, 500]);
+    const [netProfitRange, setNetProfitRange] = useState<[number, number]>([-500000000, 500000000]);
     const [ageRange, setAgeRange] = useState<[number, number]>([0, 10000]);
     const [label, setLabel] = useState<string>("");
     const [dayActiveRange, setDayActiveRange] = useState<[number, number]>([0, 10000]);
@@ -89,7 +89,7 @@ export default function Wallets() {
             premium: true
         },
         {
-            name: 'Net Profit Range',
+            name: 'Net Profit Range (Million)',
             type: 'range',
             state: netProfitRange,
             setState: setNetProfitRange,
