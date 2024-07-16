@@ -34,13 +34,11 @@ import { ServerDataTableToolbar } from "./server-side-data-table-toolbar";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  searchColumnAccessorKey: string
   children: ReactNode
   pageCount: number
   page: number
   setPage: (page: number) => void
   setPageSize: (pageSize: number) => void
-  searchValue: string
   setSearchValue: (value: string) => void
   loading: boolean
 }

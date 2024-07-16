@@ -19,7 +19,6 @@ import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import { Icons } from "@/components/ui/icon";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IWatchlistItem } from '@/store/watchlist';
-import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 import { ServerSideSmartTableOld } from '@/components/ui/smart-table/ServerSideSmartTableOld';
 
