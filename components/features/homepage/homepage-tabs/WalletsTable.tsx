@@ -408,7 +408,7 @@ const WalletsTable: React.FC<WalletsTableProps> = ({
             setPage={setPage}
             setPageSize={setPageSize}
         >
-            <FilterDialog filters={filters} />
+            <FilterDialog filters={filters} deferSetValues={true} />
         </ServerSideSmartTable>
     );
 };

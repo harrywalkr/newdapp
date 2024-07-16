@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -33,16 +33,42 @@ export type Filter = RangeFilter | DropdownFilter;
 
 interface Props {
     filters: Filter[];
+    deferSetValues?: boolean;
 }
 
-const FilterDialog = ({ filters }: Props) => {
+const FilterDialog = ({ filters, deferSetValues = false }: Props) => {
+    const [tempFilters, setTempFilters] = useState(filters.map(filter => ({
+        ...filter,
+        state: filter.state,
+    })));
+
+    const handleRangeChange = (index: number, newValue: [number, number]) => {
+        const updatedFilters = [...tempFilters];
+        updatedFilters[index].state = newValue;
+        setTempFilters(updatedFilters);
+    };
+
+    const handleDropdownChange = (index: number, newValue: string) => {
+        const updatedFilters = [...tempFilters];
+        updatedFilters[index].state = newValue;
+        setTempFilters(updatedFilters);
+    };
+
+    const applyFilters = () => {
+        tempFilters.forEach((filter, index) => {
+            filters[index].setState(filter.state as any);
+        });
+    };
+
     const resetFilters = () => {
+        const resetTempFilters = tempFilters.map(filter => ({
+            ...filter,
+            state: filter.defaultRange,
+        }));
+        setTempFilters(resetTempFilters);
+
         filters.forEach(filter => {
-            if (filter.type === 'range') {
-                filter.setState(filter.defaultRange);
-            } else {
-                filter.setState('');
-            }
+            filter.setState(filter.defaultRange as any);
         });
     };
 
@@ -58,7 +84,7 @@ const FilterDialog = ({ filters }: Props) => {
                 <DialogTitle>Filters</DialogTitle>
                 <DialogDescription>Adjust the filters to refine your results.</DialogDescription>
                 <Accordion type="single" collapsible defaultValue="item-1">
-                    {filters.map((filter, index) => (
+                    {tempFilters.map((filter, index) => (
                         <AccordionItem key={index} value={`item-${index + 1}`}>
                             <AccordionTrigger>{filter.name}</AccordionTrigger>
                             <AccordionContent>
@@ -69,25 +95,25 @@ const FilterDialog = ({ filters }: Props) => {
                                         <Slider
                                             rangeSlider={true}
                                             className='mt-2'
-                                            value={filter.state}
-                                            min={filter.defaultRange[0]}
-                                            max={filter.defaultRange[1]}
-                                            onValueChange={(newValue) => filter.setState([newValue[0], newValue[1]])}
+                                            value={filter.state as [number, number]}
+                                            min={(filter.defaultRange as [number, number])[0]}
+                                            max={(filter.defaultRange as [number, number])[1]}
+                                            onValueChange={(newValue) => handleRangeChange(index, [newValue[0], newValue[1]])}
                                             step={1}
                                             aria-label={`${filter.name} Slider`}
                                         />
                                         <div className="flex justify-between mt-1">
-                                            <span>{filter.state[0]}</span>
-                                            <span>{filter.state[1]}</span>
+                                            <span>{(filter.state as [number, number])[0]}</span>
+                                            <span>{(filter.state as [number, number])[1]}</span>
                                         </div>
                                     </>
                                 ) : (
-                                    <Select value={filter.state} onValueChange={(value) => filter.setState(value)}>
+                                    <Select value={filter.state as string} onValueChange={(value) => handleDropdownChange(index, value)}>
                                         <SelectTrigger className="w-full mt-2">
                                             <SelectValue placeholder={`Select ${filter.name}`} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {filter.defaultRange.map((option, idx) => (
+                                            {(filter.defaultRange as string[]).map((option, idx) => (
                                                 <SelectItem key={idx} value={option}>{option}</SelectItem>
                                             ))}
                                         </SelectContent>
@@ -103,7 +129,7 @@ const FilterDialog = ({ filters }: Props) => {
                         <span>Reset</span>
                     </Button>
                     <DialogClose asChild>
-                        <Button variant="default">Ok</Button>
+                        <Button variant="default" onClick={deferSetValues ? applyFilters : undefined}>Ok</Button>
                     </DialogClose>
                 </div>
             </DialogContent>
