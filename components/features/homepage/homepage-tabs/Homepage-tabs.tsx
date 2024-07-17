@@ -25,11 +25,11 @@ export default function HomepageTabs() {
         return (
             <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7 no-scrollbar">
                 <TabsList className="bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start">
-                    <TabsTrigger value="TopLatestHotPairs" className="text-lg">Top Tokens</TabsTrigger>
-                    <TabsTrigger value="Wallets" className="text-lg">Top Wallets</TabsTrigger>
-                    <TabsTrigger value="NFTs" className="text-lg">Trending NFTs</TabsTrigger>
-                    <TabsTrigger value="TopHotTokens" className="text-lg">Top Hot Tokens</TabsTrigger>
-                    <TabsTrigger value="LatestHotTokens" className="text-lg">Latest Hot Tokens</TabsTrigger>
+                    <TabsTrigger value="TopLatestHotPairs" className="text-[17px] md:text-lg">Top Tokens</TabsTrigger>
+                    <TabsTrigger value="Wallets" className="text-[17px] md:text-lg">Top Wallets</TabsTrigger>
+                    <TabsTrigger value="NFTs" className="text-[17px] md:text-lg">Trending NFTs</TabsTrigger>
+                    <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>
+                    <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>
                 </TabsList>
                 {['TopLatestHotPairs', 'Wallets', 'NFTs', 'TopHotTokens', 'LatestHotTokens'].map(value => (
                     <TabsContent key={value} value={value} className="mt-5">
@@ -47,11 +47,11 @@ export default function HomepageTabs() {
     return (
         <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7 no-scrollbar">
             <TabsList className="bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start">
-                <TabsTrigger value="TopLatestHotPairs" className="text-lg">Top Tokens</TabsTrigger>
-                <TabsTrigger value="Wallets" className="text-lg">Top Wallets</TabsTrigger>
-                <TabsTrigger value="NFTs" className="text-lg">Trending NFTs</TabsTrigger>
-                <TabsTrigger value="TopHotTokens" className="text-lg">Top Hot Tokens</TabsTrigger>
-                <TabsTrigger value="LatestHotTokens" className="text-lg">Latest Hot Tokens</TabsTrigger>
+                <TabsTrigger value="TopLatestHotPairs" className="text-[17px] md:text-lg">Top Tokens</TabsTrigger>
+                <TabsTrigger value="Wallets" className="text-[17px] md:text-lg">Top Wallets</TabsTrigger>
+                <TabsTrigger value="NFTs" className="text-[17px] md:text-lg">Trending NFTs</TabsTrigger>
+                <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>
+                <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>
             </TabsList>
             <TabsContent value="TopLatestHotPairs" className="mt-5">
                 {images && <TopLatestHotPairs images={images} />}
