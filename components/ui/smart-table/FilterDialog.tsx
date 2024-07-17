@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -134,7 +135,9 @@ const FilterDialog = ({ filters }: Props) => {
                                 <AccordionTrigger>{filter.name}</AccordionTrigger>
                                 <AccordionContent>
                                     {filter.premium ? (
-                                        <div className="text-red-500">This filter is available for premium users only.</div>
+                                        <div className="text-red-500">
+                                            This filter is available for premium users only. <Link href="/pricing"><a className="text-blue-500 underline">Check our pricing plans</a></Link>.
+                                        </div>
                                     ) : filter.type === 'range' ? (
                                         <>
                                             <Slider
