@@ -136,7 +136,7 @@ const FilterDialog = ({ filters }: Props) => {
                                 <AccordionContent>
                                     {filter.premium ? (
                                         <div className="text-red-500">
-                                            This filter is available for premium users only. <Link href="/pricing" className="text-blue-500 underline">Check our pricing plans</Link>.
+                                            This filter is available for premium users only. <Link href="/pricing" target='_blank' className="text-blue-500 underline">Check our pricing plans</Link>
                                         </div>
                                     ) : filter.type === 'range' ? (
                                         <>
