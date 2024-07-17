@@ -1,11 +1,10 @@
-'use client';
-
 import React, { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useTokenChainStore } from "@/store";
 import { getWallets } from "@/services/http/wallets.http";
 import WalletsTable from './WalletsTable';
 import { Filter } from '@/components/ui/smart-table/FilterDialog';
+import { format } from 'date-fns';
 
 export default function Wallets() {
     const { selectedChain } = useTokenChainStore();
@@ -24,9 +23,14 @@ export default function Wallets() {
     const [avgHoldingTimeRange, setAvgHoldingTimeRange] = useState<[number, number]>([0, 10000]);
     const [totalScoreRange, setTotalScoreRange] = useState<[number, number]>([0, 1600]);
     const [totalFeeRange, setTotalFeeRange] = useState<[number, number]>([0, 10000]);
+    const [dateRange, setDateRange] = useState<{ from: Date | undefined, to: Date | undefined }>({ from: undefined, to: undefined });
 
     const { data: walletsData = [], isLoading } = useQuery({
-        queryKey: ['wallets', selectedChain.symbol, page, pageSize, sortBy, sortOrder, rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange, avgHoldingTimeRange, totalScoreRange, totalFeeRange, searchValue],
+        queryKey: [
+            'wallets', selectedChain.symbol, page, pageSize, sortBy, sortOrder,
+            rankRange, winRateRange, netProfitRange, ageRange, dayActiveRange,
+            avgHoldingTimeRange, totalScoreRange, totalFeeRange, searchValue, dateRange
+        ],
         queryFn: () => getWallets({
             params: {
                 network: selectedChain.symbol,
@@ -51,6 +55,8 @@ export default function Wallets() {
                 totalFeeMin: totalFeeRange[0],
                 totalFeeMax: totalFeeRange[1],
                 search: searchValue,
+                SwapTimeFrom: dateRange.from ? format(dateRange.from, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") : undefined,
+                SwapTimeTill: dateRange.to ? format(dateRange.to, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") : undefined,
             }
         }),
     });
@@ -120,20 +126,24 @@ export default function Wallets() {
             setState: setTotalFeeRange,
             defaultRange: [0, 10000],
         },
+        {
+            name: 'Date Range',
+            type: 'date-range',
+            state: dateRange,
+            setState: setDateRange,
+        },
     ];
 
     return (
-        <div>
-            <WalletsTable
-                walletsData={walletsData}
-                page={page} setPage={setPage}
-                pageSize={pageSize} setPageSize={setPageSize}
-                sortBy={sortBy} setSortBy={setSortBy}
-                sortOrder={sortOrder} setSortOrder={setSortOrder}
-                searchValue={searchValue} setSearchValue={setSearchValue}
-                filters={filters}
-                loading={isLoading}
-            />
-        </div>
+        <WalletsTable
+            walletsData={walletsData}
+            page={page} setPage={setPage}
+            pageSize={pageSize} setPageSize={setPageSize}
+            sortBy={sortBy} setSortBy={setSortBy}
+            sortOrder={sortOrder} setSortOrder={setSortOrder}
+            searchValue={searchValue} setSearchValue={setSearchValue}
+            filters={filters}
+            loading={isLoading}
+        />
     );
 }
