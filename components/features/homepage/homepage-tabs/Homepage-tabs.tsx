@@ -8,6 +8,7 @@ import { getTopNFTs } from '@/services/http/nft.http';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopHotTokens from './Top-hot-tokens';
 import TableLoading from '@/components/layout/Table-loading';
+import LatestHotTokens from './latest-hot-tokens';
 
 export default function HomepageTabs() {
     const { isLoading: isImagesLoading, error: imageErrors, data: images } = useQuery({
@@ -65,7 +66,7 @@ export default function HomepageTabs() {
                 <TopHotTokens />
             </TabsContent>
             <TabsContent value="LatestHotTokens" className="mt-5">
-                <Wallets />
+                <LatestHotTokens />
             </TabsContent>
         </Tabs>
     );

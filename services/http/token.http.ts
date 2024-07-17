@@ -60,6 +60,14 @@ export const getTokenDetails = (
     options
   );
 
+export const getLatestTokenDetails = (
+  options?: AxiosRequestConfig
+): Promise<ITokenDetail[]> =>
+  fetchData<ITokenDetail[]>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/fetch-latest-token-details`,
+    options
+  );
+
 export const getTradeReport = (
   options: AxiosRequestConfig
 ): Promise<TradeReportType> =>
