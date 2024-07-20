@@ -22,8 +22,22 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
 
   useEffect(() => {
     const processDataForPieChart = () => {
-      const tokens = walletSummary!.Top20HotTokenHolders!.concat(walletSummary.HotTokenHolders);
-      const totalBalance = tokens.reduce((sum, token) => sum + token.currentValue, 0);
+      const top20Tokens = walletSummary?.Top20HotTokenHolders || [];
+      const hotTokenHolders = walletSummary?.HotTokenHolders || [];
+      const tokens = top20Tokens.concat(hotTokenHolders);
+      console.log('hello', tokens);
+
+      const totalBalance = tokens.reduce((sum, token) => sum + (token.currentValue || 0), 0);
+
+      if (totalBalance === 0) {
+        return tokens.map((token) => ({
+          name: token.tokenName,
+          value: token.currentValue,
+          color: randomColor(),
+          pnl: token.currentProfit,
+          ratio: 0,
+        }));
+      }
 
       return tokens.map((token) => ({
         name: token.tokenName,

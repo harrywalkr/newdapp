@@ -18,36 +18,6 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
 
             {token?.data && token?.data.length > 0 ? (
                 <TransactionStats token={token} />
-                // <>
-                //     {token?.ScoreData?.riskLevel != undefined && (
-                //         <KeyValue
-                //             title="Risk level"
-                //             value={token!.ScoreData!.riskLevel}
-                //             variant={token!.ScoreData!.riskLevel === "High Risk" ? "bad" : "good"}
-                //         />
-                //     )}
-                //     {token?.BalancesData?.numberOfAddresses != undefined && (
-                //         <KeyValue
-                //             title="Total holders"
-                //             value={token?.BalancesData?.numberOfAddresses}
-                //             variant={token!.BalancesData!.numberOfAddresses! > 10 ? "good" : "bad"}
-                //         />
-                //     )}
-                //     {token?.BalancesData?.numberOfAddresses != undefined && (
-                //         <KeyValue
-                //             title="Contract security"
-                //             value="safe"
-                //             variant="good"
-                //         />
-                //     )}
-                //     {token?.BalancesData?.numberOfAddresses != undefined && (
-                //         <KeyValue
-                //             title="Launch date"
-                //             value="2021"
-                //             variant="default"
-                //         />
-                //     )}
-                // </>
             ) : (
                 <p>Data is not available :(</p>
             )}
@@ -67,7 +37,7 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
                 </div>
             )}
             {
-                token.data && token.data[0].attributes?.name != undefined &&
+                token.data && token.data[0]?.attributes?.name != undefined &&
                 <TradeReport tokenAddress={token!.data![0]?.id!.split("_")[1]} tokenAddress2={tokenAddress} tokenName={token!.data![0].attributes!.name} network={network} />
             }
         </div>

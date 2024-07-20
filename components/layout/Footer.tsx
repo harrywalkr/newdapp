@@ -22,30 +22,29 @@ export const Footer = () => {
 
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg">Follow Us</h3>
-          {/* Link directly to your social media pages */}
-          <a href="https://x.com/dextradingapp" className="opacity-60 hover:opacity-100">Twitter</a>
-          <a href="https://t.me/dextrading" className="opacity-60 hover:opacity-100">Telegram</a>
-        </div>
-
-        {/* <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Platforms</h3>
-          <Link href="/platforms/web" className="opacity-60 hover:opacity-100">Web</Link>
-          <Link href="/platforms/mobile" className="opacity-60 hover:opacity-100">Mobile</Link>
-          <Link href="/platforms/desktop" className="opacity-60 hover:opacity-100">Desktop</Link>
-        </div> */}
-
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">About</h3>
-          <Link href="/pricing" className="opacity-60 hover:opacity-100">Pricing</Link>
-          <Link href="/landing-page" className="opacity-60 hover:opacity-100">FAQ</Link>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Community</h3>
+          <a href="https://x.com/dextradingapp" className="opacity-60 hover:opacity-100">X (Twitter)</a>
+          <a href="https://t.me/dextrading" className="opacity-60 hover:opacity-100">Telegram Channel</a>
+          <a href="https://www.linkedin.com/company/dextrading/" className="opacity-60 hover:opacity-100">LinkedIn</a>
           <a href="https://www.youtube.com/@dextrading" className="opacity-60 hover:opacity-100">YouTube</a>
-          <a href="https://discord.gg/yourdiscord" className="opacity-60 hover:opacity-100">Discord</a>
-          <a href="https://twitch.tv/yourtwitch" className="opacity-60 hover:opacity-100">Twitch</a>
+          <a href="https://www.instagram.com/dextrading_com?igsh=MXY4dDEyYTJpcGhyNw==" className="opacity-60 hover:opacity-100">Instagram</a>
         </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Company</h3>
+          <Link href="/about-us" className="opacity-60 hover:opacity-100">About us</Link>
+          <Link href="/pricing" className="opacity-60 hover:opacity-100">Pricing</Link>
+          <Link href="/pricing" className="opacity-60 hover:opacity-100">FAQ</Link>
+          <Link href="/pricing" className="opacity-60 hover:opacity-100">Contact us</Link>
+          <Link href="/pricing" className="opacity-60 hover:opacity-100">Disclaimer</Link>
+
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="font-bold text-lg">Products</h3>
+          <Link href="/about-us" className="opacity-60 hover:opacity-100"></Link>
+
+        </div>
+
       </section>
       {/* <Separator orientation="horizontal" flex /> */}
       <section className="container pb-14 text-center mt-10 flex items-center justify-between">

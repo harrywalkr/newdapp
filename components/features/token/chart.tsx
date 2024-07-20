@@ -35,12 +35,20 @@ const TVChartContainer = dynamic(() => import("@/components/features/token/TVCha
 });
 
 export default function Chart({ tokenAddress, network, className }: Props) {
-  const { data: iDatafeed, isSuccess } = useQuery<IDatafeed>(
+  const fetchData = async (timeframe: string, aggregate: number): Promise<IDatafeed> => {
+    return await getDataFeed({ params: { contractAddress: tokenAddress, network: network, timeframe, aggregate } });
+  }
+
+  const { data: minuteDatafeed, isSuccess: isMinuteDataSuccess } = useQuery<IDatafeed>(
     {
-      queryKey: ['ohlcvData'],
-      queryFn: async () => {
-        return await getDataFeed({ params: { contractAddress: tokenAddress, network: network } });
-      }
+      queryKey: ['ohlcvData', 'minute'],
+      queryFn: () => fetchData('minute', 5),
+    });
+
+  const { data: hourDatafeed, isSuccess: isHourDataSuccess } = useQuery<IDatafeed>(
+    {
+      queryKey: ['ohlcvData', 'hour'],
+      queryFn: () => fetchData('hour', 1),
     });
 
   const getOhlcvData = (data: IDatafeed): IOhlcvData[] => {
@@ -57,7 +65,43 @@ export default function Chart({ tokenAddress, network, className }: Props) {
       .sort((a, b) => a.time - b.time)
   }
 
+  const mergeData = (minuteData: IOhlcvData[], hourData: IOhlcvData[]): IOhlcvData[] => {
+    // Assuming minuteData and hourData are sorted by time already
+    const mergedData: IOhlcvData[] = [];
+    let i = 0, j = 0;
+
+    while (i < minuteData.length && j < hourData.length) {
+      if (minuteData[i].time < hourData[j].time) {
+        mergedData.push(minuteData[i]);
+        i++;
+      } else if (minuteData[i].time > hourData[j].time) {
+        mergedData.push(hourData[j]);
+        j++;
+      } else {
+        // If the timestamps are equal, decide how to merge them
+        mergedData.push(hourData[j]); // Prefer hour data over minute data in this case
+        i++;
+        j++;
+      }
+    }
+
+    // Add remaining data
+    while (i < minuteData.length) {
+      mergedData.push(minuteData[i]);
+      i++;
+    }
+    while (j < hourData.length) {
+      mergedData.push(hourData[j]);
+      j++;
+    }
+
+    return mergedData;
+  }
+
   const { theme } = useTheme();
+
+  const isSuccess = isMinuteDataSuccess && isHourDataSuccess;
+  const ohlcvData = isSuccess ? mergeData(getOhlcvData(minuteDatafeed!), getOhlcvData(hourDatafeed!)) : [];
 
   return (
     <>
@@ -66,15 +110,15 @@ export default function Chart({ tokenAddress, network, className }: Props) {
         strategy="lazyOnload"
         onLoad={() => console.log('chart script loaded')}
       />
-      {isSuccess && getOhlcvData(iDatafeed) && getOhlcvData(iDatafeed).length > 0 &&
+      {isSuccess && ohlcvData.length > 0 &&
         <div className='h-full w-full my-6 md:my-7'>
           <TVChartContainer
             className={className}
             chartOptions={{
               ...defaultWidgetProps,
-              symbol: iDatafeed.meta.base.name + '/' + iDatafeed.meta.quote.symbol
+              symbol: minuteDatafeed!.meta.base.name + '/' + minuteDatafeed!.meta.quote.symbol
             }}
-            ohlcvData={getOhlcvData(iDatafeed)}
+            ohlcvData={ohlcvData}
             theme={theme === 'dark' ? 'dark' : 'light'}
           />
         </div>
