@@ -31,9 +31,11 @@ export default function TokenSummary({ token, tokenAddress, network }: Props) {
                 </div>
             ) : (
                 <div className='w-full'>
-                    {token!.data![0]?.id?.split("_")[1] != undefined && (
-                        <Chart className="h-[600px]" tokenAddress={token!.data![0]?.id!.split("_")[1]} network={network} />
-                    )}
+                    {token!.data![0]?.id?.split("_")[1] != undefined &&
+                        token!.data![0]?.relationships?.dex?.data?.type &&
+                        (
+                            <Chart className="h-[600px]" tokenAddress={token!.data![0]?.id!.split("_")[1]} tokenDescription={token!.data![0].attributes!.name + ' Dextrading.com'} tokenExchange={token!.data![0]?.relationships?.dex?.data?.id} network={network} />
+                        )}
                 </div>
             )}
             {

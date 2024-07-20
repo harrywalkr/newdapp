@@ -28,13 +28,15 @@ interface Props {
   network: string;
   tokenAddress: string;
   className?: string
+  tokenDescription: string
+  tokenExchange: string
 }
 
 const TVChartContainer = dynamic(() => import("@/components/features/token/TVChartContainer").then(mod => mod.TVChartContainer), {
   ssr: false,
 });
 
-export default function Chart({ tokenAddress, network, className }: Props) {
+export default function Chart({ tokenAddress, network, tokenExchange, tokenDescription, className }: Props) {
   const fetchData = async (timeframe: string, aggregate: number): Promise<IDatafeed> => {
     return await getDataFeed({ params: { contractAddress: tokenAddress, network: network, timeframe, aggregate } });
   }
@@ -120,6 +122,8 @@ export default function Chart({ tokenAddress, network, className }: Props) {
             }}
             ohlcvData={ohlcvData}
             theme={theme === 'dark' ? 'dark' : 'light'}
+            tokenExchange={tokenExchange}
+            tokenDescription={tokenDescription}
           />
         </div>
       }

@@ -3,7 +3,7 @@ import { widget as TradingViewWidget, ChartingLibraryWidgetOptions, ResolutionSt
 import { IDatafeed, IOhlcvData } from '@/types/datafeed.type';
 import { cn } from '@/lib/utils';
 
-const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
+const dataFeed = (ohlcvData: IOhlcvData[], tokenDescription: string, tokenExchange: string): IBasicDataFeed | (IBasicDataFeed & IDatafeedQuotesApi) => {
     return {
         onReady: (callback: any) => {
             setTimeout(() => callback({
@@ -19,6 +19,8 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
             setTimeout(() => {
                 onSymbolResolvedCallback({
                     name: symbolName,
+                    description: tokenDescription,
+                    exchange: tokenExchange,
                     timezone: 'Etc/UTC',
                     minmov: 1,
                     session: '24x7',
@@ -29,8 +31,6 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
                     supported_resolutions: ["10", "15", "30", '60', '240', '480', '720', '1440', '10080', '43800', '131400', '525601'] as ResolutionString[],
                     pricescale: 100000000,
                     ticker: symbolName,
-                    description: 'Description of the symbol',
-                    exchange: 'Exchange name',
                     listed_exchange: 'Listed exchange name',
                     format: 'price'
                 });
@@ -85,22 +85,23 @@ const dataFeed = (ohlcvData: IOhlcvData[]): IBasicDataFeed | (IBasicDataFeed & I
     }
 };
 
-
 interface Props {
     chartOptions: Partial<ChartingLibraryWidgetOptions>,
     ohlcvData: IOhlcvData[],
     className?: string,
+    tokenDescription: string,
+    tokenExchange: string,
     theme: 'dark' | 'light'
 }
 
-export const TVChartContainer = ({ chartOptions, ohlcvData, theme, className }: Props) => {
+export const TVChartContainer = ({ chartOptions, ohlcvData, theme, className, tokenDescription, tokenExchange }: Props) => {
     const chartContainerRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
     useEffect(() => {
         if (chartContainerRef.current) {
             const widgetOptions: ChartingLibraryWidgetOptions = {
                 symbol: chartOptions.symbol || 'DefaultSymbol',
-                datafeed: dataFeed(ohlcvData),
+                datafeed: dataFeed(ohlcvData, tokenDescription, tokenExchange),
                 interval: chartOptions.interval as ResolutionString || 'D' as ResolutionString,
                 container: chartContainerRef.current,
                 library_path: chartOptions.library_path,
@@ -128,7 +129,7 @@ export const TVChartContainer = ({ chartOptions, ohlcvData, theme, className }: 
                 tvWidget.remove();
             };
         }
-    }, [chartOptions, ohlcvData, theme]);
+    }, [chartOptions, ohlcvData, theme, tokenDescription, tokenExchange]);
 
     return <div ref={chartContainerRef} className={cn('w-full', className)} />;
 };
