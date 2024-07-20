@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Copy from '@/components/ui/copy';
-import { ImageType } from '@/types/Image.type';
 import { IToken } from '@/types/token.type';
 import PriceFormatter from '@/utils/PriceFormatter';
 import { formatCash } from '@/utils/numbers';
@@ -12,18 +11,18 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import SocialMedia from './social-media';
-import { useTokenChainStore, useWatchlistStore } from '@/store'; // Import the watchlist store
+import { useLoadingStore, useWatchlistStore } from '@/store';
 import { useQuery } from '@tanstack/react-query';
 import { getLogo } from '@/services/http/image.http';
 import { Button } from '@/components/ui/button';
 import { StarIcon } from '@radix-ui/react-icons';
-import { FaStar } from 'react-icons/fa'; // Import filled star icon
+import { FaStar } from 'react-icons/fa';
 import ChainImage from '@/utils/ChainImage';
 import Renounce from './Renounce';
 import { CiLock } from 'react-icons/ci';
 import { Progress } from '@/components/ui/progress';
 import CustomPieChart from './CustomPieChart';
-import TransactionStats from './TransactionStats';
+
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -41,11 +40,18 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
 
     const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlistStore();
     const [isInWatchlist, setIsInWatchlist] = useState(false);
+    const setLoading = useLoadingStore((state) => state.setLoading); // Use setLoading from the store
 
     useEffect(() => {
         const inWatchlist = watchlist.some(w => w.contractAddress === tokenAddress);
         setIsInWatchlist(inWatchlist);
     }, [watchlist, tokenAddress]);
+
+    useEffect(() => {
+        if (!logoLoading && !logoError) {
+            setLoading(false);
+        }
+    }, [logoLoading, logoError, setLoading]);
 
     const handleWatchlistToggle = () => {
         if (isInWatchlist) {

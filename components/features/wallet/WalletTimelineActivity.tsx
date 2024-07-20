@@ -7,7 +7,7 @@ export default function WalletTimelineActivity({ walletSummary }: { walletSummar
   const latestTransaction = walletSummary.transactionMetrics?.latestTransaction;
 
   return (
-    <div className="h-20 mt-14 lg:mt-20 px-6">
+    <div className="mt-14 lg:mt-20 px-6">
       <div className="relative w-full h-1 rounded-full bg-muted">
         {/* First Activity Pin */}
         <div className="absolute w-3 h-3 bg-gray-700 rounded-full z-20" style={{ bottom: -5, left: 0 }}>

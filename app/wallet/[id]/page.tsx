@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 }
 
-export default async function Token({ params }: Props) {
+export default async function Token({ params, searchParams }: Props) {
     const walletSummary: WalletSummaryType = await getWalletSummary(params.id);
     const walletBalance: WalletBalanceType = await getWalletBalance(params.id);
 
@@ -36,6 +36,7 @@ export default async function Token({ params }: Props) {
             walletAddress={params.id}
             initialWalletSummary={walletSummary}
             initialWalletBalance={walletBalance}
+            chain={searchParams.network}
         />
     );
 }

@@ -1,6 +1,6 @@
 // components/LoadingOverlay.js
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Loading from '@/components/common/Loading';
 
 const tips = [
@@ -23,6 +23,11 @@ const tips = [
 const randomIndex = Math.floor(Math.random() * tips.length);
 
 export default function LoadingOverlay() {
+
+    useEffect(() => {
+        console.log('the route is changing (store)');
+    }, []);
+
     return (
         <div className="fixed inset-0 backdrop-blur-sm bg-background bg-opacity-70 h-screen z-50 w-screen flex flex-col items-center justify-center gap-6 md:gap-8">
             <Loading width={70} height={70} />

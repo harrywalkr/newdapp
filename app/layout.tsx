@@ -34,8 +34,7 @@ export default function RootLayout({
         <Providers>
           <main>
             <Header />
-            {/* FIXME: fix min height when content is limited and footer is too close to the header and is in the middle of the screen */}
-            <div className="my-28 md:mt-32 lg:mt-36 max-w-screen-2xl !mx-auto">
+            <div className="my-28 md:mt-32 lg:mt-36 max-w-screen-2xl min-h-96 !mx-auto">
               {children}
             </div>
             <Footer />

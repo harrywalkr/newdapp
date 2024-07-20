@@ -2,16 +2,18 @@
 import React, { ErrorInfo } from "react";
 import { ThemeProvider } from "./theme.provider";
 import { WagmiiProvider } from "./wagmi.provider";
-import { GlobalContextProvider } from "./context.provider";
 import QueryProvider from "./query.provider";
 import { Toaster } from "@/components/ui/toast/toaster";
 import { ErrorBoundary } from "react-error-boundary";
 import { postError } from "@/services/http/error.http";
+import { useLoadingStore } from "@/store";
+import LoadingOverlay from "@/components/layout/LoadingOverlay";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const isLoading = useLoadingStore((state) => state.isLoading);
 
   const logError = (error: Error, info: ErrorInfo) => {
-    postError({ data: error })
+    postError({ data: error });
   };
 
   return (
@@ -22,20 +24,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
     >
       <WagmiiProvider>
-        {/* FIXME: remove react context provider */}
-        <GlobalContextProvider>
-          <QueryProvider>
-            <ErrorBoundary FallbackComponent={Fallback} onError={logError}>
-              {children}
-            </ErrorBoundary>
-          </QueryProvider>
-        </GlobalContextProvider>
+        <QueryProvider>
+          <ErrorBoundary FallbackComponent={Fallback} onError={logError}>
+            {children}
+          </ErrorBoundary>
+        </QueryProvider>
         <Toaster />
+        {isLoading && <LoadingOverlay />}
       </WagmiiProvider>
     </ThemeProvider>
   );
 }
-
 
 function Fallback({ error, resetErrorBoundary }: any) {
   return (

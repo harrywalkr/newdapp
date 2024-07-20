@@ -25,6 +25,7 @@ import { Progress } from '@/components/ui/progress';
 import { MdOutlineScoreboard } from 'react-icons/md';
 import { useTokenChainStore } from '@/store';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import CryptographyAnimation from '@/components/ui/CryptographyAnimation';
 
 interface Props {
     walletAddress: string;
@@ -73,128 +74,134 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
     const filteredChains = currentChain === 'solana' ? availableChains.filter(chain => chain.symbol === 'solana') : availableChains.filter(chain => chain.symbol !== 'solana');
 
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Trader Profile</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className='top flex flex-col md:flex-row items-start justify-between'>
-                        <div className='left flex items-start justify-start gap-4'>
-                            <AvatarPlaceholder />
-                            <div>
-                                <div className='text-sm hidden md:block'>
-                                    <Copy text={walletAddress} value={walletAddress} />
-                                </div>
-                                <div className='text-sm block md:hidden'>
-                                    <Copy text={minifyContract(walletAddress)} value={walletAddress} />
-                                </div>
-                                <div className='flex items-center justify-start gap-3'>
-                                    {initialWalletSummary?.transactionMetrics?.walletAge != undefined &&
-                                        <KeyValue
-                                            title='Age'
-                                            value={initialWalletSummary.transactionMetrics.walletAge + ' Days'}
-                                            variant='default' />
-                                    }
-                                    {initialWalletSummary.totalScore &&
-                                        <KeyValue
-                                            title='Score'
-                                            titleIcon={<MdOutlineScoreboard />}
-                                            value={initialWalletSummary.totalScore}
-                                            variant={initialWalletSummary.totalScore > 1000 ? 'good' : 'bad'} />
-                                    }
+        <>
+            <CryptographyAnimation
+                className='text-red-400 mb-2 inline-block text-base'
+                text='This wallet is not active'
+            />
+            <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Trader Profile</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className='top flex flex-col md:flex-row items-start justify-between'>
+                            <div className='left flex items-start justify-start gap-4'>
+                                <AvatarPlaceholder />
+                                <div>
+                                    <div className='text-sm hidden md:block'>
+                                        <Copy text={walletAddress} value={walletAddress} />
+                                    </div>
+                                    <div className='text-sm block md:hidden'>
+                                        <Copy text={minifyContract(walletAddress)} value={walletAddress} />
+                                    </div>
+                                    <div className='flex items-center justify-start gap-3'>
+                                        {initialWalletSummary?.transactionMetrics?.walletAge != undefined &&
+                                            <KeyValue
+                                                title='Age'
+                                                value={initialWalletSummary.transactionMetrics.walletAge + ' Days'}
+                                                variant='default' />
+                                        }
+                                        {initialWalletSummary.totalScore &&
+                                            <KeyValue
+                                                title='Score'
+                                                titleIcon={<MdOutlineScoreboard />}
+                                                value={initialWalletSummary.totalScore}
+                                                variant={initialWalletSummary.totalScore > 1000 ? 'good' : 'bad'} />
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="right mt-3 md:mt-0">
-                            {initialWalletSummary.holdingTimeLabel != undefined &&
-                                <div>{initialWalletSummary.holdingTimeLabel}</div>
-                            }
-                        </div>
-                    </div>
-                    <div className='bottom'>
-                        <WalletTimelineActivity walletSummary={initialWalletSummary} />
-                    </div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-5'>
-                    <div className="left flex flex-1 flex-col gap-2 w-full">
-                        {initialWalletSummary.netProfit != undefined &&
-                            <KeyValue
-                                title='Net Profit'
-                                value={
-                                    separate3digits(initialWalletSummary.netProfit?.toFixed(2)) + '$'
+                            <div className="right mt-3 md:mt-0">
+                                {initialWalletSummary.holdingTimeLabel != undefined &&
+                                    <div>{initialWalletSummary.holdingTimeLabel}</div>
                                 }
-                                variant={
-                                    initialWalletSummary.netProfit > 0
-                                        ? "good"
-                                        : "bad"
-                                } />
-                        }
-                        {initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
-                            <KeyValue
-                                title='Avg Holding Time'
-                                value={initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime}
-                                variant='default' />
-                        }
-                        {initialWalletSummary?.highestProfit && initialWalletSummary.highestProfit[1] != undefined &&
-                            initialWalletSummary.highestProfit[0] != undefined &&
-                            <KeyValue
-                                title="Highest Profit"
-                                value={minifyTokenName(initialWalletSummary.highestProfit[1]) + ' : $' + separate3digits(initialWalletSummary.highestProfit[0]?.toFixed(2))}
-                                valueIcon={<Copy value={initialWalletSummary.highestProfit[2]} />}
-                                variant="default"
-                            />
-                        }
-                        {initialWalletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
-                            <KeyValue
-                                symbol='dollar'
-                                title="Avg P&L"
-                                value={
-                                    separate3digits(
-                                        initialWalletSummary.overallAverageHoldingTimeAndProfit.Profit?.toFixed(2)
-                                    )
-                                }
-                                variant="default"
-                            />
-                        }
-                        {initialWalletSummary.winRate != undefined &&
-                            <div>
+                            </div>
+                        </div>
+                        <div className='bottom'>
+                            <WalletTimelineActivity walletSummary={initialWalletSummary} />
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent className='flex flex-col md:flex-row items-start justify-between gap-5 md:gap-5'>
+                        <div className="left flex flex-1 flex-col gap-2 w-full">
+                            {initialWalletSummary.netProfit != undefined &&
                                 <KeyValue
-                                    title='Winrate'
-                                    className='mt-1'
-                                    titleIcon={<IoIosWine />}
-                                    value={(+initialWalletSummary.winRate / 10).toFixed(2)}
+                                    title='Net Profit'
+                                    value={
+                                        separate3digits(initialWalletSummary.netProfit?.toFixed(2)) + '$'
+                                    }
+                                    variant={
+                                        initialWalletSummary.netProfit > 0
+                                            ? "good"
+                                            : "bad"
+                                    } />
+                            }
+                            {initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime != undefined &&
+                                <KeyValue
+                                    title='Avg Holding Time'
+                                    value={initialWalletSummary.overallAverageHoldingTimeAndProfit?.HoldingTime}
                                     variant='default' />
-                                <Progress className='mt-2' value={+initialWalletSummary.winRate} />
+                            }
+                            {initialWalletSummary?.highestProfit && initialWalletSummary.highestProfit[1] != undefined &&
+                                initialWalletSummary.highestProfit[0] != undefined &&
+                                <KeyValue
+                                    title="Highest Profit"
+                                    value={minifyTokenName(initialWalletSummary.highestProfit[1]) + ' : $' + separate3digits(initialWalletSummary.highestProfit[0]?.toFixed(2))}
+                                    valueIcon={<Copy value={initialWalletSummary.highestProfit[2]} />}
+                                    variant="default"
+                                />
+                            }
+                            {initialWalletSummary.overallAverageHoldingTimeAndProfit?.Profit != undefined &&
+                                <KeyValue
+                                    symbol='dollar'
+                                    title="Avg P&L"
+                                    value={
+                                        separate3digits(
+                                            initialWalletSummary.overallAverageHoldingTimeAndProfit.Profit?.toFixed(2)
+                                        )
+                                    }
+                                    variant="default"
+                                />
+                            }
+                            {initialWalletSummary.winRate != undefined &&
+                                <div>
+                                    <KeyValue
+                                        title='Winrate'
+                                        className='mt-1'
+                                        titleIcon={<IoIosWine />}
+                                        value={(+initialWalletSummary.winRate / 10).toFixed(2)}
+                                        variant='default' />
+                                    <Progress className='mt-2' value={+initialWalletSummary.winRate} />
+                                </div>
+                            }
+                            <div className="mt-4 flex items-center justify-between gap-1 w-full ">
+                                <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
+                                <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
+                                <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
+                                    <SelectTrigger className="sm:w-20 md:w-24">
+                                        <SelectValue placeholder="Select Chain" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {filteredChains.map((chain) => (
+                                            <SelectItem key={chain.id} value={chain.symbol}>
+                                                {chain.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
-                        }
-                        <div className="mt-4 flex items-center justify-between gap-1 w-full ">
-                            <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
-                            <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
-                            <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
-                                <SelectTrigger className="sm:w-20 md:w-24">
-                                    <SelectValue placeholder="Select Chain" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {filteredChains.map((chain) => (
-                                        <SelectItem key={chain.id} value={chain.symbol}>
-                                            {chain.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
                         </div>
-                    </div>
-                    <div className="right h-32 flex-1 my-10 md:mt-0 w-full ">
-                        <WalletOverviewChart walletSummary={initialWalletSummary} />
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+                        <div className="right h-32 flex-1 my-10 md:mt-0 w-full ">
+                            <WalletOverviewChart walletSummary={initialWalletSummary} />
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </>
     );
 }

@@ -42,7 +42,7 @@ const CryptographyAnimation: React.FC<CryptographyAnimationProps> = ({ text, cla
     }, [text]);
 
     return (
-        <div className={clsx('flex items-center justify-center', className)}>
+        <div className={clsx('', className)}>
             <div ref={textRef} data-value={text}>
                 {text}
             </div>

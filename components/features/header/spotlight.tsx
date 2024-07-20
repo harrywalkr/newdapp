@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Input } from "@/components/ui/input";
 import {
@@ -36,7 +36,7 @@ import { imageUrl } from "@/utils/imageUrl";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ImageType } from "@/types/Image.type";
-import { useTokenChainStore } from "@/store";
+import { useLoadingStore, useTokenChainStore } from "@/store";
 import { getNetworkSymbol } from "@/utils/NetworkSymbol";
 
 dayjs.extend(relativeTime);
@@ -65,7 +65,6 @@ type SpotlightSearchResult = {
   data: SpotlightSearchType | IToken
 }
 
-
 const useSpotlightSearch = (debouncedSearchTerm: string, network: string): UseQueryResult<SpotlightSearchResult | undefined, Error> => {
   return useQuery({
     queryKey: ['spotlightSearch', debouncedSearchTerm],
@@ -90,7 +89,7 @@ const useSpotlightSearch = (debouncedSearchTerm: string, network: string): UseQu
         return { type: 'wallet', data };
       }
 
-      return undefined; // If neither API returns valid data, return undefined
+      return undefined;
     },
     enabled: !!debouncedSearchTerm,
   });
@@ -152,6 +151,7 @@ const Spotlight = () => {
   const [token, setToken] = useState<IToken | undefined>();
   const router = useRouter();
   const { selectedChain } = useTokenChainStore();
+  const setLoadingStore = useLoadingStore((state) => state.setLoading);
 
   const [debouncedSearchTerm] = useDebounce(searchTerm, 200);
 
@@ -185,6 +185,11 @@ const Spotlight = () => {
     200,
     { maxWait: 2000 }
   );
+
+  const handleNavigation = (url: string) => {
+    setLoadingStore(true); // Turn on the loading state
+    router.push(url);
+  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
@@ -237,13 +242,13 @@ const Spotlight = () => {
                 <div
                   className="cursor-pointer px-3 flex items-center gap-3 pb-4"
                   onClick={() => {
-                    setOpen(!open)
+                    setOpen(!open);
                     addToLocalStorage({
                       name: wallet.subject.address,
                       address: wallet.subject.address,
                       // network: wallet.network.protocol
                     });
-                    router.push(`/wallet/${wallet.subject.address}?network=${getNetworkSymbol(wallet.network.network)}`);
+                    handleNavigation(`/wallet/${wallet.subject.address}?network=${getNetworkSymbol(wallet.network.network)}`);
                   }}
                 >
                   <IoWalletOutline className="text-xl" />
@@ -285,8 +290,8 @@ const Spotlight = () => {
                             });
                             if (item?.relationships?.base_token?.data?.id) {
                               const [baseToken, tokenId] = item.relationships.base_token.data.id.split("_");
-                              router.push(`/tokens/${baseToken}/${tokenId}`);
-                              setOpen(!open)
+                              handleNavigation(`/tokens/${baseToken}/${tokenId}`);
+                              setOpen(!open);
                             }
                           }}
                         >
