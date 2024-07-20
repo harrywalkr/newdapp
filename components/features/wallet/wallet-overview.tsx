@@ -10,7 +10,6 @@ import { minifyContract, minifyTokenName } from '@/utils/truncate';
 import { useMedia } from 'react-use';
 import { AvatarPlaceholder } from '@/components/ui/avatar';
 import { DatePicker } from '@/components/ui/date-picker';
-import { Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
@@ -75,10 +74,13 @@ export default function WalletOverview({ walletAddress, initialWalletSummary, wa
 
     return (
         <>
-            <CryptographyAnimation
-                className='text-red-400 mb-2 inline-block text-base'
-                text='This wallet is not active'
-            />
+            {
+                initialWalletSummary?.description != undefined &&
+                <CryptographyAnimation
+                    className='text-red-400 mb-2 inline-block text-base'
+                    text={initialWalletSummary.description}
+                />
+            }
             <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-5'>
                 <Card>
                     <CardHeader>

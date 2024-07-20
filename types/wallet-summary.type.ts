@@ -6,6 +6,7 @@ export interface WalletSummaryType {
   totalProfit?: number;
   totalLoss?: number;
   netProfit?: number;
+  description?: string;
   averagePercentageProfit?: number;
   totalProfits?: TotalProfits;
   totalBuySellTimes?: TotalBuySellTimes;
