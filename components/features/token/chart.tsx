@@ -1,5 +1,4 @@
 'use client';
-import Head from "next/head";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import { useEffect } from 'react';

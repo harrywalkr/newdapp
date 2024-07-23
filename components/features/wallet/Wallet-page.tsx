@@ -25,6 +25,10 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
     const setLoading = useLoadingStore((state) => state.setLoading);
 
     useEffect(() => {
+        setLoading(false); // Set loading to false as soon as the component loads
+    }, [setLoading]);
+
+    useEffect(() => {
         const network = searchParams.get('network') || availableChains[0]?.symbol;
         if (network) {
             const chain = availableChains.find((chain) => chain.symbol === network);
@@ -62,12 +66,6 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
             refetchSummary();
         }
     }, [dateRange, refetchSummary, walletParams, selectedChain]);
-
-    useEffect(() => {
-        if (walletSummary && walletBalance) {
-            setLoading(false);
-        }
-    }, [walletSummary, walletBalance, setLoading]);
 
     const handleDateChange = (newDateRange: { from: Date; till: Date }) => {
         setDateRange(newDateRange);
