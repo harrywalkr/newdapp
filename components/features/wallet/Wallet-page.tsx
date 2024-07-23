@@ -48,13 +48,13 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
 
     const { data: walletBalance } = useQuery({
         queryKey: ['walletBalance', walletAddress, selectedChain.symbol],
-        queryFn: () => getWalletBalance(walletAddress, { params: { network: selectedChain.symbol } }),
+        queryFn: () => getWalletBalance(walletAddress, { params: { network: chain } }),
         initialData: initialWalletBalance,
     });
 
     useEffect(() => {
         const fetchWalletParams = async () => {
-            const params = await getWalletParams(walletAddress, { params: { network: selectedChain.symbol } });
+            const params = await getWalletParams(walletAddress, { params: { network: chain } });
             setWalletParams(params);
             setDateRange({ from: params.from!, till: params.till! });
         };
@@ -85,7 +85,7 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
     return (
         <div className="flex flex-col gap-6 items-center justify-center w-full">
             <WalletOverview
-                initialWalletSummary={walletSummary}
+                walletSummary={walletSummary}
                 walletBalance={walletBalance}
                 walletAddress={walletAddress}
                 dateRange={dateRange}
