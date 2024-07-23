@@ -25,7 +25,7 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
     const setLoading = useLoadingStore((state) => state.setLoading);
 
     useEffect(() => {
-        setLoading(false); // Set loading to false as soon as the component loads
+        setLoading(false);
     }, [setLoading]);
 
     useEffect(() => {
