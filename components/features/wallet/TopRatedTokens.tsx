@@ -52,8 +52,8 @@ const TopRatedTokens: React.FC<Props> = ({ walletSummary }) => {
   }, [walletSummary]);
 
   return (
-    <div className="flex items-start justify-start gap-10">
-      <PieChart width={300} height={200}>
+    <div className="flex flex-col md:flex-row items-start justify-start gap-10">
+      <PieChart width={300} height={200} className='min-w-32'>
         <Pie
           data={processedData.filter(token => token.value !== 0)}
           label={({ name }) => name}
