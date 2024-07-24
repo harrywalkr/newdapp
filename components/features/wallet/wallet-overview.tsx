@@ -73,7 +73,7 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
     const filteredChains = currentChain === 'solana' ? availableChains.filter(chain => chain.symbol === 'solana') : availableChains.filter(chain => chain.symbol !== 'solana');
 
     return (
-        <>
+        <div>
             {
                 walletSummary?.description != undefined &&
                 <CryptographyAnimation
@@ -181,29 +181,29 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                                     <Progress className='mt-2' value={+walletSummary.winRate} />
                                 </div>
                             }
-                            <div className="mt-4 flex items-center justify-between gap-1 w-full ">
-                                <DatePicker label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
-                                <DatePicker label="To Date" selectedDate={toDate} onSelect={setToDate} />
-                                <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
-                                    <SelectTrigger className="sm:w-20 md:w-24">
-                                        <SelectValue placeholder="Select Chain" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {filteredChains.map((chain) => (
-                                            <SelectItem key={chain.id} value={chain.symbol}>
-                                                {chain.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                            <div className="mt-4 flex items-center justify-start gap-2 w-full">
+                                <DatePicker className='w-full' label="From Date" selectedDate={fromDate} onSelect={setFromDate} />
+                                <DatePicker className='w-full' label="To Date" selectedDate={toDate} onSelect={setToDate} />
                             </div>
+                            <Select value={selectedChain.symbol} onValueChange={handleChainChange}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Chain" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {filteredChains.map((chain) => (
+                                        <SelectItem key={chain.id} value={chain.symbol}>
+                                            {chain.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
-                        <div className="right h-32 flex-1 my-10 md:mt-0 w-full ">
+                        <div className="right h-32 flex-1 my-0 md:my-10 md:mt-0 w-full ">
                             <WalletOverviewChart walletSummary={walletSummary} />
                         </div>
                     </CardContent>
                 </Card>
             </div>
-        </>
+        </div>
     );
 }

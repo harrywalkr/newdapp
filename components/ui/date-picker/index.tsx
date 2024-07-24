@@ -16,9 +16,10 @@ import {
 interface DatePickerProps {
   label: string;
   selectedDate?: Date;
+  className?: string
   onSelect: (date: Date) => void;
 }
-export function DatePicker({ label, selectedDate, onSelect }: DatePickerProps) {
+export function DatePicker({ label, className, selectedDate, onSelect }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (date?: Date) => {
@@ -34,6 +35,7 @@ export function DatePicker({ label, selectedDate, onSelect }: DatePickerProps) {
           variant={"outline"}
           className={cn(
             "min-w-4 justify-start text-left font-normal",
+            className,
             !selectedDate && "text-muted-foreground"
           )}
         >

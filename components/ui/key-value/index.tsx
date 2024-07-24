@@ -44,7 +44,7 @@ const KeyValue = forwardRef<HTMLDivElement, KeyValueProps>(({
 }, ref) => {
     return (
         <div
-            className={clsx('flex items-start gap-1 text-base', stretch ? 'justify-between' : 'justify-start', className)}
+            className={clsx('flex items-center gap-1 text-base w-full', stretch ? 'justify-between gap-0' : 'justify-start', className)}
             ref={ref}
             {...props}
         >
