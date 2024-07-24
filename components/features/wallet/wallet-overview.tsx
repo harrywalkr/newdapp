@@ -73,7 +73,7 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
     const filteredChains = currentChain === 'solana' ? availableChains.filter(chain => chain.symbol === 'solana') : availableChains.filter(chain => chain.symbol !== 'solana');
 
     return (
-        <div>
+        <>
             {
                 walletSummary?.description != undefined &&
                 <CryptographyAnimation
@@ -204,6 +204,6 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
                     </CardContent>
                 </Card>
             </div>
-        </div>
+        </>
     );
 }
