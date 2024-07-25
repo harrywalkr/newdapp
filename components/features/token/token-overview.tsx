@@ -66,9 +66,9 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
         <div className='flex flex-col items-stretch justify-stretch lg:flex-row gap-4 w-full'>
             <Card className="w-full flex-1">
                 <CardContent>
-                    <div className="pt-6 flex flex-col md:flex-row items-stretch justify-between h-full">
+                    <div className="pt-6 flex flex-col  md:flex-row items-stretch justify-between h-full">
                         <div className="left flex flex-col gap-5">
-                            <div className="top flex items-center justify-start gap-5">
+                            <div className="top flex flex-col md:flex-row items-center justify-start gap-5">
                                 <Avatar className="h-20 w-20">
                                     {logoLoading ? (
                                         <AvatarFallback>Loading...</AvatarFallback>
@@ -157,7 +157,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                         Overview
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="flex items-start justify-between w-full h-full gap-4">
+                <CardContent className="flex flex-col-reverse items-center md:flex-row md:items-start justify-between w-full h-full gap-4">
                     <div className='right flex flex-col gap-2'>
                         {
                             token.data != undefined &&
