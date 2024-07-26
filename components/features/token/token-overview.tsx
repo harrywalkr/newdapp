@@ -7,7 +7,6 @@ import PriceFormatter from '@/utils/PriceFormatter';
 import { formatCash } from '@/utils/numbers';
 import { minifyContract, minifyTokenName } from '@/utils/truncate';
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { KeyValue } from '@/components/ui/key-value';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import SocialMedia from './social-media';
@@ -17,13 +16,11 @@ import { getLogo } from '@/services/http/image.http';
 import { Button } from '@/components/ui/button';
 import { StarIcon } from '@radix-ui/react-icons';
 import { FaStar } from 'react-icons/fa';
-import ChainImage from '@/utils/ChainImage';
 import Renounce from './Renounce';
 import { CiLock } from 'react-icons/ci';
 import { Progress } from '@/components/ui/progress';
 import CustomPieChart from './CustomPieChart';
 
-dayjs.extend(relativeTime);
 
 interface Props {
     tokenAddress: string,
@@ -43,15 +40,13 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
     const setLoading = useLoadingStore((state) => state.setLoading); // Use setLoading from the store
 
     useEffect(() => {
+        setLoading(false);
+    }, [setLoading]);
+
+    useEffect(() => {
         const inWatchlist = watchlist.some(w => w.contractAddress === tokenAddress);
         setIsInWatchlist(inWatchlist);
     }, [watchlist, tokenAddress]);
-
-    useEffect(() => {
-        if (!logoLoading && !logoError) {
-            setLoading(false);
-        }
-    }, [logoLoading, logoError, setLoading]);
 
     const handleWatchlistToggle = () => {
         if (isInWatchlist) {
@@ -164,7 +159,7 @@ export default function TokenOverview({ token, tokenAddress, network }: Props) {
                             token.data[0]?.attributes?.pool_created_at != undefined &&
                             <KeyValue
                                 title="Age"
-                                value={dayjs().to(token.data[0].attributes?.pool_created_at)}
+                                value={dayjs(token.data[0].attributes?.pool_created_at).fromNow()}
                             />
                         }
                         <Liquidity token={token} />
@@ -267,7 +262,7 @@ function Timestamp({ token }: { token: IToken }) {
     return (
         token?.timestamp != undefined ? (
             <h3 className="bottom whitespace-nowrap text-muted-foreground text-sm">
-                {dayjs().to(token.timestamp)}
+                {dayjs(token.timestamp).fromNow()}
             </h3>
         ) : (
             <p>No timestamp available</p>

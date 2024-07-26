@@ -7,7 +7,6 @@ import { RiNftLine } from 'react-icons/ri';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { IoIosSwap } from "react-icons/io";
 import WalletSwaps from "./Wallet-swaps";
-import WalletTransactionOldShit from "./WalletTransaction-old-shit";
 import WalletStatisticalPnLTrades from "./WalletStatistical-old-dex/WalletStatisticalPnLTrades";
 import WalletNFTHolding from "./Nft";
 import WalletOverview from "./WalletOverview2";
@@ -15,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import WalletScoring from "./WalletScoring/WalletScoring";
 import TopRatedTokens from "./TopRatedTokens";
 import WalletPortfolio from "./TokenBalance";
+import WalletTransactions from "./WalletTransactions";
 interface Props {
   walletAddress: string;
   walletSummary: WalletSummaryType;
@@ -93,7 +93,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             <WalletNFTHolding walletAddress={walletAddress} />
           </TabsContent>
           <TabsContent value="Transactions" className='mt-5'>
-            <WalletTransactionOldShit walletAddress={walletAddress} dateRange={dateRange} />
+            <WalletTransactions walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
         </Tabs>
       </CardContent>
