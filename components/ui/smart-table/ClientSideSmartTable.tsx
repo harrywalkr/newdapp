@@ -1,18 +1,17 @@
 import {
   ColumnDef,
   ColumnFiltersState,
-  PaginationState,
   SortingState,
-  Updater,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  getPaginationRowModel,
+  PaginationState,
 } from "@tanstack/react-table"
 import {
   Table,
@@ -31,7 +30,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchColumnAccessorKey: string
-  children: ReactNode
+  children?: ReactNode
+  disablePagination?: boolean
 }
 
 export function ClientSideSmartTable<TData, TValue>({
@@ -39,6 +39,7 @@ export function ClientSideSmartTable<TData, TValue>({
   data,
   searchColumnAccessorKey,
   children,
+  disablePagination = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -49,7 +50,6 @@ export function ClientSideSmartTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    manualPagination: false,
     state: {
       sorting,
       columnVisibility,
@@ -66,10 +66,10 @@ export function ClientSideSmartTable<TData, TValue>({
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    ...(disablePagination ? {} : { getPaginationRowModel: getPaginationRowModel() }),
   });
 
   return (
@@ -130,7 +130,7 @@ export function ClientSideSmartTable<TData, TValue>({
           </Table>
         </ScrollArea>
       </div>
-      <DataTablePagination table={table} />
+      {!disablePagination && <DataTablePagination table={table} />}
     </div>
   )
 }

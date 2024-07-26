@@ -30,8 +30,8 @@ interface Props {
     walletAddress: string;
     walletSummary: WalletSummaryType;
     walletBalance: WalletBalanceType;
-    dateRange: { from?: Date, till?: Date };
-    onDateChange: (newDateRange: { from: Date, till: Date }) => void;
+    dateRange: { from?: Date, to?: Date };
+    onDateChange: (newDateRange: { from: Date, to: Date }) => void;
     onChainChange: (chainSymbol: string) => void;
 }
 
@@ -47,7 +47,7 @@ export default function WalletOverview({ walletAddress, walletSummary, walletBal
         if (fromDate && toDate) {
             onDateChange({
                 from: fromDate,
-                till: toDate
+                to: toDate
             });
         }
     };

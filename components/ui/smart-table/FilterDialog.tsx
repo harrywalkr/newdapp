@@ -37,8 +37,8 @@ type DateFilter = FilterBase & {
 };
 
 type DateRangeFilter = FilterBase & {
-    state: { from: Date | undefined, to: Date | undefined };
-    setState: (value: { from: Date | undefined, to: Date | undefined }) => void;
+    state: { from: Date | undefined; to: Date | undefined };
+    setState: (value: { from: Date | undefined; to: Date | undefined }) => void;
     type: 'date-range';
 };
 
@@ -56,25 +56,25 @@ const FilterDialog = ({ filters }: Props) => {
 
     const handleRangeChange = (index: number, newValue: [number, number]) => {
         const updatedFilters = [...tempFilters];
-        updatedFilters[index].state = newValue;
+        (updatedFilters[index] as RangeFilter).state = newValue;
         setTempFilters(updatedFilters);
     };
 
     const handleDropdownChange = (index: number, newValue: string) => {
         const updatedFilters = [...tempFilters];
-        updatedFilters[index].state = newValue;
+        (updatedFilters[index] as DropdownFilter).state = newValue;
         setTempFilters(updatedFilters);
     };
 
     const handleDateChange = (index: number, newValue: Date | undefined) => {
         const updatedFilters = [...tempFilters];
-        updatedFilters[index].state = newValue;
+        (updatedFilters[index] as DateFilter).state = newValue;
         setTempFilters(updatedFilters);
     };
 
-    const handleDateRangeChange = (index: number, newValue: { from: Date | undefined, to: Date | undefined }) => {
+    const handleDateRangeChange = (index: number, newValue: { from: Date | undefined; to: Date | undefined }) => {
         const updatedFilters = [...tempFilters];
-        updatedFilters[index].state = newValue;
+        (updatedFilters[index] as DateRangeFilter).state = newValue;
         setTempFilters(updatedFilters);
     };
 
@@ -177,15 +177,15 @@ const FilterDialog = ({ filters }: Props) => {
                                             <div className="w-auto">
                                                 <DatePicker
                                                     label={`${filter.name} From`}
-                                                    selectedDate={(filter.state as { from: Date | undefined, to: Date | undefined }).from}
-                                                    onSelect={(date) => handleDateRangeChange(index, { ...filter.state as { from: Date | undefined, to: Date | undefined }, from: date })}
+                                                    selectedDate={(filter.state as { from: Date | undefined; to: Date | undefined }).from}
+                                                    onSelect={(date) => handleDateRangeChange(index, { ...filter.state as { from: Date | undefined; to: Date | undefined }, from: date })}
                                                 />
                                             </div>
                                             <div className="w-auto">
                                                 <DatePicker
                                                     label={`${filter.name} To`}
-                                                    selectedDate={(filter.state as { from: Date | undefined, to: Date | undefined }).to}
-                                                    onSelect={(date) => handleDateRangeChange(index, { ...filter.state as { from: Date | undefined, to: Date | undefined }, to: date })}
+                                                    selectedDate={(filter.state as { from: Date | undefined; to: Date | undefined }).to}
+                                                    onSelect={(date) => handleDateRangeChange(index, { ...filter.state as { from: Date | undefined; to: Date | undefined }, to: date })}
                                                 />
                                             </div>
                                         </div>

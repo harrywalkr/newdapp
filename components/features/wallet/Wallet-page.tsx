@@ -18,8 +18,8 @@ interface Props {
 }
 
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance, chain }) => {
-    const [dateRange, setDateRange] = useState<{ from?: Date; till?: Date }>({});
-    const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; till?: Date; network?: string }>({});
+    const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
+    const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; to?: Date; network?: string }>({});
     const { selectedChain, availableChains, setSelectedChain } = useTokenChainStore();
     const searchParams = useSearchParams();
     const setLoading = useLoadingStore((state) => state.setLoading);
@@ -56,7 +56,7 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         const fetchWalletParams = async () => {
             const params = await getWalletParams(walletAddress, { params: { network: chain } });
             setWalletParams(params);
-            setDateRange({ from: params.from!, till: params.till! });
+            setDateRange({ from: params.from!, to: params.to! });
         };
         fetchWalletParams();
     }, [walletAddress, selectedChain]);
@@ -67,7 +67,7 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         }
     }, [dateRange, refetchSummary, walletParams, selectedChain]);
 
-    const handleDateChange = (newDateRange: { from: Date; till: Date }) => {
+    const handleDateChange = (newDateRange: { from: Date; to: Date }) => {
         setDateRange(newDateRange);
     };
 
