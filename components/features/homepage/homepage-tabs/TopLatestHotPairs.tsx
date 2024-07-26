@@ -3,7 +3,7 @@
 import { Section, SectionContent } from "@/components/layout/Section";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ImageType } from "@/types/Image.type";
+import { ImageEndpoint, ImageType } from "@/types/Image.type";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useTokenChainStore } from "@/store";
@@ -13,7 +13,7 @@ import TopTokenTable from "./TopTokenTable";
 dayjs.extend(relativeTime);
 
 interface Props {
-    images: ImageType[];
+    images: ImageEndpoint;
 }
 
 export function TopLatestHotPairs({ images }: Props) {

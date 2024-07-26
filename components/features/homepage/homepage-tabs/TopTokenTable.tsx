@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import PriceFormatter from "@/utils/PriceFormatter";
 import { formatCash } from "@/utils/numbers";
 import { useTokenChainStore, useWatchlistStore } from "@/store";
-import { ImageType } from "@/types/Image.type";
+import { ImageEndpoint, ImageType } from "@/types/Image.type";
 import { Daum } from '@/types/token.type';
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
@@ -23,7 +23,7 @@ import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 import { ServerSideSmartTableOld } from '@/components/ui/smart-table/ServerSideSmartTableOld';
 
 interface Props {
-    images: ImageType[];
+    images: ImageEndpoint;
     TopTokenInitData: Daum[];
     page: number,
     pageCount: number,
@@ -129,7 +129,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                 return (
                     <div className="flex items-center">
                         <Avatar className="h-9 w-9">
-                            <AvatarImage src={imageUrl(tokenId, images)} alt="Avatar" />
+                            <AvatarImage src={imageUrl(tokenId, images.imageUrls)} alt="Avatar" />
                             <AvatarFallback>
                                 {/* {tokenId.charAt(0)} */}
                                 <AvatarPlaceholder />

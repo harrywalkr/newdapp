@@ -1,5 +1,5 @@
 'use client';
-import  { FC } from 'react';
+import { FC } from 'react';
 import { TopLatestHotPairs } from './TopLatestHotPairs';
 import { NFTTradeReportType } from '@/types/nft.type';
 import Wallets from './Wallets';
@@ -8,11 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopHotTokens from './Top-hot-tokens';
 import TableLoading from '@/components/layout/Table-loading';
 import LatestHotTokens from './latest-hot-tokens';
-import { ImageType } from '@/types/Image.type';
+import { ImageEndpoint, ImageType } from '@/types/Image.type';
 
- interface HomepageTabsProps {
-    images:  ImageType[];
-    nfts:  NFTTradeReportType;
+interface HomepageTabsProps {
+    images: ImageEndpoint;
+    nfts: NFTTradeReportType;
 }
 const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
     if (!images || !nfts) {

@@ -1,8 +1,10 @@
 
 import Insight from "@/components/features/homepage/insight/Insight";
 import HomepageTabs from "@/components/features/homepage/homepage-tabs/Homepage-tabs";
-import {getImages} from '@/app/services/http/image.http'
-import {getTopNFTs} from '@/app/services/http/nft.http'
+import { getImages } from "@/services/http/image.http";
+import { getTopNFTs } from "@/services/http/nft.http";
+// import {getImages} from '@/app/services/http/image.http'
+// import {getTopNFTs} from '@/app/services/http/nft.http'
 
 export default async function Home() {
     try {
