@@ -28,7 +28,7 @@ const TrendingTradersItem = ({ wallet, index, total }: Props) => {
         <React.Fragment key={wallet.walletAddress}>
             <div
                 className="flex items-start justify-between hover:bg-muted/50 rounded-md hover:cursor-pointer py-1"
-                onClick={() => router.push(`/wallet/${wallet.walletAddress}`)}
+                onClick={() => router.push(`/wallet/${wallet.walletAddress}?network=${selectedChain.symbol}`)}
             >
                 <div className='flex items-center justify-start gap-5'>
                     <AvatarPlaceholder />
