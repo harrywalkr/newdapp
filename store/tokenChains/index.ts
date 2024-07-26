@@ -1,13 +1,12 @@
 import { create } from "zustand";
 
-// Updated type for a single token chain with new properties
 export type TokenChain = {
   id: number;
   name: string;
   symbol: string;
   nativeTokenName: string;
-  icon: string; // Icon URL for the token
-  url: string; // URL for token data or trends
+  icon: string;
+  url: string;
 };
 
 // Define the type for the store's state
@@ -22,7 +21,6 @@ interface TokenChainState {
 // Create the store
 const useTokenChainStore = create<TokenChainState>((set, get) => ({
   availableChains: [
-    // Example initial chains updated with new properties
     {
       id: 1,
       nativeTokenName: "eth",

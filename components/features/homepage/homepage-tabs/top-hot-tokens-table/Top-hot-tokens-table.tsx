@@ -118,44 +118,6 @@ export default function TopHotTokensTable({ images, initTokenData }: Props) {
             },
         },
         {
-            accessorKey: 'priceChange24h',
-            header: ({ column }) => {
-                const isSortedAsc = column.getIsSorted() === 'asc';
-                const isSortedDesc = column.getIsSorted() === 'desc';
-
-                const toggleSorting = () => {
-                    if (isSortedAsc) {
-                        column.toggleSorting(true);
-                    } else if (isSortedDesc) {
-                        column.clearSorting();
-                    } else {
-                        column.toggleSorting(false);
-                    }
-                };
-
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={toggleSorting}
-                    >
-                        24%
-                        {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
-                        {isSortedDesc && <ArrowDownIcon className="ml-2 h-4 w-4" />}
-                        {!column.getIsSorted() && <Icons.sort className="ml-2 h-4 w-4" />}
-                    </Button>
-                );
-            },
-            cell: ({ row }) => {
-                const change = row.original.attributes.price_usd || "0";
-                return (
-                    <span className={clsx({ 'text-success': +change > 0, 'text-red-400': +change < 0 })}>
-                        {change}%
-                    </span>
-                );
-            },
-            sortingFn: (a, b) => customSorting(a, b, (obj) => parseFloat(obj.attributes.price_usd || "0")),
-        },
-        {
             accessorKey: 'price',
             header: ({ column }) => {
                 const isSortedAsc = column.getIsSorted() === 'asc';

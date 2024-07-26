@@ -8,13 +8,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopHotTokens from './Top-hot-tokens';
 import TableLoading from '@/components/layout/Table-loading';
 import LatestHotTokens from './latest-hot-tokens';
-import { ImageEndpoint, ImageType } from '@/types/Image.type';
+import { ImageEndpoint } from '@/types/Image.type';
+import { useTokenChainStore } from '@/store';
 
 interface HomepageTabsProps {
     images: ImageEndpoint;
     nfts: NFTTradeReportType;
 }
+
 const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
+    const { selectedChain } = useTokenChainStore();
+
+    const isETHChain = selectedChain.symbol === 'eth';
+
     if (!images || !nfts) {
         return (
             <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7 no-scrollbar">
@@ -22,8 +28,8 @@ const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
                     <TabsTrigger value="TopLatestHotPairs" className="text-[17px] md:text-lg">Top Tokens</TabsTrigger>
                     <TabsTrigger value="Wallets" className="text-[17px] md:text-lg">Top Wallets</TabsTrigger>
                     <TabsTrigger value="NFTs" className="text-[17px] md:text-lg">Trending NFTs</TabsTrigger>
-                    <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>
-                    <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>
+                    {isETHChain && <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>}
+                    {isETHChain && <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>}
                 </TabsList>
                 {['TopLatestHotPairs', 'Wallets', 'NFTs', 'TopHotTokens', 'LatestHotTokens'].map(value => (
                     <TabsContent key={value} value={value} className="mt-5">
@@ -40,8 +46,8 @@ const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
                 <TabsTrigger value="TopLatestHotPairs" className="text-[17px] md:text-lg">Top Tokens</TabsTrigger>
                 <TabsTrigger value="Wallets" className="text-[17px] md:text-lg">Top Wallets</TabsTrigger>
                 <TabsTrigger value="NFTs" className="text-[17px] md:text-lg">Trending NFTs</TabsTrigger>
-                <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>
-                <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>
+                {isETHChain && <TabsTrigger value="TopHotTokens" className="text-[17px] md:text-lg">Top Hot Tokens</TabsTrigger>}
+                {isETHChain && <TabsTrigger value="LatestHotTokens" className="text-[17px] md:text-lg">Latest Hot Tokens</TabsTrigger>}
             </TabsList>
             <TabsContent value="TopLatestHotPairs" className="mt-5">
                 {images && <TopLatestHotPairs images={images} />}
@@ -52,12 +58,16 @@ const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
             <TabsContent value="NFTs" className="mt-5">
                 {nfts && <NFT NFTs={nfts} />}
             </TabsContent>
-            <TabsContent value="TopHotTokens" className="mt-5">
-                <TopHotTokens />
-            </TabsContent>
-            <TabsContent value="LatestHotTokens" className="mt-5">
-                <LatestHotTokens />
-            </TabsContent>
+            {isETHChain && (
+                <>
+                    <TabsContent value="TopHotTokens" className="mt-5">
+                        <TopHotTokens />
+                    </TabsContent>
+                    <TabsContent value="LatestHotTokens" className="mt-5">
+                        <LatestHotTokens />
+                    </TabsContent>
+                </>
+            )}
         </Tabs>
     );
 }
