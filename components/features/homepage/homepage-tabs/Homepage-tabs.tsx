@@ -1,27 +1,21 @@
-'use client'
+'use client';
+import  { FC } from 'react';
 import { TopLatestHotPairs } from './TopLatestHotPairs';
+import { NFTTradeReportType } from '@/types/nft.type';
 import Wallets from './Wallets';
 import NFT from './NFT';
-import { useQuery } from '@tanstack/react-query';
-import { getImages } from '@/services/http/image.http';
-import { getTopNFTs } from '@/services/http/nft.http';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopHotTokens from './Top-hot-tokens';
 import TableLoading from '@/components/layout/Table-loading';
 import LatestHotTokens from './latest-hot-tokens';
+import { ImageType } from '@/types/Image.type';
 
-export default function HomepageTabs() {
-    const { isLoading: isImagesLoading, error: imageErrors, data: images } = useQuery({
-        queryKey: ['images'],
-        queryFn: () => getImages().then((data) => data.imageUrls),
-    });
-
-    const { isLoading: isNtfLoading, error: nftErrors, data: nfts } = useQuery({
-        queryKey: ['nfts'],
-        queryFn: () => getTopNFTs(),
-    });
-
-    if (isImagesLoading || isNtfLoading) {
+ interface HomepageTabsProps {
+    images:  ImageType[];
+    nfts:  NFTTradeReportType;
+}
+const HomepageTabs: FC<HomepageTabsProps> = ({ images, nfts }) => {
+    if (!images || !nfts) {
         return (
             <Tabs defaultValue="TopLatestHotPairs" className="w-full mt-7 no-scrollbar">
                 <TabsList className="bg-transparent p-0 m-0 w-full overflow-y-scroll flex items-center justify-start">
@@ -38,10 +32,6 @@ export default function HomepageTabs() {
                 ))}
             </Tabs>
         );
-    }
-
-    if (imageErrors || nftErrors) {
-        return <div>Failed to load data, please try again.</div>;
     }
 
     return (
@@ -71,3 +61,5 @@ export default function HomepageTabs() {
         </Tabs>
     );
 }
+
+export default HomepageTabs;
