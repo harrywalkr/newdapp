@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { getCampaignStatus } from "@/services/http/campaign.http";
 import Confetti from 'react-confetti';
+import useWindowSize from 'react-use/lib/useWindowSize'
 
 interface CampaignStatus {
   eligibility: {
@@ -32,6 +33,7 @@ export default function ConnectWalletButton() {
   const { open } = useWeb3Modal();
   const { isConnected, address } = useAccount();
   const [isOpen, setIsOpen] = useState(false);
+  const { width, height } = useWindowSize()
 
   const { data: campaignStatus, isPending, error } = useQuery<CampaignStatus>({
     queryKey: ['campaignStatus', address],
@@ -87,7 +89,12 @@ export default function ConnectWalletButton() {
           <AlertDialogFooter>
             <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
-          {isOpen && <Confetti />}
+          {isOpen &&
+            <Confetti
+              width={width}
+              height={height}
+            />
+          }
         </AlertDialogContent>
       </AlertDialog>
     </>
