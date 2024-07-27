@@ -59,7 +59,7 @@ export const getWalletParams = async (
 ): Promise<{
   limit?: number;
   from?: Date;
-  till?: Date;
+  to?: Date;
 }> => {
   const walletStat: WalletStatType = await getWalletStat({
     ...options,
