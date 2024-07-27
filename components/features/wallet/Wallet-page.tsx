@@ -18,7 +18,11 @@ interface Props {
 }
 
 const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, initialWalletBalance, chain }) => {
-    const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
+    const now = new Date();
+    const threeMonthsAgo = new Date(now);
+    threeMonthsAgo.setMonth(now.getMonth() - 3);
+
+    const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({ from: threeMonthsAgo, to: now });
     const [walletParams, setWalletParams] = useState<{ limit?: number; from?: Date; to?: Date; network?: string }>({});
     const { selectedChain, availableChains, setSelectedChain } = useTokenChainStore();
     const searchParams = useSearchParams();
@@ -39,11 +43,19 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         }
     }, [availableChains, searchParams, setSelectedChain]);
 
+    useEffect(() => {
+        const fetchWalletParams = async () => {
+            const params = await getWalletParams(walletAddress, { params: { network: chain } });
+            setWalletParams(params);
+        };
+        fetchWalletParams();
+    }, [walletAddress, selectedChain]);
+
     const { data: walletSummary, refetch: refetchSummary } = useQuery({
         queryKey: ['walletSummary', walletAddress, dateRange, walletParams],
         queryFn: () => getWalletSummary(walletAddress, { params: { ...dateRange, ...walletParams, network: chain } }),
         initialData: initialWalletSummary,
-        enabled: !!dateRange,
+        enabled: !!dateRange.from && !!dateRange.to,
     });
 
     const { data: walletBalance } = useQuery({
@@ -51,15 +63,6 @@ const WalletPage: React.FC<Props> = ({ walletAddress, initialWalletSummary, init
         queryFn: () => getWalletBalance(walletAddress, { params: { network: chain } }),
         initialData: initialWalletBalance,
     });
-
-    useEffect(() => {
-        const fetchWalletParams = async () => {
-            const params = await getWalletParams(walletAddress, { params: { network: chain } });
-            setWalletParams(params);
-            setDateRange({ from: params.from!, to: params.to! });
-        };
-        fetchWalletParams();
-    }, [walletAddress, selectedChain]);
 
     useEffect(() => {
         if (dateRange) {
