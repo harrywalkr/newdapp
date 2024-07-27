@@ -79,14 +79,12 @@ export const getWalletParams = async (
   ) {
     return {
       limit: 100000,
-      // from: formatDate(, "dash"),
       from: getPastDate(3),
       to: new Date(),
     };
   } else if (12000 < sendTxCount + receiveTxCount) {
     return {
       limit: 100000,
-      // from: formatDate(getPastDate(3), "dash"),
       from: getPastDate(3),
       to: new Date(),
     };

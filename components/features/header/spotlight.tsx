@@ -187,7 +187,7 @@ const Spotlight = () => {
   );
 
   const handleNavigation = (url: string) => {
-    setLoadingStore(true); // Turn on the loading state
+    setLoadingStore(true);
     router.push(url);
   };
 

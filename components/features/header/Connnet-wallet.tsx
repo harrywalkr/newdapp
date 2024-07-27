@@ -5,7 +5,8 @@ import { minifyContract } from "@/utils/truncate";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { LuWallet } from "react-icons/lu";
 import { useAccount } from 'wagmi';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -18,32 +19,32 @@ import {
   AlertDialogAction
 } from "@/components/ui/alert-dialog";
 import { getCampaignStatus } from "@/services/http/campaign.http";
-import { ICampaign } from "@/types/campaign.type";
+import Confetti from 'react-confetti';
+
+interface CampaignStatus {
+  eligibility: {
+    isEligible: boolean;
+  };
+  name?: string;
+}
 
 export default function ConnectWalletButton() {
   const { open } = useWeb3Modal();
   const { isConnected, address } = useAccount();
-  const [isEligible, setIsEligible] = useState(false);
-  const [campaignStatus, setCampaignStatus] = useState<ICampaign>();
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchCampaignStatus = async () => {
-      if (isConnected && address) {
-        try {
-          const campaign = await getCampaignStatus();
-          if (campaign.eligibility.isEligible) {
-            setIsEligible(true);
-            setCampaignStatus(campaign);
-            localStorage.setItem('campaignStatus', JSON.stringify(campaign));
-          }
-        } catch (error) {
-          console.error("Failed to fetch campaign status:", error);
+  const { data: campaignStatus, isPending, error } = useQuery<CampaignStatus>({
+    queryKey: ['campaignStatus', address],
+    queryFn: () => getCampaignStatus({ params: { address: address } })
+      .then((data) => {
+        if (data.eligibility.isEligible) {
+          setIsOpen(true);
+          localStorage.setItem('campaignStatus', JSON.stringify(data));
         }
-      }
-    };
-
-    fetchCampaignStatus();
-  }, [isConnected, address]);
+        return data;
+      }),
+    enabled: !!address,
+  });
 
   return (
     <>
@@ -68,24 +69,27 @@ export default function ConnectWalletButton() {
           }
         </h3>
       </Button>
-
-      {isEligible && (
-        <AlertDialog>
-          <AlertDialogTrigger>Open</AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Congratulations!</AlertDialogTitle>
-              <AlertDialogDescription>
-                You are eligible for our special campaign offer!
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Close</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogTrigger>Open</AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Congratulations!</AlertDialogTitle>
+            <AlertDialogDescription>
+              {
+                campaignStatus?.name && (
+                  <>
+                    <span>You are eligible for {campaignStatus.name}!</span>
+                  </>
+                )
+              }
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+          {isOpen && <Confetti />}
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
