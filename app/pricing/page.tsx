@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import PricingPageContent2 from '@/components/features/pricinig/PricingPageContent2';
+import PricingPageContent from '@/components/features/pricinig/PricingPageContent';
 
 export const metadata: Metadata = {
     title: "Pricing Page - Dextrading",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const PricingPage = () => {
     return (
-        <PricingPageContent2 />
+        <PricingPageContent />
     );
 }
 

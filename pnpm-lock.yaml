@@ -167,6 +167,9 @@ dependencies:
   react-confetti:
     specifier: ^6.1.0
     version: 6.1.0(react@18.3.1)
+  react-countdown:
+    specifier: ^2.3.5
+    version: 2.3.5(react-dom@18.3.1)(react@18.3.1)
   react-day-picker:
     specifier: ^8.10.1
     version: 8.10.1(date-fns@3.6.0)(react@18.3.1)
@@ -10772,6 +10775,17 @@ packages:
     dependencies:
       react: 18.3.1
       tween-functions: 1.2.0
+    dev: false
+
+  /react-countdown@2.3.5(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-K26ENYEesMfPxhRRtm1r+Pf70SErrvW3g4CArLi/x6MPFjgfDFYePT4UghEj8p2nI0cqVV7/JjDgjyr//U60Og==}
+    peerDependencies:
+      react: '>= 15'
+      react-dom: '>= 15'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /react-day-picker@8.10.1(date-fns@3.6.0)(react@18.3.1):
