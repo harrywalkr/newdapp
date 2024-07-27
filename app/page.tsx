@@ -14,7 +14,7 @@ export default async function Home() {
             <div className="w-full">
                 <Insight />
                 <HomepageTabs images={images} nfts={nfts} />
-                <Link target="_blank" href='https://app.galxe.com/quest/RxeSqDQ5wdkTTK8XF7wHXD/GC9TLtkWJ5' className="fixed flex items-center justify-center w-full py-2 font-semibold text-center text-lg md:text-xl bottom-0 left-0 right-0 bg-[#d9308a] text-white dark:text-black">
+                <Link target="_blank" href='https://app.galxe.com/quest/RxeSqDQ5wdkTTK8XF7wHXD/GC9TLtkWJ5' className="fixed flex items-center justify-center hover:underline w-full py-2 font-semibold text-center text-lg md:text-xl bottom-0 left-0 right-0 bg-[#d9308a] text-white dark:text-black">
                     Don&apos;t miss out on DexTrading anniversary Discounts!!
                 </Link>
             </div>

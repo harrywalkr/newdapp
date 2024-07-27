@@ -28,6 +28,8 @@ import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import localforage from 'localforage';
 import Countdown from 'react-countdown';
+import { IoMdTime } from "react-icons/io";
+
 
 interface CampaignStatus {
   name?: string;
@@ -110,7 +112,13 @@ export default function ConnectWalletButton() {
                       <CardContent>
                         <span className='text-lg line-through decoration-2'>${campaignStatus.specialOffer?.originalPrice}</span>
                         <span className='text-lg ml-2'>${campaignStatus.specialOffer?.discountedPrice}</span> / {campaignStatus.specialOffer?.discountDuration}
-                        <p><strong>Time left:</strong> {campaignStatus.duration && <Countdown date={calculateEndDate(campaignStatus.duration)} />}</p>
+                        <div className="flex items-center justify-start gap-1">
+                          <IoMdTime />
+                          <strong>Time left:</strong>
+                          <p>
+                            {campaignStatus.duration && <Countdown date={calculateEndDate(campaignStatus.duration)} />}
+                          </p>
+                        </div>
                       </CardContent>
                       <CardFooter className="flex justify-between">
                         <li className="flex items-center justify-start gap-2">
