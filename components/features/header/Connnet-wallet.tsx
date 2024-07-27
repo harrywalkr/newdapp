@@ -20,8 +20,21 @@ import {
 import { getCampaignStatus } from "@/services/http/campaign.http";
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
-import { ICampaign } from "@/types/campaign.type";
+import localforage from 'localforage';
 
+interface CampaignStatus {
+  name?: string;
+  description?: string;
+  duration?: string;
+  specialOffer?: {
+    originalPrice: number;
+    discountedPrice: number;
+    discountDuration: string;
+  };
+  eligibility: {
+    isEligible: boolean;
+  };
+}
 
 export default function ConnectWalletButton() {
   const { open } = useWeb3Modal();
@@ -29,21 +42,28 @@ export default function ConnectWalletButton() {
   const [isOpen, setIsOpen] = useState(false);
   const { width, height } = useWindowSize();
 
-  const { data: campaignStatus, refetch } = useQuery<ICampaign>({
+  const { data: campaignStatus, refetch } = useQuery<CampaignStatus>({
     queryKey: ['campaignStatus', address],
     queryFn: () => getCampaignStatus({ params: { address: address } }),
-    enabled: false,
+    enabled: false
   });
 
   useEffect(() => {
-    if (isConnected && address) {
-      refetch().then((result) => {
-        if (result.data?.eligibility.isEligible) {
-          setIsOpen(true);
-          localStorage.setItem('campaignStatus', JSON.stringify(result.data));
+    const checkCampaignStatus = async () => {
+      if (isConnected && address) {
+        const storedCampaignStatus = await localforage.getItem('campaignStatus');
+        if (!storedCampaignStatus) {
+          refetch().then((result) => {
+            if (result.data?.eligibility.isEligible) {
+              setIsOpen(true);
+              localforage.setItem('campaignStatus', result.data);
+            }
+          });
         }
-      });
-    }
+      }
+    };
+
+    checkCampaignStatus();
   }, [isConnected, address, refetch]);
 
   return (
@@ -65,7 +85,16 @@ export default function ConnectWalletButton() {
             <AlertDialogTitle>Congratulations!</AlertDialogTitle>
             <AlertDialogDescription>
               {campaignStatus?.name && (
-                <span>You are eligible for {campaignStatus.name}!</span>
+                <>
+                  <h2>{campaignStatus.name}</h2>
+                  <p>{campaignStatus.description}</p>
+                  <p><strong>Duration:</strong> {campaignStatus.duration}</p>
+                  <div className="offer">
+                    <h3>Special Offer</h3>
+                    <p><strong>Original Price:</strong> {campaignStatus.specialOffer?.originalPrice}</p>
+                    <p><strong>Discounted Price:</strong> {campaignStatus.specialOffer?.discountedPrice}</p>
+                  </div>
+                </>
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
