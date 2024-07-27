@@ -32,7 +32,7 @@ export default function ConnectWalletButton() {
   const { data: campaignStatus, refetch } = useQuery<ICampaign>({
     queryKey: ['campaignStatus', address],
     queryFn: () => getCampaignStatus({ params: { address: address } }),
-    enabled: false, // Disable automatic query on mount
+    enabled: false,
   });
 
   useEffect(() => {
@@ -60,7 +60,6 @@ export default function ConnectWalletButton() {
         </h3>
       </Button>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogTrigger>Open</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Congratulations!</AlertDialogTitle>
