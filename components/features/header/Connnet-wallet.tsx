@@ -89,14 +89,15 @@ export default function ConnectWalletButton() {
           <AlertDialogFooter>
             <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
-          {isOpen &&
-            <Confetti
-              width={width}
-              height={height}
-            />
-          }
         </AlertDialogContent>
       </AlertDialog>
+      {isOpen &&
+        <Confetti
+          className=""
+          width={width}
+          height={height}
+        />
+      }
     </>
   );
 }
