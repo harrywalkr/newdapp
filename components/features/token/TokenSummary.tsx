@@ -1,10 +1,10 @@
 import React from 'react';
-import TradeReport from './trade-report';
 import Chart from './chart';
 import { IToken } from '@/types/token.type';
 import Tradingview from './Tradingview';
 import { KeyValue } from '@/components/ui/key-value';
 import TransactionStats from './TransactionStats';
+import TradeReport from '@/components/features/token/trade-report'
 
 interface Props {
     token: IToken;
