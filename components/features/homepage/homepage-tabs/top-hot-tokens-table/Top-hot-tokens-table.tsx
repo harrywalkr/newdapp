@@ -44,7 +44,7 @@ export default function TopHotTokensTable({ images, initTokenData }: Props) {
     const priceRange = getRange(initTokenData, 'price_usd');
     const volumeRange = getVolumeRange(initTokenData);
     const liquidityRange = getRange(initTokenData, 'total_reserve_in_usd');
-    const priceChange24hRange: [number, number] = [-100, 100]; // Placeholder values, should be updated if real data is available
+    const priceChange24hRange: [number, number] = [-100, 100];
 
     const [priceRangeState, setPriceRange] = useState<[number, number]>(priceRange);
     const [volumeRangeState, setVolumeRange] = useState<[number, number]>(volumeRange);

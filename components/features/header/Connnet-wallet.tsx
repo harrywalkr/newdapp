@@ -75,6 +75,12 @@ export default function ConnectWalletButton() {
     checkCampaignStatus();
   }, [isConnected, address, refetch]);
 
+  useEffect(() => {
+    if (!isConnected) {
+      localforage.removeItem('campaignStatus');
+    }
+  }, [isConnected]);
+
   const calculateEndDate = (duration: string) => {
     const durationInDays = parseInt(duration.split(' ')[0]);
     const endDate = new Date();
@@ -107,7 +113,7 @@ export default function ConnectWalletButton() {
                   <div className="offer">
                     <Card className="mt-5">
                       <CardHeader>
-                        <CardTitle>Special Offer</CardTitle>
+                        <CardTitle>Special Offer 🎉</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <span className='text-lg line-through decoration-2'>${campaignStatus.specialOffer?.originalPrice}</span>
