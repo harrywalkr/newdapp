@@ -148,7 +148,8 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       header: 'Swap Value',
       cell: ({ row }) => {
         const transaction = row.original;
-        return transaction.description?.profit !== undefined ? '$ ' + transaction.description?.profit.toFixed(2) : 'N/A';
+        // return transaction.description?.profit !== undefined ? '$ ' + transaction.description?.profit.toFixed(2) : 'N/A';
+        return transaction.amount_usd !== undefined ? '$ ' + transaction.amount_usd.toFixed(2) : 'N/A';
       }
     }
   ];

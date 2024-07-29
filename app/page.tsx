@@ -23,3 +23,4 @@ export default async function Home() {
         return <div>Failed to load data, please try again.</div>;
     }
 }
+
