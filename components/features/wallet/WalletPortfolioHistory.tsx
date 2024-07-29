@@ -61,7 +61,7 @@ export default function WalletPortfolioHistory({ images, walletSwaps }: WalletPo
             <Table>
                 <TableHeader>
                     <TableRow>
-                        {["Rank", "Symbol", "Type", "Balance", "Price", "Buy Amount (USD)", "Entry Price", "Sell Amount (USD)", "Current Value", "Live P&L"].map((header) => (
+                        {["Rank", "Symbol", 'Token Name', "Type", "Balance", "Price", "Buy Amount (USD)", "Entry Price", "Sell Amount (USD)", "Current Value", "Live P&L"].map((header) => (
                             <TableHead key={header} className="text-center">{header}</TableHead>
                         ))}
                     </TableRow>
@@ -158,6 +158,7 @@ const Record = ({ data, images, id }: RecordProps) => {
                     )}
                 </div>
             </TableCell>
+
             <TableCell>
                 <div className="flex items-center gap-2">
                     <div className="avatar">
@@ -177,6 +178,9 @@ const Record = ({ data, images, id }: RecordProps) => {
                         <Copy text={minifyContract(data["Currency Address"])} value={data["Currency Address"]} />
                     </div>
                 </div>
+            </TableCell>
+            <TableCell className={baseContentClass}>
+                {data.tokenName}
             </TableCell>
             <TableCell className={`${baseContentClass} p-2 rounded-lg ${type === "Open" || type === "Closed" ? "bg-success/80" : "bg-success/60"} text-base-100 max-w-[150px] whitespace-nowrap`}>
                 {type}
