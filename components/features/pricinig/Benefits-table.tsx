@@ -58,20 +58,33 @@ const BenefitsTable = ({ className }: Props) => {
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Fee Tracking Bot (Click To See)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">
+                            <a href="https://t.me/DextradingFeebot" target="_blank" rel="noopener noreferrer">
+                                Fee Tracking Bot (Click To See)
+                            </a>
+                        </TableCell>
                         <TableCell className="whitespace-nowrap text-center">✅</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Watchlist Notification (Click To See)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">
+                            <a href="https://t.me/WatchlistDextradingBot" target="_blank" rel="noopener noreferrer">
+                                Custom Watchlist Notification (Click To See)
+                            </a>
+                        </TableCell>
                         <TableCell className="whitespace-nowrap text-center">❌</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Wallet Notification (Click To See)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">
+                            <a href="https://t.me/Dextradingwalletbot" target="_blank" rel="noopener noreferrer">
+                                Custom Wallet Notification (Click To See)
+                            </a>
+                        </TableCell>
                         <TableCell className="whitespace-nowrap text-center">❌</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
+
                     <TableRow className="border-none">
                         <TableCell className="whitespace-nowrap rounded-l-md py-3 ">24/7 Support</TableCell>
                         <TableCell className="whitespace-nowrap text-center">❌</TableCell>
