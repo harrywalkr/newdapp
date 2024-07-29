@@ -168,6 +168,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     <Button
                         variant="ghost"
                         onClick={toggleSorting}
+                        className='w-full'
                     >
                         24%
                         {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
@@ -179,9 +180,9 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
             cell: ({ row }) => {
                 const change = Math.floor(parseFloat(row.original.attributes?.price_change_percentage?.h24 || "0"));
                 return (
-                    <span className={clsx({ 'text-success': change > 0, 'text-red-400': change < 0 })}>
+                    <div className={clsx({ 'text-success': change > 0, 'text-red-400': change < 0 }, 'text-center')}>
                         {change}%
-                    </span>
+                    </div>
                 );
             },
             sortingFn: (a, b) => customSorting(a, b, (obj) => Math.floor(parseFloat(obj.attributes?.price_change_percentage?.h24 || "0"))),
@@ -206,6 +207,8 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     <Button
                         variant="ghost"
                         onClick={toggleSorting}
+                        className='w-full'
+
                     >
                         Price
                         {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
@@ -214,7 +217,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     </Button>
                 );
             },
-            cell: ({ row }) => <PriceFormatter dollarSign value={Math.floor(parseFloat(row.original.attributes?.base_token_price_usd || "0"))} />,
+            cell: ({ row }) => <div className='flex items-center justify-center'><PriceFormatter dollarSign value={Math.floor(parseFloat(row.original.attributes?.base_token_price_usd || "0"))} /></div>,
             sortingFn: (a, b) => customSorting(a, b, (obj) => Math.floor(parseFloat(obj.attributes?.base_token_price_usd || "0"))),
         },
         {
@@ -237,6 +240,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     <Button
                         variant="ghost"
                         onClick={toggleSorting}
+                        className='w-full'
                     >
                         Liquidity
                         {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
@@ -245,7 +249,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     </Button>
                 );
             },
-            cell: ({ row }) => formatCash(Math.floor(parseFloat(row.original.attributes?.reserve_in_usd || "0"))),
+            cell: ({ row }) => <div className='flex items-center justify-center'>{formatCash(Math.floor(parseFloat(row.original.attributes?.reserve_in_usd || "0")))}</div>,
             sortingFn: (a, b) => customSorting(a, b, (obj) => Math.floor(parseFloat(obj.attributes?.reserve_in_usd || "0"))),
         },
         {
@@ -268,6 +272,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     <Button
                         variant="ghost"
                         onClick={toggleSorting}
+                        className='w-full'
                     >
                         24 Volume
                         {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
@@ -276,7 +281,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     </Button>
                 );
             },
-            cell: ({ row }) => formatCash(Math.floor(parseFloat(row.original.attributes?.volume_usd?.h24 || "0"))),
+            cell: ({ row }) => <div className='flex items-center justify-center'>{formatCash(Math.floor(parseFloat(row.original.attributes?.volume_usd?.h24 || "0")))}</div>,
             sortingFn: (a, b) => customSorting(a, b, (obj) => Math.floor(parseFloat(obj.attributes?.volume_usd?.h24 || "0"))),
         },
         {
@@ -299,6 +304,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     <Button
                         variant="ghost"
                         onClick={toggleSorting}
+                        className='w-full'
                     >
                         Age
                         {isSortedAsc && <ArrowUpIcon className="ml-2 h-4 w-4" />}
@@ -307,7 +313,7 @@ export default function TopTokenTable({ images, TopTokenInitData, setPage, setPa
                     </Button>
                 );
             },
-            cell: ({ row }) => row.original.attributes?.pool_created_at ? dayjs().to(row.original.attributes?.pool_created_at) : "N/A",
+            cell: ({ row }) => <div className='flex items-center justify-center'>{row.original.attributes?.pool_created_at ? dayjs().to(row.original.attributes?.pool_created_at) : "N/A"}</div>,
             sortingFn: (a, b) => {
                 const dateA = dayjs(a.original.attributes?.pool_created_at);
                 const dateB = dayjs(b.original.attributes?.pool_created_at);
