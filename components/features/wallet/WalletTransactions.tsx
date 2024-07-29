@@ -4,20 +4,21 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { BiTimeFive } from 'react-icons/bi';
 import { LuArrowLeftRight } from 'react-icons/lu';
+import { FaEthereum } from 'react-icons/fa';
+import { BsArrowUpRightCircle, BsArrowDownLeftCircle } from 'react-icons/bs';
 import { useQuery } from '@tanstack/react-query';
 import Copy from '@/components/ui/copy';
 import { getWalletSwaps } from '@/services/http/wallets.http';
 import { getImages } from '@/services/http/image.http';
 import { SwapType, TransactionType } from '@/types/swap.type';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { minifyContract } from '@/utils/truncate';
 import { useTokenChainStore } from '@/store';
 import TableLoading from '@/components/layout/Table-loading';
-import { ImageType } from '@/types/Image.type';
 import { ColumnDef } from "@tanstack/react-table";
 import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmartTable';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
+import { imageUrl } from '@/utils/imageUrl';
 
 interface Props {
   walletAddress: string;
@@ -27,7 +28,6 @@ interface Props {
 export default function WalletTransactions({ dateRange: initialDateRange, walletAddress }: Props) {
   const { selectedChain } = useTokenChainStore();
   const [dateRange, setDateRange] = useState<{ from: Date | undefined, to: Date | undefined }>(initialDateRange);
-
 
   const { data: walletSwapsData, isLoading: walletSwapsLoading, error: walletSwapsError } = useQuery({
     queryKey: ["wallet-swaps", { dateRange, walletAddress }, selectedChain.symbol],
@@ -71,32 +71,27 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
             {isSwap ? (
               <>
                 {transaction.transactions && transaction.transactions[0].transaction?.hash &&
-                  <a
-                    href={`https://etherscan.io/tx/${transaction.transactions[0].transaction.hash}`}
-                    target="_blank"
-                    className="link link-hover underline text-info text-sm"
-                  >
-                    {minifyContract(transaction.transactions[0].transaction.hash)}
-                  </a>
-                }
-                {transaction.description?.timestamp && (
-                  <div className="flex items-center">
-                    <BiTimeFive className="text-lg" />
-                    <span>{dayjs(transaction.description.timestamp).fromNow()}</span>
-                  </div>
-                )}
+                  (
+                    <a
+                      href={`https://etherscan.io/tx/${transaction.transactions[0].transaction.hash}`}
+                      target="_blank"
+                      className="link link-hover underline text-info text-sm"
+                    >
+                      {minifyContract(transaction.transactions[0].transaction.hash)}
+                    </a>
+                  )}
               </>
             ) : (
               <>
                 {transaction.transaction?.hash &&
-                  <a
+                  (<a
                     href={`https://etherscan.io/tx/${transaction.transaction.hash}`}
                     target="_blank"
                     className="link link-hover underline text-info text-sm"
                   >
                     {minifyContract(transaction.transaction.hash)}
                   </a>
-                }
+                  )}
               </>
             )}
           </>
@@ -107,6 +102,110 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       accessorKey: 'type',
       header: 'Activity',
       cell: ({ row }) => row.original.type || 'N/A',
+    },
+    {
+      accessorKey: 'tokens',
+      header: 'Tokens',
+      cell: ({ row }) => {
+        const transaction = row.original;
+        const { sentTokenName, receivedTokenName } = transaction.description || {};
+        // const { image, image2 } = imagesData || {};
+
+        if (transaction.type?.includes("swap")) {
+          return (
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <div className="avatar-group -space-x-6">
+                  {sentTokenName === "ETH" ? (
+                    <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
+                      <FaEthereum className="text-2xl" />
+                    </div>
+                  ) : (
+                    <div className="avatar">
+                      <div className="w-16 h-16">
+                        {transaction.description?.sentTokenAddress &&
+                          imagesData != undefined ? (
+                          <img
+                            width={56}
+                            height={56}
+                            src={imageUrl(transaction.description?.sentTokenAddress, imagesData)}
+                            alt={sentTokenName}
+                          />
+                        ) : (
+                          <div className="bg-base-100 flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
+                            {sentTokenName?.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {receivedTokenName === "ETH" ? (
+                    <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
+                      <FaEthereum className="text-2xl" />
+                    </div>
+                  ) : (
+                    <div className="avatar">
+                      {/* <div className="w-16 h-16">
+                        {image2 ? (
+                          <img
+                            width={56}
+                            height={56}
+                            src={image2}
+                            alt={receivedTokenName}
+                            style={{ opacity: image2 ? 1 : 0.3 }}
+                          />
+                        ) : (
+                          <div className="bg-base-100 flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
+                            {receivedTokenName?.charAt(0)}
+                          </div>
+                        )}
+                      </div> */}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col gap-2">
+              {/* <div className="flex items-center gap-16">
+                {currency?.symbol === "ETH" ? (
+                  <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
+                    <FaEthereum className="text-2xl" />
+                  </div>
+                ) : (
+                  <div className="avatar">
+                    <div className="mask mask-squircle w-16 h-16">
+                      {image ? (
+                        <img
+                          width={56}
+                          height={56}
+                          src={image}
+                          alt={currency?.symbol}
+                          style={{ opacity: image ? 1 : 0.3 }}
+                        />
+                      ) : (
+                        <div className="flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
+                          {currency?.symbol.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                <div className="bg-gray-200 rounded-lg text-center p-2 text-gray-700 flex gap-1 items-center">
+                  <span className="capitalize">{type}</span>
+                  {type === "send" ? (
+                    <BsArrowUpRightCircle className="" />
+                  ) : (
+                    <BsArrowDownLeftCircle className="" />
+                  )}
+                </div>
+              </div> */}
+            </div>
+          );
+        }
+      }
     },
     {
       accessorKey: 'action',
