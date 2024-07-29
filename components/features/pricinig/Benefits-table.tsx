@@ -58,17 +58,17 @@ const BenefitsTable = ({ className }: Props) => {
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Fee Tracking Bot(Click To See)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Fee Tracking Bot (Click To See)</TableCell>
                         <TableCell className="whitespace-nowrap text-center">✅</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Watchlist Notification (Click 2C)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Watchlist Notification (Click To See)</TableCell>
                         <TableCell className="whitespace-nowrap text-center">❌</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
                     <TableRow className="border-none">
-                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Wallet Notification (Click 2C)</TableCell>
+                        <TableCell className="whitespace-nowrap rounded-l-md py-3 ">Custom Wallet Notification (Click To See)</TableCell>
                         <TableCell className="whitespace-nowrap text-center">❌</TableCell>
                         <TableCell className="whitespace-nowrap rounded-r-md text-center">✅</TableCell>
                     </TableRow>
