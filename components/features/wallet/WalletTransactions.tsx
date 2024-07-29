@@ -19,6 +19,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmartTable';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 import { imageUrl } from '@/utils/imageUrl';
+import { Avatar, AvatarFallback, AvatarImage, AvatarPlaceholder } from '@/components/ui/avatar';
 
 interface Props {
   walletAddress: string;
@@ -109,99 +110,100 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       cell: ({ row }) => {
         const transaction = row.original;
         const { sentTokenName, receivedTokenName } = transaction.description || {};
-        // const { image, image2 } = imagesData || {};
 
         if (transaction.type?.includes("swap")) {
           return (
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <div className="avatar-group -space-x-6">
-                  {sentTokenName === "ETH" ? (
-                    <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
-                      <FaEthereum className="text-2xl" />
-                    </div>
-                  ) : (
-                    <div className="avatar">
-                      <div className="w-16 h-16">
-                        {transaction.description?.sentTokenAddress &&
-                          imagesData != undefined ? (
-                          <img
-                            width={56}
-                            height={56}
-                            src={imageUrl(transaction.description?.sentTokenAddress, imagesData)}
-                            alt={sentTokenName}
-                          />
-                        ) : (
-                          <div className="bg-base-100 flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
-                            {sentTokenName?.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {receivedTokenName === "ETH" ? (
-                    <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
-                      <FaEthereum className="text-2xl" />
-                    </div>
-                  ) : (
-                    <div className="avatar">
-                      {/* <div className="w-16 h-16">
-                        {image2 ? (
-                          <img
-                            width={56}
-                            height={56}
-                            src={image2}
-                            alt={receivedTokenName}
-                            style={{ opacity: image2 ? 1 : 0.3 }}
-                          />
-                        ) : (
-                          <div className="bg-base-100 flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
-                            {receivedTokenName?.charAt(0)}
-                          </div>
-                        )}
-                      </div> */}
-                    </div>
-                  )}
+            <div className='flex items-center justify-start gap-2'>
+              {sentTokenName === "ETH" ? (
+                <div className='flex aspect-square h-10 w-10 items-center justify-center rounded-xl bg-muted'>
+                  <FaEthereum />
                 </div>
-              </div>
+              ) : (
+                <>
+                  {transaction.description?.sentTokenAddress &&
+                    imagesData != undefined ? (
+                    <Avatar >
+                      <AvatarImage
+                        src={imageUrl(transaction.description?.sentTokenAddress, imagesData)}
+                        alt="token logo"
+                      />
+                      <AvatarFallback>{sentTokenName?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <AvatarPlaceholder />
+                  )}
+                </>
+              )}
+              {receivedTokenName === "ETH" ? (
+                <div className='flex aspect-square h-10 w-10 items-center justify-center rounded-xl bg-muted'>
+                  <FaEthereum />
+                </div>
+              ) : (
+                <>
+                  {transaction.currency?.symbol &&
+                    imagesData != undefined ? (
+                    <Avatar >
+                      <AvatarImage
+                        src={imageUrl(transaction.currency.symbol, imagesData)}
+                        alt="token logo"
+                      />
+                      <AvatarFallback>{receivedTokenName?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <AvatarPlaceholder />
+                  )}
+                </>
+              )}
             </div>
           );
         } else {
           return (
-            <div className="flex flex-col gap-2">
-              {/* <div className="flex items-center gap-16">
-                {currency?.symbol === "ETH" ? (
-                  <div className="w-16 h-16 border border-base-content/70 rounded-full flex justify-center items-center">
-                    <FaEthereum className="text-2xl" />
-                  </div>
-                ) : (
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-16 h-16">
-                      {image ? (
-                        <img
-                          width={56}
-                          height={56}
-                          src={image}
-                          alt={currency?.symbol}
-                          style={{ opacity: image ? 1 : 0.3 }}
-                        />
-                      ) : (
-                        <div className="flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
-                          {currency?.symbol.charAt(0)}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                <div className="bg-gray-200 rounded-lg text-center p-2 text-gray-700 flex gap-1 items-center">
+            <div>
+              {transaction.currency?.symbol === "ETH" ? (
+                <div className='flex aspect-square h-10 w-10 items-center justify-center rounded-xl bg-muted'>
+                  <FaEthereum />
+                </div>
+              ) : (
+                // <div className="avatar">
+                //   <div className="mask mask-squircle w-16 h-16">
+                //     {image ? (
+                //       <img
+                //         width={56}
+                //         height={56}
+                //         src={image}
+                //         alt={currency?.symbol}
+                //         style={{ opacity: image ? 1 : 0.3 }}
+                //       />
+                //     ) : (
+                //       <div className="flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
+                //         {currency?.symbol.charAt(0)}
+                //       </div>
+                //     )}
+                //   </div>
+                // </div>
+                <>
+                  {transaction.currency?.symbol &&
+                    imagesData != undefined ? (
+                    <Avatar >
+                      <AvatarImage
+                        src={imageUrl(transaction.currency.address, imagesData)}
+                        alt="token logo"
+                      />
+                      <AvatarFallback>{transaction.currency.symbol.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <AvatarPlaceholder />
+                  )}
+                </>
+              )}
+              {/* <div className="bg-gray-200 rounded-lg text-center p-2 text-gray-700 flex gap-1 items-center">
                   <span className="capitalize">{type}</span>
                   {type === "send" ? (
                     <BsArrowUpRightCircle className="" />
                   ) : (
                     <BsArrowDownLeftCircle className="" />
                   )}
-                </div>
-              </div> */}
+                </div> */}
             </div>
           );
         }
