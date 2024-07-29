@@ -97,12 +97,6 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
                     {minifyContract(transaction.transaction.hash)}
                   </a>
                 }
-                {transaction.block && transaction.block.timestamp.time.split(" ")[1] && (
-                  <div className="flex items-center">
-                    <BiTimeFive className="text-lg" />
-                    <span>{dayjs(transaction.block.timestamp.time.split(" ")[1]).fromNow()}</span>
-                  </div>
-                )}
               </>
             )}
           </>
@@ -148,10 +142,19 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       header: 'Swap Value',
       cell: ({ row }) => {
         const transaction = row.original;
-        // return transaction.description?.profit !== undefined ? '$ ' + transaction.description?.profit.toFixed(2) : 'N/A';
         return transaction.amount_usd !== undefined ? '$ ' + transaction.amount_usd.toFixed(2) : 'N/A';
       }
-    }
+    },
+    {
+      accessorKey: 'time',
+      header: 'Time',
+      cell: ({ row }) => {
+        const transaction = row.original;
+        return transaction.description?.timestamp
+          ? dayjs(transaction.description.timestamp).fromNow()
+          : 'N/A';
+      }
+    },
   ];
 
   const filteredData = sortedSwaps(walletSwapsData!);
