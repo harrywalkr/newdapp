@@ -20,6 +20,8 @@ import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmar
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 import { imageUrl } from '@/utils/imageUrl';
 import { Avatar, AvatarFallback, AvatarImage, AvatarPlaceholder } from '@/components/ui/avatar';
+import PriceFormatter2 from '@/utils/numberFormatter';
+import PriceFormatter from '@/utils/PriceFormatter';
 
 interface Props {
   walletAddress: string;
@@ -128,11 +130,16 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
                         src={imageUrl(transaction.currency.address, imagesData)}
                         alt="token logo"
                       />
-                      <AvatarFallback>{transaction.currency.symbol.charAt(0)}</AvatarFallback>
+                      {
+                        (transaction.currency.symbol.charAt(0) !== ' ' && transaction.currency.symbol.charAt(0) !== '\u200A') ?
+                          <AvatarFallback>{transaction.currency.symbol.charAt(0)}</AvatarFallback>
+                          :
+                          <AvatarPlaceholder />
+                      }
                     </Avatar>
-                  ) : (
+                  ) :
                     <AvatarPlaceholder />
-                  )}
+                  }
                 </>
               )}
             </div>
@@ -194,19 +201,49 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
           <div className='flex items-center gap-2'>
             {isSwap ? (
               <>
-                {transaction.description?.sentTokenAddress !== undefined ?
-                  transaction.description.sentTokenAddress !== "-" &&
-                  <Copy value={transaction.description.sentTokenAddress} text={minifyContract(transaction.description.sentTokenAddress)} /> : <>N/A</>}
-                <LuArrowLeftRight />
-                {transaction.description?.receivedTokenAddress !== undefined ?
-                  transaction.description.receivedTokenAddress !== "-" &&
-                  <Copy value={transaction.description.receivedTokenAddress} text={minifyContract(transaction.description.receivedTokenAddress)} /> : <>N/A</>}
+                {
+                  transaction.description?.sentAmount != undefined &&
+                  <>
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold">
+                        <PriceFormatter value={transaction.description.sentAmount} />
+                      </span>
+                      <span className="opacity-60">{transaction.description.sentTokenName}</span>
+                      {transaction.description?.sentTokenAddress !== "-" ? (
+                        <Copy text='' value={transaction.description.sentTokenAddress} />
+                      ) : null}
+                    </div>
+                    <LuArrowLeftRight />
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold">
+                        <PriceFormatter value={transaction.description.receivedAmount} />
+                      </span>
+                      <span className="opacity-60">{transaction.description.receivedTokenName}</span>
+                      {transaction.description.receivedTokenAddress !== "-" ? (
+                        <Copy text='' value={transaction.description.receivedTokenAddress} />
+                      ) : null}
+                    </div>
+                  </>
+                }
               </>
             ) : (
               <>
-                {transaction.sender?.address ? <Copy value={transaction.sender?.address} text={minifyContract(transaction.sender?.address)} /> : <>N/A</>}
-                <LuArrowLeftRight />
-                {transaction.receiver?.address ? <Copy value={transaction.receiver?.address} text={minifyContract(transaction.receiver?.address)} /> : <>N/A</>}
+                <div className="flex items-center gap-1">
+                  {
+                    transaction.currency?.address != undefined && <>
+                      {
+                        transaction.amount != undefined &&
+                        <span className="font-bold">
+                          <PriceFormatter value={transaction.amount} />
+                        </span>
+                      }
+                      <span className="opacity-60">{transaction.currency.symbol}</span>
+                      {transaction.currency.address !== "-" ? (
+                        <Copy text='' value={transaction.currency.address} />
+                      ) : null}
+                    </>
+                  }
+                </div>
               </>
             )}
           </div>
