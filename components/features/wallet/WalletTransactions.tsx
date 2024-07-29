@@ -61,50 +61,6 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
 
   const columns: ColumnDef<TransactionType>[] = [
     {
-      accessorKey: 'transaction',
-      header: 'Transaction',
-      accessorFn: row => row.transactions?.[0]?.transaction.hash || row.transaction?.hash,
-      cell: ({ row }) => {
-        const transaction = row.original;
-        const isSwap = transaction.type?.includes("swap");
-        return (
-          <>
-            {isSwap ? (
-              <>
-                {transaction.transactions && transaction.transactions[0].transaction?.hash &&
-                  (
-                    <a
-                      href={`https://etherscan.io/tx/${transaction.transactions[0].transaction.hash}`}
-                      target="_blank"
-                      className="link link-hover underline text-info text-sm"
-                    >
-                      {minifyContract(transaction.transactions[0].transaction.hash)}
-                    </a>
-                  )}
-              </>
-            ) : (
-              <>
-                {transaction.transaction?.hash &&
-                  (<a
-                    href={`https://etherscan.io/tx/${transaction.transaction.hash}`}
-                    target="_blank"
-                    className="link link-hover underline text-info text-sm"
-                  >
-                    {minifyContract(transaction.transaction.hash)}
-                  </a>
-                  )}
-              </>
-            )}
-          </>
-        );
-      }
-    },
-    {
-      accessorKey: 'type',
-      header: 'Activity',
-      cell: ({ row }) => row.original.type || 'N/A',
-    },
-    {
       accessorKey: 'tokens',
       header: 'Tokens',
       cell: ({ row }) => {
@@ -164,23 +120,6 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
                   <FaEthereum />
                 </div>
               ) : (
-                // <div className="avatar">
-                //   <div className="mask mask-squircle w-16 h-16">
-                //     {image ? (
-                //       <img
-                //         width={56}
-                //         height={56}
-                //         src={image}
-                //         alt={currency?.symbol}
-                //         style={{ opacity: image ? 1 : 0.3 }}
-                //       />
-                //     ) : (
-                //       <div className="flex justify-center items-center w-16 h-16 font-bold text-base border border-base-content rounded-full">
-                //         {currency?.symbol.charAt(0)}
-                //       </div>
-                //     )}
-                //   </div>
-                // </div>
                 <>
                   {transaction.currency?.symbol &&
                     imagesData != undefined ? (
@@ -196,18 +135,54 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
                   )}
                 </>
               )}
-              {/* <div className="bg-gray-200 rounded-lg text-center p-2 text-gray-700 flex gap-1 items-center">
-                  <span className="capitalize">{type}</span>
-                  {type === "send" ? (
-                    <BsArrowUpRightCircle className="" />
-                  ) : (
-                    <BsArrowDownLeftCircle className="" />
-                  )}
-                </div> */}
             </div>
           );
         }
       }
+    },
+    {
+      accessorKey: 'transaction',
+      header: 'Transaction hash',
+      accessorFn: row => row.transactions?.[0]?.transaction.hash || row.transaction?.hash,
+      cell: ({ row }) => {
+        const transaction = row.original;
+        const isSwap = transaction.type?.includes("swap");
+        return (
+          <>
+            {isSwap ? (
+              <>
+                {transaction.transactions && transaction.transactions[0].transaction?.hash &&
+                  (
+                    <a
+                      href={`https://etherscan.io/tx/${transaction.transactions[0].transaction.hash}`}
+                      target="_blank"
+                      className="link link-hover underline text-info text-sm"
+                    >
+                      {minifyContract(transaction.transactions[0].transaction.hash)}
+                    </a>
+                  )}
+              </>
+            ) : (
+              <>
+                {transaction.transaction?.hash &&
+                  (<a
+                    href={`https://etherscan.io/tx/${transaction.transaction.hash}`}
+                    target="_blank"
+                    className="link link-hover underline text-info text-sm"
+                  >
+                    {minifyContract(transaction.transaction.hash)}
+                  </a>
+                  )}
+              </>
+            )}
+          </>
+        );
+      }
+    },
+    {
+      accessorKey: 'type',
+      header: 'Activity',
+      cell: ({ row }) => row.original.type || 'N/A',
     },
     {
       accessorKey: 'action',
