@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { verifyKey } from "@/services/auth.service"
 import Spinner from "@/components/common/Spinner"
+import clsx from "clsx"
 
 const formSchema = z.object({
     password: z.string()
@@ -35,8 +36,11 @@ const formSchema = z.object({
     // }),
 })
 
+interface Props {
+    classname?: string
+}
 
-export default function LoginForm() {
+export default function LoginForm({ classname }: Props) {
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -68,7 +72,7 @@ export default function LoginForm() {
 
 
     return (
-        <Card className="w-full relative max-w-sm">
+        <Card className={clsx("w-full relative max-w-sm", classname)}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="">
                     {isPending && <Spinner />}

@@ -52,7 +52,7 @@ export function Overview({ walletInfo }: any) {
     <div className="mt-10 w-full min-h-[300px] overflow-hidden flex flex-col justify-center items-center">
       <Line
         data={history}
-        className="w-full"
+        className="w-full h-full"
         width={1248}
         height={chartHeight}
         options={chartOptions()}
