@@ -17,7 +17,7 @@ export function DataTablePagination<TData>({
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={table.getState().pagination.pageSize.toString()}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
             }}
@@ -45,7 +45,7 @@ export function DataTablePagination<TData>({
             className="hidden p-0 lg:flex"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
-            >
+          >
             <span className="sr-only">Go to first page</span>
             <Icons.speedPrevious className="h-4 w-4" />
           </Button>
@@ -55,7 +55,7 @@ export function DataTablePagination<TData>({
             className="p-0"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            >
+          >
             <span className="sr-only">Go to previous page</span>
             <Icons.previous className="h-4 w-4" />
           </Button>
@@ -65,7 +65,7 @@ export function DataTablePagination<TData>({
             className="p-0"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            >
+          >
             <span className="sr-only">Go to next page</span>
             <Icons.next className="h-4 w-4" />
           </Button>

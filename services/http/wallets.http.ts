@@ -3,7 +3,7 @@ import { fetchData } from "./axios.config";
 import { WalletSummaryType } from "@/types/wallet-summary.type";
 import { WalletStatType } from "@/types/wallet-stat.type";
 import { WalletBalanceType } from "@/types/wallet-balance.type";
-import { SwapType } from "@/types/swap.type";
+import { Balance, SwapType } from "@/types/swap.type";
 import { getPastDate } from "@/utils/date";
 import { IWallet } from "@/types/Wallet.type";
 
@@ -43,6 +43,16 @@ export const getWalletSwaps = (
     `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/api/swaps`,
     options
   );
+
+export const getWalletPortfolioHistory = (
+  options: AxiosRequestConfig
+): Promise<Balance[]> => {
+  options.params.category = "balance";
+  return fetchData<Balance[]>(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/api/swaps`,
+    options
+  );
+};
 
 export const getWalletBalance = (
   walletAddress: string,

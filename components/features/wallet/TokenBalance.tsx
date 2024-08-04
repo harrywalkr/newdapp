@@ -96,7 +96,7 @@ export default function WalletPortfolio({ walletAddress, walletSummary }: Props)
                     </CardContent>
                 </Card>
             </div>
-            <WalletPortfolioHistory walletSwaps={walletSwaps!.balance} images={images!} />
+            <WalletPortfolioHistory walletAddress={walletAddress} images={images!} />
         </div>
     );
 }

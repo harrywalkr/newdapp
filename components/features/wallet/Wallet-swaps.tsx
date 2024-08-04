@@ -160,19 +160,15 @@ const Record = ({
                 </div>
             </TableCell>
             <TableCell className="flex justify-start gap-2">
-                <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                        <Avatar>
-                            <AvatarImage
-                                src={imageUrl(data["Currency Address"], images)!}
-                                alt={data.tokenName || 'N/A'}
-                            />
-                            <AvatarFallback>
-                                {data.tokenName.charAt(0)}
-                            </AvatarFallback>
-                        </Avatar>
-                    </div>
-                </div>
+                <Avatar>
+                    <AvatarImage
+                        src={imageUrl(data["Currency Address"], images)!}
+                        alt={data.tokenName || 'N/A'}
+                    />
+                    <AvatarFallback>
+                        {data.tokenName.charAt(0)}
+                    </AvatarFallback>
+                </Avatar>
                 <div className="flex flex-col items-start justify-center">
                     <span className="font-medium">
                         {minifyTokenName(data.tokenName)}
