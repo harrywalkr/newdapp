@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { Chart } from 'react-chartjs-2';
 import {
   BarController,
@@ -15,6 +16,10 @@ import {
 import { getWalletSwaps } from '@/services/http/wallets.http';
 import { useQuery } from '@tanstack/react-query';
 import { useTokenChainStore } from '@/store';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/ui/toggle-group"
 
 ChartJS.register(
   LinearScale,
@@ -28,13 +33,58 @@ ChartJS.register(
   BarController
 );
 
+const getTimeRange = (period) => {
+  const now = new Date();
+  let from, till;
+
+  switch (period) {
+    case 'week':
+      from = new Date(now.setDate(now.getDate() - 7));
+      till = new Date();
+      break;
+    case 'month':
+      from = new Date(now.setMonth(now.getMonth() - 1));
+      till = new Date();
+      break;
+    case '3 months':
+      from = new Date(now.setMonth(now.getMonth() - 3));
+      till = new Date();
+      break;
+    case 'year':
+      from = new Date(now.setFullYear(now.getFullYear() - 1));
+      till = new Date();
+      break;
+    case 'all':
+    default:
+      from = new Date(0);
+      till = new Date();
+      break;
+  }
+
+  return { from: from.toISOString().split('T')[0], till: till.toISOString().split('T')[0] };
+};
+
 export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAddress: string }) {
   const { selectedChain } = useTokenChainStore();
+  const [period, setPeriod] = useState('all');
+  const { from, till } = getTimeRange(period);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['walletSwaps', walletAddress, selectedChain.symbol],
-    queryFn: () => getWalletSwaps({ params: { address: walletAddress, network: selectedChain.symbol } })
-  })
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['swapWallet', walletAddress, 'category=walletSwaps', selectedChain.symbol, from, till],
+    queryFn: () => getWalletSwaps({
+      params: {
+        address: walletAddress,
+        network: selectedChain.symbol,
+        category: 'swapWallet',
+        SellTimeFrom: from,
+        SellTimeTill: till,
+      }
+    })
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [period]);
 
   if (isLoading) {
     return <span className="loading loading-bars loading-md">loading ...</span>;
@@ -44,7 +94,7 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
     return <span>Error loading data</span>;
   }
 
-  const rawData = data.swapWallet;
+  const rawData = data;
   const processedData = rawData
     .map((dd: any) => {
       const buyTimes = dd['Buy Times'];
@@ -109,7 +159,24 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
 
   return (
     <div className="w-full">
-      <Chart type="bar" data={tradesData} className="w-full" />
+      <ToggleGroup type="single" onValueChange={(value) => setPeriod(value)} value={period}>
+        <ToggleGroupItem value="week" aria-label="Toggle week">
+          week
+        </ToggleGroupItem>
+        <ToggleGroupItem value="month" aria-label="Toggle month">
+          month
+        </ToggleGroupItem>
+        <ToggleGroupItem value="3 months" aria-label="Toggle 3 months">
+          3 months
+        </ToggleGroupItem>
+        <ToggleGroupItem value="year" aria-label="Toggle year">
+          year
+        </ToggleGroupItem>
+        <ToggleGroupItem value="all" aria-label="Toggle all">
+          all
+        </ToggleGroupItem>
+      </ToggleGroup>
+      <Chart type="bar" data={tradesData} className="w-full mt-5" />
       <Chart type="line" data={profitsData} className="w-full" />
     </div>
   );

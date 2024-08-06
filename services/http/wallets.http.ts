@@ -44,15 +44,6 @@ export const getWalletSwaps = (
     options
   );
 
-export const getWalletPortfolioHistory = (
-  options: AxiosRequestConfig
-): Promise<Balance[]> => {
-  options.params.category = "balance";
-  return fetchData<Balance[]>(
-    `${process.env.NEXT_PUBLIC_BASE_URL_ONE}/api/swaps`,
-    options
-  );
-};
 
 export const getWalletBalance = (
   walletAddress: string,

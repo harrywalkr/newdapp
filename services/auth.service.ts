@@ -15,6 +15,11 @@ export async function isPaidMember(): Promise<boolean> {
   }
 }
 
+export function isLoggedIn(): string | null {
+  const key = localStorage.getItem("LICENSE_KEY");
+  return key;
+}
+
 export const verifyKey = (
   key: string,
   options?: AxiosRequestConfig

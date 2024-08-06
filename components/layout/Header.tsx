@@ -12,6 +12,7 @@ import Link from "next/link";
 import ChainInfo from "../features/header/chain-info";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { isLoggedIn } from "@/services/auth.service";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
   const router = useRouter()
@@ -36,11 +37,17 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
         <div className="flex items-center justify-center gap-3">
           <ConnectWalletButton />
-          <Button
-            variant="secondary"
-            className="hidden md:block" onClick={() => router.push('/pricing')}>
-            login
-          </Button>
+          {
+            isLoggedIn() ?
+              <Button
+                variant="secondary"
+                className="hidden md:block" onClick={() => router.push('/pricing')}>
+                login
+              </Button>
+              : <Button variant="secondary" className="hidden md:block" onClick={() => router.push('/dashboard')}>
+                Profile
+              </Button>
+          }
           <Button className="hidden md:block" onClick={() => router.push('/pricing')}>
             Premium
           </Button>

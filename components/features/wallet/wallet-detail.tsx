@@ -6,7 +6,7 @@ import { MdChecklist } from 'react-icons/md';
 import { RiNftLine } from 'react-icons/ri';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { IoIosSwap } from "react-icons/io";
-import WalletSwaps from "./Wallet-swaps";
+import TradeHistory from "./Trade-history";
 import WalletStatisticalPnLTrades from "./WalletStatistical-old-dex/WalletStatisticalPnLTrades";
 import WalletNFTHolding from "./Nft";
 import WalletOverview from "./WalletOverview2";
@@ -87,7 +87,7 @@ export default function WalletDetail({ walletSummary, walletAddress, dateRange, 
             <WalletPortfolio walletSummary={walletSummary} walletAddress={walletAddress} />
           </TabsContent>
           <TabsContent value="Trade History" className='mt-5'>
-            <WalletSwaps walletAddress={walletAddress} dateRange={dateRange} />
+            <TradeHistory walletAddress={walletAddress} dateRange={dateRange} />
           </TabsContent>
           <TabsContent value="NFT Balance" className='mt-5'>
             <WalletNFTHolding walletAddress={walletAddress} />

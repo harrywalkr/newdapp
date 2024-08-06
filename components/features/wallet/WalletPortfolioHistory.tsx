@@ -17,7 +17,7 @@ import PriceFormatter from "@/utils/PriceFormatter";
 import { separate3digits } from "@/utils/numbers";
 import clsx from 'clsx';
 import { ColumnDef } from '@tanstack/react-table';
-import { getWalletPortfolioHistory } from '@/services/http/wallets.http';
+import { getWalletSwaps } from '@/services/http/wallets.http';
 import useWatchlistStore, { IWatchlistItem } from '@/store/watchlist';
 import { imageUrl } from '@/utils/imageUrl';
 
@@ -29,7 +29,7 @@ interface WalletPortfolioHistoryProps {
 const WalletPortfolioHistory: React.FC<WalletPortfolioHistoryProps> = ({ images, walletAddress }) => {
     const { selectedChain } = useTokenChainStore();
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
     const [sortBy, setSortBy] = useState<string>('totalScore');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [searchValue, setSearchValue] = useState<string>("");
@@ -46,12 +46,13 @@ const WalletPortfolioHistory: React.FC<WalletPortfolioHistoryProps> = ({ images,
 
     const { data: walletSwaps = [], isLoading } = useQuery({
         queryKey: [
-            'walletSwaps', walletAddress, 'balance', selectedChain.symbol, page, pageSize, sortBy, sortOrder, searchValue, typeFilter, balanceRange, priceRange, buyAmountRange, entryPriceRange, sellAmountRange, currentValueRange, livePLRange
+            'walletSwaps', walletAddress, 'category=balance', selectedChain.symbol, page, pageSize, sortBy, sortOrder, searchValue, typeFilter, balanceRange, priceRange, buyAmountRange, entryPriceRange, sellAmountRange, currentValueRange, livePLRange
         ],
-        queryFn: () => getWalletPortfolioHistory({
+        queryFn: () => getWalletSwaps({
             params: {
                 address: walletAddress,
                 network: selectedChain.symbol,
+                category: 'balance',
                 page,
                 pageSize,
                 sortBy,
@@ -123,12 +124,12 @@ const WalletPortfolioHistory: React.FC<WalletPortfolioHistoryProps> = ({ images,
                     <Avatar>
                         <AvatarImage src={imageUrl(row.getValue("Currency Address") as string, images)} alt={row.getValue('tokenName') as string} />
                         <AvatarFallback>
-                            {row.getValue('tokenName') != undefined ? (row.getValue('tokenName') as string).charAt(0) : <AvatarPlaceholder />}
+                            {row.original.tokenName ? row.original.tokenName.charAt(0) : <AvatarPlaceholder />}
                         </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start justify-center">
                         <span className="font-medium">
-                            {row.getValue('tokenName') != undefined ? <>{minifyTokenName(row.getValue('tokenName'))}</> : <>no name</>}
+                            {row.original.tokenName ? minifyTokenName(row.original.tokenName) : 'no name'}
                         </span>
                         <Copy text={minifyContract(row.getValue("Currency Address") as string)} value={row.getValue("Currency Address") as string} />
                     </div>
@@ -313,7 +314,7 @@ const WalletPortfolioHistory: React.FC<WalletPortfolioHistoryProps> = ({ images,
 
     return (
         <ServerSideSmartTable
-            data={walletSwaps}
+            data={walletSwaps as Balance[]}
             columns={columns}
             page={page}
             pageCount={pageSize}
