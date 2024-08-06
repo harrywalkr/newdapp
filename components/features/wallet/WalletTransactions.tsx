@@ -2,26 +2,25 @@
 
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import { BiTimeFive } from 'react-icons/bi';
 import { LuArrowLeftRight } from 'react-icons/lu';
 import { FaEthereum } from 'react-icons/fa';
-import { BsArrowUpRightCircle, BsArrowDownLeftCircle } from 'react-icons/bs';
 import { useQuery } from '@tanstack/react-query';
 import Copy from '@/components/ui/copy';
 import { getWalletSwaps } from '@/services/http/wallets.http';
 import { getImages } from '@/services/http/image.http';
-import { SwapType, TransactionType } from '@/types/swap.type';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { minifyContract } from '@/utils/truncate';
+import { TransactionType } from '@/types/swap.type';
 import { useTokenChainStore } from '@/store';
 import TableLoading from '@/components/layout/Table-loading';
 import { ColumnDef } from "@tanstack/react-table";
-import { ClientSideSmartTable } from '@/components/ui/smart-table/ClientSideSmartTable';
+import { ServerSideSmartTable } from '@/components/ui/smart-table/ServerSideSmartTable';
 import FilterDialog, { Filter } from '@/components/ui/smart-table/FilterDialog';
 import { imageUrl } from '@/utils/imageUrl';
 import { Avatar, AvatarFallback, AvatarImage, AvatarPlaceholder } from '@/components/ui/avatar';
-import PriceFormatter2 from '@/utils/numberFormatter';
 import PriceFormatter from '@/utils/PriceFormatter';
+import { minifyContract } from '@/utils/truncate';
+import { Button } from '@/components/ui/button';
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+
 
 interface Props {
   walletAddress: string;
@@ -30,31 +29,37 @@ interface Props {
 
 export default function WalletTransactions({ dateRange: initialDateRange, walletAddress }: Props) {
   const { selectedChain } = useTokenChainStore();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [sortBy, setSortBy] = useState<string>('time');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [dateRange, setDateRange] = useState<{ from: Date | undefined, to: Date | undefined }>(initialDateRange);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const { data: walletSwapsData, isLoading: walletSwapsLoading, error: walletSwapsError } = useQuery({
-    queryKey: ["wallet-swaps", { dateRange, walletAddress }, selectedChain.symbol],
-    queryFn: () =>
-      getWalletSwaps({
-        params: {
-          from: dateRange.from,
-          to: dateRange.to,
-          address: walletAddress,
-          network: selectedChain.symbol
-        }
-      }).then(data => data)
+    queryKey: [
+      'walletSwaps', walletAddress, 'category=transactions', selectedChain.symbol, page, pageSize, sortBy, sortOrder, searchValue, dateRange
+    ],
+    queryFn: () => getWalletSwaps({
+      params: {
+        category: 'transactions',
+        from: dateRange.from,
+        to: dateRange.to,
+        address: walletAddress,
+        network: selectedChain.symbol,
+        page,
+        pageSize,
+        sortBy,
+        sortOrder,
+        search: searchValue,
+      }
+    }),
   });
 
   const { data: imagesData, isLoading: imagesLoading, error: imagesError } = useQuery({
     queryKey: ['images'],
     queryFn: () => getImages().then((data) => data.imageUrls)
   });
-
-  const sortedSwaps = (swaps: SwapType): TransactionType[] => {
-    return swaps?.transactions.sort((a, b) => {
-      return new Date(b.block?.timestamp?.time!).getTime() - new Date(a.block?.timestamp?.time!).getTime()
-    });
-  }
 
   if (walletSwapsLoading || imagesLoading) return <TableLoading />
 
@@ -188,7 +193,13 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
     },
     {
       accessorKey: 'type',
-      header: 'Activity',
+      header: ({ column }) => (
+        <Button variant="ghost" onClick={() => toggleSorting(column)}>
+          Activity
+          {sortBy === 'type' && sortOrder === 'asc' && <ArrowUpIcon className="ml-2 h-4 w-4" />}
+          {sortBy === 'type' && sortOrder === 'desc' && <ArrowDownIcon className="ml-2 h-4 w-4" />}
+        </Button>
+      ),
       cell: ({ row }) => row.original.type || 'N/A',
     },
     {
@@ -255,7 +266,12 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       header: 'Swap Value',
       cell: ({ row }) => {
         const transaction = row.original;
-        return transaction.amount_usd !== undefined ? '$ ' + transaction.amount_usd.toFixed(2) : 'N/A';
+        return <>
+          {transaction.type == 'buy swap' && <>{transaction.description?.sentAmountUSD}</>}
+          {transaction.type == 'sell swap' && <>{transaction.description?.receivedAmountUSD}</>}
+          {transaction.type == 'send' && <>{transaction.amount_usd}</>}
+          {transaction.type == 'receive' && <>{transaction.amount_usd}</>}
+        </>
       }
     },
     {
@@ -263,14 +279,15 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
       header: 'Time',
       cell: ({ row }) => {
         const transaction = row.original;
-        return transaction.description?.timestamp
-          ? dayjs(transaction.description.timestamp).fromNow()
-          : 'N/A';
+        return <>
+          {transaction.type == 'buy swap' && <>{transaction.description?.timestamp ? dayjs(transaction.description?.timestamp).fromNow() : 'N/A'}</>}
+          {transaction.type == 'sell swap' && <>{transaction.description?.timestamp ? dayjs(transaction.description?.timestamp).fromNow() : 'N/A'}</>}
+          {transaction.type == 'send' && <>{transaction.block?.timestamp.time ? dayjs(transaction.block?.timestamp.time).fromNow() : 'N/A'}</>}
+          {transaction.type == 'receive' && <>{transaction.block?.timestamp.time ? dayjs(transaction.block?.timestamp.time).fromNow() : 'N/A'}</>}
+        </>
       }
     },
   ];
-
-  const filteredData = sortedSwaps(walletSwapsData!);
 
   const filters: Filter[] = [
     {
@@ -281,14 +298,37 @@ export default function WalletTransactions({ dateRange: initialDateRange, wallet
     }
   ];
 
+
+  const toggleSorting = (column: any) => {
+    const isSortedAsc = column.getIsSorted() === 'asc';
+    const isSortedDesc = column.getIsSorted() === 'desc';
+
+    if (isSortedAsc) {
+      setSortOrder('desc');
+      column.toggleSorting(true);
+    } else if (isSortedDesc) {
+      setSortBy('');
+      setSortOrder('asc');
+      column.clearSorting();
+    } else {
+      setSortBy(column.id);
+      setSortOrder('asc');
+      column.toggleSorting(false);
+    }
+  };
+
   return (
-    <ClientSideSmartTable
-      data={filteredData}
+    <ServerSideSmartTable
+      data={walletSwapsData as unknown as TransactionType[]}
       columns={columns}
-      searchColumnAccessorKey='transaction'
-      disablePagination={true}
+      page={page}
+      pageCount={pageSize}
+      setPage={setPage}
+      setPageSize={setPageSize}
+      setSearchValue={setSearchValue}
+      loading={walletSwapsLoading}
     >
       <FilterDialog filters={filters} />
-    </ClientSideSmartTable>
+    </ServerSideSmartTable>
   );
 }
