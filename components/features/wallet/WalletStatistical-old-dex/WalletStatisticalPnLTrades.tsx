@@ -33,7 +33,7 @@ ChartJS.register(
   BarController
 );
 
-const getTimeRange = (period) => {
+const getTimeRange = (period: 'week' | 'month' | '3 months' | 'year' | 'all') => {
   const now = new Date();
   let from, till;
 
