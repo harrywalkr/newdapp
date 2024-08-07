@@ -1,5 +1,5 @@
 'use client'
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import Logo from "../common/Logo";
 import { ThemeToggle } from "../features/header/Toggle-theme";
 import MobileMenu from "../features/header/mobile-menu";
@@ -14,7 +14,12 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 
 export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
-  const router = useRouter()
+  const router = useRouter();
+  const [licenseKey, setLicenseKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLicenseKey(localStorage.getItem("LICENSE_KEY"));
+  }, []);
 
   return (
     <header
@@ -37,7 +42,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         <div className="flex items-center justify-center gap-3">
           <ConnectWalletButton />
           {
-            localStorage.getItem("LICENSE_KEY") ?
+            licenseKey ?
               <Button
                 variant="secondary"
                 className="hidden md:block" onClick={() => router.push('/pricing')}>
