@@ -20,6 +20,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
+import { SwapWallet } from '@/types/swap.type';
 
 ChartJS.register(
   LinearScale,
@@ -66,9 +67,8 @@ const getTimeRange = (period: 'week' | 'month' | '3 months' | 'year' | 'all') =>
 
 export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAddress: string }) {
   const { selectedChain } = useTokenChainStore();
-  const [period, setPeriod] = useState('all');
+  const [period, setPeriod] = useState<'week' | 'month' | '3 months' | 'year' | 'all'>('all');
   const { from, till } = getTimeRange(period);
-
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['swapWallet', walletAddress, 'category=walletSwaps', selectedChain.symbol, from, till],
     queryFn: () => getWalletSwaps({
@@ -94,17 +94,15 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
     return <span>Error loading data</span>;
   }
 
-  const rawData = data;
-  const processedData = rawData
-    .map((dd: any) => {
-      const buyTimes = dd['Buy Times'];
-      const sellTimes = dd['Sell Times'];
-      return {
-        ...dd,
-        buyTime: buyTimes,
-        sellTime: sellTimes,
-      };
-    })
+  const processedData = (data as unknown as SwapWallet[]).map((dd: any) => {
+    const buyTimes = dd['Buy Times'];
+    const sellTimes = dd['Sell Times'];
+    return {
+      ...dd,
+      buyTime: buyTimes,
+      sellTime: sellTimes,
+    };
+  })
     .map((dd: any) => {
       const times = [...dd.buyTime.map((d: any) => d.time), ...dd.sellTime.map((d: any) => d.time)];
       return {
