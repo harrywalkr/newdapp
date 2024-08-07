@@ -157,7 +157,7 @@ export default function WalletStatisticalPnLTrades({ walletAddress }: { walletAd
 
   return (
     <div className="w-full">
-      <ToggleGroup type="single" onValueChange={(value) => setPeriod(value)} value={period}>
+      <ToggleGroup type="single" onValueChange={(value) => setPeriod(value as 'week' | 'month' | '3 months' | 'year' | 'all')} value={period}>
         <ToggleGroupItem value="week" aria-label="Toggle week">
           week
         </ToggleGroupItem>
