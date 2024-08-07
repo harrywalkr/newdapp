@@ -37,7 +37,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
         </div>
         <div className="flex items-center justify-center gap-3">
           <ConnectWalletButton />
-          {
+          {/* {
             isLoggedIn() ?
               <Button
                 variant="secondary"
@@ -47,7 +47,7 @@ export default function Header({ className }: HTMLAttributes<HTMLHeadElement>) {
               : <Button variant="secondary" className="hidden md:block" onClick={() => router.push('/dashboard')}>
                 Profile
               </Button>
-          }
+          } */}
           <Button className="hidden md:block" onClick={() => router.push('/pricing')}>
             Premium
           </Button>
